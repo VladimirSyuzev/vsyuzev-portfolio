@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
+import SnapScrollController from "./sections/SnapScrollController";
 import Stats from "./sections/Stats";
 import Problem from "./sections/Problem";
 import Screen from "./sections/Screen";
@@ -42,6 +43,7 @@ const ICONS = [
 export default function Case01Page() {
   return (
     <div className="flex w-full flex-col items-center">
+      <SnapScrollController />
       <Header />
       <div className="h-[62px] w-full shrink-0" />
 
@@ -54,7 +56,7 @@ export default function Case01Page() {
           низа экрана, если экран выше контента. Текст — отдельный
           непомасштабированный слой в центрированной 1440-сетке (как и
           остальная страница), а не прижат к краю окна. */}
-      <div className="snap-start relative flex min-h-screen w-full flex-col items-center overflow-clip bg-[#fafafa]">
+      <div className="relative flex min-h-screen w-full flex-col items-center overflow-clip bg-[#fafafa]">
         <div className="relative w-full">
           <FullBleedScale width={1440} height={580} mode="grow" className="w-full">
             <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">

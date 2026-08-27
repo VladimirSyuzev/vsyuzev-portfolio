@@ -3,7 +3,7 @@
 // окна, содержимое (фикс-1440×900, как в Figma) центрируется по вертикали.
 export default function Problem() {
   return (
-    <div className="snap-start flex min-h-screen w-full items-center justify-center bg-[#121212]">
+    <div data-snap-stop className="flex min-h-screen w-full items-center justify-center bg-[#121212]">
       <div className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">01</p>

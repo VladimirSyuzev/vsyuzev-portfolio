@@ -20,7 +20,7 @@ const BULLETS = [
 
 export default function Screen() {
   return (
-    <div className="snap-start flex min-h-screen w-full items-center justify-center bg-[#121212]">
+    <div data-snap-stop className="flex min-h-screen w-full items-center justify-center bg-[#121212]">
       <section className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
         <p className="absolute left-[46px] top-[181px] w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           На одном экране могли одновременно использоваться иконки из разных библиотек, из-за чего
