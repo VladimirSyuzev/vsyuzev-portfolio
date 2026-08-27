@@ -4,13 +4,11 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 
-// Hero — по макету: тёмный full-bleed блок сверху (в Figma там пусто/под
-// будущее видео или крупный кадр — ассет ещё не экспортирован, см.
-// FIGMA-BRIEF.md TODO), под ним крупный заголовок «ART-DIRECTOR &
-// COMMUNICATION DESIGNER» с акцентным синим подчёркиванием ("волна" здесь
-// не используется — reveal этой секции простой fade-up, тот же приём,
-// что у Hero/About в «Новый проект 3.0»; "волна" зарезервирована под
-// блок «Кейсы», см. CasesList.tsx).
+// Hero — 1:1 из Figma (node 2235:93636), фрейм 1440×900. Чёрный блок
+// 1440×716 — часть макета как есть (без изображения, ассет над ним в
+// файле выключен/hidden). Reveal — простой fade-up (siteEase), та же
+// анимационная инфраструктура, что и в предыдущем проекте (lib/gsap.ts) —
+// "волна" зарезервирована под блок «Кейсы» (см. CasesList.tsx).
 export default function Hero() {
   const scope = useRef<HTMLDivElement>(null);
 
@@ -30,26 +28,22 @@ export default function Hero() {
   );
 
   return (
-    <section id="top" ref={scope} className="flex flex-col">
-      {/* Плейсхолдер тёмного hero-блока — в макете здесь, вероятно, видео
-          или крупный кадр; ассет не экспортирован (FIGMA-BRIEF.md). */}
-      <div
-        className="hero-reveal flex h-[45vh] min-h-[320px] w-full items-end justify-start bg-foreground px-[var(--grid-margin)] py-6"
-        aria-hidden
-      >
-        <span className="text-label text-background/40">hero — ассет ожидается</span>
+    <div ref={scope} className="relative h-[900px] w-[1440px] overflow-clip bg-[#fafafa]">
+      <div className="hero-reveal absolute left-0 top-0 h-[716px] w-[1440px] bg-[#121212]" />
+      <p className="hero-reveal absolute left-[46px] top-[729px] whitespace-pre font-heading text-[52px] font-bold uppercase leading-[0] tracking-[1.56px] text-[#121212]">
+        <span className="leading-[1.1]">ART-DIRECTOR </span>
+        <span className="leading-[1.1] text-[#008cff]">&amp;</span>
+        <span className="leading-[1.1]">
+          {" "}
+          <br />
+          {/* В макете буквально "COMUNICATION" (без второй M) — оставлено
+              как в Figma, не исправлено самовольно, см. итоговое сообщение. */}
+          COMUNICATION DESIGNER
+        </span>
+      </p>
+      <div className="hero-reveal absolute left-[503.07px] top-[840.96px] h-[13.044px] w-[342.526px]">
+        <img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
       </div>
-
-      <div className="grid-12 mx-auto px-[var(--grid-margin)] py-16 sm:py-24">
-        <div className="hero-reveal sm:col-span-10 sm:col-start-1">
-          <h1 className="text-hero uppercase text-foreground">
-            Art-Director &amp;
-            <br />
-            Communication <span className="text-rust">Designer</span>
-          </h1>
-          <div className="mt-4 h-[3px] w-24 bg-rust" aria-hidden />
-        </div>
-      </div>
-    </section>
+    </div>
   );
 }

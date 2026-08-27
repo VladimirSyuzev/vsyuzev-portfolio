@@ -3,25 +3,12 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
-import { preventOrphans } from "@/lib/typography";
 
-// About («О себе») — по макету: абзац био слева, портретное фото справа
-// (плейсхолдер — ассет не экспортирован, FIGMA-BRIEF.md), ниже плашка
-// клиентов. Список клиентов — из того, что читается на скриншоте;
-// требует сверки крупным планом (см. бриф).
-const CLIENTS = [
-  "Яндекс Такси",
-  "Яндекс 360",
-  "Яндекс Облако",
-  "Яндекс Афиша",
-  "Яндекс Едадил",
-  "Яндекс Про",
-  "Wildberries",
-  "МТС",
-  "Т-Банк",
-  "Skyeng",
-  "Ozon",
-  "Литрес",
+// «о себе» — 1:1 из Figma (node 2279:32548), фрейм 1440×900.
+const CLIENT_ROWS: string[][] = [
+  ["Яндекс Фабрика", "Яндекс Такси", "Яндекс 360", "Яндекс Cloud", "Яндекс Алиса"],
+  ["Яндекс Самокаты", "Яндекс Еда", "Яндекс Лавка", "Stablegate", "МТС", "Т-Банк"],
+  ["Звук", "Haier", "УралКалий", "Divan.ru", "Fort Telecom", "Sabotage brewery"],
 ];
 
 export default function About() {
@@ -34,7 +21,7 @@ export default function About() {
         y: 30,
         opacity: 0,
         duration: 0.8,
-        stagger: 0.15,
+        stagger: 0.1,
         ease: "siteEase",
         scrollTrigger: {
           trigger: scope.current,
@@ -46,39 +33,57 @@ export default function About() {
   );
 
   return (
-    <section
-      id="about"
-      ref={scope}
-      className="grid-12 mx-auto scroll-mt-16 px-[var(--grid-margin)] py-16 sm:py-24"
-    >
-      <div className="about-reveal sm:col-span-2 sm:col-start-1">
-        <h2 className="text-heading text-graphite">О себе</h2>
-        <div className="dash" aria-hidden>–</div>
-      </div>
+    <div id="about" ref={scope} className="relative h-[900px] w-[1440px] overflow-clip bg-[#fafafa] scroll-mt-16">
+      <p className="about-reveal absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
+        о себе
+      </p>
 
-      <div className="about-reveal mt-6 flex flex-col gap-8 sm:col-span-6 sm:col-start-3 sm:mt-0 sm:flex-row sm:items-start sm:gap-10">
-        <p className="text-body-copy max-w-xl text-graphite">
-          {preventOrphans(
-            "Как арт-директор и коммуникационный дизайнер помогаю компаниям выстраивать визуальные системы, которые масштабируются без потери консистентности — от аудита существующей библиотеки до производственного процесса, по которому команда сдаёт результат стабильного качества."
-          )}
-        </p>
-        {/* Плейсхолдер портрета — ассет не экспортирован из Figma */}
-        <div
-          className="aspect-[3/4] w-40 shrink-0 bg-plate sm:w-48"
-          aria-hidden
+      <div className="about-reveal absolute left-[884px] top-[345.27px] h-[398.728px] w-[498px] overflow-clip">
+        <img
+          alt="Вова Сюзёв"
+          src="/about/photo.png"
+          className="absolute left-1/2 top-[-25px] h-[536px] w-[734px] -translate-x-1/2 object-cover"
         />
       </div>
 
-      <div className="about-reveal mt-10 flex flex-wrap gap-2 sm:col-span-8 sm:col-start-3 sm:mt-16">
-        {CLIENTS.map((client) => (
-          <span
-            key={client}
-            className="text-label border border-line px-3 py-1.5 text-graphite"
-          >
-            {client}
-          </span>
-        ))}
+      <div className="about-reveal absolute left-[562px] top-[701px] h-[125px] w-[158px]">
+        <img alt="" className="block size-full max-w-none" src="/about/doodle-scribble.svg" />
       </div>
-    </section>
+
+      <div className="about-reveal absolute left-[1125.68px] top-[44px] h-[212.282px] w-[268.324px]">
+        <img alt="" className="block size-full max-w-none" src="/about/doodles.svg" />
+      </div>
+
+      <p className="about-reveal absolute left-[46px] top-[181px] w-[668px] whitespace-pre-wrap text-[14px] not-italic leading-[1.2] tracking-[0.28px] text-[#333] opacity-70">
+        Арт-директор, который умеет совмещать управление командой с практической работой{" "}
+        <br />в дизайне. Выстраиваю процессы, систематизирую большой объём задач и помогаю
+        командам сохранять качество и темп. Сам создаю Key Visual, иллюстрации, 3D,
+        иконографику и AI-визуалы — от идеи до финального материала. Быстро разбираюсь в
+        сложных задачах, отвечаю за результат и готов брать больше ответственности за
+        развитие визуального направления.
+      </p>
+
+      <div className="about-reveal absolute left-[46px] top-[592px] flex w-[722px] flex-col items-start gap-[12px]">
+        <p className="w-[382px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#32323c]">
+          Клиенты:
+        </p>
+        <div className="flex flex-col items-start gap-[6px]">
+          {CLIENT_ROWS.map((row, i) => (
+            <div key={i} className="flex items-center gap-[6px]">
+              {row.map((client) => (
+                <div
+                  key={client}
+                  className="flex items-center justify-center rounded-[10px] border border-[rgba(50,50,60,0.8)] px-[12px] py-[10px]"
+                >
+                  <p className="whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#32323c]">
+                    {client}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
