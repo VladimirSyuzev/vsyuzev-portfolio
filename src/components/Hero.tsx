@@ -36,9 +36,9 @@ export default function Hero() {
         <span className="leading-[1.1]">
           {" "}
           <br />
-          {/* В макете буквально "COMUNICATION" (без второй M) — оставлено
-              как в Figma, не исправлено самовольно, см. итоговое сообщение. */}
-          COMUNICATION DESIGNER
+          {/* Опечатка макета "COMUNICATION" исправлена на "COMMUNICATION"
+              по явной просьбе пользователя. */}
+          COMMUNICATION DESIGNER
         </span>
       </p>
       <div className="hero-reveal absolute left-[503.07px] top-[840.96px] h-[13.044px] w-[342.526px]">

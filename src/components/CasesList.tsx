@@ -43,7 +43,7 @@ export default function CasesList() {
   );
 
   return (
-    <div id="cases" ref={scope} className="relative w-[1440px] bg-[#fafafa] pt-[318px] pb-[468px] scroll-mt-16">
+    <div id="cases" ref={scope} className="relative w-[1440px] bg-[#fafafa] pt-[318px] pb-[123px] scroll-mt-16">
       <p className="absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
         КЕЙСЫ
       </p>
