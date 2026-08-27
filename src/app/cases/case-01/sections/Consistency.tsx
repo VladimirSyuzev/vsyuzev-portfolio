@@ -1,6 +1,10 @@
+import BalanceBoard1 from "./BalanceBoard1";
+import BalanceBoard2 from "./BalanceBoard2";
+
 // 06 Контроль консистентности — 1:1 из Figma (node 1961:32477). Два
-// Balance Board (сетки иконок для сверки визуального веса) — screenshot-
-// ассеты (это референсные панели-скриншоты, не самостоятельный текст).
+// Balance Board (сетки иконок для сверки визуального веса) — теперь
+// настоящий DOM/SVG (снято через get_design_context узлов 1961:32486 и
+// 1961:32544), раньше были screenshot-ассетами.
 export default function Consistency() {
   return (
     <div className="relative h-[900px] w-[1440px] overflow-clip bg-[#121212]">
@@ -20,10 +24,12 @@ export default function Consistency() {
         <p>Именно этот инструмент позволял принимать большинство решений ещё до передачи работы клиенту.</p>
       </div>
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/cases/case-01/sections/balance-1.png" alt="Balance Board — сравнение существующих и новых иконок, набор 1" width={498} height={498} className="absolute left-[386px] top-[356px] size-[498px]" />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/cases/case-01/sections/balance-2.png" alt="Balance Board — сравнение существующих и новых иконок, набор 2" width={498} height={498} className="absolute left-[896px] top-[356px] size-[498px]" />
+      <div className="absolute left-[386px] top-[356px] size-[498px]">
+        <BalanceBoard1 />
+      </div>
+      <div className="absolute left-[896px] top-[356px] size-[498px]">
+        <BalanceBoard2 />
+      </div>
 
       <div className="absolute left-[-4px] top-[513px] h-[125px] w-[158px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/consistency-doodle.svg" />

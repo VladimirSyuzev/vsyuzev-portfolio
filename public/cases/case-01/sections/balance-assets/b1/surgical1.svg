@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="46.7818" height="46.7818" viewBox="0 0 46.7818 46.7818" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Search" clip-path="url(#clip0_0_956)">
+<path id="Rectangle 240663395" d="M33.9341 8.21398C35.6468 6.50125 38.4237 6.50134 40.1364 8.21398L40.7489 8.82648C42.6024 10.68 42.4275 13.7348 40.374 15.3638L22.4829 29.5535L21.9291 29.9927L21.9284 30.6991C21.9285 32.4554 20.6865 33.9661 18.9633 34.3051L5.11878 37.0293L33.9341 8.21398Z" stroke="#121212" stroke-width="2.92386"/>
+<path id="Vector 234254340" d="M21.9824 19.7788L21.9222 29.9399" stroke="#121212" stroke-width="2.92386"/>
+<rect id="Rectangle 240663399" x="-1.77507" y="25.0514" width="5.67355" height="16.9657" fill="white"/>
+<path id="Subtract" d="M40.9334 38.9848H19.245L23.4452 36.061H40.9334V38.9848Z" fill="#121212"/>
+</g>
+<defs>
+<clipPath id="clip0_0_956">
+<rect width="46.7818" height="46.7818" fill="white"/>
+</clipPath>
+</defs>
+</svg>
