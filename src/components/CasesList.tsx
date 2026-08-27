@@ -74,12 +74,20 @@ export default function CasesList() {
                   {item.description}
                 </p>
               </div>
-              <div className="w-[668px] shrink-0 opacity-0 transition-opacity delay-150 duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+              <div className="relative h-[536px] w-[668px] shrink-0 overflow-hidden opacity-0 transition-opacity delay-150 duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
                 {item.slug === "case-01" ? (
                   <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
                 ) : (
+                  // Реальный ассет в родном разрешении Figma (2700-4100px по
+                  // длинной стороне), обрезка тем же окном, что и в макете —
+                  // не отдельный низкоразрешённый screenshot 668×536.
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.cover} alt="" width={668} height={536} className="h-[536px] w-[668px] object-cover" />
+                  <img
+                    src={item.cover}
+                    alt=""
+                    className="absolute max-w-none"
+                    style={{ left: item.coverOffset.left, top: item.coverOffset.top, width: item.coverSize.width, height: item.coverSize.height }}
+                  />
                 )}
               </div>
             </div>

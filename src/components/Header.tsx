@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 // Header — 1:1 из Figma по контенту/шрифтам (node 2259:58486), раскладка
 // флюидная (flex на всю ширину страницы), шрифт зафиксирован 14px (не
@@ -97,9 +98,9 @@ export default function Header() {
       style={{ transform: hidden ? "translateY(-100%)" : "translateY(0)" }}
     >
       <div className="flex h-full items-center justify-between px-[3.056%]">
-        <a href="#top" className="block h-[18.162px] w-[140px] shrink-0">
+        <Link href="/" className="block h-[18.162px] w-[140px] shrink-0">
           <Image src="/brand/wordmark.svg" alt="Вова Сюзёв" width={140} height={18.162} priority />
-        </a>
+        </Link>
 
         <nav className="flex items-center gap-[16px]">
           {NAV_ITEMS.map((item) => (

@@ -3,12 +3,24 @@
 // (свёрнутый вид — номер+название) и «Кейсы_состояние 3» (по наведению —
 // + описание + обложка). Описание здесь — короткая версия для тизера,
 // отличается от текста «О проекте» на самой странице кейса (так и в Figma).
+//
+// cover — реальный ассет из Figma в его РОДНОМ разрешении (2700–4100px по
+// длинной стороне — фактические загруженные фото/рендеры, не screenshot
+// канвы), coverOffset/coverSize — те же координаты обрезки/масштаба,
+// что и в самом макете (обложка 668×536 — просто окно поверх картинки
+// большего размера, ровно как в Figma). Раньше здесь стоял отдельный
+// screenshot самого 668×536-контейнера — на вид тот же кадр, но
+// зафиксированный в 1x (без запаса плотности пикселей, отсюда мыльность
+// на любом Retina-экране). Теперь картинка — тот же файл, что и на
+// странице самого кейса, просто использован ещё раз с другим окном.
 export type CaseItem = {
   slug: string;
   index: string;
   title: string;
   description: string;
   cover: string;
+  coverOffset: { left: number; top: number };
+  coverSize: { width: number; height: number };
 };
 
 export const CASES: CaseItem[] = [
@@ -19,6 +31,8 @@ export const CASES: CaseItem[] = [
     description:
       "Аудит библиотеки из 226 иконок и выстраивание процесса, который позволил масштабировать систему без потери консистентности.",
     cover: "/cases/case-01/cover.png",
+    coverOffset: { left: -84, top: 0 },
+    coverSize: { width: 962, height: 536 },
   },
   {
     slug: "case-02",
@@ -26,7 +40,9 @@ export const CASES: CaseItem[] = [
     title: "ИКОНКИ YANDEX CLOUD",
     description:
       "В начале 2026 года Yandex Cloud обновлял визуальный язык продукта. За три недели нашей команде предстояло разработать 34 иконки в двух размерах, параллельно с формированием нового стиля.",
-    cover: "/cases-teaser/case-02.png",
+    cover: "/cases-teaser/case-02-macbook.png",
+    coverOffset: { left: -113, top: -29 },
+    coverSize: { width: 893, height: 595 },
   },
   {
     slug: "case-03",
@@ -34,7 +50,9 @@ export const CASES: CaseItem[] = [
     title: "3D-иллюстраций для финтех-продукта",
     description:
       "Для Stablegate разработана 3D-система key visuals, наглядно объясняющая функции и преимущества финтех-продукта. Проект охватывает создание визуальных метафор, дизайн-системы и финальных иллюстраций для сайта, презентаций, email и социальных сетей.",
-    cover: "/cases-teaser/case-03.png",
+    cover: "/cases-teaser/case-03-behance.png",
+    coverOffset: { left: -215, top: -87 },
+    coverSize: { width: 938, height: 624 },
   },
   {
     slug: "case-04",
@@ -42,7 +60,9 @@ export const CASES: CaseItem[] = [
     title: "KEY VISUALS ДЛЯ OUTDOOR-КАМПАНИИ",
     description:
       "Для Stablegate разработана outdoor-концепция и серия key visuals, превращающая сложный crypto-продукт в понятные сценарии реальных покупок. Проект включал арт-дирекшн, генерацию изображений, типографику и адаптацию под разные форматы.",
-    cover: "/cases-teaser/case-04.png",
+    cover: "/cases-teaser/case-04-billboard.png",
+    coverOffset: { left: -682, top: -100 },
+    coverSize: { width: 1469, height: 677 },
   },
   {
     slug: "case-05",
@@ -50,6 +70,8 @@ export const CASES: CaseItem[] = [
     title: "Карты для пэтролхэдов",
     description:
       "Для коллаборации Авто.ру и Т-Банка создана серия лимитированных карт с культовыми автомобилями. Четыре иллюстратора переосмыслили легендарные модели в собственных визуальных стилях.",
-    cover: "/cases-teaser/case-05.png",
+    cover: "/cases-teaser/case-05-cards.png",
+    coverOffset: { left: -545, top: -6 },
+    coverSize: { width: 1289, height: 547 },
   },
 ];
