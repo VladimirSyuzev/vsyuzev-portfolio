@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="28.6325" height="28.6325" viewBox="0 0 28.6325 28.6325" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="TMP" clip-path="url(#clip0_0_143)">
+<g id="Mesh">
+<path id="Vector" d="M28.6317 -0.000649272L-0.000820879 28.6318" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_2" d="M-0.000820879 -0.000649273L28.6317 28.6318" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_3" d="M14.315 -0.000649273V28.632" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_4" d="M28.6317 14.3161H-0.000820879" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_5" d="M26.7973 1.83268V26.7966H1.83346V1.83268H26.7973Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_6" d="M25.0072 28.5872H3.62243V0.0442726L25.0072 0.0442726V28.5872Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_7" d="M28.5871 3.62489V25.0097H0.044101V3.62489H28.5871Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_8" d="M14.3155 2.72973C20.7149 2.72973 25.9024 7.91726 25.9024 14.3166C25.9024 20.7161 20.715 25.9036 14.3155 25.9036C7.91614 25.9035 2.72861 20.716 2.72861 14.3166C2.72867 7.9173 7.91618 2.72979 14.3155 2.72973Z" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_9" d="M14.3159 0.49185C21.9506 0.492003 28.1401 6.68131 28.1401 14.3161C28.14 21.9507 21.9505 28.1401 14.3159 28.1403C6.68114 28.1403 0.491831 21.9508 0.491678 14.3161C0.491678 6.68122 6.68105 0.49185 14.3159 0.49185Z" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+</g>
+<circle id="Ellipse 5377" opacity="0.3" cx="14.316" cy="14.3161" r="12.7057" stroke="#F8604A" stroke-width="2.32639"/>
+</g>
+<defs>
+<clipPath id="clip0_0_143">
+<rect width="28.6325" height="28.6325" fill="white"/>
+</clipPath>
+</defs>
+</svg>

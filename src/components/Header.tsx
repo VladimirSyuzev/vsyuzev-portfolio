@@ -16,9 +16,15 @@ import Link from "next/link";
 // border-color меняет непрозрачность (0 → 0.8) при наведении курсора ИЛИ
 // когда скролл находится в соответствующей секции; сам текст пункта
 // всегда opacity 100% — непрозрачность текста не зависит от рамки.
+//
+// Ссылки — по просьбе, поведение разное для «Кейсы»/«О себе» и «Контакты»:
+// «Кейсы»/«О себе» ведут на секцию ГЛАВНОЙ страницы (её нет на страницах
+// кейсов) — с самой главной это просто скролл, с любой другой страницы —
+// переход на главную с этим якорем. «Контакты» — футер есть на КАЖДОЙ
+// странице, поэтому это всегда скролл по текущей странице, без перехода.
 const NAV_ITEMS = [
-  { hash: "#cases", id: "cases", label: "КЕЙСЫ" },
-  { hash: "#about", id: "about", label: "О СЕБЕ" },
+  { hash: "/#cases", id: "cases", label: "КЕЙСЫ" },
+  { hash: "/#about", id: "about", label: "О СЕБЕ" },
   { hash: "#contacts", id: "contacts", label: "КОНТАКТЫ" },
 ];
 
@@ -104,14 +110,28 @@ export default function Header() {
 
         <nav className="flex items-center gap-[16px]">
           {NAV_ITEMS.map((item) => (
-            <a
+            <Link
               key={item.id}
               href={item.hash}
+              onClick={(e) => {
+                // Если секция есть НА ЭТОЙ странице (например «контакты» —
+                // футер, есть везде; «кейсы»/«о себе» — только на главной,
+                // когда мы уже на ней) — просто плавно скроллим к ней,
+                // вместо перехода/перезагрузки.
+                const el = document.getElementById(item.id);
+                if (el) {
+                  e.preventDefault();
+                  el.scrollIntoView({ behavior: "smooth" });
+                }
+                // иначе (клик по «кейсы»/«о себе» со страницы кейса) — Link
+                // сам уводит на "/#..." на главную, где браузер докрутит
+                // до якоря при загрузке.
+              }}
               className="rounded-[10px] border px-[12px] py-[10px] text-[14px] leading-[1.2] tracking-[0.28px] whitespace-nowrap text-[#121212] opacity-100 transition-[border-color] duration-300 hover:!border-[rgba(50,50,60,0.8)]"
               style={{ borderColor: activeId === item.id ? BORDER_ON : BORDER_OFF }}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

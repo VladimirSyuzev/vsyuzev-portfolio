@@ -1,0 +1,23 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="57.265" height="57.265" viewBox="0 0 57.265 57.265" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="TMP" clip-path="url(#clip0_0_70)">
+<g id="Mesh">
+<path id="Vector" d="M53.6416 12.5691V44.6911H3.62398V12.5691H53.6416Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_2" d="M12.5717 3.62166H44.6938V53.6392H12.5717L12.5717 3.62166Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_3" d="M50.063 10.7807V46.4818H7.20365V10.7807H50.063Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_4" d="M46.4835 50.0594H10.7823V7.20004L46.4835 7.20004V50.0594Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_5" d="M28.6329 -0.00231934V57.2627" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_6" d="M57.2653 28.6293H0.000339674" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_7" d="M57.2653 -0.00231934L0.000339674 57.2626" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_8" d="M0.000339674 -0.00231934L57.2653 57.2626" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_9" d="M48.2733 8.99035V48.2706H8.99301V8.99035H48.2733Z" stroke="#49AEFF" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_10" d="M28.6327 8.99035C39.4795 8.99035 48.2731 17.7832 48.2733 28.63C48.2733 39.4769 39.4796 48.2706 28.6327 48.2706C17.7859 48.2705 8.99301 39.4768 8.99301 28.63C8.99315 17.7833 17.7859 8.99049 28.6327 8.99035Z" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+<path id="Vector_11" d="M28.6333 7.20004C40.4685 7.20018 50.063 16.7946 50.063 28.6297C50.0629 40.4648 40.4684 50.0593 28.6333 50.0594C16.7982 50.0594 7.20378 40.4649 7.20365 28.6297C7.20365 16.7945 16.7981 7.20004 28.6333 7.20004Z" stroke="#F8604A" stroke-width="0.0894765" stroke-miterlimit="10"/>
+</g>
+<circle id="Ellipse 5377" opacity="0.3" cx="28.6329" cy="28.6316" r="20.1322" stroke="#F8604A" stroke-width="2.68429"/>
+</g>
+<defs>
+<clipPath id="clip0_0_70">
+<rect width="57.265" height="57.265" fill="white"/>
+</clipPath>
+</defs>
+</svg>

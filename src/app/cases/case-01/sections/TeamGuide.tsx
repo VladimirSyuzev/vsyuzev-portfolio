@@ -1,5 +1,8 @@
+import GuideScale from "./GuideScale";
+
 // 05 Руководство для команды — 1:1 из Figma (node 1961:32233). Диаграмма
-// размер/толщина/скругления справа — один screenshot-ассет (guide-scale.png).
+// размер/толщина/скругления справа теперь настоящий SVG (GuideScale.tsx),
+// не screenshot.
 const BULLETS_LEFT = [
   "рабочие сетки (32 / 24 / 20 / 16 / 12 px)",
   "толщина линий",
@@ -53,14 +56,7 @@ export default function TeamGuide() {
         </div>
       </div>
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/cases/case-01/sections/guide-scale.png"
-        alt="Диаграмма: размер, толщина линий и радиусы скруглений иконок по шкале"
-        width={618}
-        height={336}
-        className="absolute left-[726px] top-[457px] w-[618.462px]"
-      />
+      <GuideScale />
 
       <div className="absolute left-[851.27px] top-[188px] h-[213.601px] w-[269.992px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/guide-crown-doodle.svg" />

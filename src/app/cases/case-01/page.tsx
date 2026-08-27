@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import HorizontalScale from "@/components/HorizontalScale";
 import Stats from "./sections/Stats";
 import Problem from "./sections/Problem";
 import Screen from "./sections/Screen";
@@ -34,51 +35,60 @@ const ICONS = [
 
 // Кейс 001 — 1:1 из Figma. Обложка/«О проекте»/все разделы 01–08 собраны
 // кодом с реальным текстом; несколько плотных декоративных композиций
-// (таблица аудита, стена иконок-примеров, коллаж гайда, Balance Board,
-// финальная сетка-корона) встроены как screenshot-ассеты — см.
-// FIGMA-BRIEF.md, раздел про соотношение кода/картинок.
+// (стена иконок-примеров, коллаж гайда, Balance Board, финальная сетка-
+// корона, экран-мокап, витрина «Задачи») — screenshot-ассеты; таблица
+// аудита, «Примитивы» и диаграмма «Руководства» — уже настоящий SVG.
+// См. FIGMA-BRIEF.md.
 export default function Case01Page() {
   return (
-    <div className="mx-auto flex w-[1440px] flex-col items-start">
+    <div className="flex w-full flex-col items-center">
       <Header />
       <div className="h-[62px] w-full shrink-0" />
 
-      <div className="relative h-[898px] w-[1440px] overflow-clip bg-[#fafafa]">
-        <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
-          <div className="absolute left-[571px] top-0 h-[580px] w-[1040px]">
-            <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/cover-page.png" />
-          </div>
-          <div
-            className="absolute left-[492px] top-[-14px] h-[607px] w-[97px] blur-[2px]"
-            style={{ background: "linear-gradient(to bottom, #111, #141414 50%, #3e3e3e)" }}
-          />
-          <div className="absolute left-0 top-[-19.52px] h-[612.525px] w-[1440px] overflow-clip bg-black">
-            <div className="absolute left-[-637.85px] top-[-741.53px] size-[1370.111px]">
-              <div className="absolute inset-[-27.93%]">
-                <img alt="" className="block size-full max-w-none" src="/cases/case-01/ellipse-page.svg" />
+      {/* Обложка — по просьбе адаптивная: фон/фото/иконки-сетка растягиваются
+          по ширине страницы (HorizontalScale, scaleX от 1440), текст —
+          отдельный непомасштабированный слой поверх, на тех же фикс-px
+          позициях, что и в макете (не двигается и не меняет размер). */}
+      <div className="relative h-[898px] w-full overflow-clip bg-[#fafafa]">
+        <HorizontalScale width={1440} className="absolute left-0 top-0 h-[580px]">
+          <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
+            <div className="absolute left-[571px] top-0 h-[580px] w-[1040px]">
+              <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/cover-page.png" />
+            </div>
+            <div
+              className="absolute left-[492px] top-[-14px] h-[607px] w-[97px] blur-[2px]"
+              style={{ background: "linear-gradient(to bottom, #111, #141414 50%, #3e3e3e)" }}
+            />
+            <div className="absolute left-0 top-[-19.52px] h-[612.525px] w-[1440px] overflow-clip bg-black">
+              <div className="absolute left-[-637.85px] top-[-741.53px] size-[1370.111px]">
+                <div className="absolute inset-[-27.93%]">
+                  <img alt="" className="block size-full max-w-none" src="/cases/case-01/ellipse-page.svg" />
+                </div>
+              </div>
+              <div className="absolute left-[866px] top-[36.62px] size-[539.287px]">
+                <div className="absolute left-[144.57px] top-[288.87px] size-[106.283px] rounded-[14.293px] bg-[#fc3f1d]" />
+                <div
+                  className="absolute left-[8.27px] top-[8.27px] grid grid-cols-4 grid-rows-4"
+                  style={{ gap: "54.24589157104492px" }}
+                >
+                  {ICONS.map((icon) => (
+                    <div key={icon} className="relative size-[90.126px] shrink-0">
+                      <img alt="" className="absolute inset-0 block size-full max-w-none" src={`/cases/case-01/${icon}`} />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-            <div className="absolute left-[866px] top-[36.62px] size-[539.287px]">
-              <div className="absolute left-[144.57px] top-[288.87px] size-[106.283px] rounded-[14.293px] bg-[#fc3f1d]" />
-              <div
-                className="absolute left-[8.27px] top-[8.27px] grid grid-cols-4 grid-rows-4"
-                style={{ gap: "54.24589157104492px" }}
-              >
-                {ICONS.map((icon) => (
-                  <div key={icon} className="relative size-[90.126px] shrink-0">
-                    <img alt="" className="absolute inset-0 block size-full max-w-none" src={`/cases/case-01/${icon}`} />
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
-          <p className="absolute left-[46px] top-[318px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-            От аудита <br />к единому стилю
-          </p>
-          <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
-            001
-          </p>
-        </div>
+        </HorizontalScale>
+
+        {/* Текст обложки — фиксированный размер и позиция (не в HorizontalScale) */}
+        <p className="absolute left-[46px] top-[318px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
+          От аудита <br />к единому стилю
+        </p>
+        <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
+          001
+        </p>
 
         <p className="absolute left-[46px] top-[682px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
           О ПРОЕКТЕ
@@ -106,20 +116,22 @@ export default function Case01Page() {
         </div>
       </div>
 
-      <Stats />
-      <Problem />
-      <Screen />
-      <Task />
-      <AuditLibrary />
-      <Primitives />
-      <Pipeline />
-      <TeamGuide />
-      <Guide />
-      <Consistency />
-      <Role />
-      <Summary />
+      <div className="mx-auto flex w-[1440px] flex-col items-start">
+        <Stats />
+        <Problem />
+        <Screen />
+        <Task />
+        <AuditLibrary />
+        <Primitives />
+        <Pipeline />
+        <TeamGuide />
+        <Guide />
+        <Consistency />
+        <Role />
+        <Summary />
 
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 }
