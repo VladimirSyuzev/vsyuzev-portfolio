@@ -14,7 +14,7 @@ const FOUND_RIGHT = [
 
 export default function AuditLibrary() {
   return (
-    <div className="relative h-[898px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <div className="snap-start relative h-[898px] w-[1440px] overflow-clip bg-[#fafafa]">
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">03</p>
         <p className="text-[#121212]">АУДИТ БИБЛИОТЕКИ</p>
