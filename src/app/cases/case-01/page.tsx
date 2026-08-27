@@ -88,11 +88,15 @@ export default function Case01Page() {
             </div>
           </FullBleedScale>
 
-          {/* Заголовок обложки — центрированная 1440-сетка поверх hero,
-              позиция/размер как в Figma (top отсчитывается от верха hero,
-              не зависит от его выросшей высоты). */}
+          {/* Заголовок обложки — центрированная 1440-сетка поверх hero.
+              Основной заголовок закреплён от НИЗА hero (bottom-[137px]),
+              а не от верха: в Figma при родной высоте 580px это то же самое
+              (580-124.78-137≈318px сверху), но при выросшем (mode="grow")
+              hero на широких экранах top-привязка держала бы текст у самого
+              верха с растущим пустым полем снизу — bottom держит его ровно
+              в 137px от низа hero независимо от ширины/высоты экрана. */}
           <div className="pointer-events-none absolute inset-0 mx-auto w-[1440px]">
-            <p className="absolute left-[46px] top-[318px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
+            <p className="absolute bottom-[137px] left-[46px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
               От аудита <br />к единому стилю
             </p>
             <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
@@ -115,20 +119,20 @@ export default function Case01Page() {
             позволил масштабировать систему без потери консистентности.
           </p>
 
-          <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
+          <div className="absolute left-[896px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
             <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Арт-директор</p>
           </div>
-          <div className="absolute left-[1181px] top-[149px] flex w-[98px] flex-col items-start gap-[4px]">
+          <div className="absolute left-[1066px] top-[149px] flex w-[98px] flex-col items-start gap-[4px]">
             <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Команда</p>
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">2 дизайнера</p>
           </div>
-          <div className="absolute left-[1294px] top-[149px] flex w-[98px] flex-col items-start gap-[4px]">
+          <div className="absolute left-[1238.23px] top-[149px] flex w-[98px] flex-col items-start gap-[4px]">
             <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
           </div>
 
-          <div className="absolute left-[1063.96px] top-[205.62px] h-[13.646px] w-[332.08px]">
+          <div className="absolute left-[930.5px] top-[204.84px] h-[13.646px] w-[426.348px]">
             <img alt="" className="block size-full max-w-none" src="/cases/case-01/underline.svg" />
           </div>
         </div>

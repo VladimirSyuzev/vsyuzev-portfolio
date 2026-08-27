@@ -1,9 +1,10 @@
-import StatsRows from "./StatsRows";
+import StatsIcons from "./StatsIcons";
 
 // С1-02 Stats — занимает весь экран (min-h-screen), цифры статистики по
-// центру блока по вертикали и горизонтали. Фон — 6 рядов иконок из
-// stats-bg.svg (три сверху / три снизу от текста), каждый ряд плавно и
-// независимо покачивается влево-вправо (StatsRows).
+// центру блока по вертикали и горизонтали. Фон — stats-icons.svg (8 рядов
+// иконок), пропорционально увеличенный до высоты блока целиком (StatsIcons):
+// каждый ряд едет от края до края контейнера и обратно, без повтора/тайлинга
+// картинки, со своей случайной скоростью/фазой — ряды не синхронизированы.
 const STATS = [
   { value: "1.5", label: "недели на аудит\nбиблиотеки" },
   { value: "226", label: "иконок\nпроверено" },
@@ -13,13 +14,10 @@ const STATS = [
   { value: "150+", label: "иконок\nсоздано и обновлено" },
 ];
 
-const TOP_ROWS_Y = [15, 160, 305];
-const BOTTOM_ROWS_Y = [600, 745, 890];
-
 export default function Stats() {
   return (
-    <div className="relative flex min-h-screen w-full flex-col items-center justify-center gap-[36px] overflow-hidden bg-[#fc3f1d] py-[36px]">
-      <StatsRows nativeYs={TOP_ROWS_Y} />
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#fc3f1d]">
+      <StatsIcons />
 
       <div className="relative z-10 mx-auto w-[1440px] shrink-0 pl-[216px]">
         <div className="flex w-[1008px] text-white">
@@ -31,8 +29,6 @@ export default function Stats() {
           ))}
         </div>
       </div>
-
-      <StatsRows nativeYs={BOTTOM_ROWS_Y} />
     </div>
   );
 }
