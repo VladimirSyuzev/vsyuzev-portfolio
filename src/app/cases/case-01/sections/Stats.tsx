@@ -1,10 +1,9 @@
-import FullBleedScale from "@/components/FullBleedScale";
-import StatsBg from "./StatsBg";
+import StatsRows from "./StatsRows";
 
-// С1-02 Stats — 1:1 из Figma (get_design_context, node 1961:28637). Фон —
-// настоящий SVG (StatsBg, растянутый на всю ширину страницы FullBleedScale,
-// без искажений, с волной-reveal); цифры статистики — настоящий текст,
-// в центрированной 1440-сетке поверх, как и на остальной странице.
+// С1-02 Stats — занимает весь экран (min-h-screen), цифры статистики по
+// центру блока по вертикали и горизонтали. Фон — 6 рядов иконок из
+// stats-bg.svg (три сверху / три снизу от текста), каждый ряд плавно и
+// независимо покачивается влево-вправо (StatsRows).
 const STATS = [
   { value: "1.5", label: "недели на аудит\nбиблиотеки" },
   { value: "226", label: "иконок\nпроверено" },
@@ -14,15 +13,16 @@ const STATS = [
   { value: "150+", label: "иконок\nсоздано и обновлено" },
 ];
 
+const TOP_ROWS_Y = [15, 160, 305];
+const BOTTOM_ROWS_Y = [600, 745, 890];
+
 export default function Stats() {
   return (
-    <div className="relative h-[900px] w-full overflow-clip bg-[#fc3f1d]">
-      <FullBleedScale width={1440} height={900} className="absolute left-0 top-0">
-        <StatsBg />
-      </FullBleedScale>
+    <div className="relative flex min-h-screen w-full flex-col items-center justify-center gap-[36px] overflow-hidden bg-[#fc3f1d] py-[36px]">
+      <StatsRows nativeYs={TOP_ROWS_Y} />
 
-      <div className="relative mx-auto h-full w-[1440px]">
-        <div className="absolute left-[216px] top-1/2 flex w-[1008px] -translate-y-1/2 text-white">
+      <div className="relative z-10 mx-auto w-[1440px] shrink-0 pl-[216px]">
+        <div className="flex w-[1008px] text-white">
           {STATS.map((stat) => (
             <div key={stat.value} className="flex w-[170px] flex-col items-start gap-[8px]">
               <p className="whitespace-nowrap font-heading text-[52px] font-bold">{stat.value}</p>
@@ -31,6 +31,8 @@ export default function Stats() {
           ))}
         </div>
       </div>
+
+      <StatsRows nativeYs={BOTTOM_ROWS_Y} />
     </div>
   );
 }
