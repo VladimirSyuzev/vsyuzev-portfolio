@@ -16,7 +16,7 @@ const STATS = [
 
 export default function Stats() {
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#fc3f1d]">
+    <div className="snap-start relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#fc3f1d]">
       <StatsIcons />
 
       <div className="relative z-10 mx-auto w-[1440px] shrink-0 pl-[216px]">

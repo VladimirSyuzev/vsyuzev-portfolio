@@ -44,7 +44,7 @@ function StatsRow({
     () => {
       if (prefersReducedMotion() || !ref.current || containerWidth <= 0 || stripW <= 0) return;
       const travel = containerWidth - stripW; // ширина полосы часто больше контейнера — travel может быть отрицательным, тогда это панорама, а не отступы по бокам
-      const duration = 14 + Math.random() * 10; // 14–24s на проход из края в край
+      const duration = 34 + Math.random() * 22; // 34–56s на проход из края в край (медленнее по просьбе)
       const startAtZero = Math.random() < 0.5;
       const tween = gsap.fromTo(
         ref.current,

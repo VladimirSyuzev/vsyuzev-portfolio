@@ -139,10 +139,10 @@ export default function Case01Page() {
       </div>
 
       <Stats />
+      <Problem />
+      <Screen />
 
       <div className="mx-auto flex w-[1440px] flex-col items-start">
-        <Problem />
-        <Screen />
         <Task />
         <AuditLibrary />
         <Primitives />
