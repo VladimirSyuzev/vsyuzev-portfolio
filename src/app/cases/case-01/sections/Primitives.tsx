@@ -29,7 +29,7 @@ const ICONS = [
 
 export default function Primitives() {
   return (
-    <div className="relative h-[900px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <div className="relative h-[987px] w-[1440px] overflow-clip bg-[#fafafa]">
       <div className="absolute left-[216px] top-[94.02px] h-[712.421px] w-[1008px]">
         <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${A}/grid-bg.svg`} />
 

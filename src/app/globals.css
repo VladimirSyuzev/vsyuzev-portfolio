@@ -30,3 +30,14 @@ body {
   color: var(--dark);
   font-family: var(--font-body);
 }
+
+/* Скрывает нативный скроллбар у горизонтально прокручиваемого трека
+   (Pipeline.tsx — блок "Построение процесса"), сам скролл остаётся
+   рабочим (колесом/тачпадом/драгом) — просто без видимой полосы. */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

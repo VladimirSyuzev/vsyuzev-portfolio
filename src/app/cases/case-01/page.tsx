@@ -146,7 +146,11 @@ export default function Case01Page() {
         <Task />
         <AuditLibrary />
         <Primitives />
-        <Pipeline />
+      </div>
+
+      <Pipeline />
+
+      <div className="mx-auto flex w-[1440px] flex-col items-start">
         <TeamGuide />
         <Guide />
         <Consistency />
