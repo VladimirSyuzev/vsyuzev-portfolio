@@ -1,6 +1,6 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import HorizontalScale from "@/components/HorizontalScale";
+import FullBleedScale from "@/components/FullBleedScale";
 import Stats from "./sections/Stats";
 import Problem from "./sections/Problem";
 import Screen from "./sections/Screen";
@@ -45,12 +45,14 @@ export default function Case01Page() {
       <Header />
       <div className="h-[62px] w-full shrink-0" />
 
-      {/* Обложка — по просьбе адаптивная: фон/фото/иконки-сетка растягиваются
-          по ширине страницы (HorizontalScale, scaleX от 1440), текст —
-          отдельный непомасштабированный слой поверх, на тех же фикс-px
-          позициях, что и в макете (не двигается и не меняет размер). */}
+      {/* Обложка — адаптивная: фон/фото/иконки-сетка растягиваются на всю
+          ширину страницы РАВНОМЕРНО (FullBleedScale, без искажения формы,
+          излишек высоты при масштабе >1 обрезается снизу). Текст — отдельный
+          непомасштабированный слой в центрированной 1440-сетке (как и
+          остальная страница), а не прижат к краю окна — иначе при ширине
+          экрана > 1440 он "уползает" левее сетки остального контента. */}
       <div className="relative h-[898px] w-full overflow-clip bg-[#fafafa]">
-        <HorizontalScale width={1440} className="absolute left-0 top-0 h-[580px]">
+        <FullBleedScale width={1440} height={580} className="absolute left-0 top-0">
           <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
             <div className="absolute left-[571px] top-0 h-[580px] w-[1040px]">
               <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/cover-page.png" />
@@ -80,44 +82,48 @@ export default function Case01Page() {
               </div>
             </div>
           </div>
-        </HorizontalScale>
+        </FullBleedScale>
 
-        {/* Текст обложки — фиксированный размер и позиция (не в HorizontalScale) */}
-        <p className="absolute left-[46px] top-[318px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-          От аудита <br />к единому стилю
-        </p>
-        <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
-          001
-        </p>
+        {/* Текст обложки — центрированная 1440-сетка, фиксированный размер/
+            позиция внутри неё (не в FullBleedScale, не растягивается). */}
+        <div className="relative mx-auto h-full w-[1440px]">
+          <p className="absolute left-[46px] top-[318px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
+            От аудита <br />к единому стилю
+          </p>
+          <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
+            001
+          </p>
 
-        <p className="absolute left-[46px] top-[682px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-          О ПРОЕКТЕ
-        </p>
-        <p className="absolute left-[46px] top-[729px] w-[498px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          Аудит библиотеки из 226 иконок и выстраивание процесса, который <br />
-          позволил масштабировать систему без потери консистентности.
-        </p>
+          <p className="absolute left-[46px] top-[682px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
+            О ПРОЕКТЕ
+          </p>
+          <p className="absolute left-[46px] top-[729px] w-[498px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+            Аудит библиотеки из 226 иконок и выстраивание процесса, который <br />
+            позволил масштабировать систему без потери консистентности.
+          </p>
 
-        <div className="absolute left-[1066px] top-[729px] flex w-[102px] flex-col items-start gap-[4px]">
-          <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-          <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Арт-директор</p>
-        </div>
-        <div className="absolute left-[1181px] top-[729px] flex w-[98px] flex-col items-start gap-[4px]">
-          <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Команда</p>
-          <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">2 дизайнера</p>
-        </div>
-        <div className="absolute left-[1294px] top-[729px] flex w-[98px] flex-col items-start gap-[4px]">
-          <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-          <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
-        </div>
+          <div className="absolute left-[1066px] top-[729px] flex w-[102px] flex-col items-start gap-[4px]">
+            <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Арт-директор</p>
+          </div>
+          <div className="absolute left-[1181px] top-[729px] flex w-[98px] flex-col items-start gap-[4px]">
+            <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Команда</p>
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">2 дизайнера</p>
+          </div>
+          <div className="absolute left-[1294px] top-[729px] flex w-[98px] flex-col items-start gap-[4px]">
+            <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
+          </div>
 
-        <div className="absolute left-[1063.96px] top-[785.62px] h-[13.646px] w-[332.08px]">
-          <img alt="" className="block size-full max-w-none" src="/cases/case-01/underline.svg" />
+          <div className="absolute left-[1063.96px] top-[785.62px] h-[13.646px] w-[332.08px]">
+            <img alt="" className="block size-full max-w-none" src="/cases/case-01/underline.svg" />
+          </div>
         </div>
       </div>
 
+      <Stats />
+
       <div className="mx-auto flex w-[1440px] flex-col items-start">
-        <Stats />
         <Problem />
         <Screen />
         <Task />
