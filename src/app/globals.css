@@ -6,11 +6,9 @@
   предыдущих проектов. См. FIGMA-BRIEF.md.
 
   Шрифты в макете — Aeonik Pro (текст/лейблы) и Wix Madefor Display Bold
-  (заголовки). Aeonik Pro — платный шрифт (CoType Foundry), недоступен
-  через next/font/google — ЗАМЕНЁН на Manrope (похожая геометричная
-  гротеска, хорошая поддержка кириллицы) до получения реальных файлов
-  шрифта от пользователя. Wix Madefor Display есть в Google Fonts —
-  используется как есть, без замены.
+  (заголовки). Aeonik Pro — платный шрифт (CoType Foundry), файлы получены
+  от пользователя и подключены локально (next/font/local, layout.tsx),
+  содержат кириллицу. Wix Madefor Display есть в Google Fonts.
 */
 :root {
   --bg: #fafafa;
@@ -24,7 +22,7 @@
    (см. old project globals.css, тот же приём для --font-sans/--font-mono). */
 @theme inline {
   --font-heading: var(--font-wix-madefor), "Wix Madefor Display", sans-serif;
-  --font-body: var(--font-aeonik-fallback), "Manrope", sans-serif;
+  --font-body: var(--font-aeonik), "Aeonik Pro", sans-serif;
 }
 
 body {

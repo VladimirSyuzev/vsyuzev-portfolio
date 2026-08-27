@@ -1,5 +1,17 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Stats from "./sections/Stats";
+import Problem from "./sections/Problem";
+import Screen from "./sections/Screen";
+import Task from "./sections/Task";
+import AuditLibrary from "./sections/AuditLibrary";
+import Primitives from "./sections/Primitives";
+import Pipeline from "./sections/Pipeline";
+import TeamGuide from "./sections/TeamGuide";
+import Guide from "./sections/Guide";
+import Consistency from "./sections/Consistency";
+import Role from "./sections/Role";
+import Summary from "./sections/Summary";
 
 const ICONS = [
   "icon-alisa-page.svg",
@@ -20,10 +32,11 @@ const ICONS = [
   "icon-kids-page.svg",
 ];
 
-// Кейс 001 — обложка + «О проекте» собраны кодом 1:1 из Figma
-// (get_design_context, node 1961:28419). Разделы 01/02/03… ниже —
-// временно как единый скриншот тела страницы (body.png) до перевода в
-// код, см. FIGMA-BRIEF.md "Недостающее".
+// Кейс 001 — 1:1 из Figma. Обложка/«О проекте»/все разделы 01–08 собраны
+// кодом с реальным текстом; несколько плотных декоративных композиций
+// (таблица аудита, стена иконок-примеров, коллаж гайда, Balance Board,
+// финальная сетка-корона) встроены как screenshot-ассеты — см.
+// FIGMA-BRIEF.md, раздел про соотношение кода/картинок.
 export default function Case01Page() {
   return (
     <div className="mx-auto flex w-[1440px] flex-col items-start">
@@ -92,14 +105,18 @@ export default function Case01Page() {
         </div>
       </div>
 
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/cases/case-01/body.png"
-        alt="Разделы 01–06 кейса «От аудита к единому стилю»"
-        width={1440}
-        height={11060}
-        className="block w-[1440px]"
-      />
+      <Stats />
+      <Problem />
+      <Screen />
+      <Task />
+      <AuditLibrary />
+      <Primitives />
+      <Pipeline />
+      <TeamGuide />
+      <Guide />
+      <Consistency />
+      <Role />
+      <Summary />
 
       <Footer />
     </div>

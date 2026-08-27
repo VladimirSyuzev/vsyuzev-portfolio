@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Wix_Madefor_Display, Manrope } from "next/font/google";
+import { Wix_Madefor_Display } from "next/font/google";
+import localFont from "next/font/local";
 import ScrollTriggerRefresh from "@/components/ScrollTriggerRefresh";
 import "./globals.css";
 
@@ -11,13 +12,18 @@ const wixMadefor = Wix_Madefor_Display({
   variable: "--font-wix-madefor",
 });
 
-// Aeonik Pro (текст/лейблы в макете) — платный шрифт, файлов нет.
-// Manrope — временная замена до получения реальных файлов Aeonik Pro
-// (см. FIGMA-BRIEF.md, раздел "Недостающее").
-const aeonikFallback = Manrope({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500"],
-  variable: "--font-aeonik-fallback",
+// Aeonik Pro — реальные файлы шрифта от пользователя (платный, CoType
+// Foundry), содержат кириллицу (проверено через fontTools: U+0400–U+04FF
+// присутствуют). Подключён локально через next/font/local — больше не
+// нужен Manrope-заменитель.
+const aeonikPro = localFont({
+  src: [
+    { path: "../fonts/AeonikPro/AeonikPro-Light.otf", weight: "300", style: "normal" },
+    { path: "../fonts/AeonikPro/AeonikPro-Regular.otf", weight: "400", style: "normal" },
+    { path: "../fonts/AeonikPro/AeonikPro-Medium.otf", weight: "500", style: "normal" },
+    { path: "../fonts/AeonikPro/AeonikPro-Bold.otf", weight: "700", style: "normal" },
+  ],
+  variable: "--font-aeonik",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${wixMadefor.variable} ${aeonikFallback.variable}`}>
+    <html lang="ru" className={`${wixMadefor.variable} ${aeonikPro.variable}`}>
       <body>
         {children}
         <ScrollTriggerRefresh />
