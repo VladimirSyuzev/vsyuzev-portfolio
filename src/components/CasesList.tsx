@@ -7,14 +7,18 @@ import { gsap, prefersReducedMotion, waveStagger } from "@/lib/gsap";
 import { CASES } from "@/lib/cases-data";
 import Case01IconGrid from "./Case01IconGrid";
 
-// «кейсы» — 1:1 из Figma (node 2235:94070), фрейм 1440×1351. Reveal —
-// «волна» (waveStagger, src/lib/gsap.ts), перенесённая как анимационная
-// техника из «Новый проект 3.0» (единственное, что оттуда взято — по
-// просьбе пользователя). Номер+заголовок каждой строки уложены в плоский
-// массив cols=2 — антидиагональный wave по 5 строкам × 2 ячейки.
+// «кейсы» — 1:1 из Figma, секция «варианты кейсов» (node 2286:3887):
+// «Кейсы_состояние 1» (свёрнуто — номер+название, 113px) раскрывается по
+// наведению/фокусу в «Кейсы_состояние 3» (537px — + описание + обложка).
+// Раскрывается ТОЛЬКО наведённая строка, остальные остаются свёрнутыми
+// (не аккордеон на весь блок) — реализовано через grid-template-rows
+// 113px→537px на каждой строке независимо; лишнее содержимое обрезается
+// overflow-hidden, пока строка свёрнута.
 //
-// Ссылка каждой строки — /cases/{slug}, привязана ПО СООТВЕТСТВИЮ
-// названию кейса в макете (см. CASES, src/lib/cases-data.ts).
+// Reveal при появлении блока — «волна» (waveStagger), перенесённая как
+// анимационная техника из «Новый проект 3.0» (единственное, что оттуда
+// взято, по явной просьбе пользователя). Номер+заголовок каждой строки —
+// плоский массив cols=2, антидиагональный wave по 5 строкам.
 export default function CasesList() {
   const scope = useRef<HTMLDivElement>(null);
 
@@ -39,7 +43,7 @@ export default function CasesList() {
   );
 
   return (
-    <div id="cases" ref={scope} className="relative h-[1351px] w-[1440px] overflow-clip bg-[#fafafa] scroll-mt-16">
+    <div id="cases" ref={scope} className="relative w-[1440px] bg-[#fafafa] pt-[318px] pb-[468px] scroll-mt-16">
       <p className="absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
         КЕЙСЫ
       </p>
@@ -47,29 +51,34 @@ export default function CasesList() {
         <img alt="" className="block size-full max-w-none" src="/about/doodle-hooks.svg" />
       </div>
 
-      <div className="absolute left-[216px] top-[318px] flex w-[1178px] flex-col items-start">
+      <div className="mx-auto flex w-[1178px] flex-col items-start">
         {CASES.map((item) => (
           <Link
             key={item.slug}
             href={`/cases/${item.slug}`}
-            className="flex w-full items-start justify-between border-b border-[rgba(18,18,18,0.7)]"
+            className="group grid w-full grid-rows-[113px] overflow-hidden border-b border-[rgba(18,18,18,0.7)] transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:grid-rows-[537px] focus-visible:grid-rows-[537px]"
           >
-            <div className="flex w-[510px] shrink-0 flex-col items-start overflow-clip">
-              <div className="flex w-full shrink-0 flex-col items-start justify-center gap-[12px] py-[24px] pl-[12px]">
-                <p className="case-wave-cell shrink-0 whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#008cff]">
+            <div className="flex h-[537px] w-full">
+              <div className="w-[510px] shrink-0 pl-[12px] pt-[24px]">
+                <p className="case-wave-cell font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#008cff]">
                   {item.index}
                 </p>
-                <p className="case-wave-cell w-[321px] shrink-0 text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+                <p className="case-wave-cell mt-[12px] w-[321px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
                   {item.title}
                 </p>
-                {item.description && (
-                  <p className="w-[453.865px] shrink-0 text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                    {item.description}
-                  </p>
+                <p className="mt-[12px] w-[454px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-0 transition-opacity duration-300 group-hover:opacity-70 group-focus-visible:opacity-70">
+                  {item.description}
+                </p>
+              </div>
+              <div className="w-[668px] shrink-0 opacity-0 transition-opacity delay-150 duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                {item.slug === "case-01" ? (
+                  <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={item.cover} alt="" width={668} height={536} className="h-[536px] w-[668px] object-cover" />
                 )}
               </div>
             </div>
-            {item.cover && <Case01IconGrid className="relative h-[536px] w-[668px] shrink-0 overflow-clip bg-[rgba(18,18,18,0.7)]" />}
           </Link>
         ))}
       </div>
