@@ -51,7 +51,11 @@ export default function CasesList() {
         <img alt="" className="block size-full max-w-none" src="/about/doodle-hooks.svg" />
       </div>
 
-      <div className="mx-auto flex w-[1178px] flex-col items-start">
+      {/* left-216, не mx-auto — по Figma список начинается на 216px, а НЕ
+          центрирован в 1440-canvas (216+1178=1394, правое поле 46px, а не
+          симметричные ~131px, которые давал mx-auto — реальный баг, из-за
+          которого блок "плавал" не на своём месте). */}
+      <div className="ml-[216px] flex w-[1178px] flex-col items-start">
         {CASES.map((item) => (
           <Link
             key={item.slug}

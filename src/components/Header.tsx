@@ -3,25 +3,32 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-// Header — 1:1 из Figma по контенту/шрифтам (node 2259:58486), но раскладка
-// сделана флюидной (flex на всю ширину страницы) вместо фикс-1440 canvas —
-// по просьбе пользователя ширина адаптивная, а размер шрифта остаётся
-// ТЕМ ЖЕ, что в макете (14px), не масштабируется вместе с шириной.
+// Header — 1:1 из Figma по контенту/шрифтам (node 2259:58486), раскладка
+// флюидная (flex на всю ширину страницы), шрифт зафиксирован 14px (не
+// масштабируется с шириной).
 //
-// Рамка вокруг каждого пункта нав-меню (Кейсы/О себе/Контакты) — opacity
-// 0 по умолчанию, opacity-80 при наведении курсора ИЛИ когда скролл
-// находится в секции, на которую ссылается пункт (scroll-spy через
-// IntersectionObserver с "линией" на середине экрана — rootMargin
-// -50%/-50%). Между секциями/на Hero — ни один пункт не подсвечен.
+// Auto-hide при скролле — тот же паттерн, что в предыдущих проектах
+// (REVEAL_ZONE/DIRECTION_THRESHOLD, fixed + translateY): скролл вниз
+// прячет header наверх, скролл вверх — возвращает.
+//
+// Рамка вокруг каждого пункта нав-меню (Кейсы/О себе/Контакты) — ТОЛЬКО
+// border-color меняет непрозрачность (0 → 0.8) при наведении курсора ИЛИ
+// когда скролл находится в соответствующей секции; сам текст пункта
+// всегда opacity 100% — непрозрачность текста не зависит от рамки.
 const NAV_ITEMS = [
   { hash: "#cases", id: "cases", label: "КЕЙСЫ" },
   { hash: "#about", id: "about", label: "О СЕБЕ" },
   { hash: "#contacts", id: "contacts", label: "КОНТАКТЫ" },
 ];
 
+const BORDER_ON = "rgba(50,50,60,0.8)";
+const BORDER_OFF = "rgba(50,50,60,0)";
+
 export default function Header() {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [hidden, setHidden] = useState(false);
 
+  // Scroll-spy — какой пункт подсвечен рамкой по положению скролла.
   useEffect(() => {
     const ids = NAV_ITEMS.map((n) => n.id);
     const targets = ids
@@ -32,15 +39,11 @@ export default function Header() {
     const visible = new Set<string>();
     // Футер («контакты») короче экрана и стоит последним — центральная
     // "линия" (rootMargin -50%/-50%) может физически не дойти до его
-    // середины, если весь документ короче удвоенной высоты футера от низа
-    // страницы. Отдельно форсируем контакты активными у самого низа
-    // страницы (в пределах погрешности прокрутки), независимо от observer.
+    // середины. Отдельно форсируем контакты активными у самого низа
+    // страницы, независимо от observer.
     function checkBottom() {
       const atBottom =
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
-      // atBottom побеждает безусловно: у короткого футера в конце длинной
-      // страницы центральная линия физически может так и остаться внутри
-      // предыдущей (высокой) секции даже при полной прокрутке вниз.
       setActiveId(atBottom ? "contacts" : ids.find((id) => id !== "contacts" && visible.has(id)) ?? null);
     }
 
@@ -63,8 +66,36 @@ export default function Header() {
     };
   }, []);
 
+  // Auto-hide по направлению скролла.
+  useEffect(() => {
+    const REVEAL_ZONE = 80; // px от верха — header всегда виден
+    const DIRECTION_THRESHOLD = 8; // px — минимальный сдвиг для смены направления
+    let lastY = window.scrollY;
+    let ticking = false;
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const delta = y - lastY;
+        if (y <= REVEAL_ZONE) setHidden(false);
+        else if (delta > DIRECTION_THRESHOLD) setHidden(true);
+        else if (delta < -DIRECTION_THRESHOLD) setHidden(false);
+        lastY = y;
+        ticking = false;
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 h-[62px] w-full bg-[#fafafa]">
+    <header
+      className="fixed inset-x-0 top-0 z-50 h-[62px] w-full bg-[#fafafa] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      style={{ transform: hidden ? "translateY(-100%)" : "translateY(0)" }}
+    >
       <div className="flex h-full items-center justify-between px-[3.056%]">
         <a href="#top" className="block h-[18.162px] w-[140px] shrink-0">
           <Image src="/brand/wordmark.svg" alt="Вова Сюзёв" width={140} height={18.162} priority />
@@ -75,8 +106,8 @@ export default function Header() {
             <a
               key={item.id}
               href={item.hash}
-              className="rounded-[10px] border border-[rgba(50,50,60,0.8)] px-[12px] py-[10px] text-[14px] leading-[1.2] tracking-[0.28px] whitespace-nowrap text-[#121212] opacity-0 transition-opacity duration-300 hover:opacity-80"
-              style={activeId === item.id ? { opacity: 0.8 } : undefined}
+              className="rounded-[10px] border px-[12px] py-[10px] text-[14px] leading-[1.2] tracking-[0.28px] whitespace-nowrap text-[#121212] opacity-100 transition-[border-color] duration-300 hover:!border-[rgba(50,50,60,0.8)]"
+              style={{ borderColor: activeId === item.id ? BORDER_ON : BORDER_OFF }}
             >
               {item.label}
             </a>

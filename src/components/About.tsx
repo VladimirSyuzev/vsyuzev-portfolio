@@ -39,11 +39,11 @@ export default function About() {
       </p>
 
       <div className="about-reveal absolute left-[884px] top-[345.27px] h-[398.728px] w-[498px] overflow-clip">
-        <img
-          alt="Вова Сюзёв"
-          src="/about/photo.png"
-          className="absolute left-1/2 top-[-25px] h-[536px] w-[734px] -translate-x-1/2 object-cover"
-        />
+        {/* photo.png — уже готовый рендер ровно этого 498×398.7 контейнера
+            (снят через get_screenshot по самому контейнеру, а не исходный
+            неоткадрированный слой) — доп. кроп/трансформация поверх не
+            нужна и до этой правки визуально "переприменяла" кроп повторно. */}
+        <img alt="Вова Сюзёв" src="/about/photo.png" className="size-full object-cover" />
       </div>
 
       <div className="about-reveal absolute left-[562px] top-[701px] h-[125px] w-[158px]">

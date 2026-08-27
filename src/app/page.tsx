@@ -13,6 +13,9 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center" id="top">
       <Header />
+      {/* Header теперь fixed (auto-hide) — не занимает место в потоке,
+          спейсер ниже возвращает те же 62px, что и раньше. */}
+      <div className="h-[62px] w-full shrink-0" />
       <ResponsiveScale width={1440} height={900}>
         <Hero />
       </ResponsiveScale>

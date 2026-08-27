@@ -8,6 +8,7 @@ export default function Case02Page() {
   return (
     <div className="mx-auto flex w-[1440px] flex-col items-start">
       <Header />
+      <div className="h-[62px] w-full shrink-0" />
 
       <div className="relative h-[898px] w-[1440px] overflow-clip bg-[#fafafa]">
         <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
