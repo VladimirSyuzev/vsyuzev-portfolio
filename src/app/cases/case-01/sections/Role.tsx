@@ -1,12 +1,56 @@
 // 07 Роль — 1:1 из Figma (node 1961:32604). Диаграмма шага 004 (корона в
-// конструкторской сетке) — один screenshot-ассет; шаги 001-003 и подписи
-// — настоящий текст с маленькими иконками (+/-).
+// конструкторской сетке) теперь настоящий SVG (снят через get_design_context
+// узла 2009:11438), раньше была одним screenshot-ассетом. Шаги 001-003 и
+// подписи — настоящий текст с маленькими иконками (+/-).
+const RA = "/cases/case-01/sections/role-assets";
+
 const STEPS = [
   { icon: "role-plus.svg", number: "001", text: "Выбрали образ,\nизменяем его в сетке" },
   { icon: "role-plus.svg", number: "002", text: "Выбираем контур\nиз сетки для формата иконки" },
   { icon: "role-plus.svg", number: "003", text: "Помещаем в него образ, пока\nчто он не попадает в визуальный вес сетки" },
   { icon: "role-minus.svg", number: "004", text: "Размещаем объект в контуре,\nс компенсационными вылетами", image: true },
 ];
+
+function CrownGridDiagram() {
+  return (
+    <div className="relative size-[328px] bg-white">
+      <div className="absolute inset-[16.67%_8.33%]">
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vector-outline.svg`} />
+      </div>
+      <div className="absolute left-[27.33px] top-[54.67px] h-[102.5px] w-[136.667px]">
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-780.svg`} />
+      </div>
+      <div className="absolute left-[164px] top-[54.67px] flex h-[102.5px] w-[136.667px] items-center justify-center">
+        <div className="-scale-y-100 rotate-180">
+          <div className="relative h-[102.5px] w-[136.667px]">
+            <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-781.svg`} />
+          </div>
+        </div>
+      </div>
+      <div className="absolute left-[27.33px] top-[170.84px] h-[102.5px] w-[34.167px]">
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-782.svg`} />
+      </div>
+      <div className="absolute left-[259.67px] top-[164px] flex h-[102.5px] w-[34.167px] items-center justify-center">
+        <div className="-scale-y-100 rotate-180">
+          <div className="relative h-[102.5px] w-[34.167px]">
+            <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-783.svg`} />
+          </div>
+        </div>
+      </div>
+      <div className="absolute left-0 top-0 size-[328px]">
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/grid.svg`} />
+      </div>
+      <div className="absolute inset-[10.42%_4.17%_16.26%_4.17%]">
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vector-outline2.svg`} />
+      </div>
+      <div className="absolute left-[21.37px] top-[44.31px] h-[102.612px] w-[284.208px] mix-blend-screen">
+        <div className="absolute inset-[-13.32%_-4.81%]">
+          <img alt="" className="block size-full max-w-none" src={`${RA}/crown-blend.svg`} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Role() {
   return (
@@ -27,16 +71,7 @@ export default function Role() {
       <div className="absolute bottom-[146px] left-[46px] flex items-end justify-center gap-[12px]">
         {STEPS.map((step) => (
           <div key={step.number} className="flex w-[328px] flex-col gap-[24px]">
-            {step.image && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src="/cases/case-01/sections/role-crown-grid.png"
-                alt="Финальное размещение объекта в конструкторской сетке с компенсационными вылетами"
-                width={328}
-                height={328}
-                className="size-[328px] bg-white"
-              />
-            )}
+            {step.image && <CrownGridDiagram />}
             <div className="flex flex-col gap-[12px]">
               <div className="flex items-center gap-[16px]">
                 <img alt="" className="size-[24px]" src={`/cases/case-01/sections/${step.icon}`} />

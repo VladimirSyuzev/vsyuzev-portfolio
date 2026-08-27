@@ -1,0 +1,23 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="328" height="328" viewBox="0 0 328 328" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="grid" clip-path="url(#clip0_0_64)">
+<g id="Mesh">
+<path id="Vector" d="M327.658 68.6751V259.325H0.341797V68.6751H327.658Z" stroke="#49AEFF" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_2" d="M68.6751 0.341827H259.325V327.658H68.6751L68.6751 0.341827Z" stroke="#49AEFF" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_3" d="M300.326 55.0085V272.992H27.6751V55.0085H300.326Z" stroke="#49AEFF" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_4" d="M272.992 300.326H55.0082L55.0082 27.6751L272.992 27.6751V300.326Z" stroke="#49AEFF" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_5" d="M286.658 41.3418V286.658H41.3418V41.3418H286.658Z" stroke="#49AEFF" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_6" d="M164 0V328" stroke="#F8604A" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_7" d="M328 164H0" stroke="#F8604A" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_8" d="M328 0.000208537L0 328" stroke="#49AEFF" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_9" d="M0 0.000208537L328 328" stroke="#49AEFF" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_10" d="M164 27.6751C239.29 27.6753 300.326 88.7102 300.326 164C300.325 239.29 239.29 300.325 164 300.326C88.7102 300.326 27.6753 239.29 27.6751 164C27.6751 88.7101 88.7101 27.6751 164 27.6751Z" stroke="#F8604A" stroke-width="0.683333" stroke-miterlimit="10"/>
+<path id="Vector_11" d="M164 41.3418C231.742 41.3418 286.658 96.2577 286.658 164C286.658 231.742 231.742 286.658 164 286.658C96.2577 286.658 41.3418 231.742 41.3418 164C41.3418 96.2577 96.2577 41.3418 164 41.3418Z" stroke="#F8604A" stroke-width="0.683333" stroke-miterlimit="10"/>
+</g>
+<circle id="Ellipse 5377" opacity="0.3" cx="164" cy="164" r="126.417" stroke="#F8604A" stroke-width="20.5"/>
+</g>
+<defs>
+<clipPath id="clip0_0_64">
+<rect width="328" height="328" fill="white"/>
+</clipPath>
+</defs>
+</svg>
