@@ -3,6 +3,8 @@
 // реальные текст/иконки/чекбоксы, снято через get_design_context узла
 // 1965:42569. Высота секции исправлена с 898 на настоящие 1091px — раньше
 // не хватало места и обрезались стрелка-доодл и финальная строка.
+import Dot from "@/components/Dot";
+
 const A = "/cases/case-01/sections/audit-assets";
 
 const FOUND_LEFT = [
@@ -115,17 +117,17 @@ export default function AuditLibrary() {
       </p>
       <div className="absolute left-[386px] top-[318px] flex w-[838px] gap-[12px]">
         <ul className="flex w-[328px] flex-col gap-[6px]">
-          {FOUND_LEFT.map((item) => (
+          {FOUND_LEFT.map((item, i) => (
             <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              <span className="size-[6px] shrink-0 rounded-full bg-[#008cff]" />
+              <Dot index={i} />
               {item}
             </li>
           ))}
         </ul>
         <ul className="flex w-[442.667px] flex-col gap-[6px]">
-          {FOUND_RIGHT.map((item) => (
+          {FOUND_RIGHT.map((item, i) => (
             <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              <span className="size-[6px] shrink-0 rounded-full bg-[#008cff]" />
+              <Dot index={i} />
               {item}
             </li>
           ))}
@@ -171,10 +173,13 @@ export default function AuditLibrary() {
       </div>
 
       {/* Итоговая строка + обводка-эллипс доодл вокруг неё (эллипс шире и
-          начинается выше текста — не концентричны с текстовым блоком). */}
-      <div className="absolute left-[386px] top-[866px] h-[172px] w-[610px]">
-        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
-        <p className="absolute left-0 top-[40px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          начинается выше текста — не концентричны с текстовым блоком).
+          Координаты обновлены по правкам пользователя в Figma. */}
+      <div className="absolute left-[415.3px] top-[890.63px] h-[220.53px] w-[621.4px]">
+        <div className="absolute inset-[-1.74%_-0.49%]">
+          <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
+        </div>
+        <p className="absolute left-[10.2px] top-[15.37px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
           По итогам анализа был сформирован подробный план работ
         </p>
       </div>

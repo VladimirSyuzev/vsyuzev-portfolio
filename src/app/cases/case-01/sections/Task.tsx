@@ -37,7 +37,7 @@ const SearchMirror24 = (
 
 export default function Task() {
   return (
-    <section data-snap-stop className="relative h-[1196px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <section className="relative h-[1196px] w-[1440px] overflow-clip bg-[#fafafa]">
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">02</p>
         <p className="text-[#121212]">ЗАДАЧА</p>

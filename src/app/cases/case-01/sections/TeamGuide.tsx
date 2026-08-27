@@ -1,4 +1,5 @@
 import GuideScale from "./GuideScale";
+import Dot from "@/components/Dot";
 
 // 05 Руководство для команды — 1:1 из Figma (node 1961:32233). Диаграмма
 // размер/толщина/скругления справа теперь настоящий SVG (GuideScale.tsx),
@@ -38,17 +39,17 @@ export default function TeamGuide() {
         </p>
         <div className="flex flex-col gap-[6px]">
           <ul className="flex flex-col gap-[6px]">
-            {BULLETS_LEFT.map((item) => (
+            {BULLETS_LEFT.map((item, i) => (
               <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                <span className="size-[6px] shrink-0 rounded-full bg-[#008cff]" />
+                <Dot index={i} />
                 {item}
               </li>
             ))}
           </ul>
           <ul className="flex flex-col gap-[6px]">
-            {BULLETS_RIGHT.map((item) => (
+            {BULLETS_RIGHT.map((item, i) => (
               <li key={item} className="flex items-start gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                <span className="mt-[6px] size-[6px] shrink-0 rounded-full bg-[#008cff]" />
+                <Dot index={i} className="mt-[6px] size-[12px] shrink-0" />
                 <span className="w-[312px]">{item}</span>
               </li>
             ))}

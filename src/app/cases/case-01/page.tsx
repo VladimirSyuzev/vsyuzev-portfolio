@@ -3,8 +3,7 @@ import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import SnapScrollController from "./sections/SnapScrollController";
 import Stats from "./sections/Stats";
-import Problem from "./sections/Problem";
-import Screen from "./sections/Screen";
+import ProblemScreen from "./sections/ProblemScreen";
 import Task from "./sections/Task";
 import AuditLibrary from "./sections/AuditLibrary";
 import Primitives from "./sections/Primitives";
@@ -141,8 +140,7 @@ export default function Case01Page() {
       </div>
 
       <Stats />
-      <Problem />
-      <Screen />
+      <ProblemScreen />
 
       <div className="mx-auto flex w-[1440px] flex-col items-start">
         <Task />
