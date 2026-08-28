@@ -3,18 +3,21 @@
 import { useEffect, useRef } from "react";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
-// node 1971:64076, сверено повторным запросом к Figma после переподключения
-// MCP). В макете трек НЕ центрируется скроллом — он просто начинается у
-// левого поля (x=46, как заголовок) и физически шире окна (4068px против
-// видимой зоны 1348px между полями): это обычная горизонтальная прокрутка
-// внутри рамки, а не scroll-jack.
+// node 1971:64076). По просьбе: тёмный фон блока растянут на весь экран
+// (как Footer), И само окно прокрутки трека тоже идёт до настоящих краёв
+// экрана — карточки уходят ЗА реальный край экрана при скролле, а не
+// обрезаются искусственной рамкой в 1348px внутри 1440-канвы (так было
+// раньше — тоже 1:1 расстоянию Figma, но не то, что нужно). Заголовок/фон/
+// стрелки остаются в центрированной 1440-сетке (их координаты в Figma
+// заданы именно относительно неё), а трек — прямой ребёнок full-width
+// секции.
 //
-// Интеракция (по уточнению): наведение курсора на трек + колесо мыши —
-// трек едет ГОРИЗОНТАЛЬНО (нативный scrollLeft, без пина всей секции).
-// Как только курсор уходит с трека — колесо снова листает страницу
-// вертикально как обычно, и появляется следующий блок «Руководство для
-// команды». На границах трека (в начале/конце) колесо тоже отдаётся
-// странице, чтобы не превращать трек в ловушку для скролла.
+// Интеракция: наведение курсора на трек + колесо мыши — трек едет
+// ГОРИЗОНТАЛЬНО (нативный scrollLeft, без пина всей секции). Как только
+// курсор уходит с трека — колесо снова листает страницу вертикально как
+// обычно, и появляется следующий блок «Руководство для команды». На
+// границах трека (в начале/конце) колесо тоже отдаётся странице, чтобы не
+// превращать трек в ловушку для скролла.
 const CATEGORY_STYLE = {
   design: { border: "#008cff", text: "#008cff", label: "ДИЗАЙН" },
   artDirector: { border: "#1dbb71", text: "#1dbb71", label: "АРТ-ДИРЕКТОР" },
@@ -64,32 +67,38 @@ export default function Pipeline() {
   }, []);
 
   return (
-    <div className="relative h-[900px] w-[1440px] overflow-clip bg-[#121212]">
-      <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
-        <p className="text-[#008cff]">04</p>
-        <p className="text-white">ПОСТРОЕНИЕ ПРОЦЕССА</p>
+    <div className="relative h-[900px] w-full overflow-clip bg-[#121212]">
+      <div className="relative mx-auto h-full w-[1440px]">
+        <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
+          <p className="text-[#008cff]">04</p>
+          <p className="text-white">ПОСТРОЕНИЕ ПРОЦЕССА</p>
+        </div>
+
+        {/* Декоративная подложка — статична, x46/y181, 1348×673 (1:1 Figma) */}
+        <div className="absolute left-[46px] top-[181px] h-[673px] w-[1348px] opacity-60">
+          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-bg.svg" />
+        </div>
+
+        {/* Стрелки-доодлы, указывающие на карточку "05" в состоянии покоя
+            (scrollLeft=0) — статичные, x/y 1:1 из Figma, не двигаются вместе
+            с треком (как и в самом макете, это единичная аннотация). */}
+        <div className="absolute left-[1312.14px] top-[763.91px] h-[58.33px] w-[44.66px]">
+          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-1.svg" />
+        </div>
+        <div className="absolute left-[1263.56px] top-[778.59px] h-[22.63px] w-[87.48px]">
+          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-2.svg" />
+        </div>
       </div>
 
-      {/* Декоративная подложка — статична, x46/y181, 1348×673 (1:1 Figma) */}
-      <div className="absolute left-[46px] top-[181px] h-[673px] w-[1348px] opacity-60">
-        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-bg.svg" />
-      </div>
-
-      {/* Стрелки-доодлы, указывающие на карточку "05" в состоянии покоя
-          (scrollLeft=0) — статичные, x/y 1:1 из Figma, не двигаются вместе
-          с треком (как и в самом макете, это единичная аннотация). */}
-      <div className="absolute left-[1312.14px] top-[763.91px] h-[58.33px] w-[44.66px]">
-        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-1.svg" />
-      </div>
-      <div className="absolute left-[1263.56px] top-[778.59px] h-[22.63px] w-[87.48px]">
-        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-2.svg" />
-      </div>
-
-      {/* Видимое окно трека — x46/y318, ширина 1348 (та же зона между
-          полями, что и у подложки), нативный overflow-x-auto со скрытым
-          скроллбаром. Колесо над этим окном едет горизонтально (см. onWheel
+      {/* Видимое окно трека — теперь во всю ширину экрана (w-full, не 1348
+          внутри 1440-канвы), нативный overflow-x-auto со скрытым
+          скроллбаром. Первая карточка стоит с тем же отступом 46px, что и
+          заголовок (padding-left вместо left у каждой карточки — для
+          абсолютных детей padding родителя И ЕСТЬ точка отсчёта left:0), а
+          дальше трек может доскроллить последнюю карточку до самого правого
+          края экрана. Колесо над этим окном едет горизонтально (см. onWheel
           выше), в остальном — обычный вертикальный скролл страницы. */}
-      <div ref={trackRef} className="no-scrollbar absolute left-[46px] top-[318px] h-[399px] w-[1348px] overflow-x-auto">
+      <div ref={trackRef} className="no-scrollbar absolute left-0 top-[318px] h-[399px] w-full overflow-x-auto pl-[46px]">
         <div className="relative h-[399px] w-[4068px]">
           {STEPS.map((step, i) => {
             const style = CATEGORY_STYLE[step.category];

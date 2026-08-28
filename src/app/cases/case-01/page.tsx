@@ -142,22 +142,28 @@ export default function Case01Page() {
       <Stats />
       <ProblemScreen />
 
-      {/* Pipeline больше не пин-секция на весь экран (see Pipeline.tsx) —
-          обычный элемент в 1440-сетке, как и соседи, поэтому все разделы
-          от "Задачи" до конца страницы теперь в одной общей обёртке. */}
       <div className="mx-auto flex w-[1440px] flex-col items-start">
         <Task />
         <AuditLibrary />
         <Primitives />
-        <Pipeline />
+      </div>
+
+      {/* Pipeline — снова full-bleed (фон на весь экран, см. Pipeline.tsx),
+          поэтому идёт ПРЯМЫМ ребёнком full-width root, не внутри 1440-
+          обёртки — иначе его собственный w-full упёрся бы в 1440 и фон
+          перестал бы тянуться на весь экран (та же причина, по которой
+          Footer ниже тоже вынесен из обёртки). */}
+      <Pipeline />
+
+      <div className="mx-auto flex w-[1440px] flex-col items-start">
         <TeamGuide />
         <Guide />
         <Consistency />
         <Role />
         <Summary />
-
-        <Footer />
       </div>
+
+      <Footer />
     </div>
   );
 }
