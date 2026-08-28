@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
+import Reveal from "@/components/Reveal";
 import SnapScrollController from "./sections/SnapScrollController";
 import Stats from "./sections/Stats";
 import ProblemScreen from "./sections/ProblemScreen";
@@ -133,9 +134,9 @@ export default function Case01Page() {
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
           </div>
 
-          <div className="absolute left-[930.5px] top-[204.84px] h-[13.646px] w-[426.348px]">
+          <Reveal variant="line" delay={0.25} className="absolute left-[930.5px] top-[204.84px] h-[13.646px] w-[426.348px]">
             <img alt="" className="block size-full max-w-none" src="/cases/case-01/underline.svg" />
-          </div>
+          </Reveal>
         </div>
       </div>
 
