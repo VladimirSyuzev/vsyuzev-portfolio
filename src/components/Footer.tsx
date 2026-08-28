@@ -27,7 +27,7 @@ export default function Footer() {
               E-mail
             </a>
           </div>
-          <a href="https://t.me/VovaSyuzev" target="_blank" rel="noreferrer" className="text-[14px] leading-[1.2] opacity-70 hover:opacity-100">
+          <a href="tel:+79523336006" className="text-[14px] leading-[1.2] opacity-70 hover:opacity-100">
             +79523336006
           </a>
         </div>
