@@ -60,17 +60,15 @@ export default function Consistency() {
         </div>
 
         {/* Рукописное подчёркивание под цитатой (Figma node 2359:4041) —
-            переехало под левую цитату (left 78.34 / top 697.26),
-            реальный наклон 2.73°. */}
-        <div className="absolute left-[78.34px] top-[697.26px] flex h-[71.477px] w-[518.005px] items-center justify-center">
-          <div className="rotate-[2.73deg]">
-            <div className="relative h-[46.928px] w-[516.355px]">
-              <div className="absolute inset-[-6.39%_-0.58%]">
-                <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/consistency-underline.svg" />
-              </div>
-            </div>
-          </div>
-        </div>
+            плоская линия с лёгким наклоном вверх-вправо, узел рендерится
+            как 524×28 (reported «rotate 2.73° / 71px» — артефакт bbox
+            волнистого path). */}
+        <img
+          alt=""
+          className="absolute"
+          style={{ left: 78, top: 719, width: 524, height: 30 }}
+          src="/cases/case-01/sections/consistency-underline.svg"
+        />
       </div>
     </div>
   );

@@ -69,18 +69,16 @@ export default function TeamGuide() {
         </div>
       </div>
 
-      {/* Обводка-эллипс вокруг фразы (Figma node 2322:5169) — перевыгружен:
-          теперь реально повёрнут на 12.85°, крупнее прежнего. Рисуется до
-          текста, чтобы линии обводки не ложились поверх букв. */}
-      <div className="absolute left-[337.87px] top-[846.63px] flex h-[444.336px] w-[764.257px] items-center justify-center">
-        <div className="rotate-[12.85deg]">
-          <div className="relative h-[292.108px] w-[717.249px]">
-            <div className="absolute inset-[-1.03%_-0.42%]">
-              <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/guide-summary-ellipse.svg" />
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Обводка-эллипс вокруг фразы — SVG-экспорт итогового узла Figma
+          2322:5169 (почти горизонтальный волнистый овал с «хвостиком»
+          сверху-слева; reported «764×444 / rotate 12.85°» — артефакт
+          измерения bbox волнистого path). Рисуется до текста. */}
+      <img
+        alt=""
+        className="absolute"
+        style={{ left: 330, top: 937, width: 780, height: 260 }}
+        src="/cases/case-01/sections/guide-summary-ellipse.svg"
+      />
 
       {/* Итоговая фраза — теперь самостоятельный центрированный блок
           (Figma node 1961:32279, top 1024.14, w-709, по центру секции). */}
