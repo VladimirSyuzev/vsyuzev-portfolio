@@ -1,10 +1,15 @@
-// 01 Задача — 1:1 из Figma (node 2009:12098). Только колонка «Interconnect»
-// несёт визуал (составной значок), остальные три — просто подпись.
+// 01 Задача — 1:1 из Figma (node 2009:12098). Три колонки (Video / CDN /
+// Search API) — только подпись с буллетом; колонка Interconnect несёт
+// визуал: синий значок Cloud Interconnect 328px + под ним бледный «ghost»
+// того же значка 164px (вертикальный стек, gap 24). Все векторные
+// изображения — SVG.
+const A = "/cases/case-02/sections";
+
 const ITEMS = [
-  { icon: "task-bullet.svg", title: "Yandex\nCloud Video" },
-  { icon: "task-bullet.svg", title: "Yandex\nCloud CDN" },
-  { icon: "task-bullet-minus.svg", title: "Yandex Cloud\nInterconnect", visual: true },
-  { icon: "task-bullet.svg", title: "Yandex\nSearch API" },
+  { bullet: "bullet-minus.svg", title: "Yandex\nCloud Video" },
+  { bullet: "bullet-minus.svg", title: "Yandex\nCloud CDN" },
+  { bullet: "bullet-plus.svg", title: "Yandex Cloud\nInterconnect", visual: true },
+  { bullet: "bullet-minus.svg", title: "Yandex\nSearch API" },
 ];
 
 export default function Task() {
@@ -30,14 +35,17 @@ export default function Task() {
         {ITEMS.map((item, i) => (
           <div key={i} className="flex w-[328px] flex-col items-center gap-[24px]">
             {item.visual && (
-              <>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/cases/case-02/sections/task-cdn-icon.png" alt="" width={328} height={328} className="size-[328px]" />
-                <img alt="" className="size-[164px]" src="/cases/case-02/sections/task-cloud-interconnect.svg" />
-              </>
+              <div className="flex flex-col items-center gap-[24px]">
+                <img
+                  alt="Значок сервиса Yandex Cloud Interconnect"
+                  className="size-[328px] shrink-0"
+                  src={`${A}/task-icon-blue.svg`}
+                />
+                <img alt="" className="size-[164px] shrink-0" src={`${A}/task-icon-ghost.svg`} />
+              </div>
             )}
             <div className="flex w-full items-start gap-[16px]">
-              <img alt="" className="size-[24px]" src={`/cases/case-02/sections/${item.icon}`} />
+              <img alt="" className="size-[24px] shrink-0" src={`${A}/${item.bullet}`} />
               <p className="whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
                 {item.title}
               </p>
