@@ -21,10 +21,9 @@ const BULLETS_RIGHT = [
 
 export default function TeamGuide() {
   return (
-    // Высота исправлена с 900 на настоящие 1003px (сверено повторным
-    // запросом к Figma, designedHeight секции) — иначе итоговая
-    // строка+эллипс ниже (см. отдельный TODO про них) обрезались бы.
-    <div className="relative h-[1003px] w-[1440px] overflow-clip bg-[#fafafa]">
+    // Высота секции 1238px (Figma node 1961:32233, после переверстки):
+    // итоговая фраза с обводкой-эллипсом уехала заметно ниже.
+    <div className="relative h-[1238px] w-[1440px] overflow-clip bg-[#fafafa]">
       <div className="absolute left-[44px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">05</p>
         <p className="text-[#121212]">РУКОВОДСТВО ДЛЯ КОМАНДЫ</p>
@@ -36,7 +35,7 @@ export default function TeamGuide() {
         собственный опыт, накопленный во время работы над проектом.
       </p>
 
-      <div className="absolute left-[46px] top-[457px] flex w-[325px] flex-col gap-[12px]">
+      <div className="absolute left-[46px] top-[455px] flex w-[325px] flex-col gap-[12px]">
         <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
           Внутри гайда были описаны:
         </p>
@@ -62,28 +61,32 @@ export default function TeamGuide() {
 
       <GuideScale />
 
-      {/* Позиция сверена напрямую по Figma (node 2279:39642) — раньше стояла
-          на 1032.84-851.27≈182px левее и 188-84.36≈104px ниже нужного. */}
-      <div className="absolute left-[1032.84px] top-[84.36px] h-[221.29px] w-[276.03px]">
-        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/guide-crown-doodle.svg" />
+      {/* Доодл-«рожица с языком» справа сверху (Figma node 2279:39642) —
+          заменил прежний «crown», позиция и наклон 1:1. */}
+      <div className="absolute left-[977.21px] top-[206.5px] flex h-[221.291px] w-[276.034px] items-center justify-center">
+        <div className="rotate-[1.65deg]">
+          <img alt="" className="block h-[213.601px] w-[269.992px] max-w-none" src="/cases/case-01/sections/guide-face-doodle.svg" />
+        </div>
       </div>
 
-      {/* Итоговая строка + обводка-эллипс вокруг неё — сверено по Figma
-          (node 1961:32279 / 2322:5169), тот же приём, что и в "Аудите
-          библиотеки". У эллипса инструмент репортил 764×444 — визуально
-          (скачал PNG-рендер узла) это оказался обычный ПЛОСКИЙ овал, а не
-          повёрнутый: 444 — артефакт измерения bounding box самим
-          инструментом у волнистого path. Реальная высота пересчитана по
-          пропорциям настоящего экспорта (747×208.5) под ширину 764.26 —
-          получилось 213.36; top сдвинут так, чтобы центр остался на месте
-          (перепроверено — итог совпадает с отступами текста от краёв
-          эллипса в "Аудите библиотеки"). */}
-      <div className="absolute left-[337.87px] top-[729.97px] h-[213.36px] w-[764.26px]">
-        <img alt="" className="absolute inset-0 block size-full" src="/cases/case-01/sections/guide-summary-ellipse.svg" />
-        <p className="absolute left-[27.63px] top-[62.02px] w-[709px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          это стало внутренней системой производства иконок для нашей команды.
-        </p>
+      {/* Обводка-эллипс вокруг фразы (Figma node 2322:5169) — перевыгружен:
+          теперь реально повёрнут на 12.85°, крупнее прежнего. Рисуется до
+          текста, чтобы линии обводки не ложились поверх букв. */}
+      <div className="absolute left-[337.87px] top-[846.63px] flex h-[444.336px] w-[764.257px] items-center justify-center">
+        <div className="rotate-[12.85deg]">
+          <div className="relative h-[292.108px] w-[717.249px]">
+            <div className="absolute inset-[-1.03%_-0.42%]">
+              <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/guide-summary-ellipse.svg" />
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Итоговая фраза — теперь самостоятельный центрированный блок
+          (Figma node 1961:32279, top 1024.14, w-709, по центру секции). */}
+      <p className="absolute left-1/2 top-[1024.14px] w-[709px] -translate-x-1/2 text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+        это стало внутренней системой производства иконок для нашей команды.
+      </p>
     </div>
   );
 }

@@ -31,11 +31,12 @@ export default function Summary() {
         className="absolute left-[616.28px] top-[296px] w-[715px]"
       />
 
-      {/* Доодлы — статичные, x/y 1:1 из Figma. */}
-      <div className="absolute left-[358.42px] top-[551.04px] h-[162.57px] w-[185.58px]">
+      {/* Доодлы — статичные, x/y 1:1 из Figma (обновлено: node 2284:40040
+          → 439.29/570.91, node 2287:4248 → 1283.94/195.02). */}
+      <div className="absolute left-[439.29px] top-[570.91px] h-[162.57px] w-[185.58px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-1.svg" />
       </div>
-      <div className="absolute left-[1244.47px] top-[181px] h-[125.02px] w-[158.02px]">
+      <div className="absolute left-[1283.94px] top-[195.02px] h-[125.02px] w-[158.02px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-2.svg" />
       </div>
     </div>

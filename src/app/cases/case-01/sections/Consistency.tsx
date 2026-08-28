@@ -28,7 +28,7 @@ export default function Consistency() {
           <p className="text-white">КОНТРОЛЬ КОНСИСТЕНТНОСТИ</p>
         </div>
 
-        <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+        <p className="absolute left-[46px] top-[181px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           Чтобы новые иконки не выбивались из существующей библиотеки, использовалось сразу
           несколько инструментов. Главным из них стал Balance Board: сетка из существующих и
           новых иконок на одном экране, где можно было быстро проверить визуальный вес,
@@ -36,31 +36,40 @@ export default function Consistency() {
           библиотеки.
         </p>
 
-        <div className="absolute left-[46px] top-[389px] size-[328px] overflow-hidden">
+        {/* Balance Board: после переверстки обе доски уехали вправо
+            (Figma node 2359:3981 «bAAALANCE_1», медицинские иконки — слева
+            на x726; node 2359:3921 «bAAALANCE_2», категории сервиса —
+            справа на x1066). */}
+        <div className="absolute left-[726px] top-[389px] size-[328px] overflow-hidden">
           <BalanceBoard1 />
         </div>
-        <div className="absolute left-[386px] top-[389px] size-[328px] overflow-hidden">
+        <div className="absolute left-[1066px] top-[389px] size-[328px] overflow-hidden">
           <BalanceBoard2 />
         </div>
 
-        <p className="absolute left-[791.66px] top-[547px] w-[516px] uppercase font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-white opacity-70">
+        {/* Крупная цитата — переехала налево (Figma node 2359:4039,
+            left ≈ 46, top ≈ 547). */}
+        <p className="absolute left-[46px] top-[547px] w-[516px] uppercase font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-white opacity-70">
           Именно этот инструмент позволял принимать большинство решений ещё до передачи работы
           клиенту
         </p>
 
-        {/* Доодл-«глаз» — статичный, x/y 1:1 из Figma (instance node 2284:39976). */}
-        <div className="absolute left-[1043.27px] top-[178.81px] h-[155.4px] w-[180.73px]">
-          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/consistency-eye-doodle.svg" />
+        {/* Доодл-«глаз» — x/y 1:1 из Figma (node 2285:45879 → 1136.2/229). */}
+        <div className="absolute left-[1136.2px] top-[229px] flex h-[155.398px] w-[180.731px] items-center justify-center">
+          <img alt="" className="block h-[93.828px] w-[150.421px] max-w-none" src="/cases/case-01/sections/consistency-eye-doodle.svg" />
         </div>
 
-        {/* Рукописное подчёркивание под цитатой — node 2354:3911. Высота
-            пересчитана по пропорциям настоящего экспорта (525×29) под
-            ширину 518: инструмент репортил 71.48 — та же аномалия
-            измерения bounding box у волнистого path, что была у эллипса
-            в "Руководстве для команды"; top сдвинут так, чтобы центр
-            остался на месте. */}
-        <div className="absolute left-[814.23px] top-[728.44px] h-[28.61px] w-[518px]">
-          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/consistency-underline.svg" />
+        {/* Рукописное подчёркивание под цитатой (Figma node 2359:4041) —
+            переехало под левую цитату (left 78.34 / top 697.26),
+            реальный наклон 2.73°. */}
+        <div className="absolute left-[78.34px] top-[697.26px] flex h-[71.477px] w-[518.005px] items-center justify-center">
+          <div className="rotate-[2.73deg]">
+            <div className="relative h-[46.928px] w-[516.355px]">
+              <div className="absolute inset-[-6.39%_-0.58%]">
+                <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/consistency-underline.svg" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
