@@ -3,8 +3,8 @@ import TaskZoomCrop from "./TaskZoomCrop";
 // 02 Задача — 1:1 из Figma (node 1961:29100). Витрина категорий — "зум энд
 // кроп" при скролле: окно пропорционально растёт, контент внутри
 // пропорционально уменьшается, открывая все 7 категорий вместо одной
-// видимой Actions (см. TaskZoomCrop.tsx/TaskSection.tsx — оба состояния
-// сверены по факту с figma-узлами 2284:43014/2284:43015).
+// видимой Actions (см. TaskZoomCrop.tsx — два состояния экспортированы
+// пользователем напрямую из Figma как настоящие SVG).
 const A = "/cases/case-01/sections/task-assets";
 
 export default function Task() {

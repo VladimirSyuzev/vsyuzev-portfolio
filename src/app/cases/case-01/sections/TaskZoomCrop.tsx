@@ -3,19 +3,22 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "@/lib/gsap";
-import TaskSectionFull from "./TaskSection";
 
-// «Зум энд кроп» — окно с витриной категорий пропорционально растёт, а
-// изображение внутри пропорционально уменьшается (то же самое явление,
-// только не руками, а как в Figma между "состояние 1" (окно 838.33×524.315,
-// масштаб контента 1 — видна только "Actions") и "состояние 2" (окно
-// 1348×702.89, масштаб ≈0.2652 — видны все 7 категорий сразу, каждая
-// обрезана по высоте окна). Оба состояния СВЕРЕНЫ по факту (см. metadata
-// узлов 2284:43014/2284:43015): у обоих один и тот же left/top-якорь,
-// растёт именно size, а не позиция — поэтому анимация это просто
-// интерполяция width/height окна + scale контента, без отдельного "кадра".
-const START = { w: 838.33, h: 524.315, scale: 1, offsetY: -55.5 };
-const END = { w: 1348, h: 702.89, scale: 1348 / 5083.5, offsetY: 0 };
+// «Зум энд кроп» — теперь на настоящих SVG-экспортах пользователя (2
+// состояния витрины категорий из Figma), не на ручной DOM-реконструкции.
+// Оба состояния — это ОДНА и та же композиция на разном масштабе:
+// state-1.svg (838×525) показывает только "Actions" при масштабе 1,
+// state-2.svg (1348×703) показывает все 7 категорий при масштабе ≈0.2652
+// (222.3/838.33) — т.е. state-1 математически равен кропу state-2,
+// увеличенному в 1/0.2652≈3.771 раза. Поэтому используется только
+// state-2.svg как единственный источник: окно растёт с 838×525 до
+// 1348×703, а сама картинка внутри масштабируется с 3.771 до 1 — то же
+// самое "фрейм растёт/картинка внутри уменьшается", но без риска
+// рассинхрона/скачка между двумя раздельными файлами.
+const IMG = "/cases/case-01/sections/task-states/state-2.svg";
+const NATIVE = { w: 1348, h: 703 };
+const START = { w: 838, h: 525, scale: 1348 / 838 };
+const END = { w: 1348, h: 703, scale: 1 };
 
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
@@ -24,8 +27,7 @@ function lerp(a: number, b: number, t: number) {
 export default function TaskZoomCrop() {
   const triggerRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
-  const offsetRef = useRef<HTMLDivElement>(null);
-  const scaleRef = useRef<HTMLDivElement>(null);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useGSAP(
     () => {
@@ -35,13 +37,14 @@ export default function TaskZoomCrop() {
         const w = lerp(START.w, END.w, t);
         const h = lerp(START.h, END.h, t);
         const scale = lerp(START.scale, END.scale, t);
-        const offsetY = lerp(START.offsetY, END.offsetY, t);
         if (windowRef.current) {
           windowRef.current.style.width = `${w}px`;
           windowRef.current.style.height = `${h}px`;
         }
-        if (offsetRef.current) offsetRef.current.style.top = `${offsetY}px`;
-        if (scaleRef.current) scaleRef.current.style.transform = `scale(${scale})`;
+        if (imgRef.current) {
+          imgRef.current.style.width = `${NATIVE.w * scale}px`;
+          imgRef.current.style.height = `${NATIVE.h * scale}px`;
+        }
       }
 
       render(0);
@@ -60,16 +63,18 @@ export default function TaskZoomCrop() {
   );
 
   return (
-    // Внешний контейнер сразу занимает МАКСИМАЛЬный (конечный) размер —
-    // растущее окно не должно "вылезать" за пределы своего родителя и
-    // наезжать на соседний контент ниже по странице.
+    // Внешний контейнер сразу занимает максимальный (конечный) размер —
+    // растущее окно не должно наезжать на соседний контент ниже по странице.
     <div ref={triggerRef} className="relative" style={{ width: END.w, height: END.h }}>
       <div ref={windowRef} className="absolute left-0 top-0 overflow-hidden" style={{ width: START.w, height: START.h }}>
-        <div ref={offsetRef} className="absolute left-0" style={{ top: START.offsetY }}>
-          <div ref={scaleRef} style={{ transform: `scale(${START.scale})`, transformOrigin: "top left" }}>
-            <TaskSectionFull />
-          </div>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          ref={imgRef}
+          alt="Витрина категорий иконок — аудит библиотеки"
+          src={IMG}
+          className="absolute left-0 top-0 max-w-none"
+          style={{ width: NATIVE.w * START.scale, height: NATIVE.h * START.scale }}
+        />
       </div>
     </div>
   );
