@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import Reveal from "@/components/Reveal";
 
 // «о себе» — 1:1 из Figma (node 2279:32548), фрейм 1440×900.
 const CLIENT_ROWS: string[][] = [
@@ -46,13 +47,13 @@ export default function About() {
         <img alt="Вова Сюзёв" src="/about/photo.png" className="size-full object-cover" />
       </div>
 
-      <div className="about-reveal absolute left-[562px] top-[701px] h-[125px] w-[158px]">
+      <Reveal variant="doodle" className="absolute left-[562px] top-[701px] h-[125px] w-[158px]">
         <img alt="" className="block size-full max-w-none" src="/about/doodle-scribble.svg" />
-      </div>
+      </Reveal>
 
-      <div className="about-reveal absolute left-[1125.68px] top-[44px] h-[212.282px] w-[268.324px]">
+      <Reveal variant="doodle" delay={0.1} className="absolute left-[1125.68px] top-[44px] h-[212.282px] w-[268.324px]">
         <img alt="" className="block size-full max-w-none" src="/about/doodles.svg" />
-      </div>
+      </Reveal>
 
       <p className="about-reveal absolute left-[46px] top-[181px] w-[668px] whitespace-pre-wrap text-[14px] not-italic leading-[1.2] tracking-[0.28px] text-[#333] opacity-70">
         Арт-директор, который умеет совмещать управление командой с практической работой{" "}

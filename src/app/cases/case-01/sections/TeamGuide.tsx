@@ -1,5 +1,6 @@
 import GuideScale from "./GuideScale";
 import Dot from "@/components/Dot";
+import Reveal from "@/components/Reveal";
 
 // 05 Руководство для команды — 1:1 из Figma (node 1961:32233). Диаграмма
 // размер/толщина/скругления справа теперь настоящий SVG (GuideScale.tsx),
@@ -63,11 +64,11 @@ export default function TeamGuide() {
 
       {/* Доодл-«рожица с языком» справа сверху (Figma node 2279:39642) —
           заменил прежний «crown», позиция и наклон 1:1. */}
-      <div className="absolute left-[977.21px] top-[206.5px] flex h-[221.291px] w-[276.034px] items-center justify-center">
+      <Reveal variant="doodle" className="absolute left-[977.21px] top-[206.5px] flex h-[221.291px] w-[276.034px] items-center justify-center">
         <div className="rotate-[1.65deg]">
           <img alt="" className="block h-[213.601px] w-[269.992px] max-w-none" src="/cases/case-01/sections/guide-face-doodle.svg" />
         </div>
-      </div>
+      </Reveal>
 
       {/* Обводка-эллипс вокруг фразы — SVG-экспорт ИТОГОВОГО узла Figma
           2322:5169: в самом узле поворот −12.85° уже применён к волнистому
@@ -75,12 +76,14 @@ export default function TeamGuide() {
           сверху-слева (≈+3.6° вверх-вправо, как в макете). Дополнительный
           CSS-rotate НЕ нужен — иначе овал завалится в другую сторону.
           viewBox расширен, чтобы «хвостик» и выступы path не обрезались. */}
-      <img
-        alt=""
+      <Reveal
+        variant="line"
+        start="top 92%"
         className="absolute"
         style={{ left: 330, top: 940, width: 780, height: 265 }}
-        src="/cases/case-01/sections/guide-summary-ellipse.svg"
-      />
+      >
+        <img alt="" className="block size-full" src="/cases/case-01/sections/guide-summary-ellipse.svg" />
+      </Reveal>
 
       {/* Итоговая фраза — теперь самостоятельный центрированный блок
           (Figma node 1961:32279, top 1024.14, w-709, по центру секции). */}

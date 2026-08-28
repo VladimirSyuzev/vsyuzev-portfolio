@@ -3,6 +3,8 @@
 // рабочий документ с десятками встроенных фото-референсов: СПИСОК и
 // ПОИСК ФОРМЫ остаются растровым ассетом 2x (как витрина иконок в кейсе
 // 1, см. FIGMA-BRIEF §5), ИТОГ — чистый вектор, отдан как SVG.
+import Reveal from "@/components/Reveal";
+
 const A = "/cases/case-02/sections";
 
 export default function Research() {
@@ -26,9 +28,9 @@ export default function Research() {
       </p>
 
       {/* Доодл «//» справа сверху (Figma node 2279:32678). */}
-      <div className="absolute left-[1261.85px] top-[161px] h-[125px] w-[158px]">
+      <Reveal variant="doodle" className="absolute left-[1261.85px] top-[161px] h-[125px] w-[158px]">
         <img alt="" className="block size-full max-w-none" src={`${A}/research-doodle.svg`} />
-      </div>
+      </Reveal>
 
       {/* Карточки-колонки, y318, h536. */}
       <img

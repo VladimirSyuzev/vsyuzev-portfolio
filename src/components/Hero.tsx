@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
+import Reveal from "@/components/Reveal";
 
 // Hero — 1:1 из Figma (node 2235:93636), фрейм 1440×900. Чёрный блок
 // 1440×716 — часть макета как есть (без изображения, ассет над ним в
@@ -41,9 +42,13 @@ export default function Hero() {
           COMMUNICATION DESIGNER
         </span>
       </p>
-      <div className="hero-reveal absolute left-[503.07px] top-[840.96px] h-[13.044px] w-[342.526px]">
+      <Reveal
+        variant="line"
+        delay={0.35}
+        className="absolute left-[503.07px] top-[840.96px] h-[13.044px] w-[342.526px]"
+      >
         <img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
-      </div>
+      </Reveal>
     </div>
   );
 }

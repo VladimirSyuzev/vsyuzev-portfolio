@@ -74,14 +74,14 @@ function ProblemContent() {
       </p>
 
       <div className="absolute left-[556px] top-[455.52px] flex items-center gap-[12px]">
-        <div className="relative size-[328px] bg-white">
+        <div className="prob-board relative size-[328px] bg-white">
           <img alt="" className="absolute inset-0 block size-full max-w-none" src="/cases/case-01/sections/problem-union.svg" />
           <img alt="" className="absolute inset-0 block size-full max-w-none" src="/cases/case-01/sections/problem-tmp.svg" />
           <div className="absolute inset-0 flex items-center justify-center opacity-40">
             <img alt="" className="size-[328px]" src="/cases/case-01/sections/problem-train.svg" />
           </div>
         </div>
-        <div className="relative size-[328px] bg-white">
+        <div className="prob-board relative size-[328px] bg-white">
           <img alt="" className="absolute inset-0 block size-full max-w-none" src="/cases/case-01/sections/problem-union2.svg" />
           <img alt="" className="absolute inset-0 block size-full max-w-none" src="/cases/case-01/sections/problem-tmp2.svg" />
           <div className="absolute inset-0 flex items-center justify-center opacity-40">
@@ -91,12 +91,12 @@ function ProblemContent() {
       </div>
 
       {/* Доодл-«звезда» справа сверху (Figma node 2279:32655) — новый. */}
-      <div className="absolute left-[1124.64px] top-[223.15px] flex h-[191.363px] w-[200.725px] items-center justify-center">
+      <div className="prob-doodle absolute left-[1124.64px] top-[223.15px] flex h-[191.363px] w-[200.725px] items-center justify-center">
         <img alt="" className="h-[125px] w-[158px] max-w-none" src="/cases/case-01/sections/problem-star-doodle.svg" />
       </div>
 
       {/* Стрелка-доодл под правой колонкой (Figma node 2284:39939). */}
-      <div className="absolute left-[875.91px] top-[756.18px] flex h-[112.796px] w-[389.623px] items-center justify-center">
+      <div className="prob-doodle absolute left-[875.91px] top-[756.18px] flex h-[112.796px] w-[389.623px] items-center justify-center">
         <div className="rotate-[6.99deg]">
           <div className="relative h-[66.502px] w-[384.386px]">
             <div className="absolute inset-[-4.51%_-0.78%]">
@@ -124,7 +124,7 @@ function ScreenContent() {
         </p>
         <ul className="flex flex-col gap-[6px]">
           {BULLETS.map((item, i) => (
-            <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+            <li key={item} className="scr-bullet flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
               <Dot index={i} />
               {item}
             </li>
@@ -132,16 +132,18 @@ function ScreenContent() {
         </ul>
       </div>
 
-      <div className="absolute left-[353px] top-[623px] h-[125px] w-[158px]">
+      <div className="scr-doodle absolute left-[353px] top-[623px] h-[125px] w-[158px]">
         <img alt="" className="block size-full max-w-none" src={`${A}/doodle-hooks.svg`} />
       </div>
 
-      {/* Телефон + аннотация — два слоя, тот же холст, друг на друге. */}
+      {/* Телефон + аннотация — два слоя, тот же холст, друг на друге.
+          При появлении слайда 2: сначала мокап (scr-mock), затем аннотация
+          с пунктиром/подписями раскрывается от центра к краям (scr-anno). */}
       <div className="absolute left-[556px] top-[166px] h-[568px] w-[668px]">
-        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${A}/screen-layer-1.svg`} />
+        <img alt="" className="scr-mock absolute inset-0 block size-full max-w-none" src={`${A}/screen-layer-1.svg`} />
         <img
           alt="Экран приложения с одновременным использованием иконок из Icons Regular и Icons Symbols"
-          className="absolute inset-0 block size-full max-w-none"
+          className="scr-anno absolute inset-0 block size-full max-w-none"
           src={`${A}/screen-layer-2.svg`}
         />
       </div>
@@ -162,6 +164,37 @@ export default function ProblemScreen() {
     () => {
       if (reduced || !pinRef.current || !wrapRef.current) return;
 
+      // --- Слайд 1: появление досок + доодлов при входе блока в экран ---
+      gsap.set(".prob-board", { opacity: 0, scale: 0.94 });
+      gsap.set(".prob-doodle", { opacity: 0, scale: 0.86, rotate: -5 });
+      const introST = ScrollTrigger.create({
+        trigger: wrapRef.current,
+        start: "top 75%",
+        once: true,
+        onEnter: () => {
+          gsap.to(".prob-board", { opacity: 1, scale: 1, duration: 0.55, ease: "siteEase", stagger: 0.1 });
+          gsap.to(".prob-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.6, ease: "siteEase", stagger: 0.12, delay: 0.15 });
+        },
+      });
+
+      // --- Слайд 2: заранее прячем внутренние элементы, чтобы проиграть
+      //     последовательность при активации слайда ---
+      gsap.set(".scr-bullet", { opacity: 0, x: -10 });
+      gsap.set(".scr-mock", { opacity: 0, scale: 0.97 });
+      gsap.set(".scr-anno", { clipPath: "inset(50% 50% 50% 50%)", opacity: 0 });
+      gsap.set(".scr-doodle", { opacity: 0, scale: 0.86, rotate: -5 });
+      let screenPlayed = false;
+      function playScreenIn() {
+        if (screenPlayed) return;
+        screenPlayed = true;
+        gsap
+          .timeline({ defaults: { ease: "siteEase" } })
+          .to(".scr-bullet", { opacity: 0.7, x: 0, duration: 0.4, stagger: 0.06 })
+          .to(".scr-mock", { opacity: 1, scale: 1, duration: 0.5 }, "-=0.1")
+          .to(".scr-anno", { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.15")
+          .to(".scr-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.5 }, "-=0.3");
+      }
+
       const state = { slide: 1 };
       function showSlide(slide: number) {
         if (state.slide === slide) return;
@@ -170,6 +203,7 @@ export default function ProblemScreen() {
         gsap.to(screenRef.current, { opacity: slide === 2 ? 1 : 0, duration: 0.5, ease: "siteEase" });
         gsap.to(bar1Ref.current, { opacity: slide === 1 ? 1 : 0.3, duration: 0.5, ease: "siteEase" });
         gsap.to(bar2Ref.current, { opacity: slide === 2 ? 1 : 0.3, duration: 0.5, ease: "siteEase" });
+        if (slide === 2) playScreenIn();
       }
 
       const st = ScrollTrigger.create({
@@ -184,6 +218,7 @@ export default function ProblemScreen() {
 
       return () => {
         st.kill();
+        introST.kill();
       };
     },
     { scope: wrapRef, dependencies: [reduced] }

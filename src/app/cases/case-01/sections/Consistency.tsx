@@ -1,5 +1,6 @@
 import BalanceBoard1 from "./BalanceBoard1";
 import BalanceBoard2 from "./BalanceBoard2";
+import Reveal from "@/components/Reveal";
 
 // 06 Контроль консистентности — 1:1 из Figma (node 1961:32477), полностью
 // пересверено повторным запросом после переподключения Figma MCP —
@@ -55,20 +56,21 @@ export default function Consistency() {
         </p>
 
         {/* Доодл-«глаз» — x/y 1:1 из Figma (node 2285:45879 → 1136.2/229). */}
-        <div className="absolute left-[1136.2px] top-[229px] flex h-[155.398px] w-[180.731px] items-center justify-center">
+        <Reveal variant="doodle" className="absolute left-[1136.2px] top-[229px] flex h-[155.398px] w-[180.731px] items-center justify-center">
           <img alt="" className="block h-[93.828px] w-[150.421px] max-w-none" src="/cases/case-01/sections/consistency-eye-doodle.svg" />
-        </div>
+        </Reveal>
 
         {/* Рукописное подчёркивание под цитатой (Figma node 2359:4041) —
             плоская линия с лёгким наклоном вверх-вправо, узел рендерится
             как 524×28 (reported «rotate 2.73° / 71px» — артефакт bbox
             волнистого path). */}
-        <img
-          alt=""
+        <Reveal
+          variant="line"
           className="absolute"
           style={{ left: 78, top: 719, width: 524, height: 30 }}
-          src="/cases/case-01/sections/consistency-underline.svg"
-        />
+        >
+          <img alt="" className="block size-full" src="/cases/case-01/sections/consistency-underline.svg" />
+        </Reveal>
       </div>
     </div>
   );

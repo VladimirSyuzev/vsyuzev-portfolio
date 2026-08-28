@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
+import Reveal from "@/components/Reveal";
 import Task from "./sections/Task";
 import Research from "./sections/Research";
 import VisualLanguage from "./sections/VisualLanguage";
@@ -76,11 +77,11 @@ export default function Case02Page() {
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
           </div>
 
-          <div className="absolute left-[920.94px] top-[203.02px] h-[16.356px] w-[408.405px]">
+          <Reveal variant="line" delay={0.3} className="absolute left-[920.94px] top-[203.02px] h-[16.356px] w-[408.405px]">
             <div className="absolute inset-[-18.34%_-0.73%]">
               <img alt="" className="block size-full max-w-none" src="/cases/case-02/sections/cover-underline.svg" />
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
 

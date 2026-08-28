@@ -1,3 +1,5 @@
+import Reveal from "@/components/Reveal";
+
 // 08 Итог — 1:1 из Figma (node 1961:32637). Композиция из iPhone-мокапов —
 // настоящий SVG-экспорт пользователя (summary.svg, 715×554). Сверено
 // повторным запросом к Figma: X-позиция композиции была смещена (556
@@ -33,12 +35,12 @@ export default function Summary() {
 
       {/* Доодлы — статичные, x/y 1:1 из Figma (обновлено: node 2284:40040
           → 439.29/570.91, node 2287:4248 → 1283.94/195.02). */}
-      <div className="absolute left-[439.29px] top-[570.91px] h-[162.57px] w-[185.58px]">
+      <Reveal variant="doodle" className="absolute left-[439.29px] top-[570.91px] h-[162.57px] w-[185.58px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-1.svg" />
-      </div>
-      <div className="absolute left-[1283.94px] top-[195.02px] h-[125.02px] w-[158.02px]">
+      </Reveal>
+      <Reveal variant="doodle" delay={0.1} className="absolute left-[1283.94px] top-[195.02px] h-[125.02px] w-[158.02px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-2.svg" />
-      </div>
+      </Reveal>
     </div>
   );
 }

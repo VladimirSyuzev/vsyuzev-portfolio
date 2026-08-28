@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion, waveStagger } from "@/lib/gsap";
 import { CASES } from "@/lib/cases-data";
 import Case01IconGrid from "./Case01IconGrid";
+import Reveal from "@/components/Reveal";
 
 // «кейсы» — 1:1 из Figma, секция «варианты кейсов» (node 2286:3887):
 // «Кейсы_состояние 1» (свёрнуто — номер+название, 113px) раскрывается по
@@ -47,9 +48,9 @@ export default function CasesList() {
       <p className="absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
         КЕЙСЫ
       </p>
-      <div className="absolute left-[174px] top-[89px] h-[125px] w-[158px]">
+      <Reveal variant="doodle" className="absolute left-[174px] top-[89px] h-[125px] w-[158px]">
         <img alt="" className="block size-full max-w-none" src="/about/doodle-hooks.svg" />
-      </div>
+      </Reveal>
 
       {/* left-216, не mx-auto — по Figma список начинается на 216px, а НЕ
           центрирован в 1440-canvas (216+1178=1394, правое поле 46px, а не

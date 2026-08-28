@@ -1,6 +1,8 @@
 // 04 Процесс — 1:1 из Figma (node 2009:12647). Горизонтальная лента из
 // 7 карточек-этапов (частично уезжает за правый край, overflow-clip),
 // полосатая подложка и стрелка-доодл — SVG.
+import Reveal from "@/components/Reveal";
+
 const A = "/cases/case-02/sections";
 
 const STEPS = [
@@ -57,11 +59,11 @@ export default function Process() {
       </div>
 
       {/* Стрелка-доодл (Figma node 2284:45839). */}
-      <div className="absolute left-[742px] top-[156.9px] flex h-[161.104px] w-[184.616px] items-center justify-center">
+      <Reveal variant="doodle" className="absolute left-[742px] top-[156.9px] flex h-[161.104px] w-[184.616px] items-center justify-center">
         <div className="rotate-[14.75deg]">
           <img alt="" className="block h-[125px] w-[158px] max-w-none" src={`${A}/process-arrow.svg`} />
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }

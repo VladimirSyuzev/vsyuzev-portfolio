@@ -1,8 +1,12 @@
+"use client";
+
 // 03 Аудит библиотеки — 1:1 из Figma (node 1965:42538). Таблица аудита
 // теперь настоящий DOM (раньше была screenshot-ассетом): 9 колонок×6 строк,
-// реальные текст/иконки/чекбоксы, снято через get_design_context узла
-// 1965:42569. Высота секции — 1091px (по факту содержимого: эллипс-доодл
-// внизу заканчивается на 1062.4px + отступ, см. правку эллипса ниже).
+// реальные текст/иконки/чекбоксы. Появление ячеек-иконок — «волна»
+// (waveStagger, диагональный reveal, см. lib/gsap.ts).
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, useReducedMotion, waveStagger } from "@/lib/gsap";
 import Dot from "@/components/Dot";
 
 const A = "/cases/case-01/sections/audit-assets";
@@ -100,8 +104,34 @@ function Cell({ cell }: { cell: Cell }) {
 }
 
 export default function AuditLibrary() {
+  const scope = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  useGSAP(
+    () => {
+      if (reduced || !scope.current) return;
+      const tl = gsap.timeline({
+        defaults: { ease: "siteEase" },
+        scrollTrigger: { trigger: scope.current, start: "top 72%", once: true },
+      });
+      tl.from(".audit-intro", { opacity: 0, x: -12, duration: 0.5, stagger: 0.05 })
+        .from(".audit-doodle", { opacity: 0, scale: 0.86, rotate: -5, duration: 0.6, stagger: 0.12 }, 0.1)
+        .from(".audit-table", { opacity: 0, y: 16, duration: 0.5 }, 0.15)
+        .from(
+          ".audit-cell",
+          { opacity: 0, scale: 0.72, duration: 0.4, stagger: waveStagger(9, 0.03), clearProps: "transform,opacity" },
+          "-=0.2",
+        );
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    },
+    { scope, dependencies: [reduced] },
+  );
+
   return (
-    <div className="relative h-[1091px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <div ref={scope} className="relative h-[1091px] w-[1440px] overflow-clip bg-[#fafafa]">
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">03</p>
         <p className="text-[#121212]">АУДИТ БИБЛИОТЕКИ</p>
@@ -112,11 +142,11 @@ export default function AuditLibrary() {
         по категориям и начали детальный анализ каждой позиции.
       </p>
 
-      <p className="absolute left-[46px] top-[318px] w-[200px] whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+      <p className="audit-intro absolute left-[46px] top-[318px] w-[200px] whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
         {"В РЕЗУЛЬТАТЕ АУДИТА\nбыла СОБРАНА ТАБЛИЦА:"}
       </p>
       <div className="absolute left-[386px] top-[318px] flex w-[838px] gap-[12px]">
-        <ul className="flex w-[328px] flex-col gap-[6px]">
+        <ul className="audit-intro flex w-[328px] flex-col gap-[6px]">
           {FOUND_LEFT.map((item, i) => (
             <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               <Dot index={i} />
@@ -124,7 +154,7 @@ export default function AuditLibrary() {
             </li>
           ))}
         </ul>
-        <ul className="flex w-[442.667px] flex-col gap-[6px]">
+        <ul className="audit-intro flex w-[442.667px] flex-col gap-[6px]">
           {FOUND_RIGHT.map((item, i) => (
             <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               <Dot index={i} />
@@ -135,12 +165,12 @@ export default function AuditLibrary() {
       </div>
 
       {/* Стрелка-доодл, указывающая на таблицу. */}
-      <div className="absolute left-[1131px] top-[301px] h-[161px] w-[185px]">
+      <div className="audit-doodle absolute left-[1131px] top-[301px] h-[161px] w-[185px]">
         <img alt="" className="block size-full max-w-none" src={`${A}/arrow-doodle.svg`} />
       </div>
 
       {/* Таблица аудита — настоящий DOM, 1:1 из Figma. */}
-      <div className="absolute left-[46px] top-[455px] flex w-[1348px] flex-col text-[14px] text-[#121212]" style={{ fontFamily: "var(--font-body)" }}>
+      <div className="audit-table absolute left-[46px] top-[455px] flex w-[1348px] flex-col text-[14px] text-[#121212]" style={{ fontFamily: "var(--font-body)" }}>
         {/* Quantity row */}
         <div className="flex h-[43px] w-full border border-black/10 bg-[#f3f3f3]">
           <div className="flex w-[135px] shrink-0 items-center justify-center border-r border-black/10 font-bold">Quantity</div>
@@ -165,7 +195,9 @@ export default function AuditLibrary() {
             <div className="flex w-[135px] shrink-0 items-center justify-center border-r border-black/10 bg-[#edf7ff]">{row.label}</div>
             {row.cells.map((cell, i) => (
               <div key={i} className="flex flex-1 items-center justify-center border-r border-black/10 last:border-r-0">
-                <Cell cell={cell} />
+                <span className="audit-cell inline-flex">
+                  <Cell cell={cell} />
+                </span>
               </div>
             ))}
           </div>
@@ -181,10 +213,10 @@ export default function AuditLibrary() {
           позиция 425.5/906 и так совпадала с Figma), только его top внутри
           обёртки пересчитан под новый top обёртки. */}
       <div className="absolute left-[415.3px] top-[841.87px] h-[220.53px] w-[621.4px]">
-        <div className="absolute inset-[-1.74%_-0.49%]">
+        <div className="audit-doodle absolute inset-[-1.74%_-0.49%]">
           <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
         </div>
-        <p className="absolute left-[10.2px] top-[64.13px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+        <p className="audit-intro absolute left-[10.2px] top-[64.13px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
           По итогам анализа был сформирован подробный план работ
         </p>
       </div>

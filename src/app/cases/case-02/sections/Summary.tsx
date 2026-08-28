@@ -1,6 +1,8 @@
 // 06 Итог — 1:1 из Figma (node 2009:12811). Текст — реальный DOM. Стена
 // из 36 иконок (4×9, серые, opacity 0.2) — единый SVG (summary-icons.svg,
 // 1348×591). Доодл «»»» — SVG.
+import Reveal from "@/components/Reveal";
+
 const A = "/cases/case-02/sections";
 
 export default function Summary() {
@@ -25,9 +27,9 @@ export default function Summary() {
       </p>
 
       {/* Доодл «»»» (Figma node 2279:39655). */}
-      <div className="absolute left-[378px] top-[153.5px] h-[125px] w-[158px]">
+      <Reveal variant="doodle" className="absolute left-[378px] top-[153.5px] h-[125px] w-[158px]">
         <img alt="" className="block size-full max-w-none" src={`${A}/summary-doodle.svg`} />
-      </div>
+      </Reveal>
 
       <img
         alt="Итоговая библиотека из 34 иконок сервисов Yandex Cloud"

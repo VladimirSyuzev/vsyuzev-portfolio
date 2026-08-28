@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Reveal from "@/components/Reveal";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
 // node 1971:64076). Тёмный фон блока растянут на весь экран (как Footer);
@@ -115,12 +116,12 @@ export default function Pipeline() {
             стрелки с искажением. Размеры контейнеров пересчитаны на
             настоящие native-пропорции экспорта, позиция сдвинута так,
             чтобы центр остался на месте. */}
-        <div className="absolute left-[1313.47px] top-[761.57px] h-[63px] w-[42px]">
+        <Reveal variant="doodle" className="absolute left-[1313.47px] top-[761.57px] h-[63px] w-[42px]">
           <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-1.svg" />
-        </div>
-        <div className="absolute left-[1259.3px] top-[783.91px] h-[12px] w-[96px]">
+        </Reveal>
+        <Reveal variant="doodle" delay={0.08} className="absolute left-[1259.3px] top-[783.91px] h-[12px] w-[96px]">
           <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-2.svg" />
-        </div>
+        </Reveal>
       </div>
 
       {/* Видимое окно трека — на всю ширину экрана (w-full), нативный
