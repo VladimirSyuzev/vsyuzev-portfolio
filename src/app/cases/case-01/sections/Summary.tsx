@@ -1,9 +1,6 @@
-// 08 Итог — 1:1 из Figma (node 1961:32637). Заголовок и абзацы — настоящий
-// текст; композиция из трёх iPhone-мокапов (интерфейс Алисы, выбор
-// категории) — реалистичный UI-скриншот, оставлен изображением (не
-// вектор). ИСПРАВЛЕНО: раньше здесь ошибочно стоял screenshot ВСЕЙ секции
-// целиком (1440×850) вместо конкретно этой 714×554 композиции — теперь
-// правильный кадр (get_screenshot по узлу 1961:32647).
+// 08 Итог — 1:1 из Figma (node 1961:32637). Композиция из iPhone-мокапов —
+// теперь настоящий SVG-экспорт пользователя (summary.svg, 715×554 — тот же
+// размер, что был у screenshot-версии), не растровый PNG.
 export default function Summary() {
   return (
     <div className="relative h-[850px] w-[1440px] overflow-clip bg-[#fafafa]">
@@ -24,7 +21,7 @@ export default function Summary() {
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/cases/case-01/sections/summary.png"
+        src="/cases/case-01/sections/summary.svg"
         alt="Итоговая система иконок в интерфейсе голосового ассистента Алиса"
         width={715}
         height={554}

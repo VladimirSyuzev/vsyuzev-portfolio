@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
-// node 1971:64076). По просьбе: тёмный фон блока растянут на весь экран
-// (как Footer), И само окно прокрутки трека тоже идёт до настоящих краёв
-// экрана — карточки уходят ЗА реальный край экрана при скролле, а не
-// обрезаются искусственной рамкой в 1348px внутри 1440-канвы (так было
-// раньше — тоже 1:1 расстоянию Figma, но не то, что нужно). Заголовок/фон/
-// стрелки остаются в центрированной 1440-сетке (их координаты в Figma
-// заданы именно относительно неё), а трек — прямой ребёнок full-width
-// секции.
+// node 1971:64076). Тёмный фон блока растянут на весь экран (как Footer);
+// окно прокрутки трека — тоже во всю ширину (w-full), но с отзывчивыми
+// padding-left/right (см. ниже), а не голым left:0..w-full — первая
+// карточка выровнена строго под заголовком на ЛЮБОЙ ширине экрана, а
+// последняя останавливается по центру экрана, а не у самого края.
+// Заголовок/фон/стрелки остаются в центрированной 1440-сетке (их
+// координаты в Figma заданы именно относительно неё), а трек — прямой
+// ребёнок full-width секции.
 //
 // Интеракция: наведение курсора на трек + колесо мыши — трек едет
 // ГОРИЗОНТАЛЬНО (нативный scrollLeft, без пина всей секции). Как только
@@ -44,7 +44,32 @@ const STEPS: Step[] = [
 const PITCH = 340; // шаг между карточками (совпадает с x в Figma: 0,340,680…3740)
 
 export default function Pipeline() {
+  const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  // Отступы трека считаются в JS, а не через vw в CSS: 100vw включает
+  // ширину системного скроллбара, а mx-auto-центрирование 1440-сетки —
+  // нет, из-за чего vw-формула давала расхождение ~7-17px (на разных ОС/
+  // браузерах по-разному) между первой карточкой и заголовком. Меряем
+  // РЕАЛЬНУЮ ширину секции (clientWidth, без скроллбара) — то же число,
+  // что использует mx-auto — и считаем отступы от него: точное совпадение
+  // на любой системе.
+  // Дефолт до первого замера ResizeObserver — как если бы секция была
+  // ровно 1440px (канонический размер макета), чтобы не было заметного
+  // скачка при монтировании на самой частой ширине экрана.
+  const [padding, setPadding] = useState({ left: 46, right: 1440 / 2 - 164 });
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width;
+      if (!w) return;
+      const gutter = Math.max(0, (w - 1440) / 2);
+      setPadding({ left: 46 + gutter, right: w / 2 - 164 });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -67,7 +92,7 @@ export default function Pipeline() {
   }, []);
 
   return (
-    <div className="relative h-[900px] w-full overflow-clip bg-[#121212]">
+    <div ref={sectionRef} className="relative h-[900px] w-full overflow-clip bg-[#121212]">
       <div className="relative mx-auto h-full w-[1440px]">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">04</p>
@@ -90,15 +115,18 @@ export default function Pipeline() {
         </div>
       </div>
 
-      {/* Видимое окно трека — теперь во всю ширину экрана (w-full, не 1348
-          внутри 1440-канвы), нативный overflow-x-auto со скрытым
-          скроллбаром. Первая карточка стоит с тем же отступом 46px, что и
-          заголовок (padding-left вместо left у каждой карточки — для
-          абсолютных детей padding родителя И ЕСТЬ точка отсчёта left:0), а
-          дальше трек может доскроллить последнюю карточку до самого правого
-          края экрана. Колесо над этим окном едет горизонтально (см. onWheel
-          выше), в остальном — обычный вертикальный скролл страницы. */}
-      <div ref={trackRef} className="no-scrollbar absolute left-0 top-[318px] h-[399px] w-full overflow-x-auto pl-[46px]">
+      {/* Видимое окно трека — на всю ширину экрана (w-full), нативный
+          overflow-x-auto со скрытым скроллбаром. Слева — отступ,
+          вычисленный в JS (см. выше) так, чтобы первая карточка стояла
+          строго под заголовком на любой ширине экрана. Справа — тоже
+          вычисленный отступ (половина ширины секции минус половина
+          карточки), чтобы в конце скролла ПОСЛЕДНЯЯ (12-я) карточка
+          останавливалась своим центром ровно по центру экрана. */}
+      <div
+        ref={trackRef}
+        className="no-scrollbar absolute left-0 top-[318px] h-[399px] w-full overflow-x-auto"
+        style={{ paddingLeft: padding.left, paddingRight: padding.right }}
+      >
         <div className="relative h-[399px] w-[4068px]">
           {STEPS.map((step, i) => {
             const style = CATEGORY_STYLE[step.category];

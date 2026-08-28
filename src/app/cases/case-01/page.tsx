@@ -158,7 +158,13 @@ export default function Case01Page() {
       <div className="mx-auto flex w-[1440px] flex-col items-start">
         <TeamGuide />
         <Guide />
-        <Consistency />
+      </div>
+
+      {/* Consistency — тоже full-bleed фон (см. Consistency.tsx), прямым
+          ребёнком full-width root, как Pipeline/Footer выше. */}
+      <Consistency />
+
+      <div className="mx-auto flex w-[1440px] flex-col items-start">
         <Role />
         <Summary />
       </div>
