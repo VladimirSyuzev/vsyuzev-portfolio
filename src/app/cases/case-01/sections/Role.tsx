@@ -10,6 +10,8 @@
 // SVG-экспорт целиком нужного фрейма из Figma (надёжнее и проще, чем
 // пересобирать каждую из 5-8 слоёв вручную; проверено — blend-режимы и
 // градиенты в экспорте сохраняются).
+import Reveal from "@/components/Reveal";
+
 const RA = "/cases/case-01/sections/role-assets";
 
 const STEPS = [
@@ -40,7 +42,7 @@ export default function Role() {
       </p>
 
       <div className="absolute bottom-[146px] left-[46px] flex items-end justify-center gap-[12px]">
-        {STEPS.map((step) => (
+        {STEPS.map((step, i) => (
           <div key={step.number} className="group flex w-[328px] flex-col gap-[24px]">
             {/* Диаграмма — свёрнута в покое (grid-rows 0fr + opacity 0),
                 раскрывается по наведению на карточку. grid-rows-based
@@ -62,21 +64,24 @@ export default function Role() {
               <div className="flex items-center gap-[16px]">
                 {/* Иконка тоже переключается: "+" в покое (можно раскрыть),
                     "-" по наведению (можно свернуть) — как в самом
-                    Figma-компоненте. */}
-                <div className="relative size-[24px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt=""
-                    className="absolute inset-0 size-full transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-0"
-                    src="/cases/case-01/sections/role-plus.svg"
-                  />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt=""
-                    className="absolute inset-0 size-full opacity-0 transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-100"
-                    src="/cases/case-01/sections/role-minus.svg"
-                  />
-                </div>
+                    Figma-компоненте. Голубой «+» появляется при входе блока
+                    (doodle-ревил, стаггер по шагам). */}
+                <Reveal variant="doodle" delay={i * 0.09} className="shrink-0">
+                  <div className="relative size-[24px]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      alt=""
+                      className="absolute inset-0 size-full transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-0"
+                      src="/cases/case-01/sections/role-plus.svg"
+                    />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      alt=""
+                      className="absolute inset-0 size-full opacity-0 transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-100"
+                      src="/cases/case-01/sections/role-minus.svg"
+                    />
+                  </div>
+                </Reveal>
                 <p className="text-[14px] font-medium tracking-[0.28px] text-[#121212]">{step.number}</p>
               </div>
               <p className="w-[215px] whitespace-pre-line text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-80">

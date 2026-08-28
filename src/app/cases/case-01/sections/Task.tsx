@@ -63,6 +63,16 @@ export default function Task() {
 
       render(0);
 
+      // Доодл-«молния» — появление при входе блока в экран (до пина).
+      gsap.set(".task-doodle", { opacity: 0, scale: 0.86, rotate: -6 });
+      const doodleST = ScrollTrigger.create({
+        trigger: wrapRef.current,
+        start: "top 72%",
+        once: true,
+        onEnter: () =>
+          gsap.to(".task-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.6, ease: "siteEase" }),
+      });
+
       const st = ScrollTrigger.create({
         trigger: wrapRef.current,
         start: "top top",
@@ -75,7 +85,10 @@ export default function Task() {
         onRefresh: (self) => render(self.progress),
       });
 
-      return () => st.kill();
+      return () => {
+        st.kill();
+        doodleST.kill();
+      };
     },
     { scope: wrapRef, dependencies: [reduced] }
   );
@@ -102,7 +115,7 @@ export default function Task() {
         />
       </div>
 
-      <div className="absolute left-[692.95px] top-[1041px] h-[120.909px] w-[92.566px]">
+      <div className="task-doodle absolute left-[692.95px] top-[1041px] h-[120.909px] w-[92.566px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" src={`${A}/doodle-flash.svg`} className="block size-full max-w-none" />
       </div>

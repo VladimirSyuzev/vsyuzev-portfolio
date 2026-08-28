@@ -1,3 +1,8 @@
+"use client";
+
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, useReducedMotion, waveStagger } from "@/lib/gsap";
 import BalanceBoard1 from "./BalanceBoard1";
 import BalanceBoard2 from "./BalanceBoard2";
 import Reveal from "@/components/Reveal";
@@ -21,8 +26,34 @@ import Reveal from "@/components/Reveal";
 // Фон растянут на весь экран (w-full, как Pipeline/Footer/Итог) — стоящее
 // правило для всех тёмных/картиночных блоков сайта.
 export default function Consistency() {
+  const scope = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  // «Волна» по каждой иконке обеих Balance Board — диагональный reveal
+  // (waveStagger, 5 колонок на доску; вторая доска идёт следом, продолжая
+  // диагональ). Иконки появляются по отдельности.
+  useGSAP(
+    () => {
+      if (reduced || !scope.current) return;
+      const tw = gsap.from(".bb-icon", {
+        opacity: 0,
+        scale: 0.55,
+        duration: 0.4,
+        ease: "siteEase",
+        stagger: waveStagger(5, 0.028),
+        clearProps: "transform,opacity",
+        scrollTrigger: { trigger: scope.current, start: "top 68%", once: true },
+      });
+      return () => {
+        tw.scrollTrigger?.kill();
+        tw.kill();
+      };
+    },
+    { scope, dependencies: [reduced] },
+  );
+
   return (
-    <div className="relative h-[900px] w-full overflow-clip bg-[#121212]">
+    <div ref={scope} className="relative h-[900px] w-full overflow-clip bg-[#121212]">
       <div className="relative mx-auto h-full w-[1440px]">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff] uppercase">06</p>

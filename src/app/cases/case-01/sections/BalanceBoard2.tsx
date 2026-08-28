@@ -43,7 +43,7 @@ export default function BalanceBoard2() {
       {ITEMS.map((item) => (
         <div
           key={item.src}
-          className="absolute flex flex-col items-start rounded-[15.091px] bg-white p-[7.545px]"
+          className="bb-icon absolute flex flex-col items-start rounded-[15.091px] bg-white p-[7.545px]"
           style={{ left: item.left, top: item.top }}
         >
           <img alt={item.alt} src={`${B}/${item.src}.svg`} style={{ width: item.w ?? 46.797, height: item.h ?? 46.797 }} />
