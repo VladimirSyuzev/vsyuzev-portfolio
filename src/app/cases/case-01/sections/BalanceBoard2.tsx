@@ -2,6 +2,11 @@
 // снято через get_design_context. 25 иконок в белых скруглённых карточках
 // (в отличие от Board 1, где иконки лежат прямо на белом фоне — так и в
 // самой Figma), абсолютное позиционирование как в исходнике.
+//
+// Та же поправка на масштаб, что и в BalanceBoard1.tsx: раскладка внутри
+// рассчитана на канву 498×498, актуальный размер фрейма в Figma — 328×328
+// (328/498≈0.6586), см. подробный комментарий там.
+const SCALE = 328 / 498;
 const B = "/cases/case-01/sections/balance-assets/b2";
 
 const ITEMS: { left: number; top: number; src: string; alt: string; w?: number; h?: number }[] = [
@@ -34,7 +39,7 @@ const ITEMS: { left: number; top: number; src: string; alt: string; w?: number; 
 
 export default function BalanceBoard2() {
   return (
-    <div className="relative size-[498px] bg-white">
+    <div className="relative size-[498px] bg-white" style={{ transform: `scale(${SCALE})`, transformOrigin: "top left" }}>
       {ITEMS.map((item) => (
         <div
           key={item.src}

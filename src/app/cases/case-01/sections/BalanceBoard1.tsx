@@ -1,11 +1,20 @@
 // Balance Board 1 (медицинские иконки) — 1:1 из Figma (node 1961:32486),
 // снято через get_design_context. 25 иконок, абсолютное позиционирование
 // как в исходнике (пара строк с неровным шагом — так и в самой Figma).
+//
+// Раскладка внутри рассчитана на канву 498×498 (как было при первом снятии
+// координат), но актуальный размер фрейма в Figma сейчас 328×328 (сверено
+// повторным запросом — либо изменилось в макете, либо неточно снято тогда).
+// Пересчитывать вручную ~25 иконок рискованно — вместо этого масштабируем
+// всё содержимое целиком (328/498≈0.6586): сверено по внутреннему фрейму
+// сетки — при таком масштабе он ложится ровно на новые координаты
+// (41.25/39.26, 245.5×248.98) с точностью до 0.01px.
+const SCALE = 328 / 498;
 const B = "/cases/case-01/sections/balance-assets/b1";
 
 export default function BalanceBoard1() {
   return (
-    <div className="relative size-[498px] bg-white">
+    <div className="relative size-[498px] bg-white" style={{ transform: `scale(${SCALE})`, transformOrigin: "top left" }}>
       <div className="absolute left-[62.63px] top-[59.61px] h-[378.026px] w-[372.744px]">
         {/* row top=0 */}
         <div className="absolute left-0 top-0 flex items-center gap-[15.845px]">

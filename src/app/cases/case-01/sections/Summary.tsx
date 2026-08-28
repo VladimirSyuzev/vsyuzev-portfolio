@@ -1,6 +1,9 @@
 // 08 Итог — 1:1 из Figma (node 1961:32637). Композиция из iPhone-мокапов —
-// теперь настоящий SVG-экспорт пользователя (summary.svg, 715×554 — тот же
-// размер, что был у screenshot-версии), не растровый PNG.
+// настоящий SVG-экспорт пользователя (summary.svg, 715×554). Сверено
+// повторным запросом к Figma: X-позиция композиции была смещена (556
+// вместо 616.28 — сама композиция в Figma шире, 714px, за счёт пустых
+// полей по краям, поэтому 556 казалось "похоже, но не то"), и не хватало
+// двух декоративных доодлов (node 2284:40040 и 2287:4248).
 export default function Summary() {
   return (
     <div className="relative h-[850px] w-[1440px] overflow-clip bg-[#fafafa]">
@@ -25,8 +28,16 @@ export default function Summary() {
         alt="Итоговая система иконок в интерфейсе голосового ассистента Алиса"
         width={715}
         height={554}
-        className="absolute left-[556px] top-[296px] w-[715px]"
+        className="absolute left-[616.28px] top-[296px] w-[715px]"
       />
+
+      {/* Доодлы — статичные, x/y 1:1 из Figma. */}
+      <div className="absolute left-[358.42px] top-[551.04px] h-[162.57px] w-[185.58px]">
+        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-1.svg" />
+      </div>
+      <div className="absolute left-[1244.47px] top-[181px] h-[125.02px] w-[158.02px]">
+        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-2.svg" />
+      </div>
     </div>
   );
 }

@@ -1,56 +1,27 @@
-// 07 Роль — 1:1 из Figma (node 1961:32604). Диаграмма шага 004 (корона в
-// конструкторской сетке) теперь настоящий SVG (снят через get_design_context
-// узла 2009:11438), раньше была одним screenshot-ассетом. Шаги 001-003 и
-// подписи — настоящий текст с маленькими иконками (+/-).
+// 07 Роль — 1:1 из Figma (node 1961:32604). Все 4 шага — интерактивный
+// компонент из отдельного файла Figma (node 1752:8440, "Up_1".."Up_4"),
+// присланного пользователем отдельной ссылкой: каждый шаг имеет 2
+// состояния — "Property 1=+" (по умолчанию: только номер+подпись, без
+// картинки) и "Property 1=-" (по наведению: раскрывается диаграмма 328×328
+// над подписью). Раньше шаг 004 был единственным с картинкой и показывал
+// её ВСЕГДА статично (плюс диаграмма собиралась вручную из ~8 слоёв) — по
+// уточнению пользователя это неверно: у всех 4 шагов ОДИНАКОВАЯ логика
+// hover-раскрытия, картинка в покое скрыта. Диаграммы 1-4 — плоский
+// SVG-экспорт целиком нужного фрейма из Figma (надёжнее и проще, чем
+// пересобирать каждую из 5-8 слоёв вручную; проверено — blend-режимы и
+// градиенты в экспорте сохраняются).
 const RA = "/cases/case-01/sections/role-assets";
 
 const STEPS = [
-  { icon: "role-plus.svg", number: "001", text: "Выбрали образ,\nизменяем его в сетке" },
-  { icon: "role-plus.svg", number: "002", text: "Выбираем контур\nиз сетки для формата иконки" },
-  { icon: "role-plus.svg", number: "003", text: "Помещаем в него образ, пока\nчто он не попадает в визуальный вес сетки" },
-  { icon: "role-minus.svg", number: "004", text: "Размещаем объект в контуре,\nс компенсационными вылетами", image: true },
+  { number: "001", text: "Выбрали образ,\nизменяем его в сетке", image: `${RA}/role-diagram-1.svg` },
+  { number: "002", text: "Выбираем контур\nиз сетки для формата иконки", image: `${RA}/role-diagram-2.svg` },
+  {
+    number: "003",
+    text: "Помещаем в него образ, пока\nчто он не попадает в визуальный вес сетки",
+    image: `${RA}/role-diagram-3.svg`,
+  },
+  { number: "004", text: "Размещаем объект в контуре,\nс компенсационными вылетами", image: `${RA}/role-diagram-4.svg` },
 ];
-
-function CrownGridDiagram() {
-  return (
-    <div className="relative size-[328px] bg-white">
-      <div className="absolute inset-[16.67%_8.33%]">
-        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vector-outline.svg`} />
-      </div>
-      <div className="absolute left-[27.33px] top-[54.67px] h-[102.5px] w-[136.667px]">
-        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-780.svg`} />
-      </div>
-      <div className="absolute left-[164px] top-[54.67px] flex h-[102.5px] w-[136.667px] items-center justify-center">
-        <div className="-scale-y-100 rotate-180">
-          <div className="relative h-[102.5px] w-[136.667px]">
-            <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-781.svg`} />
-          </div>
-        </div>
-      </div>
-      <div className="absolute left-[27.33px] top-[170.84px] h-[102.5px] w-[34.167px]">
-        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-782.svg`} />
-      </div>
-      <div className="absolute left-[259.67px] top-[164px] flex h-[102.5px] w-[34.167px] items-center justify-center">
-        <div className="-scale-y-100 rotate-180">
-          <div className="relative h-[102.5px] w-[34.167px]">
-            <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vec-783.svg`} />
-          </div>
-        </div>
-      </div>
-      <div className="absolute left-0 top-0 size-[328px]">
-        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/grid.svg`} />
-      </div>
-      <div className="absolute inset-[10.42%_4.17%_16.26%_4.17%]">
-        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`${RA}/vector-outline2.svg`} />
-      </div>
-      <div className="absolute left-[21.37px] top-[44.31px] h-[102.612px] w-[284.208px] mix-blend-screen">
-        <div className="absolute inset-[-13.32%_-4.81%]">
-          <img alt="" className="block size-full max-w-none" src={`${RA}/crown-blend.svg`} />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function Role() {
   return (
@@ -70,11 +41,37 @@ export default function Role() {
 
       <div className="absolute bottom-[146px] left-[46px] flex items-end justify-center gap-[12px]">
         {STEPS.map((step) => (
-          <div key={step.number} className="flex w-[328px] flex-col gap-[24px]">
-            {step.image && <CrownGridDiagram />}
+          <div key={step.number} className="group flex w-[328px] flex-col gap-[24px]">
+            {/* Диаграмма — свёрнута в покое (grid-rows 0fr + opacity 0),
+                раскрывается по наведению на карточку. grid-rows-based
+                анимация высоты — не max-height/scale, чтобы не пришлось
+                подбирать "достаточно большое" значение на глаз. */}
+            <div className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none group-hover:grid-rows-[1fr] group-hover:opacity-100">
+              <div className="overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" className="block size-[328px]" src={step.image} />
+              </div>
+            </div>
+
             <div className="flex flex-col gap-[12px]">
               <div className="flex items-center gap-[16px]">
-                <img alt="" className="size-[24px]" src={`/cases/case-01/sections/${step.icon}`} />
+                {/* Иконка тоже переключается: "+" в покое (можно раскрыть),
+                    "-" по наведению (можно свернуть) — как в самом
+                    Figma-компоненте. */}
+                <div className="relative size-[24px]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt=""
+                    className="absolute inset-0 size-full transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-0"
+                    src="/cases/case-01/sections/role-plus.svg"
+                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt=""
+                    className="absolute inset-0 size-full opacity-0 transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-100"
+                    src="/cases/case-01/sections/role-minus.svg"
+                  />
+                </div>
                 <p className="text-[14px] font-medium tracking-[0.28px] text-[#121212]">{step.number}</p>
               </div>
               <p className="w-[215px] whitespace-pre-line text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-80">
