@@ -16,7 +16,7 @@ export default function Summary() {
       </p>
       <p className="absolute left-[46px] top-[261px] w-[477.197px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
         По итогам проекта было создано и обновлено более 100 иконок для разных продуктовых
-        направлений — включая финансы, медицину, социальные сервисы и голосового AI-ассистента.
+        направлений, включая финансы, медицину, социальные сервисы и голосового AI-ассистента.
       </p>
 
       {/* eslint-disable-next-line @next/next/no-img-element */}

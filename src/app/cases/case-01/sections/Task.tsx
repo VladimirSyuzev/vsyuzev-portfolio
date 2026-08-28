@@ -95,7 +95,7 @@ export default function Task() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           ref={imgRef}
-          alt="Витрина категорий иконок — аудит библиотеки"
+          alt="Витрина категорий иконок: аудит библиотеки"
           src={STATE2}
           className="absolute left-0 max-w-none"
           style={{ width: NATIVE2.w * SCALE_START, height: NATIVE2.h * SCALE_START, top: OFFSET_Y_START }}
@@ -125,7 +125,7 @@ export default function Task() {
           </p>
           <div className="absolute left-[46px] top-[318px] overflow-hidden" style={{ width: WINDOW_END.w, height: WINDOW_END.h }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="Витрина категорий иконок — аудит библиотеки" src={STATE2} className="block" style={{ width: NATIVE2.w, height: NATIVE2.h }} />
+            <img alt="Витрина категорий иконок: аудит библиотеки" src={STATE2} className="block" style={{ width: NATIVE2.w, height: NATIVE2.h }} />
           </div>
           <div className="absolute left-[692.95px] top-[1041px] h-[120.909px] w-[92.566px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
