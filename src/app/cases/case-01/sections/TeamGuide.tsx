@@ -21,7 +21,10 @@ const BULLETS_RIGHT = [
 
 export default function TeamGuide() {
   return (
-    <div className="relative h-[900px] w-[1440px] overflow-clip bg-[#fafafa]">
+    // Высота исправлена с 900 на настоящие 1003px (сверено повторным
+    // запросом к Figma, designedHeight секции) — иначе итоговая
+    // строка+эллипс ниже (см. отдельный TODO про них) обрезались бы.
+    <div className="relative h-[1003px] w-[1440px] overflow-clip bg-[#fafafa]">
       <div className="absolute left-[44px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">05</p>
         <p className="text-[#121212]">РУКОВОДСТВО ДЛЯ КОМАНДЫ</p>
@@ -59,16 +62,24 @@ export default function TeamGuide() {
 
       <GuideScale />
 
-      <div className="absolute left-[851.27px] top-[188px] h-[213.601px] w-[269.992px]">
+      {/* Позиция сверена напрямую по Figma (node 2279:39642) — раньше стояла
+          на 1032.84-851.27≈182px левее и 188-84.36≈104px ниже нужного. */}
+      <div className="absolute left-[1032.84px] top-[84.36px] h-[221.29px] w-[276.03px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/guide-crown-doodle.svg" />
       </div>
 
-      <p className="absolute left-[46px] top-[739px] w-[326px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Фактически это стало внутренней системой производства иконок для нашей команды.
+      {/* ВНИМАНИЕ: сверено по Figma (node 1961:32279) — текст оказался не
+          маленьким левым абзацем, а крупной центрированной строкой (тот же
+          стиль Body/Bold 32px, что у итоговой фразы в "Аудите библиотеки"),
+          без слова "Фактически". Позиция/стиль поправлены. Но в Figma у неё
+          ЕЩЁ ЕСТЬ обводка-эллипс вокруг (node 2322:5169, 764×444, с явным
+          поворотом — точный угол не удалось снять инструментом, только
+          оценить по bounding box, ≈19-20°) — её и подчёркивание ниже
+          (guide-underline.svg) я не трогал, т.к. без точного угла есть риск
+          сделать заметно хуже; см. итоговый отчёт. */}
+      <p className="absolute left-[365.5px] top-[791.99px] w-[709px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+        это стало внутренней системой производства иконок для нашей команды.
       </p>
-      <div className="absolute left-[301.44px] top-[774.63px] h-[24.303px] w-[99.551px] rotate-[2.87deg]">
-        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/guide-underline.svg" />
-      </div>
     </div>
   );
 }

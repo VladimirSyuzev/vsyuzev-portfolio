@@ -6,10 +6,11 @@ import Footer from "@/components/Footer";
 // тела страницы (body.png) до перевода в код, см. FIGMA-BRIEF.md.
 export default function Case04Page() {
   return (
-    <div className="mx-auto flex w-[1440px] flex-col items-start">
+    <div className="flex w-full flex-col items-center">
       <Header />
       <div className="h-[62px] w-full shrink-0" />
 
+      <div className="mx-auto flex w-[1440px] flex-col items-start">
       <div className="relative h-[900px] w-[1440px] overflow-clip bg-[#fafafa]">
         <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
           <div className="absolute left-[-347px] top-[-191px] h-[899px] w-[1950px] overflow-hidden">
@@ -66,6 +67,8 @@ export default function Case04Page() {
         height={9135}
         className="block w-[1440px]"
       />
+
+      </div>
 
       <Footer />
     </div>

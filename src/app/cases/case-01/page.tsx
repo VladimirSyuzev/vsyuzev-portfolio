@@ -142,15 +142,14 @@ export default function Case01Page() {
       <Stats />
       <ProblemScreen />
 
+      {/* Pipeline больше не пин-секция на весь экран (see Pipeline.tsx) —
+          обычный элемент в 1440-сетке, как и соседи, поэтому все разделы
+          от "Задачи" до конца страницы теперь в одной общей обёртке. */}
       <div className="mx-auto flex w-[1440px] flex-col items-start">
         <Task />
         <AuditLibrary />
         <Primitives />
-      </div>
-
-      <Pipeline />
-
-      <div className="mx-auto flex w-[1440px] flex-col items-start">
+        <Pipeline />
         <TeamGuide />
         <Guide />
         <Consistency />

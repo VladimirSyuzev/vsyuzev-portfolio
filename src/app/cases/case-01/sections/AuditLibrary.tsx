@@ -1,8 +1,8 @@
 // 03 Аудит библиотеки — 1:1 из Figma (node 1965:42538). Таблица аудита
 // теперь настоящий DOM (раньше была screenshot-ассетом): 9 колонок×6 строк,
 // реальные текст/иконки/чекбоксы, снято через get_design_context узла
-// 1965:42569. Высота секции исправлена с 898 на настоящие 1091px — раньше
-// не хватало места и обрезались стрелка-доодл и финальная строка.
+// 1965:42569. Высота секции — 1091px (по факту содержимого: эллипс-доодл
+// внизу заканчивается на 1062.4px + отступ, см. правку эллипса ниже).
 import Dot from "@/components/Dot";
 
 const A = "/cases/case-01/sections/audit-assets";
@@ -174,12 +174,17 @@ export default function AuditLibrary() {
 
       {/* Итоговая строка + обводка-эллипс доодл вокруг неё (эллипс шире и
           начинается выше текста — не концентричны с текстовым блоком).
-          Координаты обновлены по правкам пользователя в Figma. */}
-      <div className="absolute left-[415.3px] top-[890.63px] h-[220.53px] w-[621.4px]">
+          Координаты сверены напрямую по Figma (node 2322:5170 / 1965:42546):
+          эллипс раньше стоял на 48.76px ниже нужного (top 890.63 вместо
+          841.87px) — из-за этого он не окружал текст как в макете и
+          подрезался снизу секцией. Текст остаётся на месте (его абсолютная
+          позиция 425.5/906 и так совпадала с Figma), только его top внутри
+          обёртки пересчитан под новый top обёртки. */}
+      <div className="absolute left-[415.3px] top-[841.87px] h-[220.53px] w-[621.4px]">
         <div className="absolute inset-[-1.74%_-0.49%]">
           <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
         </div>
-        <p className="absolute left-[10.2px] top-[15.37px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+        <p className="absolute left-[10.2px] top-[64.13px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
           По итогам анализа был сформирован подробный план работ
         </p>
       </div>

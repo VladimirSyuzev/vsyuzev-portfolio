@@ -1,18 +1,20 @@
 "use client";
 
-import { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger, prefersReducedMotion, useReducedMotion } from "@/lib/gsap";
+import { useEffect, useRef } from "react";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
-// node 1971:64076). Трек шире экрана (4068px), 12 карточек шагов.
+// node 1971:64076, сверено повторным запросом к Figma после переподключения
+// MCP). В макете трек НЕ центрируется скроллом — он просто начинается у
+// левого поля (x=46, как заголовок) и физически шире окна (4068px против
+// видимой зоны 1348px между полями): это обычная горизонтальная прокрутка
+// внутри рамки, а не scroll-jack.
 //
-// По просьбе: секция закрепляется (pin) на весь экран, и вертикальный
-// скролл двигает трек ГОРИЗОНТАЛЬНО через центр страницы — трек стартует
-// так, что первая карточка стоит по центру экрана, доскролливается так,
-// что ПОСЛЕДНЯЯ карточка останавливается по центру экрана (трек уходит
-// за оба края экрана по пути) — не hover+колесо, как было раньше, а
-// полноценный scroll-jack (GSAP ScrollTrigger pin+scrub).
+// Интеракция (по уточнению): наведение курсора на трек + колесо мыши —
+// трек едет ГОРИЗОНТАЛЬНО (нативный scrollLeft, без пина всей секции).
+// Как только курсор уходит с трека — колесо снова листает страницу
+// вертикально как обычно, и появляется следующий блок «Руководство для
+// команды». На границах трека (в начале/конце) колесо тоже отдаётся
+// странице, чтобы не превращать трек в ловушку для скролла.
 const CATEGORY_STYLE = {
   design: { border: "#008cff", text: "#008cff", label: "ДИЗАЙН" },
   artDirector: { border: "#1dbb71", text: "#1dbb71", label: "АРТ-ДИРЕКТОР" },
@@ -36,89 +38,59 @@ const STEPS: Step[] = [
   { number: "12", title: "Передача библиотеки клиенту", text: "Передаем готовые компоненты в общую библиотеку Яндекса", category: "client", offset: 274 },
 ];
 
-const CARD_W = 328;
-const PITCH = 340; // шаг между карточками (совпадает с left: i*340 у каждой)
-const FIRST_CENTER = CARD_W / 2; // 164 — центр первой карточки в локальных координатах трека
-const LAST_CENTER = (STEPS.length - 1) * PITCH + CARD_W / 2; // 3904 — центр последней
+const PITCH = 340; // шаг между карточками (совпадает с x в Figma: 0,340,680…3740)
 
 export default function Pipeline() {
-  const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  // При "уменьшить анимацию" пин+scroll-jack не запускается вовсе (см.
-  // ниже) — трек тогда просто overflow-x-auto со стандартным скроллом, а
-  // не спрятан за одним недвижимым экраном, иначе 11 из 12 карточек были
-  // бы физически недостижимы (overflow-hidden без анимации, которая их
-  // должна была прокрутить).
-  const reducedMotion = useReducedMotion();
 
-  useGSAP(
-    () => {
-      if (prefersReducedMotion() || !sectionRef.current || !trackRef.current) return;
-      const track = trackRef.current;
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
 
-      function xForProgress(t: number) {
-        const center = window.innerWidth / 2;
-        const startX = center - FIRST_CENTER;
-        const endX = center - LAST_CENTER;
-        return startX + (endX - startX) * t;
-      }
+    function onWheel(e: WheelEvent) {
+      if (!el) return;
+      const delta = e.deltaY;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
+      // На границе трека отдаём колесо странице — иначе наведённый курсор
+      // на первой/последней карточке "запирал" бы вертикальный скролл.
+      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
+      el.scrollLeft += delta;
+      e.preventDefault();
+    }
 
-      gsap.set(track, { x: xForProgress(0) });
-
-      const st = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top top",
-        end: `+=${LAST_CENTER - FIRST_CENTER}`,
-        pin: true,
-        scrub: 0.5,
-        onUpdate: (self) => gsap.set(track, { x: xForProgress(self.progress) }),
-        onRefresh: (self) => gsap.set(track, { x: xForProgress(self.progress) }),
-      });
-
-      return () => st.kill();
-    },
-    { scope: sectionRef }
-  );
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
 
   return (
-    <div
-      ref={sectionRef}
-      className={`relative w-full bg-[#121212] ${reducedMotion ? "h-auto py-[134px]" : "h-screen overflow-hidden"}`}
-    >
-      <div className={reducedMotion ? "relative mx-auto w-[1440px]" : "absolute left-1/2 top-[134px] w-[1440px] -translate-x-1/2"}>
-        <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
-          <p className="text-[#008cff]">04</p>
-          <p className="text-white">ПОСТРОЕНИЕ ПРОЦЕССА</p>
-        </div>
+    <div className="relative h-[900px] w-[1440px] overflow-clip bg-[#121212]">
+      <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
+        <p className="text-[#008cff]">04</p>
+        <p className="text-white">ПОСТРОЕНИЕ ПРОЦЕССА</p>
       </div>
 
-      {/* Декоративная подложка — статична по центру экрана (раньше двигалась
-          вместе со старым фикс-трек-контейнером; трек теперь едет через весь
-          экран сам по себе, поэтому подложка отвязана от него). Две синие
-          стрелки-доодлы, раньше указывавшие конкретно на карточку "05" в
-          статичной раскладке, здесь убраны: при scroll-jack трек постоянно
-          движется, и стрелка, зафиксированная в одной точке экрана, почти
-          всегда указывала бы не на "05", а на что-то другое — не нашёл
-          осмысленной замены, не стал выдумывать. */}
-      {!reducedMotion && (
-        <div className="absolute left-1/2 top-1/2 h-[673px] w-[1348px] -translate-x-1/2 -translate-y-1/2 opacity-60">
-          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-bg.svg" />
-        </div>
-      )}
+      {/* Декоративная подложка — статична, x46/y181, 1348×673 (1:1 Figma) */}
+      <div className="absolute left-[46px] top-[181px] h-[673px] w-[1348px] opacity-60">
+        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-bg.svg" />
+      </div>
 
-      {/* Трек — во всю ширину окна (не зажат в 1440-сетку), едет через
-          центр экрана при скролле. При "уменьшить анимацию" — обычный
-          горизонтальный overflow-x-auto без pin/scroll-jack, чтобы все 12
-          карточек оставались доступны прокруткой. */}
-      <div
-        ref={trackRef}
-        className={
-          reducedMotion
-            ? "no-scrollbar mx-auto mt-[56px] w-[1440px] overflow-x-auto"
-            : "absolute left-0 top-1/2 h-[399px] w-[4068px] -translate-y-1/2"
-        }
-      >
-        <div className={reducedMotion ? "relative h-[399px] w-[4068px]" : "contents"}>
+      {/* Стрелки-доодлы, указывающие на карточку "05" в состоянии покоя
+          (scrollLeft=0) — статичные, x/y 1:1 из Figma, не двигаются вместе
+          с треком (как и в самом макете, это единичная аннотация). */}
+      <div className="absolute left-[1312.14px] top-[763.91px] h-[58.33px] w-[44.66px]">
+        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-1.svg" />
+      </div>
+      <div className="absolute left-[1263.56px] top-[778.59px] h-[22.63px] w-[87.48px]">
+        <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-2.svg" />
+      </div>
+
+      {/* Видимое окно трека — x46/y318, ширина 1348 (та же зона между
+          полями, что и у подложки), нативный overflow-x-auto со скрытым
+          скроллбаром. Колесо над этим окном едет горизонтально (см. onWheel
+          выше), в остальном — обычный вертикальный скролл страницы. */}
+      <div ref={trackRef} className="no-scrollbar absolute left-[46px] top-[318px] h-[399px] w-[1348px] overflow-x-auto">
+        <div className="relative h-[399px] w-[4068px]">
           {STEPS.map((step, i) => {
             const style = CATEGORY_STYLE[step.category];
             return (

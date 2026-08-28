@@ -49,12 +49,18 @@ export default function TaskZoomCrop() {
 
       render(0);
 
+      // start: "top top" — анимация запускается ТОЛЬКО когда сама витрина
+      // (а значит и весь блок "Задача" целиком, она внутри него) уже
+      // полностью встала на своё место и заняла экран сверху донизу — до
+      // этого момента наверху ещё мог быть виден хвост предыдущего тёмного
+      // блока ("top 75%" запускало зум ещё до того, как блок долистался).
       const st = ScrollTrigger.create({
         trigger: triggerRef.current,
-        start: "top 75%",
-        end: "bottom 40%",
+        start: "top top",
+        end: "+=600",
         scrub: 0.4,
         onUpdate: (self) => render(self.progress),
+        onRefresh: (self) => render(self.progress),
       });
 
       return () => st.kill();
