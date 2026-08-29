@@ -197,7 +197,7 @@ export default function ProblemScreen() {
         screenPlayed = true;
         gsap
           .timeline({ defaults: { ease: "siteEase" } })
-          .to(".scr-bullet", { opacity: 1, x: 0, duration: 0.4, stagger: 0.06 })
+          .to(".scr-bullet", { opacity: 1, x: 0, duration: 0.4, stagger: 0.06, clearProps: "opacity" })
           .to(".scr-mock", { opacity: 1, scale: 1, duration: 0.5 }, "-=0.1")
           .to(".scr-anno", { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.15")
           .to(".scr-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.5 }, "-=0.3");
