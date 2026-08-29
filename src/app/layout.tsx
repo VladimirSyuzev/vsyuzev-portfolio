@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Wix_Madefor_Display } from "next/font/google";
 import localFont from "next/font/local";
 import ScrollTriggerRefresh from "@/components/ScrollTriggerRefresh";
+import Typographer from "@/components/Typographer";
 import "./globals.css";
 
 // Wix Madefor Display — используется в макете для заголовков (Bold),
@@ -40,6 +41,7 @@ export default function RootLayout({
     <html lang="ru" className={`${wixMadefor.variable} ${aeonikPro.variable}`}>
       <body>
         {children}
+        <Typographer />
         <ScrollTriggerRefresh />
       </body>
     </html>
