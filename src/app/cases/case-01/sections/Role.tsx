@@ -52,15 +52,19 @@ export default function Role() {
       <div className="absolute bottom-[146px] left-[46px] flex items-end justify-center gap-[12px]">
         {STEPS.map((step, i) => (
           <div key={step.number} className="group flex w-[328px] flex-col gap-[24px]">
-            {/* Диаграмма — свёрнута в покое (grid-rows 0fr + opacity 0),
-                раскрывается по наведению на карточку. grid-rows-based
-                анимация высоты — не max-height/scale, чтобы не пришлось
-                подбирать "достаточно большое" значение на глаз. */}
-            <div className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none group-hover:grid-rows-[1fr] group-hover:opacity-100">
-              <div className="overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-[328px]" src={step.image} />
-              </div>
+            {/* Диаграмма — место под неё зарезервировано всегда (h-328),
+                подписи не дёргаются. В покое картинка скрыта маской
+                clip-path: inset(100% 0 0 0) (виден только низ), по наведению
+                маска раскрывается СНИЗУ ВВЕРХ до inset(0) + лёгкий
+                scale .96→1 от нижнего края, 450мс expo-out. Та же анимация,
+                что у фрейма «варианты» в кейсе 2 (Task.tsx). */}
+            <div className="h-[328px] overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt=""
+                className="block size-[328px] origin-bottom scale-[0.96] [clip-path:inset(100%_0_0_0)] transition-[clip-path,transform] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none group-hover:scale-100 group-hover:[clip-path:inset(0px)]"
+                src={step.image}
+              />
             </div>
 
             {/* Фикс. высота 78px (как в Figma-компоненте): все ряды с

@@ -17,9 +17,11 @@ const A = "/cases/case-02/sections";
 // меняется на «−».
 //
 // Механика hover — 1:1 такая же, как у аналогичного фрейма в блоке «Роль»
-// кейса 1 (Role.tsx): разворот высоты через grid-rows 0fr→1fr + opacity,
-// 300ms, ease expo-out; ряд подписей закреплён по низу (items-end), колонка
-// растёт вверх. Голубой «+» въезжает doodle-ревилом со стаггером по шагам.
+// кейса 1 (Role.tsx): место под иконку зарезервировано всегда, в покое она
+// скрыта маской clip-path: inset(100% 0 0 0), по наведению маска
+// раскрывается СНИЗУ ВВЕРХ до inset(0) + scale .96→1 от нижнего края,
+// 450мс expo-out. Ряд подписей закреплён по низу (items-end), подписи не
+// дёргаются. Голубой «+» въезжает doodle-ревилом со стаггером по шагам.
 const SERVICES = [
   { label: "Yandex\nCloud Video", icon: "task-opt-video.svg" },
   { label: "Yandex\nCloud CDN", icon: "task-opt-cdn.svg" },
@@ -55,13 +57,16 @@ export default function Task() {
       <div className="absolute bottom-[548px] left-[46px] flex items-end gap-[12px]">
         {SERVICES.map((s, i) => (
           <div key={s.label} className="group flex w-[328px] flex-col gap-[24px]">
-            {/* Иконка + призрак — свёрнуты в покое (grid-rows 0fr + opacity 0),
-                раскрываются по наведению. Идентично Role.tsx кейса 1. */}
-            <div className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none group-hover:grid-rows-[1fr] group-hover:opacity-100">
-              <div className="overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block w-[328px] max-w-none" src={`${A}/${s.icon}`} />
-              </div>
+            {/* Иконка + призрак — место зарезервировано (h-516), в покое
+                скрыты маской, по наведению раскрываются снизу вверх +
+                scale .96→1. Идентично Role.tsx кейса 1. */}
+            <div className="h-[516px] overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt=""
+                className="block w-[328px] max-w-none origin-bottom scale-[0.96] [clip-path:inset(100%_0_0_0)] transition-[clip-path,transform] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] motion-reduce:transition-none group-hover:scale-100 group-hover:[clip-path:inset(0px)]"
+                src={`${A}/${s.icon}`}
+              />
             </div>
 
             {/* Подпись с буллетом — «+» в покое, «−» по наведению. */}
