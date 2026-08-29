@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
+import { GLASS_BUBBLE } from "@/lib/glass";
 
 // 04 Процесс — 1:1 из актуальной Figma (node 2009:12647, высота 991,
 // трек "Процесс" node 2013:14226). Тот же паттерн, что «04 Построение
@@ -9,7 +10,8 @@ import Reveal from "@/components/Reveal";
 // экрана, наведённое колесо мыши гонит ленту карточек ГОРИЗОНТАЛЬНО
 // (нативный scrollLeft, без пина), на границах трека колесо отдаётся
 // странице. Заголовок/подложка/стрелка — в центрированной 1440-сетке.
-// Стекло-эффект на карточках — GLASS radius 84 (Figma) → backdrop-blur-84.
+// Стекло-бабл — общий стиль GLASS_BUBBLE (src/lib/glass.ts), 1:1 такой же,
+// как в «Построении процесса» кейса 1.
 const A = "/cases/case-02/sections";
 
 const STEPS = [
@@ -103,7 +105,7 @@ export default function Process() {
           {STEPS.map((s, i) => (
             <div
               key={s.n}
-              className="absolute flex h-[125px] w-[328px] flex-col justify-center gap-[8px] overflow-clip rounded-[20px] border-l-[3px] border-[#008cff] bg-white/20 p-[16px] shadow-[0px_4px_10px_0px_rgba(232,232,232,0.25)] backdrop-blur-[84px]"
+              className={`absolute flex h-[125px] w-[328px] flex-col justify-center gap-[8px] border-[#008cff] ${GLASS_BUBBLE}`}
               style={{ left: i * PITCH, top: 0 }}
             >
               <p className="text-[14px] font-bold uppercase leading-[1.2] tracking-[0.84px] text-[#008cff]" style={{ fontFamily: "var(--font-body)" }}>

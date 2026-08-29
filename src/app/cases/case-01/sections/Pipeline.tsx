@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
+import { GLASS_BUBBLE } from "@/lib/glass";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
 // node 1971:64076). Тёмный фон блока растянут на весь экран (как Footer);
@@ -144,7 +145,7 @@ export default function Pipeline() {
             return (
               <div
                 key={i}
-                className="absolute flex h-[125px] w-[328px] flex-col gap-[8px] overflow-clip rounded-[20px] border-l-3 bg-white/20 p-[16px] shadow-[0px_4px_10px_0px_rgba(232,232,232,0.25)] backdrop-blur-[6px]"
+                className={`absolute flex h-[125px] w-[328px] flex-col gap-[8px] ${GLASS_BUBBLE}`}
                 style={{ left: i * PITCH, top: step.offset ?? 0, borderColor: style.border }}
               >
                 <p className="text-[14px] font-bold uppercase tracking-[0.84px]" style={{ color: style.text }}>
