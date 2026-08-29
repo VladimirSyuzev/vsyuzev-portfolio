@@ -115,7 +115,7 @@ export default function Task() {
         />
       </div>
 
-      <div className="task-doodle absolute left-[692.95px] top-[938px] h-[120.909px] w-[92.566px]">
+      <div className="task-doodle absolute left-[692.95px] top-[1038px] h-[120.909px] w-[92.566px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" src={`${A}/doodle-flash.svg`} className="block size-full max-w-none" />
       </div>
@@ -140,7 +140,7 @@ export default function Task() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="Витрина категорий иконок: аудит библиотеки" src={STATE2} className="block" style={{ width: NATIVE2.w, height: NATIVE2.h }} />
           </div>
-          <div className="absolute left-[692.95px] top-[938px] h-[120.909px] w-[92.566px]">
+          <div className="absolute left-[692.95px] top-[1038px] h-[120.909px] w-[92.566px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="" src={`${A}/doodle-flash.svg`} className="block size-full max-w-none" />
           </div>
