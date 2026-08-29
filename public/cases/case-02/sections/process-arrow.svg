@@ -1,12 +1,6 @@
 <svg width="162" height="129" viewBox="0 0 162 129" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-<g id="case-02">
-<g id="C2 - 05 - 04 &#208;&#159;&#209;&#128;&#208;&#190;&#209;&#134;&#208;&#181;&#209;&#129;&#209;&#129;">
-
 <g id="Frame 2147231822">
-<path id="Vector 234257352" d="M124.832 92.1328C117.915 96.2885 105.91 104.74 102.479 106.072C100.76 104.771 84.9547 85.6977 84.0577 84.1201" stroke="#008CFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector 234257353" d="M28.7687 39.848C73.6181 38.7677 117.38 42.5723 103.362 102.825" stroke="#008CFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-</g>
+<path d="M124.832 92.1328C117.915 96.2885 105.91 104.74 102.479 106.072C100.76 104.771 84.9547 85.6977 84.0577 84.1201" stroke="#008CFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M28.7687 39.848C73.6181 38.7677 117.38 42.5723 103.362 102.825" stroke="#008CFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </svg>
