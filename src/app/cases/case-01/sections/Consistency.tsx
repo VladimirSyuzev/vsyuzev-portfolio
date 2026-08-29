@@ -55,17 +55,21 @@ export default function Consistency() {
   return (
     <div ref={scope} className="relative h-[900px] w-full overflow-clip bg-[#121212]">
       <div className="relative mx-auto h-full w-[1440px]">
-        <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
-          <p className="text-[#008cff] uppercase">06</p>
-          <p className="text-white">КОНТРОЛЬ КОНСИСТЕНТНОСТИ</p>
+        {/* Заголовок — стопкой: «06 / КОНТРОЛЬ / КОНСИСТЕНТНОСТИ» (Figma
+            node 2359:3916, 32px, top 64). */}
+        <div className="absolute left-[46px] top-[64px] flex flex-col font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
+          <span className="whitespace-nowrap text-[#008cff]">06</span>
+          <span className="whitespace-nowrap text-white">КОНТРОЛЬ</span>
+          <span className="whitespace-nowrap text-white">КОНСИСТЕНТНОСТИ</span>
         </div>
 
         <p className="absolute left-[46px] top-[181px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Чтобы новые иконки не выбивались из существующей библиотеки, использовалось сразу
-          несколько инструментов. Главным из них стал Balance Board: сетка из существующих и
-          новых иконок на одном экране, где можно было быстро проверить визуальный вес,
-          насыщенность деталей, толщину линий, пропорции, характер скруглений и общий баланс
-          библиотеки.
+          Чтобы новые иконки оставались частью единой системы, мы использовали несколько
+          инструментов проверки. Главным из них стал Balance Board: общая сетка, в которой
+          существующие и новые иконки можно было сравнить между собой в одном контексте.
+          <br />
+          Это позволяло быстро оценить их визуальный вес, пропорции, толщину линий, характер
+          скруглений и общий баланс библиотеки.
         </p>
 
         {/* Balance Board: после переверстки обе доски уехали вправо
@@ -79,11 +83,14 @@ export default function Consistency() {
           <BalanceBoard2 />
         </div>
 
-        {/* Крупная цитата — переехала налево (Figma node 2359:4039,
-            left ≈ 46, top ≈ 547). */}
-        <p className="absolute left-[46px] top-[547px] w-[516px] uppercase font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Именно этот инструмент позволял принимать большинство решений ещё до передачи работы
-          клиенту
+        {/* Крупная фраза — Wix Madefor Display Regular, 32px (Figma node
+            2359:4039, left 46, top 581.98, три строки). */}
+        <p className="absolute left-[46px] top-[581.98px] w-[578.354px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+          Balance Board помогал находить несоответствия
+          <br />
+          и принимать решения ещё
+          <br />
+          до передачи работы клиенту
         </p>
 
         {/* Доодл-«глаз» — x/y 1:1 из Figma (node 2285:45879 → 1136.2/229). */}
@@ -98,7 +105,7 @@ export default function Consistency() {
         <Reveal
           variant="line"
           className="absolute"
-          style={{ left: 78, top: 719, width: 524, height: 30 }}
+          style={{ left: 152, top: 723, width: 518, height: 31 }}
         >
           <img alt="" className="block size-full" src="/cases/case-01/sections/consistency-underline.svg" />
         </Reveal>

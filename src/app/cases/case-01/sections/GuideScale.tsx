@@ -1,11 +1,11 @@
 // Диаграмма «Размер / Толщина / Скругления» внутри «05 Руководство для
-// команды» — единый SVG-экспорт узла Figma #1961:32281. После переверстки
-// узел переехал с x556/y321 на x556/y455 (h≈336), в диаграмму добавлен
-// мини-скриншот «Corner smoothing» и соединительные стрелки — ассет
-// перевыгружен целиком.
+// команды» — единый SVG-экспорт узла Figma #1961:32281 (838×456, с
+// встроенным мини-скриншотом «Corner smoothing» и стрелками). Координаты
+// сверены по Figma: left 215.21 / top 368.19. Запечённый тёмный фон
+// экспорта удалён, чтобы блок ложился на #fafafa секции.
 export default function GuideScale() {
   return (
-    <div className="absolute left-[556px] top-[455px] h-[336px] w-[619px]">
+    <div className="absolute left-[215.21px] top-[368.19px] h-[455.372px] w-[838px]">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/cases/case-01/sections/guide-assets/guide-diagram-full.svg"

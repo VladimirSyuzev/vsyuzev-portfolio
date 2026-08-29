@@ -39,8 +39,9 @@ const BULLETS = [
 function ProblemContent() {
   return (
     <>
-      {/* Заголовок — крупный дисплейный (Figma node 1964:41878, 175px). */}
-      <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.1] tracking-[5.25px]">
+      {/* Заголовок — крупный дисплейный (Figma node 1964:41878, 175px,
+          leading-none, top 152). */}
+      <div className="absolute left-[46px] top-[152px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold leading-none tracking-[5.25px]">
         <p className="text-[#008cff]">01</p>
         <p className="text-white">ПРОБЛЕМА</p>
       </div>
@@ -92,13 +93,13 @@ function ProblemContent() {
         </div>
       </div>
 
-      {/* Доодл-«звезда» справа сверху (Figma node 2279:32655). */}
-      <div className="prob-doodle absolute left-[1210px] top-[289.66px] flex h-[191.363px] w-[200.725px] items-center justify-center">
+      {/* Доодл-«звезда» справа сверху (Figma node 2359:4422 → 1210 / 376.70). */}
+      <div className="prob-doodle absolute left-[1210px] top-[376.7px] flex h-[191.363px] w-[200.725px] items-center justify-center">
         <img alt="" className="h-[125px] w-[158px] max-w-none" src="/cases/case-01/sections/problem-star-doodle.svg" />
       </div>
 
-      {/* Стрелка-доодл под правой колонкой (Figma node 2284:39939). */}
-      <div className="prob-doodle absolute left-[875.91px] top-[756.18px] flex h-[112.796px] w-[389.623px] items-center justify-center">
+      {/* Стрелка-доодл под правой колонкой (Figma node 2284:39939 → 884 / 756.18). */}
+      <div className="prob-doodle absolute left-[884px] top-[756.18px] flex h-[112.796px] w-[389.623px] items-center justify-center">
         <div className="rotate-[6.99deg]">
           <div className="relative h-[66.502px] w-[384.386px]">
             <div className="absolute inset-[-4.51%_-0.78%]">
