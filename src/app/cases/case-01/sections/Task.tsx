@@ -99,9 +99,9 @@ export default function Task() {
         <p className="text-[#008cff]">02</p>
         <p className="text-[#121212]">ЗАДАЧА</p>
       </div>
-      <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Перед нами стояла задача провести аудит библиотеки, устранить несоответствия и создать
-        основу для дальнейшего масштабирования единой системы.
+      <p className="absolute left-[46px] top-[181px] w-[388px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        Главной задачей было превратить две разрозненные библиотеки в единую масштабируемую
+        систему
       </p>
 
       <div ref={windowRef} className="absolute left-[46px] top-[318px] overflow-hidden" style={{ width: WINDOW_START.w, height: WINDOW_START.h }}>
@@ -115,7 +115,7 @@ export default function Task() {
         />
       </div>
 
-      <div className="task-doodle absolute left-[692.95px] top-[1041px] h-[120.909px] w-[92.566px]">
+      <div className="task-doodle absolute left-[692.95px] top-[938px] h-[120.909px] w-[92.566px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" src={`${A}/doodle-flash.svg`} className="block size-full max-w-none" />
       </div>
@@ -132,15 +132,15 @@ export default function Task() {
             <p className="text-[#008cff]">02</p>
             <p className="text-[#121212]">ЗАДАЧА</p>
           </div>
-          <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-            Перед нами стояла задача провести аудит библиотеки, устранить несоответствия и создать
-            основу для дальнейшего масштабирования единой системы.
+          <p className="absolute left-[46px] top-[181px] w-[388px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+            Главной задачей было превратить две разрозненные библиотеки в единую масштабируемую
+            систему
           </p>
           <div className="absolute left-[46px] top-[318px] overflow-hidden" style={{ width: WINDOW_END.w, height: WINDOW_END.h }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="Витрина категорий иконок: аудит библиотеки" src={STATE2} className="block" style={{ width: NATIVE2.w, height: NATIVE2.h }} />
           </div>
-          <div className="absolute left-[692.95px] top-[1041px] h-[120.909px] w-[92.566px]">
+          <div className="absolute left-[692.95px] top-[938px] h-[120.909px] w-[92.566px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img alt="" src={`${A}/doodle-flash.svg`} className="block size-full max-w-none" />
           </div>

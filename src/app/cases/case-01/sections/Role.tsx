@@ -27,19 +27,26 @@ const STEPS = [
 
 export default function Role() {
   return (
-    <div className="relative h-[916px] w-[1440px] overflow-clip bg-[#fafafa]">
-      <div className="absolute left-[45px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+    <div className="relative h-[1033px] w-[1440px] overflow-clip bg-[#fafafa]">
+      {/* Крупный дисплейный заголовок (Figma node 1961:32606, 175px). */}
+      <div className="absolute left-[46px] top-[143px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.1] tracking-[5.25px]">
         <p className="text-[#008cff]">07</p>
         <p className="text-[#121212]">РОЛЬ</p>
       </div>
 
-      <p className="absolute left-[46px] top-[181px] w-[494px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Как арт-директор, я выстроил и контролировал процесс работы над проектом: проверял каждую
-        иконку на промежуточных этапах, следил за консистентностью библиотеки и разработал
-        производственный гайд, описывающий весь процесс: от поиска метафоры до сборки
-        компонентов. Этот документ стал основой дальнейшей работы команды и позволил
-        поддерживать единое качество на протяжении всего проекта.
-      </p>
+      {/* Текст справа, два абзаца (Figma node 2381:20975). */}
+      <div className="absolute left-[896px] top-[181px] flex w-[498px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        <p>
+          Как арт-директор, я выстроил и контролировал процесс работы над проектом. Проверял каждую
+          иконку на промежуточных этапах, следил за консистентностью библиотеки и разработал
+          производственный гайд.
+        </p>
+        <p>
+          Гайд описывал весь процесс: от поиска метафоры до сборки компонентов. Он стал основой
+          дальнейшей работы команды и помог поддерживать единое качество на протяжении всего
+          проекта.
+        </p>
+      </div>
 
       <div className="absolute bottom-[146px] left-[46px] flex items-end justify-center gap-[12px]">
         {STEPS.map((step, i) => (

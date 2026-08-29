@@ -1,8 +1,9 @@
 "use client";
 
-// 03 Аудит библиотеки — 1:1 из Figma (node 1965:42538). Таблица аудита
-// теперь настоящий DOM (раньше была screenshot-ассетом): 9 колонок×6 строк,
-// реальные текст/иконки/чекбоксы. Появление ячеек-иконок — «волна»
+// 03 Аудит библиотеки — 1:1 из Figma (node 1965:42538). Обновлено:
+// крупный дисплейный заголовок «03 / АУДИТ / БИБЛИОТЕКИ» (175px), из-за
+// него весь контент опустился вниз (высота блока 1879). Таблица аудита —
+// настоящий DOM: 9 колонок×6 строк. Появление ячеек-иконок — «волна»
 // (waveStagger, диагональный reveal, см. lib/gsap.ts).
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -12,14 +13,14 @@ import Dot from "@/components/Dot";
 const A = "/cases/case-01/sections/audit-assets";
 
 const FOUND_LEFT = [
-  "определены существующие иконки",
-  "определены дубли",
-  "определены отсутствующие размеры",
+  "определили существующие иконки",
+  "нашли дубли",
+  "выявили отсутствующие размеры",
 ];
 const FOUND_RIGHT = [
-  "определены недостающие outline и filled версии",
-  "определены полностью отсутствующие иконки",
-  "расставлены приоритеты производства",
+  "определили недостающие outline- и filled-версии",
+  "обнаружили полностью отсутствующие иконки",
+  "расставили приоритеты производства",
 ];
 
 const COLUMNS = ["Symbols", "Regular", "Outline", "Filled", "32", "24", "20", "16", "12"];
@@ -131,21 +132,23 @@ export default function AuditLibrary() {
   );
 
   return (
-    <div ref={scope} className="relative h-[1091px] w-[1440px] overflow-clip bg-[#fafafa]">
-      <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-        <p className="text-[#008cff]">03</p>
-        <p className="text-[#121212]">АУДИТ БИБЛИОТЕКИ</p>
+    <div ref={scope} className="relative h-[1879px] w-[1440px] overflow-clip bg-[#fafafa]">
+      {/* Крупный дисплейный заголовок (Figma node 1965:42541, 175px). */}
+      <div className="absolute left-[47.5px] top-[126px] flex flex-col font-heading text-[175px] font-bold leading-[1.1] tracking-[5.25px]">
+        <span className="text-[#008cff]">03</span>
+        <span className="whitespace-nowrap text-[#121212]">АУДИТ</span>
+        <span className="whitespace-nowrap text-[#121212]">БИБЛИОТЕКИ</span>
       </div>
 
-      <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Работа началась с полной ревизии библиотеки. Мы объединили оба набора иконок, разбили их
-        по категориям и начали детальный анализ каждой позиции.
+      <p className="absolute left-[47.5px] top-[731px] w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        Работу начали с полной ревизии. Мы объединили обе библиотеки, распределили иконки по
+        категориям и проанализировали каждую позицию.
       </p>
 
-      <p className="audit-intro absolute left-[46px] top-[318px] w-[200px] whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+      <p className="audit-intro absolute left-[46px] top-[1004.25px] w-[200px] whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
         {"В РЕЗУЛЬТАТЕ АУДИТА\nбыла СОБРАНА ТАБЛИЦА:"}
       </p>
-      <div className="absolute left-[386px] top-[318px] flex w-[838px] gap-[12px]">
+      <div className="absolute left-[386px] top-[1004.25px] flex w-[838px] gap-[12px]">
         <ul className="audit-intro flex w-[328px] flex-col gap-[6px]">
           {FOUND_LEFT.map((item, i) => (
             <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
@@ -164,13 +167,13 @@ export default function AuditLibrary() {
         </ul>
       </div>
 
-      {/* Стрелка-доодл, указывающая на таблицу. */}
-      <div className="audit-doodle absolute left-[1131px] top-[301px] h-[161px] w-[185px]">
+      {/* Стрелка-доодл, указывающая на таблицу (Figma node 2283:39751). */}
+      <div className="audit-doodle absolute left-[1085.82px] top-[978.03px] h-[161.104px] w-[184.616px]">
         <img alt="" className="block size-full max-w-none" src={`${A}/arrow-doodle.svg`} />
       </div>
 
-      {/* Таблица аудита — настоящий DOM, 1:1 из Figma. */}
-      <div className="audit-table absolute left-[46px] top-[455px] flex w-[1348px] flex-col text-[14px] text-[#121212]" style={{ fontFamily: "var(--font-body)" }}>
+      {/* Таблица аудита — настоящий DOM, 1:1 из Figma (node 1965:42569). */}
+      <div className="audit-table absolute left-[46px] top-[1128.84px] flex w-[1348px] flex-col text-[14px] text-[#121212]" style={{ fontFamily: "var(--font-body)" }}>
         {/* Quantity row */}
         <div className="flex h-[43px] w-full border border-black/10 bg-[#f3f3f3]">
           <div className="flex w-[135px] shrink-0 items-center justify-center border-r border-black/10 font-bold">Quantity</div>
@@ -204,20 +207,14 @@ export default function AuditLibrary() {
         ))}
       </div>
 
-      {/* Итоговая строка + обводка-эллипс доодл вокруг неё (эллипс шире и
-          начинается выше текста — не концентричны с текстовым блоком).
-          Координаты сверены напрямую по Figma (node 2322:5170 / 1965:42546):
-          эллипс раньше стоял на 48.76px ниже нужного (top 890.63 вместо
-          841.87px) — из-за этого он не окружал текст как в макете и
-          подрезался снизу секцией. Текст остаётся на месте (его абсолютная
-          позиция 425.5/906 и так совпадала с Figma), только его top внутри
-          обёртки пересчитан под новый top обёртки. */}
-      <div className="absolute left-[415.3px] top-[841.87px] h-[220.53px] w-[621.4px]">
-        <div className="audit-doodle absolute inset-[-1.74%_-0.49%]">
+      {/* Итоговая мысль в обводке-эллипсе (Figma node 2322:5170 / 1965:42546). */}
+      <div className="absolute left-[376.37px] top-[1608.46px] h-[300.074px] w-[687.174px]">
+        <div className="audit-doodle absolute inset-[-1.21%_-0.45%]">
           <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
         </div>
-        <p className="audit-intro absolute left-[10.2px] top-[64.13px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          По итогам анализа был сформирован подробный план работ
+        <p className="audit-intro absolute left-[49.13px] top-[34.08px] w-[589px] text-center font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          Полная карта библиотеки показала, что уже есть, чего не хватает и что нужно сделать в
+          первую очередь
         </p>
       </div>
     </div>

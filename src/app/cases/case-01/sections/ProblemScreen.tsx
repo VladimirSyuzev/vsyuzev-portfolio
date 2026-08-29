@@ -26,44 +26,46 @@ import Dot from "@/components/Dot";
 const A = "/cases/case-01/sections/screen-assets";
 
 const BULLETS = [
-  "разные соотношения ширины и высоты",
+  "различные пропорции",
   "неодинаковую толщину линий",
   "разные радиусы скруглений",
   "различия в принципах построения",
   "разный визуальный вес иконок",
-  "несколько вариантов одной и той же иконки",
-  "отсутствие некоторых нужных размеров",
+  "дубли одинаковых иконок",
+  "отсутствие необходимых размеров",
   "отсутствие outline- или filled-вариантов",
 ];
 
 function ProblemContent() {
   return (
     <>
-      <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
+      {/* Заголовок — крупный дисплейный (Figma node 1964:41878, 175px). */}
+      <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.1] tracking-[5.25px]">
         <p className="text-[#008cff]">01</p>
         <p className="text-white">ПРОБЛЕМА</p>
       </div>
 
-      {/* Один левый столбец текста (Figma node 2359:4421) — раньше был
-          разбит на отдельные блоки у колонок с иконками и внизу. */}
-      <div className="absolute left-[46px] top-[181px] flex w-[498px] flex-col items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-        <p className="w-[329px] opacity-70">
-          На старте проекта внутри Яндекса одновременно существовали две библиотеки иконок.
-        </p>
-        <p className="w-[329px]">
-          ICONS SYMBOLS{" "}
-          <span className="text-white/70">была старой библиотекой, созданной несколькими годами ранее.</span>
-        </p>
-        <p className="w-[329px]">
-          ICONS REGULAR{" "}
-          <span className="text-white/70">
-            развивалась вместе с продуктами и постепенно пополнялась новыми иконками.
-          </span>
-        </p>
-        <p className="w-[337.139px] opacity-70">
-          Иконки создавались по мере появления задач у разных команд. Их рисовали под конкретные
-          релизы, поэтому со временем в библиотеке накопился технический долг.
-        </p>
+      {/* Вводный абзац (Figma node 2359:4421). */}
+      <p className="absolute left-[46px] top-[455.52px] w-[309.664px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+        К началу проекта внутри Яндекса одновременно существовали две библиотеки иконок:
+      </p>
+
+      {/* ICONS SYMBOLS / ICONS REGULAR — подписи-блоки (Figma node 2381:20941). */}
+      <div className="absolute left-[46px] top-[592.52px] w-[333.648px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
+        <div className="flex flex-col gap-[6px]">
+          <div className="flex flex-col">
+            <p>ICONS</p>
+            <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">Symbols</p>
+          </div>
+          <p className="opacity-70">более старая библиотека.</p>
+        </div>
+        <div className="mt-[24px] flex flex-col gap-[6px]">
+          <div className="flex flex-col">
+            <p>ICONS</p>
+            <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">Regular</p>
+          </div>
+          <p className="opacity-70">новая библиотека, которая постепенно развивалась вместе с продуктами.</p>
+        </div>
       </div>
 
       <p className="absolute left-[556px] top-[429px] w-[329px] text-[12px] leading-[1.2] tracking-[0.24px] text-white opacity-70">
@@ -90,8 +92,8 @@ function ProblemContent() {
         </div>
       </div>
 
-      {/* Доодл-«звезда» справа сверху (Figma node 2279:32655) — новый. */}
-      <div className="prob-doodle absolute left-[1124.64px] top-[223.15px] flex h-[191.363px] w-[200.725px] items-center justify-center">
+      {/* Доодл-«звезда» справа сверху (Figma node 2279:32655). */}
+      <div className="prob-doodle absolute left-[1210px] top-[289.66px] flex h-[191.363px] w-[200.725px] items-center justify-center">
         <img alt="" className="h-[125px] w-[158px] max-w-none" src="/cases/case-01/sections/problem-star-doodle.svg" />
       </div>
 
@@ -112,11 +114,16 @@ function ProblemContent() {
 function ScreenContent() {
   return (
     <>
-      <p className="absolute left-[46px] top-[181px] w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        На одном экране могли одновременно использоваться иконки из разных библиотек. В результате
-        элементы интерфейса отличались по визуальным характеристикам, а единый стиль иконок
-        нарушался.
-      </p>
+      <div className="absolute left-[46px] top-[181px] flex w-[337.139px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+        <p>
+          Новые иконки появлялись под конкретные задачи и ближайшие релизы. Такой подход помогал
+          быстро закрывать потребности отдельных команд, но со временем привёл к техническому долгу.
+        </p>
+        <p className="w-[328px]">
+          На одном экране могли одновременно использоваться иконки из разных библиотек, из-за чего
+          интерфейс терял визуальную целостность.
+        </p>
+      </div>
 
       <div className="absolute left-[47px] top-[510px] flex w-[327px] flex-col gap-[12px]">
         <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.42px] text-white">
