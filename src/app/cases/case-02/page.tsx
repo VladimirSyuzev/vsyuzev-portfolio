@@ -27,8 +27,10 @@ export default function Case02Page() {
       <Header />
       <div className="h-[62px] w-full shrink-0" />
 
-      {/* Обложка + «О проекте» — весь первый экран. */}
-      <div className="relative flex min-h-screen w-full flex-col items-center overflow-clip bg-[#fafafa]">
+      {/* Обложка + «О проекте» — высота 1:1 из Figma (hero 580 + белая
+          часть 318), без min-h-screen: иначе на высоких экранах белая
+          часть растягивалась и отрывала «Задачу» дальше, чем в макете. */}
+      <div className="relative flex w-full flex-col items-center overflow-clip bg-[#fafafa]">
         <div className="relative w-full">
           <FullBleedScale width={1440} height={580} mode="grow" className="w-full">
             <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
@@ -53,8 +55,8 @@ export default function Case02Page() {
           </div>
         </div>
 
-        {/* Белая часть под hero — normal flow, отсчёт координат минус 580. */}
-        <div className="relative mx-auto w-[1440px] flex-1" style={{ minHeight: 318 }}>
+        {/* Белая часть под hero — фикс. высота 318 (Figma), отсчёт координат минус 580. */}
+        <div className="relative mx-auto w-[1440px]" style={{ height: 318 }}>
           <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
             О ПРОЕКТЕ
           </p>
@@ -93,8 +95,12 @@ export default function Case02Page() {
       {/* Визуальный язык — тёмный full-bleed фон. */}
       <VisualLanguage />
 
+      {/* Процесс — окно трека во всю ширину экрана (горизонтальный скролл
+          по колесу, как «Построение процесса» в кейсе 1), поэтому прямой
+          ребёнок full-width root, не внутри 1440-обёртки. */}
+      <Process />
+
       <div className="mx-auto flex w-[1440px] flex-col items-start">
-        <Process />
         <First16px />
       </div>
 

@@ -144,7 +144,7 @@ export default function Pipeline() {
             return (
               <div
                 key={i}
-                className="absolute flex h-[125px] w-[328px] flex-col gap-[8px] overflow-clip rounded-[20px] border-l-3 bg-white/20 p-[16px] shadow-[0px_4px_10px_0px_rgba(232,232,232,0.25)]"
+                className="absolute flex h-[125px] w-[328px] flex-col gap-[8px] overflow-clip rounded-[20px] border-l-3 bg-white/20 p-[16px] shadow-[0px_4px_10px_0px_rgba(232,232,232,0.25)] backdrop-blur-[6px]"
                 style={{ left: i * PITCH, top: step.offset ?? 0, borderColor: style.border }}
               >
                 <p className="text-[14px] font-bold uppercase tracking-[0.84px]" style={{ color: style.text }}>

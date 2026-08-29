@@ -26,11 +26,6 @@ export default function Research() {
         </p>
       </div>
 
-      {/* Доодл «//» (Figma node 2279:32678 → 1090.93 / 759.89). */}
-      <Reveal variant="doodle" className="absolute left-[1090.93px] top-[759.887px] h-[168px] w-[138px]">
-        <img alt="" className="block size-full max-w-none" src={`${A}/research-doodle.svg`} />
-      </Reveal>
-
       {/* Карточки-документ (Figma node 2382:21150 → центр, top 318, 838×536). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -38,6 +33,11 @@ export default function Research() {
         className="absolute left-1/2 top-[318px] h-[536px] w-[838px] -translate-x-1/2"
         src={`${A}/research-cards.png`}
       />
+
+      {/* Доодл «//» — поверх карточек (Figma node 2279:32678 → 1090.93 / 759.89). */}
+      <Reveal variant="doodle" className="absolute left-[1090.93px] top-[759.887px] z-10 h-[168px] w-[138px]">
+        <img alt="" className="block size-full max-w-none" src={`${A}/research-doodle.svg`} />
+      </Reveal>
     </div>
   );
 }
