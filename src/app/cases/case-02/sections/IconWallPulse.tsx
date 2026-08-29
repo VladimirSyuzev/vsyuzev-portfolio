@@ -1,29 +1,32 @@
 "use client";
 
-import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 
-// Анимация стены иконок в блоке «Итог». По скроллу волной проходит по всем
-// 36 плиткам: каждая по очереди увеличивается на 10 %, перекрашивается в
-// #2B9FFE и возвращается в исходный серый; горизонтальные соседи в этот
-// момент чуть раздвигаются. Иконки — инлайн-SVG (см. Summary.tsx),
-// каждая плитка помечена классом .si и имеет свой fill; GSAP тянет fill и
-// scale прямо по элементам <g>.
+// Анимация стены иконок в блоке «Итог». Волной проходит по всем 36 плиткам:
+// каждая по очереди увеличивается на 10 %, перекрашивается в #2B9FFE и
+// возвращается в исходный серый; горизонтальные соседи в этот момент чуть
+// раздвигаются. Иконки — инлайн-SVG (см. Summary.tsx), каждая плитка
+// помечена классом .si и имеет свой fill; GSAP тянет fill и scale прямо по
+// элементам <g>.
+//
+// Цикл: волна стартует, когда блок входит в экран, и повторяется
+// бесконечно с паузой 3 с между проходами; за экраном таймлайн ставится
+// на паузу, при возврате — продолжает (toggleActions).
 const GRAY = "#cccccc";
 const BLUE = "#2b9ffe";
 const COLS = 9;
 const STEP = 0.15; // задержка старта между соседними иконками
 const PULSE = 0.44; // длительность одного «удара» (туда-обратно)
 const PUSH = 5; // на сколько px расходятся соседи
+const LOOP_DELAY = 3; // пауза между проходами волны, с
 
 export default function IconWallPulse() {
-  const ranRef = useRef(false);
   const reduced = useReducedMotion();
 
   useGSAP(
     () => {
-      if (reduced || ranRef.current) return;
+      if (reduced) return;
       const wall = document.querySelector(".summary-wall");
       if (!wall) return;
       const icons = gsap.utils.toArray<SVGGElement>(".summary-wall .si");
@@ -32,11 +35,15 @@ export default function IconWallPulse() {
       gsap.set(icons, { transformOrigin: "50% 50%" });
 
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: wall, start: "top 65%", once: true },
-        defaults: { ease: "sine.inOut" },
-        onStart: () => {
-          ranRef.current = true;
+        repeat: -1,
+        repeatDelay: LOOP_DELAY,
+        scrollTrigger: {
+          trigger: wall,
+          start: "top 65%",
+          end: "bottom top",
+          toggleActions: "play pause resume pause",
         },
+        defaults: { ease: "sine.inOut" },
       });
 
       const half = PULSE / 2;
