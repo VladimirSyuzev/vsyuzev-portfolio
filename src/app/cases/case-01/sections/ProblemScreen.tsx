@@ -144,10 +144,11 @@ function ScreenContent() {
         <img alt="" className="block size-full max-w-none" src={`${A}/doodle-hooks.svg`} />
       </div>
 
-      {/* Телефон + аннотация — два слоя, тот же холст, друг на друге.
-          При появлении слайда 2: сначала мокап (scr-mock), затем аннотация
-          с пунктиром/подписями раскрывается от центра к краям (scr-anno). */}
-      <div className="absolute left-[556px] top-[166px] h-[568px] w-[668px]">
+      {/* Телефон + аннотация — два слоя, тот же холст, друг на друге
+          (Figma node 1965:41937 → 517 / 162, 746×576). При появлении
+          слайда 2: сначала мокап (scr-mock), затем аннотация с пунктиром/
+          подписями раскрывается от центра к краям (scr-anno). */}
+      <div className="absolute left-[517px] top-[162px] h-[576px] w-[746px]">
         <img alt="" className="scr-mock absolute inset-0 block size-full max-w-none" src={`${A}/screen-layer-1.svg`} />
         <img
           alt="Экран приложения с одновременным использованием иконок из Icons Regular и Icons Symbols"
