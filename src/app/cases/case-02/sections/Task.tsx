@@ -10,12 +10,16 @@ import Reveal from "@/components/Reveal";
 const A = "/cases/case-02/sections";
 
 // Фрейм «варианты» (Figma node 2013:14127) — 4 инстанса компонента с двумя
-// состояниями (State=+ / State=−). В покое показан только буллет «+» и
-// подпись (40px). При наведении курсора компонент разворачивается в
-// State=−: над подписью появляется крупная иконка сервиса с призрачным
-// повтором (единый экспорт 328×516, узлы 2012:13834 / 2012:13842 /
-// 2013:13857 / 2013:13856), буллет меняется на «−». Разворот вверх, чтобы
-// подпись оставалась на своей якорной строке (Figma y=995).
+// состояниями (State=+ / State=−). В покое — только буллет «+» и подпись
+// (40px). По наведению компонент разворачивается в State=−: над подписью
+// появляется крупная иконка сервиса с призрачным повтором (единый экспорт
+// 328×516, узлы 2012:13834 / 2012:13842 / 2013:13857 / 2013:13856), буллет
+// меняется на «−».
+//
+// Механика hover — 1:1 такая же, как у аналогичного фрейма в блоке «Роль»
+// кейса 1 (Role.tsx): разворот высоты через grid-rows 0fr→1fr + opacity,
+// 300ms, ease expo-out; ряд подписей закреплён по низу (items-end), колонка
+// растёт вверх. Голубой «+» въезжает doodle-ревилом со стаггером по шагам.
 const SERVICES = [
   { label: "Yandex\nCloud Video", icon: "task-opt-video.svg" },
   { label: "Yandex\nCloud CDN", icon: "task-opt-cdn.svg" },
@@ -45,36 +49,39 @@ export default function Task() {
         синхронизации.
       </p>
 
-      {/* Фрейм «варианты» — Figma node 2013:14127, x46 / y995, 4×328 через 12px. */}
-      <div className="absolute left-[46px] top-[995px] flex gap-[12px]">
-        {SERVICES.map((s) => (
-          <div key={s.label} className="group relative flex w-[328px] flex-col">
-            {/* Крупная иконка + призрак — разворачивается вверх при наведении. */}
-            <div className="pointer-events-none absolute bottom-full left-0 w-full overflow-hidden pb-[32px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt=""
-                className="block w-[328px] max-w-none translate-y-[24px] opacity-0 transition-[transform,opacity] duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100"
-                src={`${A}/${s.icon}`}
-              />
+      {/* Фрейм «варианты» — Figma node 2013:14127. Ряд закреплён по низу
+          (bottom 548 = 1583 − y995 − h40), колонки bottom-align: при
+          раскрытии иконки колонка растёт вверх, подписи стоят на месте. */}
+      <div className="absolute bottom-[548px] left-[46px] flex items-end gap-[12px]">
+        {SERVICES.map((s, i) => (
+          <div key={s.label} className="group flex w-[328px] flex-col gap-[24px]">
+            {/* Иконка + призрак — свёрнуты в покое (grid-rows 0fr + opacity 0),
+                раскрываются по наведению. Идентично Role.tsx кейса 1. */}
+            <div className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none group-hover:grid-rows-[1fr] group-hover:opacity-100">
+              <div className="overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" className="block w-[328px] max-w-none" src={`${A}/${s.icon}`} />
+              </div>
             </div>
 
-            {/* Подпись с буллетом — крестик в покое, минус при наведении. */}
-            <div className="flex gap-[16px]">
-              <span className="relative size-[24px] shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt=""
-                  className="absolute inset-0 size-full transition-opacity duration-300 group-hover:opacity-0"
-                  src={`${A}/bullet-plus.svg`}
-                />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt=""
-                  className="absolute inset-0 size-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                  src={`${A}/bullet-minus.svg`}
-                />
-              </span>
+            {/* Подпись с буллетом — «+» в покое, «−» по наведению. */}
+            <div className="flex items-start gap-[16px]">
+              <Reveal variant="doodle" delay={i * 0.09} className="shrink-0">
+                <div className="relative size-[24px]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt=""
+                    className="absolute inset-0 size-full transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-0"
+                    src={`${A}/bullet-plus.svg`}
+                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt=""
+                    className="absolute inset-0 size-full opacity-0 transition-opacity duration-300 motion-reduce:transition-none group-hover:opacity-100"
+                    src={`${A}/bullet-minus.svg`}
+                  />
+                </div>
+              </Reveal>
               <p className="whitespace-pre-line pt-[4px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
                 {s.label}
               </p>
