@@ -100,9 +100,9 @@ export default function Case02Page() {
           ребёнок full-width root, не внутри 1440-обёртки. */}
       <Process />
 
-      <div className="mx-auto flex w-[1440px] flex-col items-start">
-        <First16px />
-      </div>
+      {/* Сначала 16px — блок пинится и проигрывает scroll-анимацию иконки
+          (см. First16px.tsx), поэтому прямой ребёнок full-width root. */}
+      <First16px />
 
       {/* Мокап 1 — изображение на всю ширину экрана. */}
       <div className="w-full">

@@ -26,16 +26,19 @@ export default function Research() {
         </p>
       </div>
 
-      {/* Карточки-документ (Figma node 2382:21150 → центр, top 318, 838×536). */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        alt="Список из 10 сервисов Yandex Cloud с метафорами, поиск формы иконок и итоговые иконки"
-        className="absolute left-1/2 top-[318px] h-[536px] w-[838px] -translate-x-1/2"
-        src={`${A}/research-cards.png`}
-      />
+      {/* Карточки-документ (Figma node 2382:21150 → центр, top 318, 838×536).
+          Появление по скроллу (fade + сдвиг снизу). */}
+      <Reveal variant="fade" className="absolute left-[301px] top-[318px] h-[536px] w-[838px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="Список из 10 сервисов Yandex Cloud с метафорами, поиск формы иконок и итоговые иконки"
+          className="block size-full"
+          src={`${A}/research-cards.png`}
+        />
+      </Reveal>
 
       {/* Доодл «//» — поверх карточек (Figma node 2279:32678 → 1090.93 / 759.89). */}
-      <Reveal variant="doodle" className="absolute left-[1090.93px] top-[759.887px] z-10 h-[168px] w-[138px]">
+      <Reveal variant="doodle" delay={0.15} className="absolute left-[1090.93px] top-[759.887px] z-10 h-[168px] w-[138px]">
         <img alt="" className="block size-full max-w-none" src={`${A}/research-doodle.svg`} />
       </Reveal>
     </div>

@@ -96,14 +96,14 @@ export default function Process() {
           секции (см. Pipeline.tsx в кейсе 1). */}
       <div
         ref={trackRef}
-        className="no-scrollbar absolute left-0 top-[660px] h-[125px] w-full overflow-x-auto"
-        style={{ paddingLeft: padding.left, paddingRight: padding.right }}
+        className="no-scrollbar absolute left-0 top-[620px] h-[205px] w-full overflow-x-auto"
+        style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
       >
         <div className="relative h-[125px] w-[2380px]">
           {STEPS.map((s, i) => (
             <div
               key={s.n}
-              className="absolute flex h-[125px] w-[328px] flex-col justify-center gap-[8px] overflow-clip rounded-[20px] border-l-[3px] border-[#008cff] bg-white/55 p-[16px] shadow-[0px_8px_24px_0px_rgba(190,190,190,0.4)] backdrop-blur-[84px]"
+              className="absolute flex h-[125px] w-[328px] flex-col justify-center gap-[8px] overflow-clip rounded-[20px] border-l-[3px] border-[#008cff] bg-white/20 p-[16px] shadow-[0px_4px_10px_0px_rgba(232,232,232,0.25)] backdrop-blur-[84px]"
               style={{ left: i * PITCH, top: 0 }}
             >
               <p className="text-[14px] font-bold uppercase leading-[1.2] tracking-[0.84px] text-[#008cff]" style={{ fontFamily: "var(--font-body)" }}>

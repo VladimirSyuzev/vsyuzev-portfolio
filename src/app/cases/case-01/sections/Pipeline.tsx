@@ -135,8 +135,8 @@ export default function Pipeline() {
           останавливалась своим центром ровно по центру экрана. */}
       <div
         ref={trackRef}
-        className="no-scrollbar absolute left-0 top-[318px] h-[399px] w-full overflow-x-auto"
-        style={{ paddingLeft: padding.left, paddingRight: padding.right }}
+        className="no-scrollbar absolute left-0 top-[278px] h-[479px] w-full overflow-x-auto"
+        style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
       >
         <div className="relative h-[399px] w-[4068px]">
           {STEPS.map((step, i) => {
