@@ -157,18 +157,18 @@ export default function AuditLibrary() {
       </p>
       <div className="absolute left-[556px] top-[729px] flex w-[838px] gap-[12px]">
         <ul className="audit-intro flex w-[328px] flex-col gap-[6px]">
-          {FOUND_LEFT.map((item, i) => (
-            <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              <Dot index={i} />
-              {item}
+          {FOUND_LEFT.map((item) => (
+            <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
+              <Dot />
+              <span className="opacity-70">{item}</span>
             </li>
           ))}
         </ul>
         <ul className="audit-intro flex w-[442.667px] flex-col gap-[6px]">
-          {FOUND_RIGHT.map((item, i) => (
-            <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              <Dot index={i} />
-              {item}
+          {FOUND_RIGHT.map((item) => (
+            <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
+              <Dot />
+              <span className="opacity-70">{item}</span>
             </li>
           ))}
         </ul>

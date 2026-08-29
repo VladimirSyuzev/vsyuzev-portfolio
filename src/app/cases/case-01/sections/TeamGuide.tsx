@@ -46,18 +46,18 @@ export default function TeamGuide() {
         </p>
         <div className="flex items-start gap-[12px]">
           <ul className="flex w-[328px] flex-col gap-[6px]">
-            {BULLETS_LEFT.map((item, i) => (
-              <li key={item} className="flex items-start gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                <Dot index={i} className="mt-[4px] size-[12px] shrink-0" />
-                <span className="whitespace-pre-line">{item}</span>
+            {BULLETS_LEFT.map((item) => (
+              <li key={item} className="flex items-start gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
+                <Dot className="mt-[4px] size-[12px] shrink-0" />
+                <span className="whitespace-pre-line opacity-70">{item}</span>
               </li>
             ))}
           </ul>
           <ul className="flex flex-col gap-[6px]">
             {BULLETS_RIGHT.map((item, i) => (
-              <li key={item} className="flex items-start gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                <Dot index={i} className="mt-[4px] size-[12px] shrink-0" />
-                <span className={i === 2 ? "w-[235.762px]" : "whitespace-nowrap"}>{item}</span>
+              <li key={item} className="flex items-start gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
+                <Dot className="mt-[4px] size-[12px] shrink-0" />
+                <span className={`opacity-70 ${i === 2 ? "block w-[235.762px]" : "whitespace-nowrap"}`}>{item}</span>
               </li>
             ))}
           </ul>

@@ -131,10 +131,10 @@ function ScreenContent() {
           МЫ ОБНАРУЖИЛИ:
         </p>
         <ul className="flex flex-col gap-[6px]">
-          {BULLETS.map((item, i) => (
-            <li key={item} className="scr-bullet flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              <Dot index={i} />
-              {item}
+          {BULLETS.map((item) => (
+            <li key={item} className="scr-bullet flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
+              <Dot />
+              <span className="opacity-70">{item}</span>
             </li>
           ))}
         </ul>
@@ -197,7 +197,7 @@ export default function ProblemScreen() {
         screenPlayed = true;
         gsap
           .timeline({ defaults: { ease: "siteEase" } })
-          .to(".scr-bullet", { opacity: 0.7, x: 0, duration: 0.4, stagger: 0.06 })
+          .to(".scr-bullet", { opacity: 1, x: 0, duration: 0.4, stagger: 0.06 })
           .to(".scr-mock", { opacity: 1, scale: 1, duration: 0.5 }, "-=0.1")
           .to(".scr-anno", { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.15")
           .to(".scr-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.5 }, "-=0.3");
