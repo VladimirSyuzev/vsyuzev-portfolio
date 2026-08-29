@@ -1,12 +1,13 @@
 "use client";
 
-// 03 Аудит библиотеки — 1:1 из Figma (node 1965:42538, высота 1879).
-// Крупный дисплейный заголовок «03 / АУДИТ / БИБЛИОТЕКИ» (175px,
-// leading-none, top 55). Координаты сверены по Figma: вводный абзац
-// top 592, «в результате аудита» + список top 729, таблица top 866,
-// стрелка-доодл 1224/722, итоговая мысль (центр, Wix Madefor Regular,
-// top 1365) в эллипсе top 1278. Таблица — настоящий DOM: 9 колонок×6
-// строк. Появление ячеек-иконок — «волна» (waveStagger, см. lib/gsap.ts).
+// 03 Аудит библиотеки — 1:1 из актуальной Figma (node 1965:42538, высота
+// 1720). Заголовок «03 / АУДИТ / БИБЛИОТЕКИ» (175px, leading-none, top 55).
+// Координаты по свежим метаданным: вводный абзац top 592, «в результате
+// аудита» + список top 729, таблица top 866, стрелка-доодл 1255.82/722,
+// итоговая мысль (центр, Wix Madefor Regular, top 1365.5) в обводке-эллипсе
+// (экспорт узла 2322:5170, 674×253, начало SVG = координата секции
+// 383.64 / 1302.91). Таблица — настоящий DOM: 9 колонок×6 строк.
+// Появление ячеек-иконок — «волна» (waveStagger, см. lib/gsap.ts).
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion, waveStagger } from "@/lib/gsap";
@@ -136,7 +137,7 @@ export default function AuditLibrary() {
   );
 
   return (
-    <div ref={scope} className="relative h-[1879px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <div ref={scope} className="relative h-[1720px] w-[1440px] overflow-clip bg-[#fafafa]">
       {/* Крупный дисплейный заголовок (Figma node 1965:42541, 175px, leading-none). */}
       <div className="absolute left-[46px] top-[55px] flex w-[439px] flex-col font-heading text-[175px] font-bold uppercase leading-none tracking-[5.25px]">
         <span className="whitespace-nowrap text-[#008cff]">03</span>
@@ -173,8 +174,8 @@ export default function AuditLibrary() {
         </ul>
       </div>
 
-      {/* Стрелка-доодл, указывающая на таблицу (Figma node 2283:39751). */}
-      <div className="audit-doodle absolute left-[1224px] top-[722px] flex h-[161.104px] w-[184.616px] items-center justify-center">
+      {/* Стрелка-доодл, указывающая на таблицу (Figma node 2283:39751 → 1255.82 / 722). */}
+      <div className="audit-doodle absolute left-[1255.82px] top-[722px] flex h-[161.104px] w-[184.616px] items-center justify-center">
         <div className="rotate-[14.75deg]">
           <img alt="" className="block h-[125px] w-[158px] max-w-none" src={`${A}/arrow-doodle.svg`} />
         </div>
@@ -216,15 +217,10 @@ export default function AuditLibrary() {
       </div>
 
       {/* Обводка-эллипс вокруг итоговой мысли (Figma node 2322:5170) —
-          центрирован по горизонтали, наклон -4.59°. */}
-      <div className="absolute left-1/2 top-[1277.88px] flex h-[300.074px] w-[687.174px] -translate-x-1/2 items-center justify-center">
-        <div className="rotate-[-4.59deg]">
-          <div className="relative h-[247.309px] w-[669.537px]">
-            <div className="audit-doodle absolute inset-[-1.21%_-0.45%]">
-              <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
-            </div>
-          </div>
-        </div>
+          экспорт узла с запечённым наклоном; начало SVG = координата
+          секции 383.64 / 1302.91. */}
+      <div className="audit-doodle absolute left-[383.643px] top-[1302.91px] h-[253px] w-[674px]">
+        <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
       </div>
 
       {/* Итоговая мысль (Figma node 1965:42546) — отдельный центрированный

@@ -5,11 +5,12 @@ import ScrollTriggerRefresh from "@/components/ScrollTriggerRefresh";
 import Typographer from "@/components/Typographer";
 import "./globals.css";
 
-// Wix Madefor Display — используется в макете для заголовков (Bold),
-// доступен через next/font/google как есть.
+// Wix Madefor Display — заголовки (Bold 700, SemiBold 600) и «хайлайт»-
+// фразы в кейсах (Regular 400 — обязательно грузить, иначе браузер
+// подменяет faux-bold и regular-текст выглядит жирным).
 const wixMadefor = Wix_Madefor_Display({
   subsets: ["latin", "cyrillic"],
-  weight: ["600", "700"],
+  weight: ["400", "600", "700"],
   variable: "--font-wix-madefor",
 });
 
