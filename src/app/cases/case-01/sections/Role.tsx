@@ -28,8 +28,9 @@ const STEPS = [
 export default function Role() {
   return (
     <div className="relative h-[1033px] w-[1440px] overflow-clip bg-[#fafafa]">
-      {/* Крупный дисплейный заголовок (Figma node 1961:32606, 175px). */}
-      <div className="absolute left-[46px] top-[143px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.1] tracking-[5.25px]">
+      {/* Крупный дисплейный заголовок (Figma node 1961:32606, 175px,
+          leading-none, top 152, gap 24). */}
+      <div className="absolute left-[46px] top-[152px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-none tracking-[5.25px]">
         <p className="text-[#008cff]">07</p>
         <p className="text-[#121212]">РОЛЬ</p>
       </div>

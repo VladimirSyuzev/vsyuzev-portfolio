@@ -95,7 +95,9 @@ export default function Pipeline() {
   return (
     <div ref={sectionRef} className="relative h-[900px] w-full overflow-clip bg-[#121212]">
       <div className="relative mx-auto h-full w-[1440px]">
-        <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
+        {/* Заголовок — Figma node 1961:32085, top 181 (на одной линии с
+            декоративной подложкой). */}
+        <div className="absolute left-[46px] top-[181px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">04</p>
           <p className="text-white">ПОСТРОЕНИЕ ПРОЦЕССА</p>
         </div>

@@ -31,7 +31,7 @@ const CELLS: Cell[] = [
 
 export default function Primitives() {
   return (
-    <div className="relative h-[1058px] w-full overflow-clip bg-[#fafafa]">
+    <div className="relative h-[1011px] w-full overflow-clip bg-[#fafafa]">
       <div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{ width: 1008, height: 712.421 }}
