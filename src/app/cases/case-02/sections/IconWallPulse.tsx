@@ -16,8 +16,8 @@ import { gsap, useReducedMotion } from "@/lib/gsap";
 const GRAY = "#cccccc";
 const BLUE = "#2b9ffe";
 const COLS = 9;
-const STEP = 0.15; // задержка старта между соседними иконками
-const PULSE = 0.44; // длительность одного «удара» (туда-обратно)
+const STEP = 0.1725; // задержка старта между соседними иконками (−15 % к темпу)
+const PULSE = 0.506; // длительность одного «удара» (туда-обратно, −15 % к темпу)
 const PUSH = 5; // на сколько px расходятся соседи
 const LOOP_DELAY = 3; // пауза между проходами волны, с
 
