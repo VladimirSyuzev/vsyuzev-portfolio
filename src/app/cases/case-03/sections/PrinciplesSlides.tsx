@@ -19,15 +19,18 @@ import Reveal from "@/components/Reveal";
 const A = "/cases/case-03/sections";
 
 // Сферы: [файл, left, top, size] в координатах фрейма 2022:14745
-// (сам фрейм — 104.88 / 318). Порядок = порядок наложения в Figma.
+// (сам фрейм — 104.88 / 318). Порядок массива = порядок наложения в Figma
+// (children фрейма 2022:14745, сверху вниз = снизу вверх по стопке):
+// material 5, 6, 1, 2, 4, 7, 3 — т.е. крайняя правая маленькая сфера (s4)
+// лежит ПОД синим кругом (s7) и большой светлой (s3).
 const SPHERES: [string, number, number, number][] = [
   ["s5", 1.45, 195.66, 141.814],
   ["s6", 23.51, 149.79, 234.785],
   ["s1", 116.48, 85.83, 360.003],
   ["s2", 306.86, -42.08, 617.147],
+  ["s4", 1088.69, 195.66, 141.814],
   ["s7", 972.58, 149.79, 234.785],
   ["s3", 754.39, 85.83, 360.003],
-  ["s4", 1088.69, 195.66, 141.814],
 ];
 
 function Slide1() {
@@ -59,19 +62,16 @@ function Slide1() {
       {/* 7 отдельных сфер (node 2022:14745) — прозрачные PNG. */}
       <div className="absolute left-[104.88px] top-[318px] h-[533px] w-[1231px]">
         {SPHERES.map(([name, left, top, size]) => (
-          <div key={name} className="absolute overflow-hidden" style={{ left, top, width: size, height: size }}>
+          <div key={name} className="absolute" style={{ left, top, width: size, height: size }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt=""
-              className={name === "s4" ? "absolute left-[-6.5%] top-[-4.9%] w-[113.16%] max-w-none" : "block size-full max-w-none"}
-              src={`${A}/spheres/${name}.png`}
-            />
+            <img alt="" className="block size-full max-w-none" src={`${A}/spheres/${name}.png`} />
           </div>
         ))}
       </div>
 
       {/* Доодл «//» (Figma node 2284:39895 → 802 / 324) — поверх сфер. */}
       <Reveal variant="doodle" className="absolute left-[802px] top-[324px] z-10 h-[125px] w-[158px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full max-w-none" src={`${A}/principles1-doodle.svg`} />
       </Reveal>
     </div>
@@ -104,6 +104,7 @@ function Slide2Content() {
       {/* Подчёркивание (Figma node 2284:45800). */}
       <Reveal variant="line" start="top 80%" className="absolute left-[859px] top-[823px] h-[49px] w-[547px]">
         <div className="rotate-[1.76deg]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/pr2-underline.svg`} />
         </div>
       </Reveal>
@@ -136,13 +137,15 @@ export default function PrinciplesSlides() {
         gsap.to(slide2Ref.current, { opacity: slide === 2 ? 1 : 0, duration: 0.45, ease: "siteEase" });
       }
 
-      // Механика 1:1 как «Проблема / Экран» в кейсе 1 (ProblemScreen.tsx):
-      // пин на одну высоту экрана, кроссфейд слайдов на пороге 0.5 —
-      // одно движение колеса переключает слайд, ещё одно отпускает пин.
+      // Механика как «Проблема / Экран» в кейсе 1 (ProblemScreen.tsx), но
+      // пин КОРОЧЕ — 0.55 экрана вместо целого. Так после кроссфейда на
+      // пороге 0.5 слайд 2 почти сразу отпускает пин и снизу наезжает
+      // «Процесс»: нет длинной «мёртвой» зоны, где висит статичный светлый
+      // слайд 2 (переключение блоков ощущается как один скролл).
       const st = ScrollTrigger.create({
         trigger: wrapRef.current,
         start: "top top",
-        end: () => "+=" + window.innerHeight,
+        end: () => "+=" + Math.round(window.innerHeight * 0.55),
         pin: pinRef.current,
         pinSpacing: true,
         onUpdate: (self) => showSlide(self.progress < 0.5 ? 1 : 2),
@@ -190,7 +193,7 @@ export default function PrinciplesSlides() {
   }
 
   return (
-    <div ref={wrapRef} className="relative w-full" style={{ height: "200vh" }}>
+    <div ref={wrapRef} className="relative w-full" style={{ height: "155vh" }}>
       <div ref={pinRef} className="relative h-screen w-full overflow-hidden bg-[#121212]">
         {/* Слайд 1 — тёмный, центрированная 1440-сетка. */}
         <div ref={slide1Ref} className="absolute inset-0 flex items-center justify-center">

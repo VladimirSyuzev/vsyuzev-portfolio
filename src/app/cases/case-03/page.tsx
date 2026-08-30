@@ -102,9 +102,9 @@ export default function Case03Page() {
           раздел (слит в актуальной Figma), трек по колесу мыши. */}
       <Process />
 
-      <div className="mx-auto flex w-[1440px] flex-col items-start">
-        <Summary />
-      </div>
+      {/* Итог — тёмный текст на светлом фоне, мокап-фрейм пропорционально
+          во всю ширину экрана (потому вне центрированной 1440-сетки). */}
+      <Summary />
 
       <Footer />
     </div>

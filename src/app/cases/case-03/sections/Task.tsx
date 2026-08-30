@@ -1,28 +1,44 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 
 // 01 Задача — 1:1 из актуальной Figma (node 2079:17694, высота 1672).
 // Дисплейный заголовок 175px. Вводный абзац. Фрейм «варианты» (node
-// 2079:17726) — горизонтальная лента маркетинговых форматов: механика та
-// же, что у трека «Процесс» в кейсах 1 и 2 (наведённое колесо мыши гонит
-// ленту ГОРИЗОНТАЛЬНО, нативный scrollLeft). Отличие: карточка, оказавшаяся
-// в центре экрана, становится «ключевой» — вырастает с 262 до 399px по
-// высоте (ширина — по пропорции), соседние остаются маленькими.
+// 2079:17726) — снап-карусель маркетинговых форматов: один тик колеса
+// мыши центрирует СЛЕДУЮЩУЮ карточку (строго по центру фрейма), она
+// становится «ключевой» и вырастает с 262 до 399px по высоте (ширина —
+// по пропорции), соседние остаются маленькими. Изображения не
+// обрезаются — соотношение сторон карточки равно соотношению картинки.
 // Ниже — «Система должна была:» + 4 требования с галочками, крупная
 // итоговая мысль с подчёркиванием и 3D-стек монет слева.
 const A = "/cases/case-03/sections";
 
 // 4 карточки фрейма «варианты» (Figma node 2079:17726) — ассеты 2x,
-// экспортированы пользователем. w/h = пропорции карточки (соотношение
-// сторон), без скруглений.
+// экспортированы пользователем. w/h = соотношение сторон карточки.
 const CARDS = [
   { src: "variant1.jpg", w: 1419, h: 798, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
   { src: "variant2.jpg", w: 639, h: 798, alt: "Пост: Move digital assets with confidence" },
   { src: "variant3.jpg", w: 798, h: 798, alt: "Пост: Payments without delays" },
   { src: "variant4.jpg", w: 1197, h: 798, alt: "Пост: Real-time transactions" },
 ];
+
+const GAP = 16;
+const H_SMALL = 262;
+const H_BIG = 399;
+// Центр фрейма «варианты» = центр 1440-сетки (сама сетка центрирована в
+// окне, поэтому это же и центр экрана).
+const CENTER = 720;
+
+const widthOf = (c: (typeof CARDS)[number], big: boolean) => (big ? H_BIG : H_SMALL) * (c.w / c.h);
+
+// Сдвиг ленты, при котором карточка `active` встаёт ровно по центру.
+function offsetFor(active: number) {
+  let left = 0;
+  for (let i = 0; i < active; i++) left += widthOf(CARDS[i], false) + GAP;
+  return CENTER - (left + widthOf(CARDS[active], true) / 2);
+}
 
 const REQS: [string, string][] = [
   ["Сохранять", "визуальную целостность"],
@@ -46,63 +62,38 @@ function Req({ head, sub }: { head: string; sub: string }) {
 }
 
 export default function Task() {
-  const trackRef = useRef<HTMLDivElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+  const idxRef = useRef(0);
+  const reduced = useReducedMotion();
 
-  // Колесо мыши над лентой → горизонтальный scrollLeft (как трек «Процесс»).
   useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
+    idxRef.current = index;
+  }, [index]);
+
+  // Колесо мыши над лентой → один тик = следующая/предыдущая карточка.
+  // На краях ленты колесо не перехватываем — страница скроллится обычно.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || reduced) return;
+    let locked = false;
     function onWheel(e: WheelEvent) {
-      if (!el) return;
-      const delta = e.deltaY;
-      const atStart = el.scrollLeft <= 0;
-      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
-      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
-      el.scrollLeft += delta;
+      const dir = e.deltaY > 0 ? 1 : -1;
+      const cur = idxRef.current;
+      if ((dir < 0 && cur === 0) || (dir > 0 && cur === CARDS.length - 1)) return;
       e.preventDefault();
+      if (locked) return;
+      locked = true;
+      setIndex(cur + dir);
+      window.setTimeout(() => {
+        locked = false;
+      }, 600);
     }
     el.addEventListener("wheel", onWheel, { passive: false });
     return () => el.removeEventListener("wheel", onWheel);
-  }, []);
+  }, [reduced]);
 
-  // Карточка, ближайшая к центру экрана, помечается data-active — CSS
-  // растит её с 262 до 399px по высоте (transition). rAF-троттлинг.
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    let raf = 0;
-    function update() {
-      raf = 0;
-      if (!el) return;
-      const mid = window.innerWidth / 2;
-      const cards = Array.from(el.querySelectorAll<HTMLElement>(".varcard"));
-      let best = -1;
-      let bestDist = Infinity;
-      cards.forEach((c, i) => {
-        const r = c.getBoundingClientRect();
-        const d = Math.abs(r.left + r.width / 2 - mid);
-        if (d < bestDist) {
-          bestDist = d;
-          best = i;
-        }
-      });
-      cards.forEach((c, i) => {
-        if (i === best) c.setAttribute("data-active", "");
-        else c.removeAttribute("data-active");
-      });
-    }
-    function onScroll() {
-      if (!raf) raf = requestAnimationFrame(update);
-    }
-    update();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      el.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
+  const offset = offsetFor(index);
 
   return (
     <div className="relative h-[1672px] w-[1440px] overflow-clip bg-[#fafafa]">
@@ -116,26 +107,44 @@ export default function Task() {
         функциональность продукта без текста и работает в разных форматах и контекстах.
       </p>
 
-      {/* Лента «варианты» — Figma node 2079:17726, x350 / y527, h399.
-          Колесо мыши гонит горизонтально; центральная карточка вырастает. */}
-      <div
-        ref={trackRef}
-        className="vartrack no-scrollbar absolute left-[350px] right-0 top-[527px] flex h-[399px] items-center gap-[16px] overflow-x-auto pr-[720px]"
-      >
-        {CARDS.map((c) => (
-          <div
-            key={c.src}
-            className="varcard relative h-[262px] shrink-0 overflow-hidden transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px] motion-reduce:transition-none"
-            style={{ aspectRatio: `${c.w} / ${c.h}` }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt={c.alt} className="block h-full w-full max-w-none object-cover" src={`${A}/${c.src}`} />
+      {/* Лента «варианты» — снап-карусель, ключевая карточка по центру. */}
+      <div ref={wrapRef} className="absolute inset-x-0 top-[527px] h-[399px] overflow-hidden">
+        {reduced ? (
+          <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
+            {CARDS.map((c) => (
+              <div
+                key={c.src}
+                className="relative h-[262px] shrink-0 overflow-hidden"
+                style={{ aspectRatio: `${c.w} / ${c.h}` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
+              </div>
+            ))}
           </div>
-        ))}
+        ) : (
+          <div
+            className="flex h-full items-center gap-[16px] transition-transform duration-[550ms] ease-[cubic-bezier(0.33,1,0.68,1)] will-change-transform"
+            style={{ transform: `translateX(${offset}px)` }}
+          >
+            {CARDS.map((c, i) => (
+              <div
+                key={c.src}
+                data-active={i === index || undefined}
+                className="relative h-[262px] shrink-0 overflow-hidden transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px]"
+                style={{ aspectRatio: `${c.w} / ${c.h}` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Доодл-«молния» (Figma node 2384:21368). */}
       <Reveal variant="doodle" className="absolute left-[1195.74px] top-[396.96px] h-[107px] w-[85px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-flash.svg`} />
       </Reveal>
 
@@ -160,17 +169,19 @@ export default function Task() {
         <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
       </Reveal>
 
-      <p className="absolute left-[726px] top-[1277px] w-[589px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
+      <p className="absolute left-[726px] top-[1277px] w-[624px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
         Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как пользователь
         прочитает текст
       </p>
 
-      {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369). */}
+      {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369) —
+          строго под последней строкой, текст не перекрывает. */}
       <Reveal
         variant="line"
         start="top 92%"
-        className="absolute left-[876px] top-[1441.94px] h-[35px] w-[394px]"
+        className="absolute left-[884px] top-[1462px] h-[35px] w-[394px]"
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-arrow.svg`} />
       </Reveal>
     </div>

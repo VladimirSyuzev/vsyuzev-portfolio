@@ -2,9 +2,17 @@
 // В новой версии это мудборд: россыпь 3D-референсов с подписями MATERIAL /
 // FORM / COMPOSITION / RESULT + доодл-«глаз». Плотная визуальная
 // композиция — единый растровый ассет (FIGMA-BRIEF §5); живьём в DOM
-// только заголовок и вводный текст (перекрывают запечённые в левом
-// верхнем углу).
+// заголовок, вводный текст и подписи мудборда (перекрывают запечённые).
 const A = "/cases/case-03/sections";
+
+// Подписи мудборда (Figma nodes 2399:35309/35311/35312/35333 → y866):
+// 11px, tracking 0.66, opacity 80, body-font, uppercase.
+const LABELS: [string, number][] = [
+  ["Material", 46],
+  ["Form", 387],
+  ["Composition", 726],
+  ["Result", 896],
+];
 
 export default function Research() {
   return (
@@ -34,6 +42,18 @@ export default function Research() {
           определил принципы будущей системы.
         </p>
       </div>
+
+      {/* Живые подписи мудборда поверх запечённых в ассете (opacity 80). */}
+      <div className="absolute left-[46px] top-[861px] h-[20px] w-[920px] bg-[#fafafa]" />
+      {LABELS.map(([text, x]) => (
+        <p
+          key={text}
+          className="absolute top-[866px] text-[11px] uppercase leading-[1.2] tracking-[0.66px] text-[#121212] opacity-80"
+          style={{ left: x }}
+        >
+          {text}
+        </p>
+      ))}
     </div>
   );
 }
