@@ -37,15 +37,13 @@ export default function Hero() {
         <span className="leading-[1.1]">
           {" "}
           <br />
-          {/* Опечатка макета "COMUNICATION" исправлена на "COMMUNICATION"
-              по явной просьбе пользователя. */}
-          COMMUNICATION DESIGNER
+          multidisciplinary designer
         </span>
       </p>
       <Reveal
         variant="line"
         delay={0.35}
-        className="absolute left-[503.07px] top-[840.96px] h-[13.044px] w-[342.526px]"
+        className="absolute left-[590px] top-[854px] h-[13.044px] w-[342.526px]"
       >
         <img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
       </Reveal>

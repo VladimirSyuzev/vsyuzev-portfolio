@@ -56,14 +56,14 @@ function ProblemContent() {
         <div className="flex flex-col gap-[6px]">
           <div className="flex flex-col">
             <p>ICONS</p>
-            <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">Symbols</p>
+            <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px]">Symbols</p>
           </div>
           <p className="opacity-70">более старая библиотека.</p>
         </div>
         <div className="mt-[24px] flex flex-col gap-[6px]">
           <div className="flex flex-col">
             <p>ICONS</p>
-            <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">Regular</p>
+            <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px]">Regular</p>
           </div>
           <p className="opacity-70">новая библиотека, которая постепенно развивалась вместе с продуктами.</p>
         </div>
