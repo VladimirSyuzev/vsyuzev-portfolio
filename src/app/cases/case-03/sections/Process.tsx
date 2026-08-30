@@ -1,8 +1,19 @@
-import Reveal from "@/components/Reveal";
+"use client";
 
-// 05 Процесс — 1:1 из Figma (node 2022:14827). Тёмный full-bleed.
-// Горизонтальная лента из 7 карточек-этапов (частично уезжает вправо),
-// белый текст. Полосатая подложка и доодл «»»» — SVG.
+import { useEffect, useRef, useState } from "react";
+import Reveal from "@/components/Reveal";
+import { GLASS_BUBBLE } from "@/lib/glass";
+
+// 05 Процесс — 1:1 из актуальной Figma (node 2022:14827, высота 2927).
+// В новой версии Figma «Процесс», «Дизайн-система» и сет 3D-иконок слиты
+// в один тёмный full-bleed раздел:
+//  · заголовок 175px + вводный текст + доодл «»»»;
+//  · трек «процесс» (node 2029:15514) — механика 1:1 как в кейсах 1 и 2
+//    (наведённое колесо мыши гонит ленту ГОРИЗОНТАЛЬНО, нативный
+//    scrollLeft), стекло-бабл — общий GLASS_BUBBLE (src/lib/glass.ts);
+//  · «06 Дизайн-система» — текст + белая карточка из 4 3D-объектов;
+//  · «Разные функции продукта. Один визуальный язык» в обводке-эллипсе;
+//  · сет из 12 финальных 3D-иконок с подписями.
 const A = "/cases/case-03/sections";
 
 const STEPS = [
@@ -15,40 +26,133 @@ const STEPS = [
   { n: "07", title: "Final Key Visual", desc: "Готовая иллюстрация" },
 ];
 
+const PITCH = 340;
+
 export default function Process() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [padding, setPadding] = useState({ left: 46, right: 1440 / 2 - 164 });
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width;
+      if (!w) return;
+      const gutter = Math.max(0, (w - 1440) / 2);
+      setPadding({ left: 46 + gutter, right: w / 2 - 164 });
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    function onWheel(e: WheelEvent) {
+      if (!el) return;
+      const delta = e.deltaY;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
+      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
+      el.scrollLeft += delta;
+      e.preventDefault();
+    }
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
   return (
-    <section className="relative w-full overflow-clip bg-[#121212]">
-      <div className="relative mx-auto h-[624px] w-[1440px]">
-        <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+    <div ref={sectionRef} className="relative h-[2927px] w-full overflow-clip bg-[#121212]">
+      <div className="relative mx-auto h-full w-[1440px]">
+        {/* — Процесс — */}
+        <div className="absolute left-[46px] top-[143px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
           <p className="text-[#008cff]">05</p>
           <p className="text-white">Процесс</p>
         </div>
 
-        <p className="absolute left-[46px] top-[181px] w-[670px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Каждая иллюстрация проходила одинаковый цикл разработки. После выбора метафоры
-          создавался быстрый скетч, затем моделировалась композиция, настраивались материалы и
-          освещение, после чего выполнялся финальный рендер. Такой процесс помогал быстрее
-          принимать решения на ранних этапах и поддерживать единый стиль всего набора. Благодаря
-          библиотеке материалов и готовых объектов производство новых сцен занимало значительно
-          меньше времени.
-        </p>
+        <div className="absolute left-[46px] top-[457px] flex w-[670px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+          <p>
+            Каждая иллюстрация проходила один рабочий цикл: поиск метафоры, быстрый скетч,
+            построение композиции, настройка материалов и освещения, затем финальный рендер.
+          </p>
+          <p>
+            Такой подход позволял принимать ключевые решения на ранних этапах. Библиотека
+            материалов и готовых объектов ускоряла создание новых сцен и помогала сохранять единый
+            стиль.
+          </p>
+        </div>
 
-        {/* Доодл «»»» (Figma node 2279:32652). */}
-        <Reveal variant="doodle" className="absolute left-[707px] top-[163px] h-[125px] w-[158px]">
-          <img alt="" className="block size-full max-w-none" src={`${A}/process-doodle.svg`} />
-        </Reveal>
-
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt=""
-          className="absolute left-[46px] top-[306px] h-[286px] w-[1348px] max-w-none opacity-60"
+          className="absolute left-[46px] top-[580px] h-[286px] w-[1348px] max-w-none opacity-60"
           src={`${A}/process-stripes.svg`}
         />
 
-        <div className="absolute left-[46px] top-[388px] flex h-[125px] gap-[12px]">
-          {STEPS.map((s) => (
+        <Reveal variant="doodle" className="absolute left-[707px] top-[431px] z-10 h-[125px] w-[158px]">
+          <img alt="" className="block size-full max-w-none" src={`${A}/process-doodle.svg`} />
+        </Reveal>
+
+        {/* — Дизайн-система — */}
+        <div className="absolute left-1/2 top-[956px] flex -translate-x-1/2 items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+          <p className="text-[#008cff]">06</p>
+          <p className="text-white">Дизайн-система</p>
+        </div>
+
+        <p className="absolute left-1/2 top-[1003px] w-[498px] -translate-x-1/2 text-center text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-80">
+          Каждая иллюстрация создавалась как часть общей системы. Геометрия, материалы, освещение и
+          цветовая палитра формировали единый визуальный язык независимо от темы конкретной сцены.
+        </p>
+
+        {/* Белая карточка из 4 3D-объектов (Figma node 2387:22353). */}
+        <Reveal variant="fade" className="absolute left-[78px] top-[1143px] h-[399px] w-[1284px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt="3D-объекты дизайн-системы: Bank, Supporting documents, Onboarding, Personal manager"
+            className="block size-full"
+            src={`${A}/process-dsystem-card.png`}
+          />
+        </Reveal>
+
+        {/* Обводка-эллипс вокруг фразы (Figma node 2387:22373). */}
+        <Reveal
+          variant="line"
+          start="top 88%"
+          className="absolute left-[408.24px] top-[1631.04px] h-[156px] w-[637px]"
+        >
+          <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse.svg`} />
+        </Reveal>
+
+        <p className="absolute left-1/2 top-[1676px] w-[669px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+          Разные функции продукта.
+          <br />
+          Один визуальный язык
+        </p>
+
+        {/* Сет из 12 3D-иконок (Figma node 2022:15013). */}
+        <Reveal variant="fade" className="absolute left-[220px] top-[1984px] h-[738px] w-[1000px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            alt="Сет из 12 3D-иконок Stablegate: Wallet, Bank, Gate, Onboarding, Fees, Coin, Security и др."
+            className="block size-full"
+            src={`${A}/process-iconset.png`}
+          />
+        </Reveal>
+      </div>
+
+      {/* Окно трека — во всю ширину экрана, горизонтальный скролл по колесу. */}
+      <div
+        ref={trackRef}
+        className="no-scrollbar absolute left-0 top-[622px] h-[205px] w-full overflow-x-auto"
+        style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
+      >
+        <div className="relative h-[125px] w-[2368px]">
+          {STEPS.map((s, i) => (
             <div
               key={s.n}
-              className="flex h-[125px] w-[328px] shrink-0 flex-col justify-center gap-[8px] overflow-clip rounded-[20px] border-l-[3px] border-[#008cff] bg-white/20 p-[16px] shadow-[0px_4px_10px_0px_rgba(232,232,232,0.25)] backdrop-blur-[42px]"
+              className={`absolute flex h-[125px] w-[328px] flex-col justify-center gap-[8px] border-[#008cff] ${GLASS_BUBBLE}`}
+              style={{ left: i * PITCH, top: 0 }}
             >
               <p className="text-[14px] font-bold uppercase leading-[1.2] tracking-[0.84px] text-[#008cff]" style={{ fontFamily: "var(--font-body)" }}>
                 {s.n}
@@ -59,6 +163,6 @@ export default function Process() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -6,11 +6,8 @@ import SiteFeatures from "./sections/SiteFeatures";
 import Task from "./sections/Task";
 import Research from "./sections/Research";
 import VisualSystem from "./sections/VisualSystem";
-import Principles1 from "./sections/Principles1";
-import Principles2 from "./sections/Principles2";
+import PrinciplesSlides from "./sections/PrinciplesSlides";
 import Process from "./sections/Process";
-import DesignSystem from "./sections/DesignSystem";
-import IconSet from "./sections/IconSet";
 import Summary from "./sections/Summary";
 
 // Кейс 003 «3D-иллюстраций для финтех-продукта» (Stablegate) — собран
@@ -98,16 +95,12 @@ export default function Case03Page() {
 
       {/* Визуальная система — тёмный full-bleed. */}
       <VisualSystem />
-      {/* Принципы дизайна (1 из 2) — тёмный full-bleed. */}
-      <Principles1 />
-      {/* Принципы дизайна (2 из 2) — цельная иллюстрация на всю ширину. */}
-      <Principles2 />
-      {/* Процесс — тёмный full-bleed. */}
+      {/* Принципы дизайна — 2 слайда, закреплённый блок с кроссфейдом по
+          скроллу (как «Проблема / Экран» в кейсе 1), тёмный full-bleed. */}
+      <PrinciplesSlides />
+      {/* Процесс + Дизайн-система + сет 3D-иконок — один тёмный full-bleed
+          раздел (слит в актуальной Figma), трек по колесу мыши. */}
       <Process />
-      {/* Дизайн-система — тёмный full-bleed. */}
-      <DesignSystem />
-      {/* Сет 3D-иконок — тёмный full-bleed. */}
-      <IconSet />
 
       <div className="mx-auto flex w-[1440px] flex-col items-start">
         <Summary />
