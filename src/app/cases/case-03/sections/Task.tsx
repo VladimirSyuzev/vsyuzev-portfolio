@@ -14,13 +14,14 @@ import Reveal from "@/components/Reveal";
 // итоговая мысль с подчёркиванием и 3D-стек монет слева.
 const A = "/cases/case-03/sections";
 
-// 4 карточки фрейма «варианты» (Figma node 2079:17726). w/h — размеры
-// карточки в макете (не пикселя ассета); ассеты — экспорт узлов 2x.
+// 4 карточки фрейма «варианты» (Figma node 2079:17726) — ассеты 2x,
+// экспортированы пользователем. w/h = пропорции карточки (соотношение
+// сторон), без скруглений.
 const CARDS = [
-  { src: "task-var-hero.png", w: 709, h: 399, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
-  { src: "task-var-post1.png", w: 210, h: 262, alt: "Пост: Move digital assets with confidence" },
-  { src: "task-var-post2.png", w: 262, h: 262, alt: "Пост: Payments without delays" },
-  { src: "task-var-twitter.png", w: 393, h: 262, alt: "Пост: Real-time transactions" },
+  { src: "variant1.jpg", w: 1419, h: 798, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
+  { src: "variant2.jpg", w: 639, h: 798, alt: "Пост: Move digital assets with confidence" },
+  { src: "variant3.jpg", w: 798, h: 798, alt: "Пост: Payments without delays" },
+  { src: "variant4.jpg", w: 1197, h: 798, alt: "Пост: Real-time transactions" },
 ];
 
 const REQS: [string, string][] = [
@@ -124,7 +125,7 @@ export default function Task() {
         {CARDS.map((c) => (
           <div
             key={c.src}
-            className="varcard relative h-[262px] shrink-0 overflow-hidden rounded-[16px] transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px] motion-reduce:transition-none"
+            className="varcard relative h-[262px] shrink-0 overflow-hidden transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px] motion-reduce:transition-none"
             style={{ aspectRatio: `${c.w} / ${c.h}` }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
