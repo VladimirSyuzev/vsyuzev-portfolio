@@ -111,7 +111,7 @@ export default function Process() {
           <img
             alt="3D-объекты дизайн-системы: Bank, Supporting documents, Onboarding, Personal manager"
             className="block size-full"
-            src={`${A}/process-dsystem-card.png`}
+            src={`${A}/process-dsystem-card.jpg`}
           />
         </Reveal>
 
@@ -136,7 +136,7 @@ export default function Process() {
           <img
             alt="Сет из 12 3D-иконок Stablegate: Wallet, Bank, Gate, Onboarding, Fees, Coin, Security и др."
             className="block size-full"
-            src={`${A}/process-iconset.png`}
+            src={`${A}/process-iconset.jpg`}
           />
         </Reveal>
       </div>

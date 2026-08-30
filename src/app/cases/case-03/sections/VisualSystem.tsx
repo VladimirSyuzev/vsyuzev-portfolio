@@ -9,16 +9,16 @@ const A = "/cases/case-03/sections";
 export default function VisualSystem() {
   return (
     <section className="relative w-full overflow-clip bg-[#121212]">
-      <div className="absolute inset-x-0 top-[318px] h-[704px] overflow-clip">
+      <div className="relative mx-auto h-[1539px] w-[1440px]">
+        {/* Фото конференции — в 1440-сетке, ассет 2x, object-cover
+            (пропорции сохраняются, ничего не растягивается по ширине). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt="Презентация иллюстраций Stablegate на конференции"
-          className="block size-full object-cover"
+          className="absolute left-0 top-[318px] h-[704px] w-[1440px] max-w-none object-cover"
           src={`${A}/vislang-photo.jpg`}
         />
-      </div>
 
-      <div className="relative mx-auto h-[1539px] w-[1440px]">
         <div className="absolute left-[46px] top-[64px] flex flex-col font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <span className="text-[#008cff]">03</span>
           <span className="w-[246px] text-white">Визуальная система</span>

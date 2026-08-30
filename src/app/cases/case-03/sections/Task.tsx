@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import Reveal from "@/components/Reveal";
 
-// 01 Задача — 1:1 из актуальной Figma (node 2079:17694, высота 1538).
+// 01 Задача — 1:1 из актуальной Figma (node 2079:17694, высота 1672).
 // Дисплейный заголовок 175px. Вводный абзац. Фрейм «варианты» (node
 // 2079:17726) — горизонтальная лента маркетинговых форматов: механика та
 // же, что у трека «Процесс» в кейсах 1 и 2 (наведённое колесо мыши гонит
@@ -14,10 +14,13 @@ import Reveal from "@/components/Reveal";
 // итоговая мысль с подчёркиванием и 3D-стек монет слева.
 const A = "/cases/case-03/sections";
 
+// 4 карточки фрейма «варианты» (Figma node 2079:17726). w/h — размеры
+// карточки в макете (не пикселя ассета); ассеты — экспорт узлов 2x.
 const CARDS = [
-  { src: "task-var-hero.png", w: 742, h: 399, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
-  { src: "task-var-post1.png", w: 210, h: 262, alt: "Пост для соцсетей: Move digital assets with confidence" },
-  { src: "task-var-post2.png", w: 116, h: 262, alt: "Пост для соцсетей: Payments with confidence" },
+  { src: "task-var-hero.png", w: 709, h: 399, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
+  { src: "task-var-post1.png", w: 210, h: 262, alt: "Пост: Move digital assets with confidence" },
+  { src: "task-var-post2.png", w: 262, h: 262, alt: "Пост: Payments without delays" },
+  { src: "task-var-twitter.png", w: 393, h: 262, alt: "Пост: Real-time transactions" },
 ];
 
 const REQS: [string, string][] = [
@@ -101,7 +104,7 @@ export default function Task() {
   }, []);
 
   return (
-    <div className="relative h-[1538px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <div className="relative h-[1672px] w-[1440px] overflow-clip bg-[#fafafa]">
       <div className="absolute left-[46px] top-[143px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
         <p className="text-[#008cff]">01</p>
         <p className="text-[#121212]">Задача</p>
@@ -135,11 +138,11 @@ export default function Task() {
         <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-flash.svg`} />
       </Reveal>
 
-      <p className="absolute left-[386px] top-[1003px] w-[564px] text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212]">
+      <p className="absolute left-[726px] top-[1003px] w-[564px] text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212]">
         Система должна была:
       </p>
 
-      <div className="absolute left-[387px] top-[1032px] flex gap-[12px]">
+      <div className="absolute left-[726px] top-[1032px] flex gap-[12px]">
         <div className="flex w-[328px] flex-col gap-[12px]">
           <Req head={REQS[0][0]} sub={REQS[0][1]} />
           <Req head={REQS[1][0]} sub={REQS[1][1]} />
@@ -153,7 +156,7 @@ export default function Task() {
       {/* 3D-стек монет (Figma node 2399:35306, x216 / y1201, 328×328). */}
       <Reveal variant="fade" className="absolute left-[216px] top-[1201px] size-[328px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.png`} />
+        <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
       </Reveal>
 
       <p className="absolute left-[726px] top-[1277px] w-[589px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
