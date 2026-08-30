@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import { GLASS_BUBBLE } from "@/lib/glass";
 
@@ -38,10 +40,66 @@ const DSYSTEM: [string, string][] = [
   ["dsystem-manager.png", "Personal manager"],
 ];
 
+// Сет из 12 финальных 3D-иконок (Figma node 2022:15013, сетка 1000×738):
+// [файл, подпись, left, top] — иконка 218×218, подпись по центру колонки
+// (109 / 369 / 629.5 / 890.5) на 2px ниже иконки. Ассеты 2x, прозрачный PNG.
+const ICONSET: [string, string, number, number][] = [
+  ["wallet.png", "Wallet", 0, 0],
+  ["supporting-documents.png", "Supporting documents", 260, 0],
+  ["exchainge.png", "Exchainge", 520.5, 0],
+  ["payment-complete.png", "Payment Complete", 781.5, 0],
+  ["bank.png", "Bank", 0, 260],
+  ["gate.png", "Gate", 260, 260],
+  ["onboarding.png", "Onboarding", 520.5, 260],
+  ["fees.png", "Fees", 781.5, 260],
+  ["coin.png", "Coin", 0, 520],
+  ["transactions.png", "Transactions", 260, 520],
+  ["personal-manager.png", "Personal manager", 520.5, 520],
+  ["security.png", "Security", 781.5, 520],
+];
+
 export default function Process() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const dsysRef = useRef<HTMLDivElement>(null);
   const [padding, setPadding] = useState({ left: 46, right: 1440 / 2 - 164 });
+  const reduced = useReducedMotion();
+
+  // «Волна» по 4 объектам дизайн-системы: каждый по очереди чуть
+  // подскакивает (scale + подъём) и возвращается; проход повторяется с
+  // паузой, пока блок в экране (как пульс-волна сета иконок в кейсе 2).
+  useGSAP(
+    () => {
+      if (reduced || !dsysRef.current) return;
+      const objs = gsap.utils.toArray<HTMLElement>(".dsystem-obj", dsysRef.current);
+      if (!objs.length) return;
+      gsap.set(objs, { transformOrigin: "50% 60%" });
+      const tl = gsap.timeline({
+        repeat: -1,
+        repeatDelay: 2.2,
+        defaults: { ease: "sine.inOut" },
+        scrollTrigger: {
+          trigger: dsysRef.current,
+          start: "top 78%",
+          end: "bottom top",
+          toggleActions: "play pause resume pause",
+        },
+      });
+      objs.forEach((el, i) => {
+        const at = i * 0.16;
+        tl.to(el, { scale: 1.09, y: -8, duration: 0.28 }, at).to(
+          el,
+          { scale: 1, y: 0, duration: 0.34 },
+          at + 0.28,
+        );
+      });
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    },
+    { dependencies: [reduced], scope: dsysRef },
+  );
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -101,6 +159,7 @@ export default function Process() {
         />
 
         <Reveal variant="doodle" className="absolute left-[707px] top-[431px] z-10 h-[125px] w-[158px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/process-doodle.svg`} />
         </Reveal>
 
@@ -116,25 +175,27 @@ export default function Process() {
         </p>
 
         {/* Белая карточка из 4 ОТДЕЛЬНЫХ 3D-объектов + подписи
-            (Figma node 2387:22353). */}
-        <Reveal
-          variant="fade"
-          className="absolute left-[78px] top-[1143px] flex h-[399px] w-[1284px] items-center gap-[12px] rounded-[76px] bg-white px-[100px] py-[44px]"
-        >
-          {DSYSTEM.map(([src, label]) => (
-            <div key={label} className="flex w-[262px] shrink-0 flex-col items-center gap-[12px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={label}
-                className="block aspect-square w-full max-w-none object-contain"
-                src={`${A}/${src}`}
-              />
-              <p className="w-full text-center text-[15.62px] font-medium leading-[1.44] text-[#2541ff]">
-                {label}
-              </p>
-            </div>
-          ))}
-        </Reveal>
+            (Figma node 2387:22353). По объектам проходит «волна». */}
+        <div ref={dsysRef} className="absolute left-[78px] top-[1143px] h-[399px] w-[1284px]">
+          <Reveal
+            variant="fade"
+            className="flex h-full w-full items-center gap-[12px] rounded-[76px] bg-white px-[100px] py-[44px]"
+          >
+            {DSYSTEM.map(([src, label]) => (
+              <div key={label} className="flex w-[262px] shrink-0 flex-col items-center gap-[12px]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={label}
+                  className="dsystem-obj block aspect-square w-full max-w-none object-contain will-change-transform"
+                  src={`${A}/${src}`}
+                />
+                <p className="w-full text-center text-[15.62px] font-medium leading-[1.44] text-[#2541ff]">
+                  {label}
+                </p>
+              </div>
+            ))}
+          </Reveal>
+        </div>
 
         {/* Обводка-эллипс вокруг фразы (Figma node 2387:22373). */}
         <Reveal
@@ -142,6 +203,7 @@ export default function Process() {
           start="top 88%"
           className="absolute left-[408.24px] top-[1631.04px] h-[156px] w-[637px]"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse.svg`} />
         </Reveal>
 
@@ -151,14 +213,27 @@ export default function Process() {
           Один визуальный язык
         </p>
 
-        {/* Сет из 12 3D-иконок (Figma node 2022:15013). */}
+        {/* Сет из 12 3D-иконок (Figma node 2022:15013) — 12 отдельных
+            ассетов. При наведении иконка растёт на 20%, подпись уезжает
+            вниз и гаснет; курсор убрали — всё возвращается. */}
         <Reveal variant="fade" className="absolute left-[220px] top-[1984px] h-[738px] w-[1000px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt="Сет из 12 3D-иконок Stablegate: Wallet, Bank, Gate, Onboarding, Fees, Coin, Security и др."
-            className="block size-full"
-            src={`${A}/process-iconset.jpg`}
-          />
+          {ICONSET.map(([src, label, left, top]) => (
+            <div
+              key={label}
+              className="group absolute h-[218px] w-[218px]"
+              style={{ left, top }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={label}
+                className="block size-full max-w-none object-contain transition-transform duration-[350ms] ease-[cubic-bezier(0.33,1,0.68,1)] will-change-transform group-hover:scale-[1.2] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                src={`${A}/iconset/${src}`}
+              />
+              <p className="pointer-events-none absolute left-1/2 top-[220px] -translate-x-1/2 whitespace-nowrap text-center text-[15px] leading-[1.2] text-white transition-all duration-[350ms] ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:translate-y-[10px] group-hover:opacity-0 motion-reduce:transition-none">
+                {label}
+              </p>
+            </div>
+          ))}
         </Reveal>
       </div>
 
