@@ -1,20 +1,21 @@
 import Reveal from "@/components/Reveal";
 
-// 08 Итог — 1:1 из Figma (node 1961:32637). Обновлено: заголовок и текст
-// теперь по ЦЕНТРУ полосы (было слева), композиция iPhone-мокапов
-// (summary.svg, 715×554 — настоящий SVG-экспорт пользователя) опущена
-// ниже (left 363 / top 600) и частично уходит за нижнюю кромку блока.
-// Высота блока выросла до 1149. Два декоративных доодла переставлены
-// (node 2284:40040 → 193.29/927.11, node 2287:4248 → 1025.94/499.02).
+// 08 Итог — 1:1 из актуальной Figma (node 1961:32637, высота 976).
+// Заголовок и текст по ЦЕНТРУ полосы, композиция iPhone-мокапов
+// (summary.svg, 715×525 — свежий SVG-экспорт узла 1961:32647, обрезан
+// нижней кромкой блока) на left 363 / top 451. Весь контент подтянут
+// вверх (заголовок 271→134, интро 318→181, мокап 600→451) — это и
+// сокращает визуальный зазор между блоками «Роль» и «Итог». Доодлы:
+// node 2284:40040 → 193.29/778.12, node 2287:4248 → 1025.94/350.02.
 export default function Summary() {
   return (
-    <div className="relative h-[1149px] w-[1440px] overflow-clip bg-[#fafafa]">
-      <div className="absolute left-1/2 top-[271px] flex -translate-x-1/2 items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
+    <div className="relative h-[976px] w-[1440px] overflow-clip bg-[#fafafa]">
+      <div className="absolute left-1/2 top-[134px] flex -translate-x-1/2 items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">08</p>
         <p className="text-[#121212]">ИТОГ</p>
       </div>
 
-      <div className="absolute left-1/2 top-[318px] w-[498px] -translate-x-1/2 text-center text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+      <div className="absolute left-1/2 top-[181px] w-[498px] -translate-x-1/2 text-center text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
         <p>
           После завершения аудита клиент получил структурированную библиотеку без дублей, понимание
           недостающих элементов и прозрачный процесс дальнейшего производства.
@@ -30,15 +31,15 @@ export default function Summary() {
         src="/cases/case-01/sections/summary.svg"
         alt="Итоговая система иконок в интерфейсе голосового ассистента Алиса"
         width={715}
-        height={554}
-        className="absolute left-[363px] top-[600px] w-[715px]"
+        height={525}
+        className="absolute left-[363px] top-[451px] w-[715px]"
       />
 
       {/* Доодлы — статичные, x/y 1:1 из Figma. */}
-      <Reveal variant="doodle" className="absolute left-[193.29px] top-[927.11px] h-[162.57px] w-[185.58px]">
+      <Reveal variant="doodle" className="absolute left-[193.29px] top-[778.12px] h-[162.57px] w-[185.58px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-1.svg" />
       </Reveal>
-      <Reveal variant="doodle" delay={0.1} className="absolute left-[1025.94px] top-[499.02px] h-[125.02px] w-[158.02px]">
+      <Reveal variant="doodle" delay={0.1} className="absolute left-[1025.94px] top-[350.02px] h-[125.02px] w-[158.02px]">
         <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/summary-doodle-2.svg" />
       </Reveal>
     </div>
