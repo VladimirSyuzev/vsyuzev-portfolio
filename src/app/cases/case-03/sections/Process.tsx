@@ -28,6 +28,16 @@ const STEPS = [
 
 const PITCH = 340;
 
+// Дизайн-система (Figma node 2387:22353) — белая карточка из 4 ОТДЕЛЬНЫХ
+// 3D-объектов (не один запечённый ассет) + подписи. Ассеты 2x,
+// прозрачный PNG, 262×262 в макете.
+const DSYSTEM: [string, string][] = [
+  ["dsystem-bank.png", "Bank"],
+  ["dsystem-docs.png", "Supporting documents"],
+  ["dsystem-onboarding.png", "Onboarding"],
+  ["dsystem-manager.png", "Personal manager"],
+];
+
 export default function Process() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -105,14 +115,25 @@ export default function Process() {
           цветовая палитра формировали единый визуальный язык независимо от темы конкретной сцены.
         </p>
 
-        {/* Белая карточка из 4 3D-объектов (Figma node 2387:22353). */}
-        <Reveal variant="fade" className="absolute left-[78px] top-[1143px] h-[399px] w-[1284px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            alt="3D-объекты дизайн-системы: Bank, Supporting documents, Onboarding, Personal manager"
-            className="block size-full"
-            src={`${A}/process-dsystem-card.jpg`}
-          />
+        {/* Белая карточка из 4 ОТДЕЛЬНЫХ 3D-объектов + подписи
+            (Figma node 2387:22353). */}
+        <Reveal
+          variant="fade"
+          className="absolute left-[78px] top-[1143px] flex h-[399px] w-[1284px] items-center gap-[12px] rounded-[76px] bg-white px-[100px] py-[44px]"
+        >
+          {DSYSTEM.map(([src, label]) => (
+            <div key={label} className="flex w-[262px] shrink-0 flex-col items-center gap-[12px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={label}
+                className="block aspect-square w-full max-w-none object-contain"
+                src={`${A}/${src}`}
+              />
+              <p className="w-full text-center text-[15.62px] font-medium leading-[1.44] text-[#2541ff]">
+                {label}
+              </p>
+            </div>
+          ))}
         </Reveal>
 
         {/* Обводка-эллипс вокруг фразы (Figma node 2387:22373). */}

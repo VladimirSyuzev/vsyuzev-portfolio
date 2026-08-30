@@ -89,7 +89,13 @@ export default function Case03Page() {
       {/* Секция сайта — светлая белая карточка. */}
       <div className="mx-auto flex w-[1440px] flex-col items-start">
         <SiteFeatures />
-        <Task />
+      </div>
+
+      {/* Задача — лента «варианты» тянется на всю ширину экрана, потому
+          вне центрированной 1440-сетки. */}
+      <Task />
+
+      <div className="mx-auto flex w-[1440px] flex-col items-start">
         <Research />
       </div>
 
