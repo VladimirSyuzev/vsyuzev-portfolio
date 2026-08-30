@@ -13,9 +13,11 @@ import Reveal from "@/components/Reveal";
 // переключение слайдов происходит за одно движение колеса.
 //
 // Слайд 1 — 7 отдельных PNG-сфер (прозрачные, node 2022:14745), лежат на
-// тёмном фоне без подложки. Слайд 2 — сплит: ФОН (две половины) тянется на
-// весь экран, а содержимое (3D-объекты, текст, подчёркивание, индикатор)
-// остаётся в центрированной 1440-сетке в родном размере.
+// тёмном фоне без подложки. Слайд 2 — сплит на ДВЕ половины 50/50 (как фон,
+// так и содержимое): 3D-стек монет по центру левой (тёмной) половины,
+// карта+замок по центру правой (светлой), текст и подчёркивание —
+// относительно левого края правой половины; прогресс-индикатор жмётся к
+// левому краю экрана. Объекты — в родном размере (524px), не масштабируются.
 const A = "/cases/case-03/sections";
 
 // Сферы: [файл, left, top, size] в координатах фрейма 2022:14745
@@ -35,81 +37,90 @@ const SPHERES: [string, number, number, number][] = [
 
 function Slide1() {
   return (
-    <div className="relative h-[900px] w-[1440px]">
+    <div className="relative h-[900px] w-full">
+      {/* Заголовок, текст, сферы и доодл — в центрированной 1440-сетке. */}
+      <div className="relative mx-auto h-full w-[1440px]">
+        <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+          <p className="text-[#008cff]">04</p>
+          <p className="text-white">Принципы дизайна</p>
+        </div>
+
+        <div className="absolute left-[46px] top-[181px] flex w-[498px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
+          <p className="opacity-70">
+            В основе визуального языка лежат простые округлые формы, реалистичные материалы и
+            ограниченная фирменная палитра.
+            <br />
+            Во всех сценах использовались пластик, стекло и металл, а также единая схема освещения.
+          </p>
+          <p className="w-[494px] opacity-70">
+            Приоритетом была не максимальная реалистичность, а ясность формы и быстрое считывание
+            смысла композиции.
+          </p>
+        </div>
+
+        {/* 7 отдельных сфер (node 2022:14745) — прозрачные PNG. */}
+        <div className="absolute left-[104.88px] top-[318px] h-[533px] w-[1231px]">
+          {SPHERES.map(([name, left, top, size]) => (
+            <div key={name} className="absolute" style={{ left, top, width: size, height: size }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="" className="block size-full max-w-none" src={`${A}/spheres/${name}.png`} />
+            </div>
+          ))}
+        </div>
+
+        {/* Доодл «//» (Figma node 2284:39895 → 802 / 324) — поверх сфер. */}
+        <Reveal variant="doodle" className="absolute left-[802px] top-[324px] z-10 h-[125px] w-[158px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="block size-full max-w-none" src={`${A}/principles1-doodle.svg`} />
+        </Reveal>
+      </div>
+
+      {/* Прогресс-индикатор 1 из 2 — у левого края экрана. */}
       <div className="absolute left-[46px] top-[852px] flex gap-[12px]">
         <div className="h-[2px] w-[44.833px] bg-white" />
         <div className="h-[2px] w-[44.833px] bg-white opacity-30" />
       </div>
-
-      <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-        <p className="text-[#008cff]">04</p>
-        <p className="text-white">Принципы дизайна</p>
-      </div>
-
-      <div className="absolute left-[46px] top-[181px] flex w-[498px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-        <p className="opacity-70">
-          В основе визуального языка лежат простые округлые формы, реалистичные материалы и
-          ограниченная фирменная палитра.
-          <br />
-          Во всех сценах использовались пластик, стекло и металл, а также единая схема освещения.
-        </p>
-        <p className="w-[494px] opacity-70">
-          Приоритетом была не максимальная реалистичность, а ясность формы и быстрое считывание
-          смысла композиции.
-        </p>
-      </div>
-
-      {/* 7 отдельных сфер (node 2022:14745) — прозрачные PNG. */}
-      <div className="absolute left-[104.88px] top-[318px] h-[533px] w-[1231px]">
-        {SPHERES.map(([name, left, top, size]) => (
-          <div key={name} className="absolute" style={{ left, top, width: size, height: size }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src={`${A}/spheres/${name}.png`} />
-          </div>
-        ))}
-      </div>
-
-      {/* Доодл «//» (Figma node 2284:39895 → 802 / 324) — поверх сфер. */}
-      <Reveal variant="doodle" className="absolute left-[802px] top-[324px] z-10 h-[125px] w-[158px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/principles1-doodle.svg`} />
-      </Reveal>
     </div>
   );
 }
 
 function Slide2Content() {
   return (
-    <div className="relative h-[900px] w-[1440px]">
-      {/* 3D-стек монет — левая (тёмная) половина. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        alt="3D-стек монет Stablegate с галочкой"
-        className="absolute left-[53px] top-[230px] size-[524px] max-w-none"
-        src={`${A}/pr2-coin.png`}
-      />
+    <div className="relative h-[900px] w-full">
+      {/* Левая (тёмная) половина — 3D-стек монет по центру. */}
+      <div className="absolute inset-y-0 left-0 w-1/2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="3D-стек монет Stablegate с галочкой"
+          className="absolute left-1/2 top-1/2 size-[524px] max-w-none -translate-x-1/2 -translate-y-1/2"
+          src={`${A}/pr2-coin.png`}
+        />
+      </div>
 
-      {/* Карта + замок + Face ID — правая (светлая) половина. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        alt="3D-иллюстрация: карта Stablegate, замок и Face ID"
-        className="absolute left-[818px] top-[185px] size-[524px] max-w-none"
-        src={`${A}/pr2-lock.png`}
-      />
+      {/* Правая (светлая) половина — карта+замок по центру, текст и
+          подчёркивание относительно её левого края. */}
+      <div className="absolute inset-y-0 right-0 w-1/2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="3D-иллюстрация: карта Stablegate, замок и Face ID"
+          className="absolute left-1/2 top-[calc(50%-2.5px)] size-[524px] max-w-none -translate-x-1/2 -translate-y-1/2"
+          src={`${A}/pr2-lock.png`}
+        />
 
-      <p className="absolute left-[743px] top-[732px] w-[599px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-        Материалы добавляли характер, сохраняя простоту и ясность формы
-      </p>
+        <p className="absolute left-[44px] top-[728px] w-[599px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          Материалы добавляли характер, сохраняя простоту и ясность формы
+        </p>
 
-      {/* Подчёркивание (Figma node 2284:45800). */}
-      <Reveal variant="line" start="top 80%" className="absolute left-[859px] top-[823px] h-[49px] w-[547px]">
-        <div className="rotate-[1.76deg]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/pr2-underline.svg`} />
-        </div>
-      </Reveal>
+        {/* Подчёркивание (Figma node 2284:45800) — 468×35, наклон 1.76°. */}
+        <Reveal variant="line" start="top 80%" className="absolute left-[214px] top-[832px] h-[35px] w-[468px]">
+          <div className="rotate-[1.76deg]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt="" className="block size-full max-w-none" src={`${A}/pr2-underline.svg`} />
+          </div>
+        </Reveal>
+      </div>
 
-      {/* Прогресс-индикатор 2 из 2. */}
+      {/* Прогресс-индикатор 2 из 2 — у левого края экрана. */}
       <div className="absolute left-[46px] top-[852px] flex gap-[12px]">
         <div className="h-[2px] w-[44.833px] bg-white opacity-30" />
         <div className="h-[2px] w-[44.833px] bg-white" />
