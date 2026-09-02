@@ -147,7 +147,7 @@ export default function AuditLibrary() {
 
       {/* Вводный абзац (Figma node 1965:42545, x46 / y612 / w629, 14px,
           uppercase — пользователь вернул мелкий текст вместо дисплейной строки). */}
-      <p className="absolute left-[46px] top-[612px] w-[629px] text-[14px] uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+      <p className="absolute left-[46px] top-[612px] w-[629px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
         Работу начали с полной ревизии. Мы объединили обе библиотеки, распределили иконки по
         категориям и проанализировали каждую позицию.
       </p>

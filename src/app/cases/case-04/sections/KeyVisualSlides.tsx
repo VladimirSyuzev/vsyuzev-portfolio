@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
+import SlideProgress from "@/components/SlideProgress";
 
 // «03 Key visual» — в Figma это ОДИН раздел из двух слайдов (node
 // 2034:15752 «1 из 2» — метро-билборд; node 2094:18224 «2 из 2» — кропы с
@@ -111,28 +112,12 @@ function Slide2() {
   );
 }
 
-function ProgressBars({
-  bar1,
-  bar2,
-}: {
-  bar1?: React.Ref<HTMLDivElement>;
-  bar2?: React.Ref<HTMLDivElement>;
-}) {
-  return (
-    <div className="absolute left-[46px] top-[852px] z-20 flex gap-[12px]">
-      <div ref={bar1} className="h-[2px] w-[44.833px] bg-white" />
-      <div ref={bar2} className="h-[2px] w-[44.833px] bg-white opacity-30" />
-    </div>
-  );
-}
-
 export default function KeyVisualSlides() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const slide1Ref = useRef<HTMLDivElement>(null);
   const slide2Ref = useRef<HTMLDivElement>(null);
-  const bar1Ref = useRef<HTMLDivElement>(null);
-  const bar2Ref = useRef<HTMLDivElement>(null);
+  const [slide, setSlide] = useState(1);
   const reduced = useReducedMotion();
 
   useGSAP(
@@ -151,14 +136,13 @@ export default function KeyVisualSlides() {
       });
 
       const state = { slide: 1 };
-      function showSlide(slide: number) {
-        if (state.slide === slide) return;
-        state.slide = slide;
-        gsap.to(slide1Ref.current, { opacity: slide === 1 ? 1 : 0, duration: 0.5, ease: "siteEase" });
-        gsap.to(slide2Ref.current, { opacity: slide === 2 ? 1 : 0, duration: 0.5, ease: "siteEase" });
-        gsap.to(bar1Ref.current, { opacity: slide === 1 ? 1 : 0.3, duration: 0.5, ease: "siteEase" });
-        gsap.to(bar2Ref.current, { opacity: slide === 2 ? 1 : 0.3, duration: 0.5, ease: "siteEase" });
-        if (slide === 2) circleTl.play();
+      function showSlide(next: number) {
+        if (state.slide === next) return;
+        state.slide = next;
+        setSlide(next);
+        gsap.to(slide1Ref.current, { opacity: next === 1 ? 1 : 0, duration: 0.5, ease: "siteEase" });
+        gsap.to(slide2Ref.current, { opacity: next === 2 ? 1 : 0, duration: 0.5, ease: "siteEase" });
+        if (next === 2) circleTl.play();
         else {
           circleTl.pause(0);
           gsap.set(circles, { opacity: 0, scale: 0.92 });
@@ -190,16 +174,13 @@ export default function KeyVisualSlides() {
         <section className="w-full overflow-clip bg-[#121212]">
           <div className="relative mx-auto h-[900px] w-[1440px]">
             <Slide1 />
-            <ProgressBars />
+            <SlideProgress active={0} className="absolute left-[46px] top-[852px] z-20" />
           </div>
         </section>
         <section className="w-full overflow-clip bg-[#121212]">
           <div className="relative mx-auto h-[900px] w-[1440px]">
             <Slide2 />
-            <div className="absolute left-[46px] top-[852px] z-20 flex gap-[12px]">
-              <div className="h-[2px] w-[44.833px] bg-white opacity-30" />
-              <div className="h-[2px] w-[44.833px] bg-white" />
-            </div>
+            <SlideProgress active={1} className="absolute left-[46px] top-[852px] z-20" />
           </div>
         </section>
       </>
@@ -216,7 +197,7 @@ export default function KeyVisualSlides() {
           <div ref={slide2Ref} className="absolute inset-0" style={{ opacity: 0 }}>
             <Slide2 />
           </div>
-          <ProgressBars bar1={bar1Ref} bar2={bar2Ref} />
+          <SlideProgress active={slide - 1} className="absolute left-[46px] top-[852px] z-20" />
         </div>
       </div>
     </div>

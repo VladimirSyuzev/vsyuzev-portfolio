@@ -29,7 +29,7 @@ export default function Concept() {
       <p className="absolute left-[46px] top-[730px] w-[327px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
         В основе кампании лежит идея:
       </p>
-      <p className="absolute left-[46px] top-[759px] w-[327px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+      <p className="absolute left-[46px] top-[759px] w-[327px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
         Your crypto, ready for real life.
       </p>
       <p className="absolute left-[46px] top-[793px] w-[327px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">

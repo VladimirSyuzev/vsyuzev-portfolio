@@ -4,8 +4,7 @@ import VariantsCarousel from "@/components/VariantsCarousel";
 // 01 Задача — 1:1 из актуальной Figma (node 2079:17694, высота 1672).
 // Дисплейный заголовок 175px. Вводный абзац. Фрейм «варианты» (node
 // 2079:17726) — общий VariantsCarousel: снап-карусель маркетинговых
-// форматов во всю ширину, перетаскивание вбок, параллакс + переливание +
-// бар снизу.
+// форматов во всю ширину, перетаскивание вбок, бар снизу.
 // Ниже — «Система должна была:» + 4 требования с галочками, крупная
 // итоговая мысль с подчёркиванием и 3D-стек монет слева.
 const A = "/cases/case-03/sections";
@@ -47,7 +46,7 @@ export default function Task() {
           <p className="text-[#121212]">Задача</p>
         </div>
 
-        <p className="absolute left-[46px] top-[368px] w-[668px] text-[14px] uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        <p className="absolute left-[46px] top-[368px] w-[668px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
           Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая объясняет
           функциональность продукта без текста и работает в разных форматах и контекстах.
         </p>
@@ -58,7 +57,7 @@ export default function Task() {
           <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-flash.svg`} />
         </Reveal>
 
-        <p className="absolute left-[726px] top-[1140px] w-[564px] text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212]">
+        <p className="absolute left-[726px] top-[1140px] w-[564px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
           Система должна была:
         </p>
 

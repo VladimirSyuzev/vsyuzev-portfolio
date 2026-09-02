@@ -11,12 +11,13 @@
 //            сверху вниз (сдвиг сверху + проявление).
 //   Фаза 2 — по завершении фазы 1 запускается бесконечный цикл овалов:
 //            каждый по очереди сверху вниз «вырастает с отскоком» и
-//            пропадает (~1 c), затем пауза 1 c, следующий. После третьего —
-//            пауза 2 c, и цикл начинается заново.
+//            пропадает (~1 c), затем пауза 1 c, следующий. Сразу после
+//            третьего овала в этот же цикл вписана декоративная линия-
+//            подчёркивание (клип-вайп слева направо), после неё — пауза 2 c
+//            и цикл начинается заново.
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
-import Reveal from "@/components/Reveal";
 
 const A = "/cases/case-05/sections";
 
@@ -63,10 +64,12 @@ export default function Idea() {
       if (reduced) {
         gsap.set(circles, { autoAlpha: 1, scale: 1 });
         gsap.set(imgs, { autoAlpha: 1, y: 0 });
+        gsap.set(".idea-underline", { clipPath: "none" });
         return;
       }
 
       gsap.set(circles, { autoAlpha: 0, scale: 0.4, transformOrigin: "50% 50%" });
+      gsap.set(".idea-underline", { clipPath: "inset(0 100% 0 0)" });
 
       // Фаза 2 — бесконечный цикл овалов (стартует после фазы 1).
       const loop = gsap.timeline({ repeat: -1, repeatDelay: 2, paused: true });
@@ -76,6 +79,24 @@ export default function Idea() {
           .to(el, { autoAlpha: 1, scale: 1, duration: 0.5, ease: "back.out(3)" }, t)
           .to(el, { autoAlpha: 0, scale: 0.85, duration: 0.3, ease: "power1.in" }, t + 0.8);
       });
+
+      // Декоративная линия — часть общего цикла: «дорисовывается» слева
+      // направо сразу после третьего овала, держится, затем уходит тем же
+      // вайпом перед перезапуском цикла (обе крайние фазы — полностью
+      // скрытый клип, поэтому мгновенный сброс на repeat не мигает).
+      const thirdCircleT = (circles.length - 1) * 2;
+      loop
+        .fromTo(
+          ".idea-underline",
+          { clipPath: "inset(0 100% 0 0)" },
+          { clipPath: "inset(0 0% 0 0)", duration: 0.7, ease: "power2.out" },
+          thirdCircleT + 0.9,
+        )
+        .to(
+          ".idea-underline",
+          { clipPath: "inset(0 0% 0 100%)", duration: 0.45, ease: "power2.in" },
+          thirdCircleT + 2.5,
+        );
 
       // Фаза 1 — превью сверху вниз.
       const intro = gsap.timeline({
@@ -97,7 +118,7 @@ export default function Idea() {
         intro.scrollTrigger?.kill();
         intro.kill();
         loop.kill();
-        gsap.set([...imgs, ...circles], { clearProps: "all" });
+        gsap.set([...imgs, ...circles, ".idea-underline"], { clearProps: "all" });
       };
     },
     { scope, dependencies: [reduced] },
@@ -118,13 +139,13 @@ export default function Idea() {
       {CONCEPTS.map((c) => (
         <div key={c.n}>
           <div className="absolute left-[556px] w-[440px]" style={{ top: c.top }}>
-            <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212] opacity-40">
+            <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212]">
               {c.n}
             </p>
-            <p className="mt-[2px] font-heading text-[28px] font-semibold uppercase leading-[1.1] tracking-[0.56px] text-[#121212]">
+            <p className="mt-[2px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
               {c.title}
             </p>
-            <p className="mt-[6px] w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+            <p className="mt-[6px] w-[328px] text-[14px] font-normal uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               {c.text}
             </p>
           </div>
@@ -156,11 +177,14 @@ export default function Idea() {
         Команда выбрала первую концепцию. Она позволяла уйти от привычного образа машины времени и
         показать легендарный автомобиль в совершенно новом контексте.
       </p>
-      {/* Подчёркивание (Figma node 2411:4291 → x621 / y1480, 293×34). */}
-      <Reveal variant="line" start="top 92%" className="absolute left-[621px] top-[1480px] h-[34px] w-[293px]">
+      {/* Подчёркивание (Figma node 2411:4291 → x621 / y1480, 293×34).
+          Включено в общий цикл овалов: «дорисовывается» слева направо сразу
+          после третьего овала, держится, затем уходит перед новым циклом
+          (клип-вайп ведёт GSAP — см. useGSAP). */}
+      <div className="idea-underline pointer-events-none absolute left-[621px] top-[1480px] h-[34px] w-[293px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline.svg`} />
-      </Reveal>
+      </div>
     </div>
   );
 }

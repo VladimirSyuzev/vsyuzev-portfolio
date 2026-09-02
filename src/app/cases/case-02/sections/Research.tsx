@@ -37,8 +37,9 @@ export default function Research() {
         <img alt="" className="block size-full max-w-none" src={`${A}/research-doodle.svg`} />
       </Reveal>
 
-      {/* Карточки-документ (Figma node 2382:21150 → x216 / top 318, 1008×645).
-          Появление по скроллу (fade + сдвиг снизу). */}
+      {/* Карточки-документ (Figma node 2382:21150 → x216, 1008×645). В Figma
+          лежат на y455, но по просьбе пользователя отступ от вводного текста
+          сокращён — документ поднят к y318 (текст кончается ~y288). */}
       <Reveal variant="fade" className="absolute left-[216px] top-[318px] h-[644.735px] w-[1008px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

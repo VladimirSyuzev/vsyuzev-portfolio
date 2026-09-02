@@ -45,8 +45,12 @@ export default function Series() {
         <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
       </Reveal>
 
-      {/* Обводка-эллипс вокруг мысли (Figma node 2401:35698 → x245 / y975, 949×164). */}
-      <Reveal variant="line" start="top 90%" className="absolute left-[245px] top-[975px] h-[164px] w-[949px]">
+      {/* Обводка-эллипс вокруг мысли (Figma node 2401:35698). Якорь по
+          translate фонового rect экспорта: левый-верх SVG = точка секции
+          (243.57, 959.45); viewBox расширен на поля −6/−8, поэтому бокс
+          смещён на них. Раньше стоял на y975 — на 16px ниже и налезал на
+          текст. */}
+      <Reveal variant="line" start="top 90%" className="absolute left-[238px] top-[951px] h-[172px] w-[965px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse.svg`} />
       </Reveal>

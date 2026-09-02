@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import Dot from "@/components/Dot";
+import SlideProgress from "@/components/SlideProgress";
 
 // «01 Проблема» — в Figma это ОДИН раздел из двух слайдов ("слайд 1 из 2" —
 // Problem.tsx, "слайд 2 из 2" — было Screen.tsx), с общим прогресс-
@@ -165,8 +166,7 @@ export default function ProblemScreen() {
   const pinRef = useRef<HTMLDivElement>(null);
   const problemRef = useRef<HTMLDivElement>(null);
   const screenRef = useRef<HTMLDivElement>(null);
-  const bar1Ref = useRef<HTMLDivElement>(null);
-  const bar2Ref = useRef<HTMLDivElement>(null);
+  const [slide, setSlide] = useState(1);
   const reduced = useReducedMotion();
 
   useGSAP(
@@ -205,14 +205,13 @@ export default function ProblemScreen() {
       }
 
       const state = { slide: 1 };
-      function showSlide(slide: number) {
-        if (state.slide === slide) return;
-        state.slide = slide;
-        gsap.to(problemRef.current, { opacity: slide === 1 ? 1 : 0, duration: 0.5, ease: "siteEase" });
-        gsap.to(screenRef.current, { opacity: slide === 2 ? 1 : 0, duration: 0.5, ease: "siteEase" });
-        gsap.to(bar1Ref.current, { opacity: slide === 1 ? 1 : 0.3, duration: 0.5, ease: "siteEase" });
-        gsap.to(bar2Ref.current, { opacity: slide === 2 ? 1 : 0.3, duration: 0.5, ease: "siteEase" });
-        if (slide === 2) playScreenIn();
+      function showSlide(next: number) {
+        if (state.slide === next) return;
+        state.slide = next;
+        setSlide(next);
+        gsap.to(problemRef.current, { opacity: next === 1 ? 1 : 0, duration: 0.5, ease: "siteEase" });
+        gsap.to(screenRef.current, { opacity: next === 2 ? 1 : 0, duration: 0.5, ease: "siteEase" });
+        if (next === 2) playScreenIn();
       }
 
       const st = ScrollTrigger.create({
@@ -241,19 +240,13 @@ export default function ProblemScreen() {
         <div className="flex min-h-screen w-full items-center justify-center bg-[#121212]">
           <div className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
             <ProblemContent />
-            <div className="absolute left-[46px] top-[852px] flex gap-[12px]">
-              <div className="h-[2px] w-[44.833px] bg-white" />
-              <div className="h-[2px] w-[44.833px] bg-white opacity-30" />
-            </div>
+            <SlideProgress active={0} className="absolute left-[46px] top-[852px]" />
           </div>
         </div>
         <div className="flex min-h-screen w-full items-center justify-center bg-[#121212]">
           <div className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
             <ScreenContent />
-            <div className="absolute left-[46px] top-[852px] flex gap-[12px]">
-              <div className="h-[2px] w-[44.833px] bg-white opacity-30" />
-              <div className="h-[2px] w-[44.833px] bg-white" />
-            </div>
+            <SlideProgress active={1} className="absolute left-[46px] top-[852px]" />
           </div>
         </div>
       </>
@@ -271,11 +264,8 @@ export default function ProblemScreen() {
             <ScreenContent />
           </div>
 
-          {/* Общий прогресс-индикатор — переключается вместе с контентом. */}
-          <div className="absolute left-[46px] top-[852px] z-10 flex gap-[12px]">
-            <div ref={bar1Ref} className="h-[2px] w-[44.833px] bg-white" />
-            <div ref={bar2Ref} className="h-[2px] w-[44.833px] bg-white opacity-30" />
-          </div>
+          {/* Общий прогресс-индикатор — «перетекает» вместе с контентом. */}
+          <SlideProgress active={slide - 1} className="absolute left-[46px] top-[852px] z-10" />
         </div>
       </div>
     </div>

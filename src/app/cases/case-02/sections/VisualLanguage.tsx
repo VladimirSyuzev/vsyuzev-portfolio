@@ -37,12 +37,16 @@ export default function VisualLanguage() {
           src={`${A}/visual-photo.jpg`}
         />
 
-        {/* Обводка-эллипс вокруг итоговой мысли (Figma node 2382:21152). */}
+        {/* Обводка-эллипс вокруг итоговой мысли (Figma node 2382:21152).
+            Якорь по translate фонового rect экспорта: левый-верх SVG =
+            точка секции (326.67, 1066.8). viewBox расширен на поля −6/−8
+            (чтобы «хвост» и круглые концы штриха не срезались при загрузке
+            через <img>), поэтому бокс смещён на эти же поля. */}
         <Reveal
           variant="line"
           start="top 92%"
           className="absolute"
-          style={{ left: 328, top: 1078.72, width: 787, height: 136 }}
+          style={{ left: 321, top: 1059, width: 799, height: 152 }}
         >
           <img alt="" className="block size-full" src={`${A}/visual-ellipse.svg`} />
         </Reveal>

@@ -4,17 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/lib/gsap";
 import { useDrag } from "@/lib/useDrag";
 
-// VariantsCarousel — общий трек «варианты» для кейсов 3/4/5. Механика:
-// снап-карусель во всю ширину экрана, активная карточка по центру и
-// вырастает (hSmall → hBig), перетаскивание вбок (курсор-рука).
+// VariantsCarousel — общий трек «варианты» для кейсов 3/4/5. Снап-карусель
+// во всю ширину экрана: активная карточка по центру и вырастает
+// (hSmall → hBig), перетаскивание вбок (курсор-рука). Снизу — бар из
+// сегментов (количество + активный) и стрелки ‹ ›.
 //
-// Эффект «лентикуляра» (по референсу reactbits lenticular-carousel, сам
-// компонент из reactbits Pro — недоступен, воспроизведён по скриншоту):
-//  · параллакс — картинка внутри карточки смещается против её ухода от
-//    центра экрана и живёт за пальцем во время перетаскивания;
-//  · переливание — голографический градиент + вертикальные «линзовые»
-//    полосы поверх карточки, позиция блика едет вместе с карточкой;
-//  · снизу — бар из сегментов (количество + активный) и стрелки ‹ ›.
+// По просьбе пользователя: без параллакса, без «переливания» и без
+// скруглений. Изображение показывается ЦЕЛИКОМ и в состоянии ключевой
+// карточки, и в состоянии второстепенной (контейнер держит соотношение
+// сторон ассета, картинка object-contain — ничего не обрезается).
 export type VCard = { src: string; w: number; h: number; alt: string };
 
 const GAP = 16;
@@ -25,7 +23,6 @@ export default function VariantsCarousel({
   hSmall = 262,
   hBig = 399,
   tone = "light",
-  radius = 18,
   onIndexChange,
   className,
 }: {
@@ -34,7 +31,6 @@ export default function VariantsCarousel({
   hSmall?: number;
   hBig?: number;
   tone?: "light" | "dark";
-  radius?: number;
   onIndexChange?: (i: number) => void;
   className?: string;
 }) {
@@ -88,16 +84,6 @@ export default function VariantsCarousel({
 
   const offset = offsetFor(index) + (dragging ? dragDX : 0);
 
-  // Левый край каждой карточки в координатах ленты (для параллакса/блика).
-  const lefts: number[] = [];
-  {
-    let x = 0;
-    for (let i = 0; i < cards.length; i++) {
-      lefts.push(x);
-      x += widthOf(cards[i], i === index) + GAP;
-    }
-  }
-
   const ctrl = tone === "dark" ? "text-white" : "text-[#121212]";
   const seg = tone === "dark" ? "bg-white" : "bg-[#121212]";
 
@@ -116,11 +102,11 @@ export default function VariantsCarousel({
             {cards.map((c) => (
               <div
                 key={c.src}
-                className="relative h-[262px] shrink-0 overflow-hidden"
+                className="relative h-[262px] shrink-0"
                 style={{ aspectRatio: `${c.w} / ${c.h}` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={c.alt} className="block size-full max-w-none object-cover" src={c.src} />
+                <img alt={c.alt} className="block size-full max-w-none object-contain" src={c.src} />
               </div>
             ))}
           </div>
@@ -132,71 +118,22 @@ export default function VariantsCarousel({
               transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
             }}
           >
-            {cards.map((c, i) => {
-              const cardW = widthOf(c, i === index);
-              // смещение центра карточки от центра экрана (px)
-              const d = offset + lefts[i] + cardW / 2 - center;
-              const parallax = Math.max(-46, Math.min(46, -d * 0.05));
-              // позиция голографического блика едет вместе с карточкой и
-              // сильнее «ходит» во время перетаскивания.
-              const shine = 50 - Math.max(-70, Math.min(70, d / 9));
-              const active = i === index;
-              return (
-                <div
-                  key={c.src}
-                  data-active={active || undefined}
-                  className="relative h-[262px] shrink-0 overflow-hidden transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px]"
-                  style={{ aspectRatio: `${c.w} / ${c.h}`, borderRadius: radius || undefined }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt={c.alt}
-                    draggable={false}
-                    className="block size-full max-w-none object-cover will-change-transform"
-                    src={c.src}
-                    style={{
-                      transform: `translate3d(${parallax}px,0,0) scale(1.14)`,
-                      transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
-                    }}
-                  />
-                  {/* линзовые полосы — тонкий вертикальный «растр» линзы */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 mix-blend-soft-light opacity-60"
-                    style={{
-                      backgroundImage:
-                        "repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0 1px, rgba(0,0,0,0.08) 1px 3px)",
-                    }}
-                  />
-                  {/* голографическая радуга — screen поверх (видна и на
-                      тёмных кадрах), позиция едет вместе с карточкой */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 mix-blend-screen transition-opacity duration-300"
-                    style={{
-                      opacity: active ? 0.58 : 0.32,
-                      backgroundSize: "300% 100%",
-                      backgroundPosition: `${shine}% 0`,
-                      backgroundImage:
-                        "linear-gradient(100deg, transparent 22%, rgba(255,70,150,0.4) 34%, rgba(150,90,255,0.38) 42%, rgba(60,190,255,0.46) 49%, rgba(80,255,200,0.4) 57%, rgba(255,220,110,0.38) 65%, rgba(255,255,255,0.32) 71%, transparent 82%)",
-                    }}
-                  />
-                  {/* та же радуга через overlay — добавляет насыщенности на
-                      светлых участках кадра */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 mix-blend-overlay transition-opacity duration-300"
-                    style={{
-                      opacity: active ? 0.5 : 0.28,
-                      backgroundSize: "300% 100%",
-                      backgroundPosition: `${shine}% 0`,
-                      backgroundImage:
-                        "linear-gradient(100deg, transparent 24%, rgba(255,70,150,0.62) 35%, rgba(150,90,255,0.52) 43%, rgba(60,190,255,0.66) 50%, rgba(80,255,200,0.52) 58%, rgba(255,220,110,0.52) 66%, transparent 80%)",
-                    }}
-                  />
-                </div>
-              );
-            })}
+            {cards.map((c, i) => (
+              <div
+                key={c.src}
+                data-active={i === index || undefined}
+                className="relative h-[262px] shrink-0 transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px]"
+                style={{ aspectRatio: `${c.w} / ${c.h}` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={c.alt}
+                  draggable={false}
+                  className="block size-full max-w-none object-contain"
+                  src={c.src}
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>
