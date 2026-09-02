@@ -1,45 +1,21 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "@/lib/gsap";
-import { useDrag } from "@/lib/useDrag";
 import Reveal from "@/components/Reveal";
+import VariantsCarousel from "@/components/VariantsCarousel";
 
 // 01 Задача — 1:1 из актуальной Figma (node 2079:17694, высота 1672).
 // Дисплейный заголовок 175px. Вводный абзац. Фрейм «варианты» (node
-// 2079:17726) — снап-карусель маркетинговых форматов во всю ширину
-// экрана: один тик колеса мыши центрирует СЛЕДУЮЩУЮ карточку (строго по
-// центру экрана), она становится «ключевой» и вырастает с 262 до 399px
-// по высоте (ширина — по пропорции). Соседние карточки уходят за края
-// экрана и там обрезаются кромкой окна (не «жёстким» краем 1440-сетки).
-// Сами изображения не обрезаются — соотношение сторон карточки равно
-// соотношению картинки.
+// 2079:17726) — общий VariantsCarousel: снап-карусель маркетинговых
+// форматов во всю ширину, перетаскивание вбок, параллакс + переливание +
+// бар снизу.
 // Ниже — «Система должна была:» + 4 требования с галочками, крупная
 // итоговая мысль с подчёркиванием и 3D-стек монет слева.
 const A = "/cases/case-03/sections";
 
-// 4 карточки фрейма «варианты» (Figma node 2079:17726) — ассеты 2x,
-// экспортированы пользователем. w/h = соотношение сторон карточки.
 const CARDS = [
-  { src: "variant1.jpg", w: 1419, h: 798, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
-  { src: "variant2.jpg", w: 639, h: 798, alt: "Пост: Move digital assets with confidence" },
-  { src: "variant3.jpg", w: 798, h: 798, alt: "Пост: Payments without delays" },
-  { src: "variant4.jpg", w: 1197, h: 798, alt: "Пост: Real-time transactions" },
+  { src: `${A}/variant1.jpg`, w: 1419, h: 798, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
+  { src: `${A}/variant2.jpg`, w: 639, h: 798, alt: "Пост: Move digital assets with confidence" },
+  { src: `${A}/variant3.jpg`, w: 798, h: 798, alt: "Пост: Payments without delays" },
+  { src: `${A}/variant4.jpg`, w: 1197, h: 798, alt: "Пост: Real-time transactions" },
 ];
-
-const GAP = 16;
-const H_SMALL = 262;
-const H_BIG = 399;
-
-const widthOf = (c: (typeof CARDS)[number], big: boolean) => (big ? H_BIG : H_SMALL) * (c.w / c.h);
-
-// Сдвиг ленты, при котором карточка `active` встаёт ровно по центру
-// экрана (center — половина ширины окна, меряется в рантайме).
-function offsetFor(active: number, center: number) {
-  let left = 0;
-  for (let i = 0; i < active; i++) left += widthOf(CARDS[i], false) + GAP;
-  return center - (left + widthOf(CARDS[active], true) / 2);
-}
 
 const REQS: [string, string][] = [
   ["Сохранять", "визуальную целостность"],
@@ -63,48 +39,6 @@ function Req({ head, sub }: { head: string; sub: string }) {
 }
 
 export default function Task() {
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(0);
-  const [center, setCenter] = useState(720);
-  const idxRef = useRef(0);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    idxRef.current = index;
-  }, [index]);
-
-  // Центр карусели = центр окна (лента тянется на всю ширину экрана).
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const measure = () => setCenter(el.clientWidth / 2);
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  // Перетаскивание вбок вместо колеса (см. useDrag): тянем ленту за
-  // пальцем, на отпускании — шаг индекса по дистанции/скорости, иначе снап.
-  const [dragDX, setDragDX] = useState(0);
-  const { dragging, bind } = useDrag({
-    onMove: (dx) => {
-      const cur = idxRef.current;
-      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === CARDS.length - 1);
-      setDragDX(atEdge ? dx * 0.32 : dx);
-    },
-    onEnd: (dx, vx) => {
-      setDragDX(0);
-      const cur = idxRef.current;
-      let step = 0;
-      if (dx <= -70 || vx <= -0.4) step = 1;
-      else if (dx >= 70 || vx >= 0.4) step = -1;
-      setIndex(Math.max(0, Math.min(CARDS.length - 1, cur + step)));
-    },
-  });
-
-  const offset = offsetFor(index, center) + (dragging ? dragDX : 0);
-
   return (
     <section className="relative w-full overflow-clip bg-[#fafafa]">
       <div className="relative mx-auto h-[1672px] w-[1440px]">
@@ -150,8 +84,7 @@ export default function Task() {
           прочитает текст
         </p>
 
-        {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369) —
-            строго под последней строкой, текст не перекрывает. */}
+        {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369). */}
         <Reveal
           variant="line"
           start="top 92%"
@@ -162,55 +95,8 @@ export default function Task() {
         </Reveal>
       </div>
 
-      {/* Лента «варианты» — снап-карусель во всю ширину экрана, ключевая
-          карточка по центру. Перетаскивание вбок. */}
-      <div
-        ref={wrapRef}
-        {...(reduced ? {} : bind)}
-        className={`absolute inset-x-0 top-[595px] h-[399px] touch-pan-y select-none overflow-hidden ${
-          reduced ? "" : dragging ? "cursor-grabbing" : "cursor-grab"
-        }`}
-      >
-        {reduced ? (
-          <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
-            {CARDS.map((c) => (
-              <div
-                key={c.src}
-                className="relative h-[262px] shrink-0 overflow-hidden"
-                style={{ aspectRatio: `${c.w} / ${c.h}` }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div
-            className="flex h-full items-center gap-[16px] will-change-transform"
-            style={{
-              transform: `translateX(${offset}px)`,
-              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
-            }}
-          >
-            {CARDS.map((c, i) => (
-              <div
-                key={c.src}
-                data-active={i === index || undefined}
-                className="relative h-[262px] shrink-0 overflow-hidden transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px]"
-                style={{ aspectRatio: `${c.w} / ${c.h}` }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={c.alt}
-                  draggable={false}
-                  className="block size-full max-w-none object-cover"
-                  src={`${A}/${c.src}`}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Лента «варианты» (Figma node 2079:17726 → y595). */}
+      <VariantsCarousel cards={CARDS} top={595} tone="light" />
     </section>
   );
 }

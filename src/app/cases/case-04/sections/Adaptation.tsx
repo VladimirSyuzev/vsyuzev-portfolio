@@ -1,89 +1,28 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "@/lib/gsap";
-import { useDrag } from "@/lib/useDrag";
 import Reveal from "@/components/Reveal";
+import VariantsCarousel from "@/components/VariantsCarousel";
 
 // 05 Адаптация — 1:1 из актуальной Figma (node 2118:32680, высота 1676).
 // Тёмный full-bleed. Дисплейный заголовок «05 / АДАПТАЦИЯ» (175px), два
 // абзаца, доодл-«звёздочка», крупная мысль в обводке.
 //
-// Трек «варианты» (Figma frame 2440:59724) — снап-карусель форматов во всю
-// ширину экрана (механика 1:1 как «Задача» в кейсе 3): один тик колеса =
-// следующая карточка. Активная карточка встаёт по ЦЕНТРУ экрана и
-// вырастает (262→399h по высоте, ширина — по пропорции ассета), предыдущая
-// уменьшается обратно до размера остальных. Без CSS-скруглений — как в
-// исходных ассетах.
+// Трек «варианты» (Figma frame 2440:59724) — общий VariantsCarousel:
+// снап-карусель форматов во всю ширину, перетаскивание вбок, параллакс +
+// переливание + бар снизу. tone="dark" (тёмный фон). Скругления карточек
+// оставляем (radius по умолчанию) — как в референсе лентикуляра.
 const A = "/cases/case-04/sections";
 
-// Ассеты пользователя (adapt-1…8.jpg). w/h — соотношение сторон формата.
 const CARDS = [
-  { src: "adapt-1.jpg", w: 533, h: 798, alt: "Вертикальный постер CRYPTO. PAYMENTS. SETTLED." },
-  { src: "adapt-2.jpg", w: 1153, h: 798, alt: "Формат 3:2 с фотографией и белой панелью" },
-  { src: "adapt-3.jpg", w: 1089, h: 798, alt: "Формат с двумя постерами" },
-  { src: "adapt-4.jpg", w: 1196, h: 798, alt: "Горизонтальный формат с фотографией" },
-  { src: "adapt-5.jpg", w: 1411, h: 798, alt: "Широкий горизонтальный формат" },
-  { src: "adapt-6.jpg", w: 1620, h: 798, alt: "Билборд-формат" },
-  { src: "adapt-7.jpg", w: 1800, h: 675, alt: "Вытянутый билборд-формат" },
-  { src: "adapt-8.jpg", w: 1800, h: 615, alt: "Панорамный билборд-формат" },
+  { src: `${A}/adapt-1.jpg`, w: 533, h: 798, alt: "Вертикальный постер CRYPTO. PAYMENTS. SETTLED." },
+  { src: `${A}/adapt-2.jpg`, w: 1153, h: 798, alt: "Формат 3:2 с фотографией и белой панелью" },
+  { src: `${A}/adapt-3.jpg`, w: 1089, h: 798, alt: "Формат с двумя постерами" },
+  { src: `${A}/adapt-4.jpg`, w: 1196, h: 798, alt: "Горизонтальный формат с фотографией" },
+  { src: `${A}/adapt-5.jpg`, w: 1411, h: 798, alt: "Широкий горизонтальный формат" },
+  { src: `${A}/adapt-6.jpg`, w: 1620, h: 798, alt: "Билборд-формат" },
+  { src: `${A}/adapt-7.jpg`, w: 1800, h: 675, alt: "Вытянутый билборд-формат" },
+  { src: `${A}/adapt-8.jpg`, w: 1800, h: 615, alt: "Панорамный билборд-формат" },
 ];
 
-const GAP = 16;
-const H_SMALL = 262;
-const H_BIG = 399;
-
-const widthOf = (c: (typeof CARDS)[number], big: boolean) => (big ? H_BIG : H_SMALL) * (c.w / c.h);
-
-// Сдвиг ленты, при котором карточка `active` центрируется по экрану.
-function offsetFor(active: number, center: number) {
-  let left = 0;
-  for (let i = 0; i < active; i++) left += widthOf(CARDS[i], false) + GAP;
-  return center - (left + widthOf(CARDS[active], true) / 2);
-}
-
 export default function Adaptation() {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(0);
-  const [center, setCenter] = useState(720);
-  const idxRef = useRef(0);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    idxRef.current = index;
-  }, [index]);
-
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const measure = () => setCenter(el.clientWidth / 2);
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
-
-  // Перетаскивание вбок вместо колеса (см. useDrag): тянем ленту, на
-  // отпускании — шаг индекса по дистанции/скорости, иначе снап назад.
-  const [dragDX, setDragDX] = useState(0);
-  const { dragging, bind } = useDrag({
-    onMove: (dx) => {
-      const cur = idxRef.current;
-      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === CARDS.length - 1);
-      setDragDX(atEdge ? dx * 0.32 : dx);
-    },
-    onEnd: (dx, vx) => {
-      setDragDX(0);
-      const cur = idxRef.current;
-      let step = 0;
-      if (dx <= -70 || vx <= -0.4) step = 1;
-      else if (dx >= 70 || vx >= 0.4) step = -1;
-      setIndex(Math.max(0, Math.min(CARDS.length - 1, cur + step)));
-    },
-  });
-
-  const offset = offsetFor(index, center) + (dragging ? dragDX : 0);
-
   return (
     <div className="relative h-[1676px] w-full overflow-clip bg-[#121212]">
       <div className="relative mx-auto h-full w-[1440px]">
@@ -121,55 +60,8 @@ export default function Adaptation() {
         </p>
       </div>
 
-      {/* Снап-карусель форматов — во всю ширину экрана, активная карточка
-          по центру (Figma frame 2440:59724). Перетаскивание вбок. */}
-      <div
-        ref={trackRef}
-        {...(reduced ? {} : bind)}
-        className={`absolute inset-x-0 top-[654px] h-[399px] touch-pan-y select-none overflow-hidden ${
-          reduced ? "" : dragging ? "cursor-grabbing" : "cursor-grab"
-        }`}
-      >
-        {reduced ? (
-          <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
-            {CARDS.map((c) => (
-              <div
-                key={c.src}
-                className="relative h-[262px] shrink-0 overflow-hidden"
-                style={{ aspectRatio: `${c.w} / ${c.h}` }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div
-            className="flex h-full items-center gap-[16px] will-change-transform"
-            style={{
-              transform: `translateX(${offset}px)`,
-              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
-            }}
-          >
-            {CARDS.map((c, i) => (
-              <div
-                key={c.src}
-                data-active={i === index || undefined}
-                className="relative h-[262px] shrink-0 overflow-hidden transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px]"
-                style={{ aspectRatio: `${c.w} / ${c.h}` }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={c.alt}
-                  draggable={false}
-                  className="block size-full max-w-none object-cover"
-                  src={`${A}/${c.src}`}
-                />
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      {/* Снап-карусель форматов (Figma frame 2440:59724 → y654). */}
+      <VariantsCarousel cards={CARDS} top={654} tone="dark" />
     </div>
   );
 }
