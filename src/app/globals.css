@@ -25,6 +25,39 @@
   --font-body: var(--font-aeonik), "Aeonik Pro", sans-serif;
 }
 
+/* Брейкпоинты (см. RESPONSIVE.md): sm 640 / lg 1024 — дефолтные,
+   xl переопределён на 1200 (десктоп). md не используем. */
+@theme {
+  --breakpoint-xl: 1200px;
+}
+
+/* Токены колоночной сетки — mobile-first. Меняются в 3 медиа-запросах,
+   компоненты <Grid>/<Col> читают их из CSS-переменных. */
+:root {
+  --grid-cols: 1;
+  --grid-gutter: 12px;
+  --grid-margin: 20px;
+  --grid-max: 1440px;
+}
+@media (min-width: 640px) {
+  :root {
+    --grid-cols: 2;
+    --grid-margin: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --grid-cols: 4;
+    --grid-margin: 40px;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --grid-cols: 8;
+    --grid-margin: 44px;
+  }
+}
+
 body {
   background: var(--bg);
   color: var(--dark);
