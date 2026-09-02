@@ -47,7 +47,7 @@ function Regal() {
 		<section className="w-full bg-[#fafafa]">
 			<div className="relative mx-auto w-full max-w-[1440px] xl:h-[411px]">
 				<div className="flex flex-col px-[var(--grid-margin)] py-[64px] sm:py-[88px] xl:contents">
-					<p className="relative inline-block whitespace-pre font-heading text-[clamp(2rem,6vw,52px)] font-bold uppercase leading-[1.1] tracking-[1.56px] text-[#121212] xl:absolute xl:left-[46px] xl:top-[149px] xl:!text-[52px] xl:!leading-[0]">
+					<p className="relative inline-block whitespace-normal font-heading text-[clamp(1.9rem,5.2vw,52px)] font-bold uppercase leading-[1.1] tracking-[1.56px] text-[#121212] xl:absolute xl:left-[46px] xl:top-[149px] xl:whitespace-pre xl:!text-[52px] xl:!leading-[0]">
 						<span className="leading-[1.1]">ART-DIRECTOR </span>
 						<span className="leading-[1.1] text-[#008cff]">&amp;</span>
 						<span className="leading-[1.1]">
