@@ -32,13 +32,11 @@ interface ZoomParallaxProps {
 }
 
 // Все размеры — в условных единицах, ширина коллажа = 100.
-const GAP = 2; // отступ между картинками (одинаковый везде)
+const GAP = 2; // отступ между картинками (одинаковый ВЕЗДЕ)
 const SIDE_W = 12.5; // ширина боковой колонки
-const CENTER_W = 44; // ширина центральной зоны (там ключевая + над/под ней)
-const CENTER_SMALL = 30; // ширина картинок над/под ключевой
 const KEY_TARGET_H = 36; // желаемая высота ключевой
 const KEY_W_MIN = 27;
-const KEY_W_MAX = CENTER_W;
+const KEY_W_MAX = 46;
 
 const noopSubscribe = () => () => {};
 function useHydrated() {
@@ -91,21 +89,27 @@ function buildLayout(
 	const keyH = keyW / ar(keyImg);
 
 	// над и под ключевой — по одной картинке (самые «широкие», чтобы не
-	// раздувать центральную колонку по высоте)
+	// раздувать центральную колонку по высоте). Их ширина = ширине ключевой.
 	const wideFirst = [...rest].sort((p, q) => ar(q) - ar(p));
 	const above = wideFirst[0];
 	const below = wideFirst[1];
 	const centerExtra = new Set([above, below]);
 	const sideImgs = rest.filter((i) => !centerExtra.has(i));
 
-	// x-левые края: [col0][G][col1][G][ CENTER_W ][G][col3][G][col4]
-	const c0 = 0;
-	const c1 = SIDE_W + GAP;
-	const centerX = 2 * (SIDE_W + GAP);
-	const c3 = centerX + CENTER_W + GAP;
-	const c4 = c3 + SIDE_W + GAP;
-	const sideX = [c0, c1, c3, c4];
-	const totalW = c4 + SIDE_W; // ← ширина коллажа (нормируем к ней)
+	// Раскладку строим ОТ ключевой наружу: она в центре (x = 0), боковые
+	// колонки приставляются к её краям через тот же GAP — поэтому боковой
+	// отступ не зависит от ширины ключевой (у вертикальной он такой же).
+	const half = keyW / 2;
+	const lInner = -half - GAP - SIDE_W;
+	const lOuter = lInner - GAP - SIDE_W;
+	const rInner = half + GAP;
+	const rOuter = rInner + SIDE_W + GAP;
+	const sideXLocal = [lOuter, lInner, rInner, rOuter];
+	const minX = lOuter;
+	const totalW = rOuter + SIDE_W - minX;
+	const shift = -minX;
+	const sideX = sideXLocal.map((x) => x + shift);
+	const centerAxis = shift; // локальный x=0 (центр ключевой) в общих координатах
 
 	// боковые: 4 колонки, всегда в самую короткую (мозаика)
 	const cols: { img: number; h: number }[][] = [[], [], [], []];
@@ -118,9 +122,9 @@ function buildLayout(
 		colH[c] += h + GAP;
 	}
 
-	// центральная колонка: [above] [KEY] [below]
-	const aboveH = CENTER_SMALL / ar(above);
-	const belowH = CENTER_SMALL / ar(below);
+	// центральная колонка: [above] [KEY] [below] — все шириной keyW
+	const aboveH = keyW / ar(above);
+	const belowH = keyW / ar(below);
 	const centerH = aboveH + GAP + keyH + GAP + belowH;
 
 	const contentH = Math.max(centerH, ...colH.map((v) => v - GAP));
@@ -135,27 +139,14 @@ function buildLayout(
 		}
 	});
 
-	// центральная зона — по центру contentH, всё выравниваем по её оси
-	const centerAxis = centerX + CENTER_W / 2;
+	const keyLeft = centerAxis - keyW / 2;
 	let cy = (contentH - centerH) / 2;
-	boxes.push({
-		img: above,
-		x: centerAxis - CENTER_SMALL / 2,
-		y: cy,
-		w: CENTER_SMALL,
-		h: aboveH,
-	});
+	boxes.push({ img: above, x: keyLeft, y: cy, w: keyW, h: aboveH });
 	cy += aboveH + GAP;
 	const keyY = cy;
-	boxes.push({ img: keyImg, x: centerAxis - keyW / 2, y: cy, w: keyW, h: keyH });
+	boxes.push({ img: keyImg, x: keyLeft, y: cy, w: keyW, h: keyH });
 	cy += keyH + GAP;
-	boxes.push({
-		img: below,
-		x: centerAxis - CENTER_SMALL / 2,
-		y: cy,
-		w: CENTER_SMALL,
-		h: belowH,
-	});
+	boxes.push({ img: below, x: keyLeft, y: cy, w: keyW, h: belowH });
 
 	return {
 		boxes,
