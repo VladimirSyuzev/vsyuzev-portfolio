@@ -118,7 +118,12 @@ export default function Idea() {
         intro.scrollTrigger?.kill();
         intro.kill();
         loop.kill();
-        gsap.set([...imgs, ...circles, ".idea-underline"], { clearProps: "all" });
+        // Чистим ТОЛЬКО то, что анимировали (не "all"!) — иначе GSAP сносит
+        // и React-инлайновые left/top/width/height у превью и овалов, и они
+        // сваливаются в левый-верхний угол блока (баг «все картинки наверху»).
+        gsap.set(imgs, { clearProps: "opacity,visibility,transform" });
+        gsap.set(circles, { clearProps: "opacity,visibility,transform,transformOrigin" });
+        gsap.set(".idea-underline", { clearProps: "clipPath" });
       };
     },
     { scope, dependencies: [reduced] },
