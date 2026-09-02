@@ -10,17 +10,23 @@ import { ZoomParallax } from "@/components/ui/zoom-parallax";
 // вниз секция h-300vh проводит коллаж через вьюпорт, центральная картинка
 // разворачивается на весь экран.
 //
-// Картинки — временные (собраны из тизеров/обложек кейсов, ужаты до
-// ~1280px). Дальше по плану: заменить на реальные кадры и поменять текст.
+// Картинки коллажа лежат в /public/hero-parallax. Порядок и «ключевая»
+// (центральная) выбираются случайно на каждой загрузке — см. ZoomParallax.
+// Замена: просто положить/переименовать файлы и поправить список ниже.
 const IMAGES = [
-  { src: "/hero-parallax/1.jpg", alt: "Билборд-кампания" },
-  { src: "/hero-parallax/2.jpg", alt: "Интерфейс на ноутбуке" },
-  { src: "/hero-parallax/3.jpg", alt: "Наружная реклама" },
-  { src: "/hero-parallax/4.jpg", alt: "Карточки продукта" },
-  { src: "/hero-parallax/5.jpg", alt: "Кроп key visual" },
-  { src: "/hero-parallax/6.jpg", alt: "Превью на Behance" },
-  { src: "/hero-parallax/7.jpg", alt: "Адаптация макета" },
-];
+  "1.png",
+  "2.jpg",
+  "3.jpg",
+  "4.jpg",
+  "5.jpg",
+  "6.jpg",
+  "7.jpg",
+  "8.jpg",
+  "9.jpg",
+  "10.jpg",
+  "11.jpg",
+  "12.jpg",
+].map((name) => ({ src: `/hero-parallax/${name}` }));
 
 function Title() {
   return (
