@@ -7,6 +7,7 @@ import { gsap, prefersReducedMotion, waveStagger } from "@/lib/gsap";
 import { useBreakpoint } from "@/lib/breakpoint";
 import { CASES } from "@/lib/cases-data";
 import Case01IconGrid from "./Case01IconGrid";
+import ResponsiveScale from "@/components/ResponsiveScale";
 import Reveal from "@/components/Reveal";
 
 // «кейсы» — на десктопе (≥1200) hover-раскрывающийся список 1:1 из Figma
@@ -137,11 +138,16 @@ function CasesListStacked({ landscape }: { landscape: boolean }) {
             href={`/cases/${item.slug}`}
             className="case-card group block border-b border-[rgba(18,18,18,0.7)] pb-[20px]"
           >
-            <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
-              {item.slug === "case-01" ? (
-                <Case01IconGrid className="absolute inset-0 size-full overflow-clip bg-[rgba(18,18,18,0.7)]" />
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
+            {item.slug === "case-01" ? (
+              // фикс-композиция 668×536 — масштабируем целиком под ширину
+              // карточки (иначе на широкой карточке снизу вылезала серая
+              // подложка: чёрная панель не дотягивалась до низа бокса)
+              <ResponsiveScale width={668} height={536} className="w-full overflow-hidden">
+                <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
+              </ResponsiveScale>
+            ) : (
+              <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={item.cover}
                   alt=""
@@ -153,8 +159,8 @@ function CasesListStacked({ landscape }: { landscape: boolean }) {
                     height: `${(item.coverSize.height / 536) * 100}%`,
                   }}
                 />
-              )}
-            </div>
+              </div>
+            )}
             <p className="mt-[16px] font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#008cff]">
               {item.index}
             </p>
