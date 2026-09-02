@@ -8,10 +8,26 @@ import Reveal from "@/components/Reveal";
 // «о себе» — на ≥1200 абсолют 1:1 из Figma (node 2279:32548, фрейм
 // 1440×900). Ниже 1200 внутренняя обёртка становится `contents` и её
 // дети раскладываются потоком (стопка с полями сетки) — см. RESPONSIVE.md.
-const CLIENT_ROWS: string[][] = [
-  ["Яндекс Фабрика", "Яндекс Такси", "Яндекс 360", "Яндекс Cloud", "Яндекс Алиса"],
-  ["Яндекс Самокаты", "Яндекс Еда", "Яндекс Лавка", "Stablegate", "МТС", "Т-Банк"],
-  ["Звук", "Haier", "УралКалий", "Divan.ru", "Fort Telecom", "Sabotage brewery"],
+// Чипы — один поток flex-wrap: при сужении переносятся все вместе (строки
+// пересобираются), а не тремя независимыми группами.
+const CLIENTS = [
+  "Яндекс Фабрика",
+  "Яндекс Такси",
+  "Яндекс 360",
+  "Яндекс Cloud",
+  "Яндекс Алиса",
+  "Яндекс Самокаты",
+  "Яндекс Еда",
+  "Яндекс Лавка",
+  "Stablegate",
+  "МТС",
+  "Т-Банк",
+  "Звук",
+  "Haier",
+  "УралКалий",
+  "Divan.ru",
+  "Fort Telecom",
+  "Sabotage brewery",
 ];
 
 export default function About() {
@@ -58,25 +74,22 @@ export default function About() {
           беру ответственность за результат и развиваю визуальные направления вместе с командой.
         </p>
 
-        <div className="about-reveal aspect-[498/399] w-full overflow-clip sm:mx-auto sm:w-[420px] xl:absolute xl:left-[896px] xl:top-[318px] xl:!mx-0 xl:aspect-auto xl:!h-[399px] xl:!w-[498px]">
+        {/* фото — прижато к правому краю сетки (ниже 1200), на десктопе абсолют */}
+        <div className="about-reveal aspect-[498/399] w-full overflow-clip sm:ml-auto sm:w-[58%] lg:w-[46%] xl:absolute xl:left-[896px] xl:top-[318px] xl:!ml-0 xl:aspect-auto xl:!h-[399px] xl:!w-[498px]">
           {/* photo.png — готовый рендер ровно этого контейнера. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="Вова Сюзёв" src="/about/photo.png" className="size-full object-cover" />
         </div>
 
-        <div className="about-reveal flex flex-col items-start gap-[6px] xl:absolute xl:left-[46px] xl:top-[592px] xl:w-[722px]">
-          {CLIENT_ROWS.map((row, i) => (
-            <div key={i} className="flex flex-wrap items-center gap-[6px] xl:flex-nowrap">
-              {row.map((client) => (
-                <div
-                  key={client}
-                  className="flex items-center justify-center rounded-[10px] border border-[rgba(50,50,60,0.8)] px-[12px] py-[10px]"
-                >
-                  <p className="whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#32323c]">
-                    {client}
-                  </p>
-                </div>
-              ))}
+        <div className="about-reveal flex flex-wrap items-center gap-[6px] xl:absolute xl:left-[46px] xl:top-[592px] xl:w-[722px]">
+          {CLIENTS.map((client) => (
+            <div
+              key={client}
+              className="flex items-center justify-center rounded-[10px] border border-[rgba(50,50,60,0.8)] px-[12px] py-[10px]"
+            >
+              <p className="whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#32323c]">
+                {client}
+              </p>
             </div>
           ))}
         </div>
