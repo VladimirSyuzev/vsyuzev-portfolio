@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/lib/gsap";
+import { useDrag } from "@/lib/useDrag";
 import Reveal from "@/components/Reveal";
 
 // 05 Адаптация — 1:1 из актуальной Figma (node 2118:32680, высота 1676).
@@ -62,27 +63,26 @@ export default function Adaptation() {
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el || reduced) return;
-    let locked = false;
-    function onWheel(e: WheelEvent) {
-      const dir = e.deltaY > 0 ? 1 : -1;
+  // Перетаскивание вбок вместо колеса (см. useDrag): тянем ленту, на
+  // отпускании — шаг индекса по дистанции/скорости, иначе снап назад.
+  const [dragDX, setDragDX] = useState(0);
+  const { dragging, bind } = useDrag({
+    onMove: (dx) => {
       const cur = idxRef.current;
-      if ((dir < 0 && cur === 0) || (dir > 0 && cur === CARDS.length - 1)) return;
-      e.preventDefault();
-      if (locked) return;
-      locked = true;
-      setIndex(cur + dir);
-      window.setTimeout(() => {
-        locked = false;
-      }, 600);
-    }
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [reduced]);
+      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === CARDS.length - 1);
+      setDragDX(atEdge ? dx * 0.32 : dx);
+    },
+    onEnd: (dx, vx) => {
+      setDragDX(0);
+      const cur = idxRef.current;
+      let step = 0;
+      if (dx <= -70 || vx <= -0.4) step = 1;
+      else if (dx >= 70 || vx >= 0.4) step = -1;
+      setIndex(Math.max(0, Math.min(CARDS.length - 1, cur + step)));
+    },
+  });
 
-  const offset = offsetFor(index, center);
+  const offset = offsetFor(index, center) + (dragging ? dragDX : 0);
 
   return (
     <div className="relative h-[1676px] w-full overflow-clip bg-[#121212]">
@@ -122,8 +122,14 @@ export default function Adaptation() {
       </div>
 
       {/* Снап-карусель форматов — во всю ширину экрана, активная карточка
-          по центру (Figma frame 2440:59724, первая карточка h399). */}
-      <div ref={trackRef} className="absolute inset-x-0 top-[654px] h-[399px] overflow-hidden">
+          по центру (Figma frame 2440:59724). Перетаскивание вбок. */}
+      <div
+        ref={trackRef}
+        {...(reduced ? {} : bind)}
+        className={`absolute inset-x-0 top-[654px] h-[399px] touch-pan-y select-none overflow-hidden ${
+          reduced ? "" : dragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+      >
         {reduced ? (
           <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
             {CARDS.map((c) => (
@@ -139,8 +145,11 @@ export default function Adaptation() {
           </div>
         ) : (
           <div
-            className="flex h-full items-center gap-[16px] transition-transform duration-[550ms] ease-[cubic-bezier(0.33,1,0.68,1)] will-change-transform"
-            style={{ transform: `translateX(${offset}px)` }}
+            className="flex h-full items-center gap-[16px] will-change-transform"
+            style={{
+              transform: `translateX(${offset}px)`,
+              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
+            }}
           >
             {CARDS.map((c, i) => (
               <div
@@ -150,7 +159,12 @@ export default function Adaptation() {
                 style={{ aspectRatio: `${c.w} / ${c.h}` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
+                <img
+                  alt={c.alt}
+                  draggable={false}
+                  className="block size-full max-w-none object-cover"
+                  src={`${A}/${c.src}`}
+                />
               </div>
             ))}
           </div>

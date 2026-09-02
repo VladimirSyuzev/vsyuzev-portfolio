@@ -46,13 +46,16 @@ export default function Final() {
       <p className="absolute left-[726px] top-[1003px] w-[633px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
         Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
       </p>
-      {/* Декоративная линия-подчёркивание под мыслью (Figma node 2439:54105
-          → x853.85 / y1088, экспорт 524×33). */}
+      {/* Декоративная линия-подчёркивание под мыслью (Figma node 2439:54105).
+          Наклонная линия 522×53; bbox фрейма (853.85/1088) занижен по
+          высоте — из-за этого линия налезала на последнюю строку. Якорь по
+          translate фонового rect экспорта: левый-верх SVG = точка секции
+          (849, 1105.37); viewBox расширен на поля -5, поэтому −5/−5. */}
       <Reveal
         variant="line"
         start="top 92%"
         className="absolute"
-        style={{ left: 853.85, top: 1088, width: 524, height: 33 }}
+        style={{ left: 844, top: 1100, width: 532, height: 63 }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full" src={`${A}/final-underline.svg`} />

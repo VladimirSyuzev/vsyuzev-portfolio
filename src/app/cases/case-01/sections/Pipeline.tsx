@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
 import { GLASS_BUBBLE } from "@/lib/glass";
+import { useDrag } from "@/lib/useDrag";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
 // node 1971:64076). Тёмный фон блока растянут на весь экран (как Footer);
@@ -73,25 +74,32 @@ export default function Pipeline() {
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-
-    function onWheel(e: WheelEvent) {
+  // Перетаскивание вбок вместо колеса (см. useDrag): тянем нативный
+  // scrollLeft, на отпускании — короткая инерция.
+  const startSL = useRef(0);
+  const inertia = useRef(0);
+  const { dragging, bind } = useDrag({
+    onStart: () => {
+      cancelAnimationFrame(inertia.current);
+      startSL.current = trackRef.current?.scrollLeft ?? 0;
+    },
+    onMove: (dx) => {
+      if (trackRef.current) trackRef.current.scrollLeft = startSL.current - dx;
+    },
+    onEnd: (_dx, vx) => {
+      const el = trackRef.current;
       if (!el) return;
-      const delta = e.deltaY;
-      const atStart = el.scrollLeft <= 0;
-      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
-      // На границе трека отдаём колесо странице — иначе наведённый курсор
-      // на первой/последней карточке "запирал" бы вертикальный скролл.
-      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
-      el.scrollLeft += delta;
-      e.preventDefault();
-    }
-
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, []);
+      let v = -vx * 16;
+      const step = () => {
+        if (Math.abs(v) < 0.5) return;
+        el.scrollLeft += v;
+        v *= 0.92;
+        inertia.current = requestAnimationFrame(step);
+      };
+      inertia.current = requestAnimationFrame(step);
+    },
+  });
+  useEffect(() => () => cancelAnimationFrame(inertia.current), []);
 
   return (
     <div ref={sectionRef} className="relative h-[900px] w-full overflow-clip bg-[#121212]">
@@ -136,7 +144,10 @@ export default function Pipeline() {
           останавливалась своим центром ровно по центру экрана. */}
       <div
         ref={trackRef}
-        className="no-scrollbar absolute left-0 top-[278px] h-[479px] w-full overflow-x-auto"
+        {...bind}
+        className={`no-scrollbar absolute left-0 top-[278px] h-[479px] w-full touch-pan-y select-none overflow-x-auto ${
+          dragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
         style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
       >
         <div className="relative h-[399px] w-[4068px]">

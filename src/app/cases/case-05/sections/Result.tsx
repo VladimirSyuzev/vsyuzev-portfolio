@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
+import { useDrag } from "@/lib/useDrag";
 import Reveal from "@/components/Reveal";
 
 // 06 Финальный результат — 1:1 из актуальной Figma (node 2210:78310,
-// высота 1149). Пользователь перекомпоновал секцию: заголовок «06 /
+// высота 1265). Пользователь перекомпоновал секцию: заголовок «06 /
 // ФИНАЛЬНЫЙ РЕЗУЛЬТАТ» и два абзаца — слева (x46), доодл-«звёздочка»
 // справа, крупная мысль в обводке по центру.
 //
@@ -85,30 +86,30 @@ export default function Result() {
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el || reduced) return;
-    let locked = false;
-    function onWheel(e: WheelEvent) {
-      const dir = e.deltaY > 0 ? 1 : -1;
+  // Перетаскивание вбок вместо колеса: тянем ленту за пальцем, на
+  // отпускании — шаг индекса по дистанции/скорости флика, иначе снап назад.
+  const [dragDX, setDragDX] = useState(0);
+  const { dragging, bind } = useDrag({
+    onMove: (dx) => {
       const cur = idxRef.current;
-      if ((dir < 0 && cur === 0) || (dir > 0 && cur === CARDS.length - 1)) return;
-      e.preventDefault();
-      if (locked) return;
-      locked = true;
-      setIndex(cur + dir);
-      window.setTimeout(() => {
-        locked = false;
-      }, 600);
-    }
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [reduced]);
+      // резина на краях
+      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === CARDS.length - 1);
+      setDragDX(atEdge ? dx * 0.32 : dx);
+    },
+    onEnd: (dx, vx) => {
+      setDragDX(0);
+      const cur = idxRef.current;
+      let step = 0;
+      if (dx <= -70 || vx <= -0.4) step = 1;
+      else if (dx >= 70 || vx >= 0.4) step = -1;
+      setIndex(Math.max(0, Math.min(CARDS.length - 1, cur + step)));
+    },
+  });
 
-  const offset = offsetFor(index, center);
+  const offset = offsetFor(index, center) + (dragging ? dragDX : 0);
 
   return (
-    <div className="relative h-[1149px] w-full overflow-x-clip bg-[#fafafa]">
+    <div className="relative h-[1265px] w-full overflow-x-clip bg-[#fafafa]">
       <div className="relative mx-auto h-full w-[1440px]">
         {/* Заголовок — слева (Figma frame 2210:78313 → x46 / y134). */}
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
@@ -138,21 +139,27 @@ export default function Result() {
 
         {/* Обводка-эллипс вокруг мысли (Figma node 2412:4342). Геометрия из
             `export`; якорь по translate фонового rect: левый-верх SVG =
-            точка секции (389.39, 865.61); viewBox расширен на поля (-4/-24),
+            точка секции (389.39, 897.31); viewBox расширен на поля (-4/-24),
             поэтому смещаем элемент на эти же поля. */}
-        <Reveal variant="line" start="top 86%" className="absolute left-[385px] top-[842px] h-[254px] w-[670px]">
+        <Reveal variant="line" start="top 86%" className="absolute left-[385px] top-[873px] h-[254px] w-[670px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/result-ellipse.svg`} />
         </Reveal>
-        {/* Мысль (Figma node 2412:4341 → x386 / y924, w668, по центру). */}
-        <p className="absolute left-1/2 top-[924px] w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+        {/* Мысль (Figma node 2412:4341 → x386 / y955.7, w668, по центру). */}
+        <p className="absolute left-1/2 top-[956px] w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
           Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
         </p>
       </div>
 
       {/* Снап-карусель «варианты» — во всю ширину экрана, активная карточка
-          по центру (Figma frame 2440:56862 → y386, первая карточка h399). */}
-      <div ref={trackRef} className="absolute inset-x-0 top-[386px] h-[399px] overflow-hidden">
+          по центру (Figma frame 2440:56862 → y386). Перетаскивание вбок. */}
+      <div
+        ref={trackRef}
+        {...(reduced ? {} : bind)}
+        className={`absolute inset-x-0 top-[386px] h-[399px] touch-pan-y select-none overflow-hidden ${
+          reduced ? "" : dragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+      >
         {reduced ? (
           <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
             {CARDS.map((c) => (
@@ -162,14 +169,22 @@ export default function Result() {
                 style={{ aspectRatio: `${c.w} / ${c.h}` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
+                <img
+                  alt={c.alt}
+                  draggable={false}
+                  className="block size-full max-w-none object-cover"
+                  src={`${A}/${c.src}`}
+                />
               </div>
             ))}
           </div>
         ) : (
           <div
-            className="flex h-full items-center gap-[16px] transition-transform duration-[550ms] ease-[cubic-bezier(0.33,1,0.68,1)] will-change-transform"
-            style={{ transform: `translateX(${offset}px)` }}
+            className="flex h-full items-center gap-[16px] will-change-transform"
+            style={{
+              transform: `translateX(${offset}px)`,
+              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
+            }}
           >
             {CARDS.map((c, i) => (
               <div
@@ -179,7 +194,12 @@ export default function Result() {
                 style={{ aspectRatio: `${c.w} / ${c.h}` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
+                <img
+                  alt={c.alt}
+                  draggable={false}
+                  className="block size-full max-w-none object-cover"
+                  src={`${A}/${c.src}`}
+                />
               </div>
             ))}
           </div>

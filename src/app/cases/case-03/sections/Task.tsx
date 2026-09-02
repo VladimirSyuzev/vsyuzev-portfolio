@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "@/lib/gsap";
+import { useDrag } from "@/lib/useDrag";
 import Reveal from "@/components/Reveal";
 
 // 01 Задача — 1:1 из актуальной Figma (node 2079:17694, высота 1672).
@@ -83,29 +84,26 @@ export default function Task() {
     return () => ro.disconnect();
   }, []);
 
-  // Колесо мыши над лентой → один тик = следующая/предыдущая карточка.
-  // На краях ленты колесо не перехватываем — страница скроллится обычно.
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el || reduced) return;
-    let locked = false;
-    function onWheel(e: WheelEvent) {
-      const dir = e.deltaY > 0 ? 1 : -1;
+  // Перетаскивание вбок вместо колеса (см. useDrag): тянем ленту за
+  // пальцем, на отпускании — шаг индекса по дистанции/скорости, иначе снап.
+  const [dragDX, setDragDX] = useState(0);
+  const { dragging, bind } = useDrag({
+    onMove: (dx) => {
       const cur = idxRef.current;
-      if ((dir < 0 && cur === 0) || (dir > 0 && cur === CARDS.length - 1)) return;
-      e.preventDefault();
-      if (locked) return;
-      locked = true;
-      setIndex(cur + dir);
-      window.setTimeout(() => {
-        locked = false;
-      }, 600);
-    }
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [reduced]);
+      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === CARDS.length - 1);
+      setDragDX(atEdge ? dx * 0.32 : dx);
+    },
+    onEnd: (dx, vx) => {
+      setDragDX(0);
+      const cur = idxRef.current;
+      let step = 0;
+      if (dx <= -70 || vx <= -0.4) step = 1;
+      else if (dx >= 70 || vx >= 0.4) step = -1;
+      setIndex(Math.max(0, Math.min(CARDS.length - 1, cur + step)));
+    },
+  });
 
-  const offset = offsetFor(index, center);
+  const offset = offsetFor(index, center) + (dragging ? dragDX : 0);
 
   return (
     <section className="relative w-full overflow-clip bg-[#fafafa]">
@@ -165,8 +163,14 @@ export default function Task() {
       </div>
 
       {/* Лента «варианты» — снап-карусель во всю ширину экрана, ключевая
-          карточка по центру, соседние уходят за кромку окна. */}
-      <div ref={wrapRef} className="absolute inset-x-0 top-[595px] h-[399px] overflow-hidden">
+          карточка по центру. Перетаскивание вбок. */}
+      <div
+        ref={wrapRef}
+        {...(reduced ? {} : bind)}
+        className={`absolute inset-x-0 top-[595px] h-[399px] touch-pan-y select-none overflow-hidden ${
+          reduced ? "" : dragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
+      >
         {reduced ? (
           <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
             {CARDS.map((c) => (
@@ -182,8 +186,11 @@ export default function Task() {
           </div>
         ) : (
           <div
-            className="flex h-full items-center gap-[16px] transition-transform duration-[550ms] ease-[cubic-bezier(0.33,1,0.68,1)] will-change-transform"
-            style={{ transform: `translateX(${offset}px)` }}
+            className="flex h-full items-center gap-[16px] will-change-transform"
+            style={{
+              transform: `translateX(${offset}px)`,
+              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
+            }}
           >
             {CARDS.map((c, i) => (
               <div
@@ -193,7 +200,12 @@ export default function Task() {
                 style={{ aspectRatio: `${c.w} / ${c.h}` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt={c.alt} className="block size-full max-w-none object-cover" src={`${A}/${c.src}`} />
+                <img
+                  alt={c.alt}
+                  draggable={false}
+                  className="block size-full max-w-none object-cover"
+                  src={`${A}/${c.src}`}
+                />
               </div>
             ))}
           </div>

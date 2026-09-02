@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
 import { GLASS_BUBBLE } from "@/lib/glass";
+import { useDrag } from "@/lib/useDrag";
 
 // 04 Процесс — 1:1 из актуальной Figma (node 2009:12647, высота 987).
 // Пользователь сделал раздел ТЁМНЫМ full-bleed и убрал фрейм «варианты»:
@@ -44,21 +45,32 @@ export default function Process() {
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    function onWheel(e: WheelEvent) {
+  // Перетаскивание вбок вместо колеса: тянем нативный scrollLeft, на
+  // отпускании — короткая инерция.
+  const startSL = useRef(0);
+  const inertia = useRef(0);
+  const { dragging, bind } = useDrag({
+    onStart: () => {
+      cancelAnimationFrame(inertia.current);
+      startSL.current = trackRef.current?.scrollLeft ?? 0;
+    },
+    onMove: (dx) => {
+      if (trackRef.current) trackRef.current.scrollLeft = startSL.current - dx;
+    },
+    onEnd: (_dx, vx) => {
+      const el = trackRef.current;
       if (!el) return;
-      const delta = e.deltaY;
-      const atStart = el.scrollLeft <= 0;
-      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
-      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
-      el.scrollLeft += delta;
-      e.preventDefault();
-    }
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, []);
+      let v = -vx * 16;
+      const step = () => {
+        if (Math.abs(v) < 0.5) return;
+        el.scrollLeft += v;
+        v *= 0.92;
+        inertia.current = requestAnimationFrame(step);
+      };
+      inertia.current = requestAnimationFrame(step);
+    },
+  });
+  useEffect(() => () => cancelAnimationFrame(inertia.current), []);
 
   return (
     <div ref={sectionRef} className="relative h-[987px] w-full overflow-clip bg-[#121212]">
@@ -98,7 +110,10 @@ export default function Process() {
           со скрытым скроллбаром (Figma track 2013:14226 → y660). */}
       <div
         ref={trackRef}
-        className="no-scrollbar absolute left-0 top-[620px] h-[205px] w-full overflow-x-auto"
+        {...bind}
+        className={`no-scrollbar absolute left-0 top-[620px] h-[205px] w-full touch-pan-y overflow-x-auto select-none ${
+          dragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
         style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
       >
         <div className="relative h-[125px] w-[2368px]">

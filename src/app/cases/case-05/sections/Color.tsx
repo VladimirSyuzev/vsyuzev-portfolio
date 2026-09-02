@@ -86,41 +86,41 @@ export default function Color() {
       const bodies = gsap.utils.toArray<HTMLElement>(".clr-tile-body");
       const circle = scope.current.querySelector<HTMLElement>(".clr-circle");
 
-      // Начальное состояние — прячем явным set (не через from), а вскрываем
-      // to-твинами. from со скрытым start-state при обрыве таймлайна (HMR,
-      // resize, refresh ScrollTrigger) оставлял visibility:hidden на
-      // .clr-tile-body — и текст «пропадал» у первых плиток навсегда.
+      // Начальное состояние — прячем явным set, вскрываем to-твинами.
+      // ВАЖНО: clearProps ТОЛЬКО по анимируемым свойствам (opacity/
+      // visibility/transform). Раньше стоял clearProps:"all" — он сносил и
+      // инлайновый React-style плиток (left/top/width/height/background),
+      // из-за чего после анимации цветные блоки полностью исчезали.
       const targets = [...tiles, ...bodies, ...(circle ? [circle] : [])];
-      gsap.set(tiles, { autoAlpha: 0, scale: 0.92, transformOrigin: "50% 50%" });
+      const RESET = "opacity,visibility,transform";
+      gsap.set(tiles, { autoAlpha: 0, scale: 0.92 });
       gsap.set(bodies, { autoAlpha: 0, y: 8 });
-      if (circle) gsap.set(circle, { autoAlpha: 0, scale: 0.5, rotate: -8, transformOrigin: "50% 50%" });
+      if (circle) gsap.set(circle, { autoAlpha: 0, scale: 0.5, rotate: -8 });
 
       const tl = gsap.timeline({
-        scrollTrigger: { trigger: scope.current, start: "top 60%", once: true },
+        scrollTrigger: { trigger: scope.current, start: "top 78%", once: true },
       });
 
       const STEP = 0.12;
       tiles.forEach((tile, i) => {
-        tl.to(tile, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)" }, i * STEP);
-        tl.to(bodies[i], { autoAlpha: 1, y: 0, duration: 0.3, ease: "siteEase" }, i * STEP + 0.22);
+        tl.to(tile, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "back.out(1.6)", clearProps: RESET }, i * STEP);
+        tl.to(bodies[i], { autoAlpha: 1, y: 0, duration: 0.3, ease: "siteEase", clearProps: RESET }, i * STEP + 0.22);
       });
 
       if (circle) {
         tl.to(
           circle,
-          { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.55, ease: "back.out(2)" },
+          { autoAlpha: 1, scale: 1, rotate: 0, duration: 0.55, ease: "back.out(2)", clearProps: RESET },
           ">-0.05",
         );
       }
 
-      // Страховка: при финише таймлайна снимаем инлайновые стили, а при
-      // любом тир-дауне гарантированно возвращаем всё в видимое состояние.
-      tl.eventCallback("onComplete", () => gsap.set(targets, { clearProps: "all" }));
-
       return () => {
         tl.scrollTrigger?.kill();
         tl.kill();
-        gsap.set(targets, { clearProps: "all" });
+        // тир-даун (HMR/размонтирование): гарантированно возвращаем видимость,
+        // но НЕ трогаем позиционные/цветовые инлайн-стили React.
+        gsap.set(targets, { clearProps: RESET });
       };
     },
     { scope, dependencies: [reduced] },

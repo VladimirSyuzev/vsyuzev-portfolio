@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import { GLASS_BUBBLE } from "@/lib/glass";
+import { useDrag } from "@/lib/useDrag";
 
 // 05 Процесс — 1:1 из актуальной Figma (node 2022:14827, высота 2980).
 // В новой версии Figma «Процесс», «Дизайн-система» и сет 3D-иконок слиты
@@ -114,21 +115,31 @@ export default function Process() {
     return () => ro.disconnect();
   }, []);
 
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    function onWheel(e: WheelEvent) {
+  // Перетаскивание вбок вместо колеса (см. useDrag).
+  const startSL = useRef(0);
+  const inertia = useRef(0);
+  const { dragging, bind } = useDrag({
+    onStart: () => {
+      cancelAnimationFrame(inertia.current);
+      startSL.current = trackRef.current?.scrollLeft ?? 0;
+    },
+    onMove: (dx) => {
+      if (trackRef.current) trackRef.current.scrollLeft = startSL.current - dx;
+    },
+    onEnd: (_dx, vx) => {
+      const el = trackRef.current;
       if (!el) return;
-      const delta = e.deltaY;
-      const atStart = el.scrollLeft <= 0;
-      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 1;
-      if ((delta < 0 && atStart) || (delta > 0 && atEnd)) return;
-      el.scrollLeft += delta;
-      e.preventDefault();
-    }
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, []);
+      let v = -vx * 16;
+      const step = () => {
+        if (Math.abs(v) < 0.5) return;
+        el.scrollLeft += v;
+        v *= 0.92;
+        inertia.current = requestAnimationFrame(step);
+      };
+      inertia.current = requestAnimationFrame(step);
+    },
+  });
+  useEffect(() => () => cancelAnimationFrame(inertia.current), []);
 
   return (
     <div ref={sectionRef} className="relative h-[2980px] w-full overflow-clip bg-[#121212]">
@@ -238,10 +249,13 @@ export default function Process() {
         </Reveal>
       </div>
 
-      {/* Окно трека — во всю ширину экрана, горизонтальный скролл по колесу. */}
+      {/* Окно трека — во всю ширину экрана, перетаскивание вбок. */}
       <div
         ref={trackRef}
-        className="no-scrollbar absolute left-0 top-[622px] h-[205px] w-full overflow-x-auto"
+        {...bind}
+        className={`no-scrollbar absolute left-0 top-[622px] h-[205px] w-full touch-pan-y select-none overflow-x-auto ${
+          dragging ? "cursor-grabbing" : "cursor-grab"
+        }`}
         style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
       >
         <div className="relative h-[125px] w-[2368px]">
