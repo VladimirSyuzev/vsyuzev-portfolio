@@ -5,12 +5,15 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 // ZoomParallax — скролл-зум коллажа (в основе — компонент из промпта,
 // 21st.dev). Доработано под задачу:
-//  - НЕТ сетки: ключевая картинка по центру, вокруг неё — колонки-мозаика
-//    (по 2 слева и справа), картинки в колонках на произвольной высоте;
-//  - каждая картинка целиком, НЕ обрезается — бокс строится под её
-//    реальное соотношение сторон (замеряется по onLoad);
-//  - отступы между всеми картинками одинаковые;
-//  - порядок картинок и ключевая — случайные на каждую загрузку;
+//  - НЕТ сетки: ключевая картинка по центру, вокруг неё — картинки со всех
+//    сторон (сверху, снизу, слева, справа); колонки-мозаика, элементы в
+//    них на произвольной высоте;
+//  - бокс каждой картинки строится под её реальное соотношение сторон
+//    (замеряется по onLoad) — object-contain показывает картинку целиком,
+//    без обрезки;
+//  - отступы между всеми картинками одинаковые; нахлёстов нет;
+//  - ключевая (любой ориентации, в т.ч. вертикальная) и порядок остальных
+//    — случайные на каждую загрузку;
 //  - зум — единый масштаб всего коллажа от центра ключевой: она
 //    разворачивается на весь экран, остальные разъезжаются.
 //
@@ -30,10 +33,12 @@ interface ZoomParallaxProps {
 
 // Все размеры — в условных единицах, ширина коллажа = 100.
 const GAP = 2; // отступ между картинками (одинаковый везде)
-const KEY_W = 30; // ширина ключевой
-const SIDE_COLS = 2; // колонок с каждой стороны
-
-const COL_W = (100 - KEY_W - (SIDE_COLS * 2 + 1) * GAP) / (SIDE_COLS * 2);
+const SIDE_W = 12.5; // ширина боковой колонки
+const CENTER_W = 44; // ширина центральной зоны (там ключевая + над/под ней)
+const CENTER_SMALL = 30; // ширина картинок над/под ключевой
+const KEY_TARGET_H = 36; // желаемая высота ключевой
+const KEY_W_MIN = 27;
+const KEY_W_MAX = CENTER_W;
 
 const noopSubscribe = () => () => {};
 function useHydrated() {
@@ -72,61 +77,92 @@ function buildLayout(
 	aspects: Record<number, number> | null,
 ): { boxes: Box[]; width: number; height: number; originX: number; originY: number } {
 	const rand = rng(seed || 1);
-	const a = (i: number) => (aspects?.[i] ?? 1) || 1;
+	const ar = (i: number) => (aspects?.[i] ?? 1) || 1;
 
 	const order = shuffle([...Array(count).keys()], rand);
 
-	// ключевая — случайная среди не-вертикальных (квадрат/горизонталь):
-	// такая нормально разворачивается на весь экран. Если подходящих нет —
-	// просто самая «широкая».
-	let keyImg = order[0];
-	if (aspects) {
-		let cand = order.filter((i) => a(i) >= 0.9);
-		if (cand.length === 0) {
-			cand = [...order].sort((p, q) => a(q) - a(p)).slice(0, 3);
-		}
-		keyImg = cand[Math.floor(rand() * cand.length)];
-	}
+	// ключевая — любая (в т.ч. вертикальная), случайная
+	const keyImg = order[Math.floor(rand() * order.length)];
 	const rest = order.filter((i) => i !== keyImg);
 
-	// x-левые края колонок: [L..][G][L..][G] KEY [G][R..][G][R..]
-	const nCols = SIDE_COLS * 2;
-	const colX: number[] = [];
-	for (let c = 0; c < SIDE_COLS; c++) colX.push(c * (COL_W + GAP));
-	const keyX = SIDE_COLS * (COL_W + GAP);
-	for (let c = 0; c < SIDE_COLS; c++) colX.push(keyX + KEY_W + GAP + c * (COL_W + GAP));
+	// ключевая: держим высоту около KEY_TARGET_H, ширину — от соотношения,
+	// но в разумных пределах
+	const keyW = Math.min(KEY_W_MAX, Math.max(KEY_W_MIN, KEY_TARGET_H * ar(keyImg)));
+	const keyH = keyW / ar(keyImg);
 
-	// раскидываем rest по колонкам — всегда в самую короткую (мозаика)
-	const cols: { img: number; h: number }[][] = Array.from({ length: nCols }, () => []);
-	const colH = new Array(nCols).fill(0);
-	for (const img of rest) {
+	// над и под ключевой — по одной картинке (самые «широкие», чтобы не
+	// раздувать центральную колонку по высоте)
+	const wideFirst = [...rest].sort((p, q) => ar(q) - ar(p));
+	const above = wideFirst[0];
+	const below = wideFirst[1];
+	const centerExtra = new Set([above, below]);
+	const sideImgs = rest.filter((i) => !centerExtra.has(i));
+
+	// x-левые края: [col0][G][col1][G][ CENTER_W ][G][col3][G][col4]
+	const c0 = 0;
+	const c1 = SIDE_W + GAP;
+	const centerX = 2 * (SIDE_W + GAP);
+	const c3 = centerX + CENTER_W + GAP;
+	const c4 = c3 + SIDE_W + GAP;
+	const sideX = [c0, c1, c3, c4];
+	const totalW = c4 + SIDE_W; // ← ширина коллажа (нормируем к ней)
+
+	// боковые: 4 колонки, всегда в самую короткую (мозаика)
+	const cols: { img: number; h: number }[][] = [[], [], [], []];
+	const colH = [0, 0, 0, 0];
+	for (const img of sideImgs) {
 		let c = 0;
-		for (let k = 1; k < nCols; k++) if (colH[k] < colH[c]) c = k;
-		const h = COL_W / a(img);
+		for (let k = 1; k < 4; k++) if (colH[k] < colH[c]) c = k;
+		const h = SIDE_W / ar(img);
 		cols[c].push({ img, h });
 		colH[c] += h + GAP;
 	}
 
-	const keyH = KEY_W / a(keyImg);
-	const contentH = Math.max(keyH, ...colH.map((v) => v - GAP));
+	// центральная колонка: [above] [KEY] [below]
+	const aboveH = CENTER_SMALL / ar(above);
+	const belowH = CENTER_SMALL / ar(below);
+	const centerH = aboveH + GAP + keyH + GAP + belowH;
+
+	const contentH = Math.max(centerH, ...colH.map((v) => v - GAP));
 
 	const boxes: Box[] = [];
 	cols.forEach((items, c) => {
 		const stackH = items.reduce((s, it) => s + it.h, 0) + Math.max(0, items.length - 1) * GAP;
 		let y = (contentH - stackH) / 2;
 		for (const it of items) {
-			boxes.push({ img: it.img, x: colX[c], y, w: COL_W, h: it.h });
+			boxes.push({ img: it.img, x: sideX[c], y, w: SIDE_W, h: it.h });
 			y += it.h + GAP;
 		}
 	});
-	boxes.push({ img: keyImg, x: keyX, y: (contentH - keyH) / 2, w: KEY_W, h: keyH });
+
+	// центральная зона — по центру contentH, всё выравниваем по её оси
+	const centerAxis = centerX + CENTER_W / 2;
+	let cy = (contentH - centerH) / 2;
+	boxes.push({
+		img: above,
+		x: centerAxis - CENTER_SMALL / 2,
+		y: cy,
+		w: CENTER_SMALL,
+		h: aboveH,
+	});
+	cy += aboveH + GAP;
+	const keyY = cy;
+	boxes.push({ img: keyImg, x: centerAxis - keyW / 2, y: cy, w: keyW, h: keyH });
+	cy += keyH + GAP;
+	boxes.push({
+		img: below,
+		x: centerAxis - CENTER_SMALL / 2,
+		y: cy,
+		w: CENTER_SMALL,
+		h: belowH,
+	});
 
 	return {
 		boxes,
-		width: 100,
+		width: totalW,
 		height: contentH,
-		originX: keyX + KEY_W / 2,
-		originY: contentH / 2,
+		originX: centerAxis,
+		originY: keyY + keyH / 2,
 	};
 }
 
@@ -136,7 +172,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 		target: container,
 		offset: ["start start", "end end"],
 	});
-	const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
+	const scale = useTransform(scrollYProgress, [0, 1], [1, 5.5]);
 
 	const hydrated = useHydrated();
 	const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
@@ -149,10 +185,8 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 		[images.length, seed, allLoaded, aspects],
 	);
 
-	// коллаж вписываем в экран: ширина не больше 90vw и не больше той,
-	// при которой высота (ширина * height/width) влезает в ~92vh
 	const maxWByHeight = (92 * width) / height;
-	const cssWidth = `min(90vw, ${maxWByHeight.toFixed(2)}vh)`;
+	const cssWidth = `min(92vw, ${maxWByHeight.toFixed(2)}vh)`;
 
 	return (
 		<div ref={container} className="relative h-[300vh]">

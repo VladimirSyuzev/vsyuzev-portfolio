@@ -39,13 +39,13 @@ function ArtTitle() {
 	);
 }
 
-// REGAL — 1:1 из Figma (node 2499:5398, фрейм 1440×183): текст x46/y12,
-// подчёркивание x590/y126, 342.5×13.
+// REGAL — 1:1 из Figma (node 2499:5398, фрейм 1440×411): текст x46/y149,
+// подчёркивание x590/y263, 342.5×13.
 function Regal() {
 	return (
 		<section className="w-full bg-[#fafafa]">
-			<div className="relative mx-auto h-[183px] w-[1440px]">
-				<p className="absolute left-[46px] top-[12px] whitespace-pre font-heading text-[52px] font-bold uppercase leading-[0] tracking-[1.56px] text-[#121212]">
+			<div className="relative mx-auto h-[411px] w-[1440px]">
+				<p className="absolute left-[46px] top-[149px] whitespace-pre font-heading text-[52px] font-bold uppercase leading-[0] tracking-[1.56px] text-[#121212]">
 					<span className="leading-[1.1]">ART-DIRECTOR </span>
 					<span className="leading-[1.1] text-[#008cff]">&amp;</span>
 					<span className="leading-[1.1]">
@@ -57,7 +57,7 @@ function Regal() {
 				<Reveal
 					variant="line"
 					delay={0.1}
-					className="absolute left-[590px] top-[126px] h-[13.044px] w-[342.526px]"
+					className="absolute left-[590px] top-[263px] h-[13.044px] w-[342.526px]"
 				>
 					{/* eslint-disable-next-line @next/next/no-img-element */}
 					<img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
