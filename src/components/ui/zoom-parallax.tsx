@@ -5,18 +5,19 @@ import { motion, useScroll, useTransform } from "framer-motion";
 
 // ZoomParallax — скролл-зум коллажа (в основе — компонент из промпта,
 // 21st.dev). Доработано под задачу:
-//  - произвольное число картинок;
-//  - РОВНАЯ СЕТКА: одинаковые ячейки, одинаковые отступы со всех сторон,
-//    без нахлёстов (CSS grid + gap, картинки object-contain — не режутся);
-//  - порядок картинок и «ключевая» ячейка (из неё растёт зум) — случайные
-//    на каждую загрузку;
+//  - МОЗАИКА вокруг центра: ключевая картинка — по центру композиции,
+//    вокруг ячейки разных пропорций, отступы (gap) одинаковые у всех,
+//    нахлёстов нет (CSS grid-template-areas + gap);
+//  - ключевая картинка и раскладка — случайные на каждую загрузку;
+//  - картинки раскладываются по ячейкам с учётом их соотношения сторон
+//    (портрет → вертикальная ячейка и т.п.), чтобы object-cover почти не
+//    резал; соотношения замеряются по мере загрузки картинок;
 //  - зум — единый масштаб всей сетки от центра ключевой ячейки: она
-//    остаётся на месте и разворачивается в экран, остальные разъезжаются.
+//    разворачивается на весь экран, остальные разъезжаются.
 //
-// Случайность рендерится только после гидратации (useSyncExternalStore) —
-// на сервере и в первом клиентском рендере сетки нет, поэтому никакого
-// hydration mismatch от Math.random(); секция всё равно ниже первого
-// экрана, пользователь ещё не доскроллил.
+// Мозаика рендерится только после гидратации (useSyncExternalStore) — на
+// сервере и в первом клиентском рендере её нет, поэтому никакого hydration
+// mismatch от Math.random(); секция всё равно ниже первого экрана.
 
 interface ParallaxImage {
 	src: string;
@@ -25,9 +26,41 @@ interface ParallaxImage {
 
 interface ZoomParallaxProps {
 	images: ParallaxImage[];
-	/** Колонок в сетке (по умолчанию 4). */
-	columns?: number;
 }
+
+// Пропорции всей сетки. Чуть шире квадрата — заполняет экран, но не
+// заваливает вертикальные картинки в горизонт (у большинства работ
+// портретная ориентация). Домножается на пропорции ячеек при подборе.
+const GRID_ASPECT = 1.22;
+
+// Шаблон мозаики 6×6. K — ключевая, строго по центру (колонки 3–4,
+// строки 3–4). Каждая буква — отдельный прямоугольник; aspect —
+// колонок/строк ячейки (без учёта GRID_ASPECT).
+const AREAS = [
+	"a a b b c d",
+	"a a b b c d",
+	"e e K K f f",
+	"g g K K f f",
+	"g g h h i j",
+	"k k h h i j",
+]
+	.map((row) => `"${row}"`)
+	.join(" ");
+
+const SLOTS: { name: string; aspect: number }[] = [
+	{ name: "a", aspect: 1 },
+	{ name: "b", aspect: 1 },
+	{ name: "c", aspect: 1 / 2 },
+	{ name: "d", aspect: 1 / 2 },
+	{ name: "e", aspect: 2 },
+	{ name: "K", aspect: 1 },
+	{ name: "f", aspect: 1 },
+	{ name: "g", aspect: 1 },
+	{ name: "h", aspect: 1 },
+	{ name: "i", aspect: 1 / 2 },
+	{ name: "j", aspect: 1 / 2 },
+	{ name: "k", aspect: 2 },
+];
 
 const noopSubscribe = () => () => {};
 function useHydrated() {
@@ -58,53 +91,77 @@ function shuffle<T>(arr: T[], rand: () => number): T[] {
 	return a;
 }
 
-function buildLayout(count: number, columns: number, seed: number) {
+// Раскладка картинок по ячейкам. Пока соотношения не замерены (aspects
+// null) — просто перемешиваем. После — ключевая берётся случайно из
+// «самых квадратных», остальные жадно раскидываются по близости
+// соотношения к ячейке (экстремальные ячейки — первыми).
+function buildAssignment(
+	count: number,
+	seed: number,
+	aspects: Record<number, number> | null,
+): Record<string, number> {
 	const rand = rng(seed || 1);
-	const order = shuffle([...Array(count).keys()], rand);
-	const rows = Math.max(1, Math.ceil(count / columns));
+	const idx = [...Array(count).keys()];
 
-	// «Ключевая» ячейка — точка, из которой идёт зум. Тянемся к центру
-	// (при зуме из угла сетка улетает вбок), но с разбросом — каждую
-	// загрузку другая.
-	const cx = (columns - 1) / 2;
-	const cy = (rows - 1) / 2;
-	const weighted = [...Array(count).keys()]
-		.map((i) => {
-			const col = i % columns;
-			const row = Math.floor(i / columns);
-			const d = Math.hypot(col - cx, row - cy);
-			return { i, w: 1 / (0.6 + d) };
-		})
-		.sort((p, q) => q.w - p.w)
-		.slice(0, Math.min(count, 6)); // из 6 самых центральных
-	const keyCell = weighted[Math.floor(rand() * weighted.length)].i;
+	if (!aspects) {
+		const sh = shuffle(idx, rand);
+		const res: Record<string, number> = {};
+		SLOTS.forEach((s, i) => {
+			res[s.name] = sh[i % sh.length];
+		});
+		return res;
+	}
 
-	const kc = keyCell % columns;
-	const kr = Math.floor(keyCell / columns);
-	// центр ячейки в процентах ширины/высоты сетки (для transform-origin)
-	const originX = ((kc + 0.5) / columns) * 100;
-	const originY = ((kr + 0.5) / rows) * 100;
+	const withA = idx.map((i) => ({ i, a: aspects[i] ?? 1 }));
+	const dist = (a: number, b: number) => Math.abs(Math.log(a / b));
 
-	return {
-		order,
-		originX: Math.round(originX * 100) / 100,
-		originY: Math.round(originY * 100) / 100,
-	};
+	const keySlot = SLOTS.find((s) => s.name === "K")!;
+	const keyTarget = keySlot.aspect * GRID_ASPECT;
+	const keyCands = [...withA]
+		.sort((x, y) => dist(x.a, keyTarget) - dist(y.a, keyTarget))
+		.slice(0, Math.min(5, withA.length));
+	const keyImg = keyCands[Math.floor(rand() * keyCands.length)].i;
+
+	const used = new Set<number>([keyImg]);
+	const res: Record<string, number> = { K: keyImg };
+	const rest = SLOTS.filter((s) => s.name !== "K").sort(
+		(x, y) => dist(y.aspect, 1) - dist(x.aspect, 1),
+	);
+	for (const slot of rest) {
+		let best = -1;
+		let bd = Infinity;
+		for (const { i, a } of withA) {
+			if (used.has(i)) continue;
+			const d = dist(a, slot.aspect * GRID_ASPECT) + rand() * 0.2;
+			if (d < bd) {
+				bd = d;
+				best = i;
+			}
+		}
+		used.add(best);
+		res[slot.name] = best;
+	}
+	return res;
 }
 
-export function ZoomParallax({ images, columns = 4 }: ZoomParallaxProps) {
+export function ZoomParallax({ images }: ZoomParallaxProps) {
 	const container = useRef<HTMLDivElement>(null);
 	const { scrollYProgress } = useScroll({
 		target: container,
 		offset: ["start start", "end end"],
 	});
-	const scale = useTransform(scrollYProgress, [0, 1], [1, 6.5]);
+	const scale = useTransform(scrollYProgress, [0, 1], [1, 5.2]);
 
 	const hydrated = useHydrated();
 	const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
-	const { order, originX, originY } = useMemo(
-		() => buildLayout(images.length, columns, seed),
-		[images.length, columns, seed],
+
+	// соотношения сторон картинок — заполняются по onLoad
+	const [aspects, setAspects] = useState<Record<number, number>>({});
+	const allLoaded = Object.keys(aspects).length >= images.length;
+
+	const assignment = useMemo(
+		() => buildAssignment(images.length, seed, allLoaded ? aspects : null),
+		[images.length, seed, allLoaded, aspects],
 	);
 
 	return (
@@ -112,27 +169,42 @@ export function ZoomParallax({ images, columns = 4 }: ZoomParallaxProps) {
 			<div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden bg-[#121212]">
 				{hydrated && (
 					<motion.div
-						className="grid w-[min(92vw,124vh)] gap-[1.7vmin]"
+						className="grid aspect-[61/50] w-[min(90vw,110vh)] gap-[1.2vmin]"
 						style={{
-							gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+							gridTemplateColumns: "repeat(6, minmax(0, 1fr))",
+							gridTemplateRows: "repeat(6, minmax(0, 1fr))",
+							gridTemplateAreas: AREAS,
 							scale,
-							transformOrigin: `${originX}% ${originY}%`,
+							transformOrigin: "50% 50%",
 						}}
 					>
-						{order.map((imgIdx) => (
-							<div
-								key={imgIdx}
-								className="flex aspect-square items-center justify-center"
-							>
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img
-									src={images[imgIdx].src}
-									alt={images[imgIdx].alt ?? ""}
-									className="max-h-full max-w-full object-contain"
-									draggable={false}
-								/>
-							</div>
-						))}
+						{SLOTS.map((slot) => {
+							const imgIdx = assignment[slot.name] ?? 0;
+							const img = images[imgIdx];
+							return (
+								<div
+									key={slot.name}
+									style={{ gridArea: slot.name }}
+									className="overflow-hidden"
+								>
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img
+										src={img.src}
+										alt={img.alt ?? ""}
+										className="h-full w-full object-cover"
+										draggable={false}
+										onLoad={(e) => {
+											const el = e.currentTarget;
+											if (!el.naturalWidth || !el.naturalHeight) return;
+											const ratio = el.naturalWidth / el.naturalHeight;
+											setAspects((prev) =>
+												prev[imgIdx] ? prev : { ...prev, [imgIdx]: ratio },
+											);
+										}}
+									/>
+								</div>
+							);
+						})}
 					</motion.div>
 				)}
 			</div>
