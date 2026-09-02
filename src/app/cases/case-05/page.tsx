@@ -100,8 +100,12 @@ export default function Case05Page() {
 
       <div className="mx-auto flex w-[1440px] flex-col items-start">
         <Color />
-        <Result />
       </div>
+
+      {/* Финальный результат — карусель «варианты» тянется на всю ширину
+          экрана, потому вне центрированной 1440-сетки (контент блока внутри
+          сам центрируется на 1440). */}
+      <Result />
 
       {/* Мокап — карта в руке на всю ширину экрана. */}
       <div className="w-full">
