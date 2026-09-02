@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
+import HeroScrim from "@/components/HeroScrim";
 import Reveal from "@/components/Reveal";
 import Task from "./sections/Task";
 import Research from "./sections/Research";
@@ -44,7 +45,9 @@ export default function Case02Page() {
             </div>
           </FullBleedScale>
 
-          <div className="pointer-events-none absolute inset-0 mx-auto w-[1440px]">
+          <HeroScrim color="#1b1b21" />
+
+          <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
             <p className="absolute bottom-[138px] left-[46px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
               ИКОНКИ <br />
               YANDEX CLOUD
@@ -79,10 +82,13 @@ export default function Case02Page() {
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
           </div>
 
-          <Reveal variant="line" delay={0.3} className="absolute left-[920.94px] top-[203.02px] h-[16.356px] w-[408.405px]">
-            <div className="absolute inset-[-18.34%_-0.73%]">
-              <img alt="" className="block size-full max-w-none" src="/cases/case-02/sections/cover-underline.svg" />
-            </div>
+          <Reveal
+            variant="line"
+            delay={0.35}
+            start="top bottom"
+            className="absolute left-[917.94px] top-[200.02px] h-[22.356px] w-[414.405px]"
+          >
+            <img alt="" className="block size-full max-w-none" src="/cases/case-02/sections/cover-underline.svg" />
           </Reveal>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { gsap, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import { GLASS_BUBBLE } from "@/lib/glass";
 
-// 05 Процесс — 1:1 из актуальной Figma (node 2022:14827, высота 2927).
+// 05 Процесс — 1:1 из актуальной Figma (node 2022:14827, высота 2980).
 // В новой версии Figma «Процесс», «Дизайн-система» и сет 3D-иконок слиты
 // в один тёмный full-bleed раздел:
 //  · заголовок 175px + вводный текст + доодл «»»»;
@@ -131,7 +131,7 @@ export default function Process() {
   }, []);
 
   return (
-    <div ref={sectionRef} className="relative h-[2927px] w-full overflow-clip bg-[#121212]">
+    <div ref={sectionRef} className="relative h-[2980px] w-full overflow-clip bg-[#121212]">
       <div className="relative mx-auto h-full w-[1440px]">
         {/* — Процесс — */}
         <div className="absolute left-[46px] top-[143px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
@@ -139,7 +139,7 @@ export default function Process() {
           <p className="text-white">Процесс</p>
         </div>
 
-        <div className="absolute left-[46px] top-[457px] flex w-[670px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+        <div className="absolute left-[46px] top-[368px] flex w-[670px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           <p>
             Каждая иллюстрация проходила один рабочий цикл: поиск метафоры, быстрый скетч,
             построение композиции, настройка материалов и освещения, затем финальный рендер.
@@ -158,25 +158,26 @@ export default function Process() {
           src={`${A}/process-stripes.svg`}
         />
 
-        <Reveal variant="doodle" className="absolute left-[707px] top-[431px] z-10 h-[125px] w-[158px]">
+        {/* Стрелка-доодл «→» у конца трека (Figma node 2446:62566 → 1243 / 872, 99×63). */}
+        <Reveal variant="doodle" delay={0.1} className="absolute left-[1243px] top-[872px] z-10 h-[63px] w-[99px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/process-doodle.svg`} />
+          <img alt="" className="block size-full max-w-none" src={`${A}/process-arrow.svg`} />
         </Reveal>
 
-        {/* — Дизайн-система — */}
-        <div className="absolute left-1/2 top-[956px] flex -translate-x-1/2 items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+        {/* — Дизайн-система — (пользователь выровнял заголовок и текст по левому краю) */}
+        <div className="absolute left-[46px] top-[1092px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">06</p>
           <p className="text-white">Дизайн-система</p>
         </div>
 
-        <p className="absolute left-1/2 top-[1003px] w-[498px] -translate-x-1/2 text-center text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-80">
+        <p className="absolute left-[46px] top-[1139px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-80">
           Каждая иллюстрация создавалась как часть общей системы. Геометрия, материалы, освещение и
           цветовая палитра формировали единый визуальный язык независимо от темы конкретной сцены.
         </p>
 
         {/* Белая карточка из 4 ОТДЕЛЬНЫХ 3D-объектов + подписи
             (Figma node 2387:22353). По объектам проходит «волна». */}
-        <div ref={dsysRef} className="absolute left-[78px] top-[1143px] h-[399px] w-[1284px]">
+        <div ref={dsysRef} className="absolute left-[78px] top-[1277px] h-[399px] w-[1284px]">
           <Reveal
             variant="fade"
             className="flex h-full w-full items-center gap-[12px] rounded-[76px] bg-white px-[100px] py-[44px]"
@@ -201,13 +202,13 @@ export default function Process() {
         <Reveal
           variant="line"
           start="top 88%"
-          className="absolute left-[408.24px] top-[1631.04px] h-[156px] w-[637px]"
+          className="absolute left-[414px] top-[1759px] h-[156px] w-[637px]"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse.svg`} />
         </Reveal>
 
-        <p className="absolute left-1/2 top-[1676px] w-[669px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+        <p className="absolute left-1/2 top-[1812px] w-[669px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
           Разные функции продукта.
           <br />
           Один визуальный язык
@@ -216,7 +217,7 @@ export default function Process() {
         {/* Сет из 12 3D-иконок (Figma node 2022:15013) — 12 отдельных
             ассетов. При наведении иконка растёт на 20%, подпись уезжает
             вниз и гаснет; курсор убрали — всё возвращается. */}
-        <Reveal variant="fade" className="absolute left-[220px] top-[1984px] h-[738px] w-[1000px]">
+        <Reveal variant="fade" className="absolute left-[220px] top-[2099px] h-[738px] w-[1000px]">
           {ICONSET.map(([src, label, left, top]) => (
             <div
               key={label}

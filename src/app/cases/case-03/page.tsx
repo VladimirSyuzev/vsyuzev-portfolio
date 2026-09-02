@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
+import HeroScrim from "@/components/HeroScrim";
 import Reveal from "@/components/Reveal";
 import SiteFeatures from "./sections/SiteFeatures";
 import Task from "./sections/Task";
@@ -46,7 +47,9 @@ export default function Case03Page() {
             </div>
           </FullBleedScale>
 
-          <div className="pointer-events-none absolute inset-0 mx-auto w-[1440px]">
+          <HeroScrim color="#0b1266" />
+
+          <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
             <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
               3D-иллюстраций <br />
               для финтех-продукта
@@ -62,11 +65,10 @@ export default function Case03Page() {
             О ПРОЕКТЕ
           </p>
           <p className="absolute left-[46px] top-[148px] w-[670px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-            Для Stablegate я разработал систему 3D key visuals, которая помогает быстро и наглядно
-            объяснять ключевые функции и преимущества финтех-продукта. Проект включал весь цикл
-            работы: от поиска визуальных метафор и построения дизайн-системы до создания финальных
-            иллюстраций, которые используются на сайте, в презентациях, email-рассылках,
-            социальных сетях и других маркетинговых материалах.
+            Для Stablegate я разработал систему 3D key visuals, которая помогает наглядно объяснять
+            ключевые функции финтех-продукта. Проект охватил весь цикл работы: от поиска визуальных
+            метафор и построения дизайн-системы до создания готовых иллюстраций для сайта,
+            презентаций, email-рассылок и социальных сетей.
           </p>
 
           <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
@@ -78,10 +80,13 @@ export default function Case03Page() {
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Stablegate</p>
           </div>
 
-          <Reveal variant="line" delay={0.3} className="absolute left-[1079.81px] top-[199.26px] h-[11.294px] w-[261.713px]">
-            <div className="absolute inset-[-26.56%_-1.15%]">
-              <img alt="" className="block size-full max-w-none" src="/cases/case-03/sections/cover-underline.svg" />
-            </div>
+          <Reveal
+            variant="line"
+            delay={0.35}
+            start="top bottom"
+            className="absolute left-[1076.81px] top-[196.26px] h-[17.294px] w-[267.713px]"
+          >
+            <img alt="" className="block size-full max-w-none" src="/cases/case-03/sections/cover-underline.svg" />
           </Reveal>
         </div>
       </div>

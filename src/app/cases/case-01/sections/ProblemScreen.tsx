@@ -131,9 +131,9 @@ function ScreenContent() {
           МЫ ОБНАРУЖИЛИ:
         </p>
         <ul className="flex flex-col gap-[6px]">
-          {BULLETS.map((item) => (
+          {BULLETS.map((item, i) => (
             <li key={item} className="scr-bullet flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-              <Dot />
+              <Dot seed={11 + i} />
               <span className="opacity-70">{item}</span>
             </li>
           ))}

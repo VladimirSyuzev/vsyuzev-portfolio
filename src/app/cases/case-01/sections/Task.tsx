@@ -99,10 +99,8 @@ export default function Task() {
         <p className="text-[#008cff]">02</p>
         <p className="text-[#121212]">ЗАДАЧА</p>
       </div>
-      <p className="absolute left-[46px] top-[193px] w-[680px] text-[32px] font-normal uppercase leading-[1.2] tracking-[0.64px] text-[#121212] opacity-70">
-        Главной задачей было превратить две разрозненные библиотеки
-        <br />
-        в единую масштабируемую систему
+      <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        Главной задачей было превратить две разрозненные библиотеки в единую масштабируемую систему
       </p>
 
       <div ref={windowRef} className="absolute left-[46px] top-[443px] overflow-hidden" style={{ width: WINDOW_START.w, height: WINDOW_START.h }}>
@@ -133,7 +131,7 @@ export default function Task() {
             <p className="text-[#008cff]">02</p>
             <p className="text-[#121212]">ЗАДАЧА</p>
           </div>
-          <p className="absolute left-[46px] top-[181px] w-[388px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+          <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
             Главной задачей было превратить две разрозненные библиотеки в единую масштабируемую
             систему
           </p>

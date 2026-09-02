@@ -27,6 +27,12 @@ export default function VisualSystem() {
           Новые изображения создавались не с нуля: каждая иллюстрация наследовала общие принципы
           работы с формой, материалами, цветом, светом и уровнем детализации.
         </p>
+
+        {/* Доодл «//» (Figma node 2412:4318 → 1236 / 181, 158×125). */}
+        <Reveal variant="doodle" className="absolute left-[1236px] top-[181px] z-10 h-[125px] w-[158px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="block size-full max-w-none" src={`${A}/principles1-doodle.svg`} />
+        </Reveal>
       </div>
 
       {/* Фото конференции (Figma frame 2385:21391, 1440×704) — фрейм

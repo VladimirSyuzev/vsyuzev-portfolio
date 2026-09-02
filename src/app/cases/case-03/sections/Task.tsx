@@ -115,22 +115,22 @@ export default function Task() {
           <p className="text-[#121212]">Задача</p>
         </div>
 
-        <p className="absolute left-[46px] top-[368px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        <p className="absolute left-[46px] top-[368px] w-[668px] text-[14px] uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
           Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая объясняет
           функциональность продукта без текста и работает в разных форматах и контекстах.
         </p>
 
-        {/* Доодл-«молния» (Figma node 2384:21368). */}
-        <Reveal variant="doodle" className="absolute left-[1195.74px] top-[396.96px] z-10 h-[107px] w-[85px]">
+        {/* Доодл-«молния» (Figma node 2384:21368 → 1216 / 394). */}
+        <Reveal variant="doodle" className="absolute left-[1216px] top-[394px] z-10 h-[121px] w-[93px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-flash.svg`} />
         </Reveal>
 
-        <p className="absolute left-[726px] top-[1003px] w-[564px] text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212]">
+        <p className="absolute left-[726px] top-[1140px] w-[564px] text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212]">
           Система должна была:
         </p>
 
-        <div className="absolute left-[726px] top-[1032px] flex gap-[12px]">
+        <div className="absolute left-[726px] top-[1169px] flex gap-[12px]">
           <div className="flex w-[328px] flex-col gap-[12px]">
             <Req head={REQS[0][0]} sub={REQS[0][1]} />
             <Req head={REQS[1][0]} sub={REQS[1][1]} />
@@ -141,13 +141,13 @@ export default function Task() {
           </div>
         </div>
 
-        {/* 3D-стек монет (Figma node 2399:35306, x216 / y1201, 328×328). */}
-        <Reveal variant="fade" className="absolute left-[216px] top-[1201px] size-[328px]">
+        {/* 3D-стек монет (Figma node 2399:35306, x216 / y1293, 328×328). */}
+        <Reveal variant="fade" className="absolute left-[216px] top-[1293px] size-[328px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
         </Reveal>
 
-        <p className="absolute left-[726px] top-[1277px] w-[624px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
+        <p className="absolute left-[726px] top-[1369px] w-[624px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
           Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как пользователь
           прочитает текст
         </p>
@@ -157,7 +157,7 @@ export default function Task() {
         <Reveal
           variant="line"
           start="top 92%"
-          className="absolute left-[884px] top-[1462px] h-[35px] w-[394px]"
+          className="absolute left-[884px] top-[1556px] h-[35px] w-[394px]"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-arrow.svg`} />
@@ -166,7 +166,7 @@ export default function Task() {
 
       {/* Лента «варианты» — снап-карусель во всю ширину экрана, ключевая
           карточка по центру, соседние уходят за кромку окна. */}
-      <div ref={wrapRef} className="absolute inset-x-0 top-[527px] h-[399px] overflow-hidden">
+      <div ref={wrapRef} className="absolute inset-x-0 top-[595px] h-[399px] overflow-hidden">
         {reduced ? (
           <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
             {CARDS.map((c) => (

@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
+import HeroScrim from "@/components/HeroScrim";
 import Reveal from "@/components/Reveal";
 import SnapScrollController from "./sections/SnapScrollController";
 import Stats from "./sections/Stats";
@@ -12,7 +13,6 @@ import Pipeline from "./sections/Pipeline";
 import TeamGuide from "./sections/TeamGuide";
 import Guide from "./sections/Guide";
 import Consistency from "./sections/Consistency";
-import Role from "./sections/Role";
 import Summary from "./sections/Summary";
 
 const ICONS = [
@@ -90,6 +90,10 @@ export default function Case01Page() {
             </div>
           </FullBleedScale>
 
+          {/* Подложка под номером/заголовком — держит читаемость на широких
+              экранах (см. HeroScrim). Цвет — фон hero у левого края. */}
+          <HeroScrim color="#212121" />
+
           {/* Заголовок обложки — центрированная 1440-сетка поверх hero.
               Основной заголовок закреплён от НИЗА hero (bottom-[137px]),
               а не от верха: в Figma при родной высоте 580px это то же самое
@@ -97,7 +101,7 @@ export default function Case01Page() {
               hero на широких экранах top-привязка держала бы текст у самого
               верха с растущим пустым полем снизу — bottom держит его ровно
               в 137px от низа hero независимо от ширины/высоты экрана. */}
-          <div className="pointer-events-none absolute inset-0 mx-auto w-[1440px]">
+          <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
             <p className="absolute bottom-[137px] left-[46px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
               От аудита <br />к единому стилю
             </p>
@@ -166,7 +170,6 @@ export default function Case01Page() {
       <Consistency />
 
       <div className="mx-auto flex w-[1440px] flex-col items-start">
-        <Role />
         <Summary />
       </div>
 

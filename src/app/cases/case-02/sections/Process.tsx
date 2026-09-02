@@ -4,15 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
 import { GLASS_BUBBLE } from "@/lib/glass";
 
-// 04 Процесс — 1:1 из актуальной Figma (node 2009:12647, высота 854,
-// трек "Процесс" node 2013:14226). Тот же паттерн, что «04 Построение
-// процесса» в кейсе 1 (см. Pipeline.tsx): окно трека — во всю ширину
-// экрана, наведённое колесо мыши гонит ленту карточек ГОРИЗОНТАЛЬНО
-// (нативный scrollLeft, без пина), на границах трека колесо отдаётся
-// странице. Заголовок/подложка/стрелка — в центрированной 1440-сетке.
-// Вводный текст — одна колонка 670px в два абзаца слева (frame 2009:12651).
-// Стекло-бабл — общий стиль GLASS_BUBBLE (src/lib/glass.ts), 1:1 такой же,
-// как в «Построении процесса» кейса 1.
+// 04 Процесс — 1:1 из актуальной Figma (node 2009:12647, высота 987).
+// Пользователь сделал раздел ТЁМНЫМ full-bleed и убрал фрейм «варианты»:
+// остались дисплейный заголовок «04 ПРОЦЕСС» (175px), вводный текст в два
+// абзаца слева, трек этапов (node 2013:14226) и стрелка-доодл «→» у конца
+// трека. Механика трека — 1:1 как «Построение процесса» в кейсе 1
+// (Pipeline.tsx): окно во всю ширину экрана, наведённое колесо мыши гонит
+// ленту горизонтально (нативный scrollLeft), стекло-бабл — общий
+// GLASS_BUBBLE (src/lib/glass.ts).
 const A = "/cases/case-02/sections";
 
 const STEPS = [
@@ -62,20 +61,20 @@ export default function Process() {
   }, []);
 
   return (
-    <div ref={sectionRef} className="relative h-[854px] w-full overflow-clip bg-[#fafafa]">
+    <div ref={sectionRef} className="relative h-[987px] w-full overflow-clip bg-[#121212]">
       <div className="relative mx-auto h-full w-[1440px]">
         <div className="absolute left-[39px] top-[152px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
           <p className="text-[#008cff]">04</p>
-          <p className="text-[#121212]">Процесс</p>
+          <p className="text-white">Процесс</p>
         </div>
 
-        <div className="absolute left-[46px] top-[359px] flex w-[670px] flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        <div className="absolute left-[46px] top-[359px] flex w-[498px] flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           <p>
             После того как основные принципы стали понятны, мы превратили их в рабочий процесс и
             зафиксировали внутренние правила: работу с метафорами, последовательность этапов и
             критерии перехода между ними.
           </p>
-          <p className="w-[660px]">
+          <p>
             Документ стал опорой для команды и помогал сохранять единый стиль и качество иконок,
             даже когда официальный гайдлайн продолжал развиваться.
           </p>
@@ -84,22 +83,22 @@ export default function Process() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt=""
-          className="absolute left-[46px] top-[509px] h-[286px] w-[1348px] max-w-none"
+          className="absolute left-[46px] top-[580px] h-[286px] w-[1348px] max-w-none opacity-60"
           src={`${A}/process-stripes.svg`}
         />
 
-        {/* Стрелка-доодл (Figma node 2284:45839 → 701.15 / 394). */}
-        <Reveal variant="doodle" className="absolute left-[701.148px] top-[394px] z-10 h-[129px] w-[162px]">
+        {/* Стрелка-доодл «→» у конца трека (Figma node 2437:54096 → 1241 / 878, 99×63). */}
+        <Reveal variant="doodle" className="absolute left-[1241px] top-[878px] z-10 h-[63px] w-[99px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/process-arrow.svg`} />
         </Reveal>
       </div>
 
       {/* Окно трека — во всю ширину экрана, нативный горизонтальный скролл
-          со скрытым скроллбаром; отступы считаются от реальной ширины
-          секции (см. Pipeline.tsx в кейсе 1). */}
+          со скрытым скроллбаром (Figma track 2013:14226 → y660). */}
       <div
         ref={trackRef}
-        className="no-scrollbar absolute left-0 top-[549px] h-[205px] w-full overflow-x-auto"
+        className="no-scrollbar absolute left-0 top-[620px] h-[205px] w-full overflow-x-auto"
         style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
       >
         <div className="relative h-[125px] w-[2368px]">
@@ -112,10 +111,10 @@ export default function Process() {
               <p className="text-[14px] font-bold uppercase leading-[1.2] tracking-[0.84px] text-[#008cff]" style={{ fontFamily: "var(--font-body)" }}>
                 {s.n}
               </p>
-              <p className="text-[11px] font-medium uppercase leading-[1.2] tracking-[0.66px] text-[#121212]">
+              <p className="text-[11px] font-medium uppercase leading-[1.2] tracking-[0.66px] text-white">
                 {s.title}
               </p>
-              <p className="whitespace-pre-line text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212]">{s.desc}</p>
+              <p className="whitespace-pre-line text-[11px] leading-[1.2] tracking-[0.66px] text-white">{s.desc}</p>
             </div>
           ))}
         </div>

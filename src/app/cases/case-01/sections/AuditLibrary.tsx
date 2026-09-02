@@ -1,12 +1,12 @@
 "use client";
 
 // 03 Аудит библиотеки — 1:1 из актуальной Figma (node 1965:42538, высота
-// 1720). Заголовок «03 / АУДИТ / БИБЛИОТЕКИ» (175px, leading-none, top 55).
-// Координаты по свежим метаданным: вводный абзац top 592, «в результате
-// аудита» + список top 729, таблица top 866, стрелка-доодл 1255.82/722,
-// итоговая мысль (центр, Wix Madefor Regular, top 1365.5) в обводке-эллипсе
-// (экспорт узла 2322:5170, 674×253, начало SVG = координата секции
-// 383.64 / 1302.91). Таблица — настоящий DOM: 9 колонок×6 строк.
+// 1795). Заголовок «03 / АУДИТ / БИБЛИОТЕКИ» (175px, leading-none, top 55).
+// Координаты по свежим метаданным: вводная дисплейная строка top 592
+// (32px Wix Madefor Regular, uppercase, w1178), «в результате аудита» +
+// список top 866, таблица top 1003, стрелка-доодл 1255.82/857, итоговая
+// мысль (центр, Wix Madefor Regular, top 1420.6) в обводке-эллипсе
+// (экспорт узла 2322:5170). Таблица — настоящий DOM: 9 колонок×6 строк.
 // Появление ячеек-иконок — «волна» (waveStagger, см. lib/gsap.ts).
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
@@ -137,7 +137,7 @@ export default function AuditLibrary() {
   );
 
   return (
-    <div ref={scope} className="relative h-[1720px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <div ref={scope} className="relative h-[1795px] w-[1440px] overflow-clip bg-[#fafafa]">
       {/* Крупный дисплейный заголовок (Figma node 1965:42541, 175px, leading-none). */}
       <div className="absolute left-[46px] top-[55px] flex w-[439px] flex-col font-heading text-[175px] font-bold uppercase leading-none tracking-[5.25px]">
         <span className="whitespace-nowrap text-[#008cff]">03</span>
@@ -145,44 +145,44 @@ export default function AuditLibrary() {
         <span className="whitespace-nowrap text-[#121212]">БИБЛИОТЕКИ</span>
       </div>
 
-      <p className="absolute left-[46px] top-[592px] w-[393.246px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Работу начали с полной ревизии.
-        <br />
-        Мы объединили обе библиотеки, распределили иконки по категориям и проанализировали каждую
-        позицию.
+      {/* Вводный абзац (Figma node 1965:42545, x46 / y612 / w629, 14px,
+          uppercase — пользователь вернул мелкий текст вместо дисплейной строки). */}
+      <p className="absolute left-[46px] top-[612px] w-[629px] text-[14px] uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+        Работу начали с полной ревизии. Мы объединили обе библиотеки, распределили иконки по
+        категориям и проанализировали каждую позицию.
       </p>
 
-      <p className="audit-intro absolute left-[46px] top-[729px] w-[200px] whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+      <p className="audit-intro absolute left-[46px] top-[866px] w-[200px] whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
         {"В РЕЗУЛЬТАТЕ АУДИТА\nбыла СОБРАНА ТАБЛИЦА:"}
       </p>
-      <div className="absolute left-[556px] top-[729px] flex w-[838px] gap-[12px]">
+      <div className="absolute left-[556px] top-[866px] flex w-[838px] gap-[12px]">
         <ul className="audit-intro flex w-[328px] flex-col gap-[6px]">
-          {FOUND_LEFT.map((item) => (
+          {FOUND_LEFT.map((item, i) => (
             <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-              <Dot />
+              <Dot seed={31 + i} />
               <span className="opacity-70">{item}</span>
             </li>
           ))}
         </ul>
         <ul className="audit-intro flex w-[442.667px] flex-col gap-[6px]">
-          {FOUND_RIGHT.map((item) => (
+          {FOUND_RIGHT.map((item, i) => (
             <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-              <Dot />
+              <Dot seed={47 + i} />
               <span className="opacity-70">{item}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Стрелка-доодл, указывающая на таблицу (Figma node 2283:39751 → 1255.82 / 722). */}
-      <div className="audit-doodle absolute left-[1255.82px] top-[722px] flex h-[161.104px] w-[184.616px] items-center justify-center">
+      {/* Стрелка-доодл, указывающая на таблицу (Figma node 2283:39751 → 1255.82 / 857). */}
+      <div className="audit-doodle absolute left-[1255.82px] top-[857px] flex h-[161.104px] w-[184.616px] items-center justify-center">
         <div className="rotate-[14.75deg]">
           <img alt="" className="block h-[125px] w-[158px] max-w-none" src={`${A}/arrow-doodle.svg`} />
         </div>
       </div>
 
       {/* Таблица аудита — настоящий DOM, 1:1 из Figma (node 1965:42569). */}
-      <div className="audit-table absolute left-[46px] top-[866px] flex w-[1348px] flex-col text-[14px] text-[#121212]" style={{ fontFamily: "var(--font-body)" }}>
+      <div className="audit-table absolute left-[46px] top-[1003px] flex w-[1348px] flex-col text-[14px] text-[#121212]" style={{ fontFamily: "var(--font-body)" }}>
         {/* Quantity row */}
         <div className="flex h-[43px] w-full border border-black/10 bg-[#f3f3f3]">
           <div className="flex w-[135px] shrink-0 items-center justify-center border-r border-black/10 font-bold">Quantity</div>
@@ -219,13 +219,13 @@ export default function AuditLibrary() {
       {/* Обводка-эллипс вокруг итоговой мысли (Figma node 2322:5170) —
           экспорт узла с запечённым наклоном; начало SVG = координата
           секции 383.64 / 1302.91. */}
-      <div className="audit-doodle absolute left-[383.643px] top-[1302.91px] h-[253px] w-[674px]">
+      <div className="audit-doodle absolute left-[383.643px] top-[1358px] h-[253px] w-[674px]">
         <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
       </div>
 
       {/* Итоговая мысль (Figma node 1965:42546) — отдельный центрированный
           текст, Wix Madefor Display Regular. */}
-      <p className="audit-intro absolute left-1/2 top-[1365.51px] w-[589px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+      <p className="audit-intro absolute left-1/2 top-[1420.63px] w-[589px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
         Полная карта библиотеки показала, что уже есть, чего не хватает и что нужно сделать в
         первую очередь
       </p>

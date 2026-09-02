@@ -57,11 +57,17 @@ export default function Reveal({
         Object.assign(from, { opacity: 0, y: 14 });
       }
 
+      // immediateRender:false — элемент рендерится в НАТУРАЛЬНОМ (видимом)
+      // состоянии, from-состояние применяется только когда триггер реально
+      // сработал. Если ScrollTrigger не выстрелит (элемент был выше точки
+      // старта на загрузке, refresh-десинк и т.п.) — декор просто останется
+      // видимым, а не «зависнет» невидимым.
       const tw = gsap.from(el, {
         ...from,
         delay,
         duration,
         ease,
+        immediateRender: false,
         scrollTrigger: { trigger: el, start, once: true },
         clearProps: "clipPath,transform,opacity",
       });

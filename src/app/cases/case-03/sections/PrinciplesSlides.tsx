@@ -168,17 +168,27 @@ export default function PrinciplesSlides() {
     { scope: wrapRef, dependencies: [reduced] }
   );
 
-  // Фон слайда 2 — сплит тёмная/светлая половины с мягким синим свечением,
-  // тянется на весь экран (содержимое поверх остаётся в 1440-сетке).
+  // Фон слайда 2 — сплит тёмная/светлая половины, тянется на весь экран
+  // (содержимое поверх остаётся в 1440-сетке). Каждая половина — экспорт
+  // соответствующего фрейма-фона из Figma (node 2022:14801 — тёмная,
+  // node 2022:14760 — светлая): неоднородный градиент + размытые
+  // блики + зерно, а не плоская CSS-заливка. Растягиваем на всю высоту
+  // блока (object-cover), опорная точка — верх.
   const bgLayer = (
     <>
-      <div
-        className="absolute inset-y-0 left-0 w-1/2 bg-[#01030a]"
-        style={{ backgroundImage: "radial-gradient(60% 55% at 34% 42%, rgba(58,78,230,0.28), transparent 70%)" }}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        alt=""
+        aria-hidden
+        className="absolute inset-y-0 left-0 h-full w-1/2 object-cover object-top"
+        src={`${A}/pr2-bg-left.jpg`}
       />
-      <div
-        className="absolute inset-y-0 right-0 w-1/2 bg-[#f4f6fa]"
-        style={{ backgroundImage: "radial-gradient(70% 60% at 58% 32%, rgba(120,140,255,0.16), transparent 72%)" }}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        alt=""
+        aria-hidden
+        className="absolute inset-y-0 right-0 h-full w-1/2 object-cover object-top"
+        src={`${A}/pr2-bg-right.jpg`}
       />
     </>
   );

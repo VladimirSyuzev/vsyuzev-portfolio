@@ -17,19 +17,18 @@ export default function VisualLanguage() {
           <p className="text-white">Визуальный язык</p>
         </div>
 
-        <div className="absolute left-[44px] top-[181px] flex items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-          <p className="w-[500px] opacity-70">
-            Самой сложной задачей было найти простой принцип, который помогал бы всей команде
-            понимать границы нового визуального языка. Такой метафорой стала деталь, вырезанная из
-            цельного листа металла: если форму нельзя было представить вырезанной таким способом,
-            значит, она не соответствовала стилю.
-          </p>
-          <p className="w-[498px] opacity-70">
-            Этот принцип изменил подход к проектированию иконок. Вместо того чтобы строить их из
-            линий и контуров, мы начинали с цельной формы
-            <br />и постепенно убирали всё лишнее.
-          </p>
-        </div>
+        <p className="absolute left-[44px] top-[181px] w-[500px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+          Самой сложной задачей было найти простой принцип, который помогал бы всей команде понимать
+          границы нового визуального языка. Такой метафорой стала деталь, вырезанная из цельного
+          листа металла: если форму нельзя было представить вырезанной таким способом, значит, она
+          не соответствовала стилю.
+        </p>
+
+        {/* Правый абзац — отдельный блок под фото справа (Figma node 2236:94101 → x726 / y866). */}
+        <p className="absolute left-[726px] top-[866px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+          Этот принцип изменил подход к проектированию иконок. Вместо того чтобы строить их из линий
+          и контуров, мы начинали с цельной формы и постепенно убирали всё лишнее.
+        </p>
 
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -43,7 +42,7 @@ export default function VisualLanguage() {
           variant="line"
           start="top 92%"
           className="absolute"
-          style={{ left: 326.666, top: 1066.8, width: 787, height: 136 }}
+          style={{ left: 328, top: 1078.72, width: 787, height: 136 }}
         >
           <img alt="" className="block size-full" src={`${A}/visual-ellipse.svg`} />
         </Reveal>

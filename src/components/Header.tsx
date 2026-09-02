@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { CASES } from "@/lib/cases-data";
 
 // Header — 1:1 из Figma по контенту/шрифтам (node 2259:58486), раскладка
 // флюидная (flex на всю ширину страницы), шрифт зафиксирован 14px (не
@@ -22,6 +24,10 @@ import Link from "next/link";
 // кейсов) — с самой главной это просто скролл, с любой другой страницы —
 // переход на главную с этим якорем. «Контакты» — футер есть на КАЖДОЙ
 // странице, поэтому это всегда скролл по текущей странице, без перехода.
+//
+// «КЕЙСЫ» на страницах кейсов (где секции #cases нет) — вместо перехода
+// раскрывает выпадающий список всех кейсов (номер + заголовок + разделитель)
+// прямо под шапкой, как быстрый переключатель между кейсами.
 const NAV_ITEMS = [
   { hash: "/#cases", id: "cases", label: "КЕЙСЫ" },
   { hash: "/#about", id: "about", label: "О СЕБЕ" },
@@ -34,6 +40,34 @@ const BORDER_OFF = "rgba(50,50,60,0)";
 export default function Header() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hidden, setHidden] = useState(false);
+  const [casesOpen, setCasesOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Закрываем выпадающий список кейсов при смене маршрута — коррекция
+  // состояния прямо в рендере (штатный паттерн React, без setState-в-effect).
+  const [seenPath, setSeenPath] = useState(pathname);
+  if (pathname !== seenPath) {
+    setSeenPath(pathname);
+    setCasesOpen(false);
+  }
+
+  // Закрытие списка: Escape и клик вне шапки.
+  useEffect(() => {
+    if (!casesOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setCasesOpen(false);
+    }
+    function onDown(e: PointerEvent) {
+      const el = e.target as HTMLElement;
+      if (!el.closest("header")) setCasesOpen(false);
+    }
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("pointerdown", onDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", onDown);
+    };
+  }, [casesOpen]);
 
   // Scroll-spy — какой пункт подсвечен рамкой по положению скролла.
   useEffect(() => {
@@ -87,8 +121,10 @@ export default function Header() {
         const y = window.scrollY;
         const delta = y - lastY;
         if (y <= REVEAL_ZONE) setHidden(false);
-        else if (delta > DIRECTION_THRESHOLD) setHidden(true);
-        else if (delta < -DIRECTION_THRESHOLD) setHidden(false);
+        else if (delta > DIRECTION_THRESHOLD) {
+          setHidden(true);
+          setCasesOpen(false);
+        } else if (delta < -DIRECTION_THRESHOLD) setHidden(false);
         lastY = y;
         ticking = false;
       });
@@ -100,10 +136,10 @@ export default function Header() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-50 h-[62px] w-full bg-[#fafafa] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      className="fixed inset-x-0 top-0 z-50 w-full bg-[#fafafa] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
       style={{ transform: hidden ? "translateY(-100%)" : "translateY(0)" }}
     >
-      <div className="flex h-full items-center justify-between px-[3.056%]">
+      <div className="flex h-[62px] items-center justify-between px-[3.056%]">
         <Link href="/" className="block h-[18.162px] w-[140px] shrink-0">
           <Image src="/brand/wordmark.svg" alt="Вова Сюзёв" width={140} height={18.162} priority />
         </Link>
@@ -113,6 +149,7 @@ export default function Header() {
             <Link
               key={item.id}
               href={item.hash}
+              aria-expanded={item.id === "cases" ? casesOpen : undefined}
               onClick={(e) => {
                 // Если секция есть НА ЭТОЙ странице (например «контакты» —
                 // футер, есть везде; «кейсы»/«о себе» — только на главной,
@@ -121,20 +158,67 @@ export default function Header() {
                 const el = document.getElementById(item.id);
                 if (el) {
                   e.preventDefault();
+                  setCasesOpen(false);
                   el.scrollIntoView({ behavior: "smooth" });
+                  return;
                 }
-                // иначе (клик по «кейсы»/«о себе» со страницы кейса) — Link
-                // сам уводит на "/#..." на главную, где браузер докрутит
-                // до якоря при загрузке.
+                // «Кейсы» вне главной — раскрываем список кейсов вместо
+                // перехода на "/#cases".
+                if (item.id === "cases") {
+                  e.preventDefault();
+                  setCasesOpen((v) => !v);
+                  return;
+                }
+                // иначе («о себе» со страницы кейса) — Link уводит на "/#..."
               }}
               className="rounded-[10px] border px-[12px] py-[10px] text-[14px] leading-[1.2] tracking-[0.28px] whitespace-nowrap text-[#121212] opacity-100 transition-[border-color] duration-300 hover:!border-[rgba(50,50,60,0.8)]"
-              style={{ borderColor: activeId === item.id ? BORDER_ON : BORDER_OFF }}
+              style={{
+                borderColor:
+                  activeId === item.id || (item.id === "cases" && casesOpen) ? BORDER_ON : BORDER_OFF,
+              }}
             >
               {item.label}
             </Link>
           ))}
         </nav>
       </div>
+
+      {/* Выпадающий список кейсов — «выезжает» из-под шапки (max-height +
+          opacity). Номер (52px, синий) + заголовок (14px, uppercase) +
+          нижняя разделительная линия у каждой строки. */}
+      <div
+        className="overflow-hidden bg-[#fafafa] transition-[max-height,opacity] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{ maxHeight: casesOpen ? 900 : 0, opacity: casesOpen ? 1 : 0 }}
+        aria-hidden={!casesOpen}
+      >
+        <nav className="flex flex-col px-[3.056%] pt-[8px] pb-[40px]">
+          {CASES.map((c) => {
+            const isCurrent = pathname === `/cases/${c.slug}`;
+            return (
+              <Link
+                key={c.slug}
+                href={`/cases/${c.slug}`}
+                tabIndex={casesOpen ? 0 : -1}
+                onClick={() => setCasesOpen(false)}
+                className="group flex flex-col gap-[6px] border-b border-[rgba(18,18,18,0.15)] py-[22px] transition-colors first:pt-[16px]"
+                aria-current={isCurrent ? "page" : undefined}
+              >
+                <span
+                  className={`font-heading text-[44px] font-bold leading-[1] tracking-[1.32px] transition-opacity ${
+                    isCurrent ? "text-[#008cff] opacity-100" : "text-[#008cff] opacity-60 group-hover:opacity-100"
+                  }`}
+                >
+                  {c.index}
+                </span>
+                <span className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 transition-opacity group-hover:opacity-100">
+                  {c.title}
+                </span>
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+
       <div className="absolute inset-x-0 bottom-0 h-px bg-[#121212]" />
     </header>
   );
