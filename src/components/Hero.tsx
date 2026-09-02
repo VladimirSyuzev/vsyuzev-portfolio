@@ -39,29 +39,34 @@ function ArtTitle() {
 	);
 }
 
-// REGAL — 1:1 из Figma (node 2499:5398, фрейм 1440×411): текст x46/y149,
-// подчёркивание x590/y263, 342.5×13.
+// REGAL — на ≥1200 абсолют 1:1 из Figma (node 2499:5398, фрейм 1440×411:
+// текст x46/y149, подчёркивание x590/y263). Ниже 1200 — поток: строка +
+// подчёркивание под словом «designer» с полями сетки.
 function Regal() {
 	return (
 		<section className="w-full bg-[#fafafa]">
-			<div className="relative mx-auto h-[411px] w-[1440px]">
-				<p className="absolute left-[46px] top-[149px] whitespace-pre font-heading text-[52px] font-bold uppercase leading-[0] tracking-[1.56px] text-[#121212]">
-					<span className="leading-[1.1]">ART-DIRECTOR </span>
-					<span className="leading-[1.1] text-[#008cff]">&amp;</span>
-					<span className="leading-[1.1]">
-						{" "}
-						<br />
-						multidisciplinary designer
-					</span>
-				</p>
-				<Reveal
-					variant="line"
-					delay={0.1}
-					className="absolute left-[590px] top-[263px] h-[13.044px] w-[342.526px]"
-				>
-					{/* eslint-disable-next-line @next/next/no-img-element */}
-					<img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
-				</Reveal>
+			<div className="relative mx-auto w-full max-w-[1440px] xl:h-[411px]">
+				<div className="flex flex-col px-[var(--grid-margin)] py-[64px] sm:py-[88px] xl:contents">
+					<p className="relative inline-block whitespace-pre font-heading text-[clamp(2rem,6vw,52px)] font-bold uppercase leading-[1.1] tracking-[1.56px] text-[#121212] xl:absolute xl:left-[46px] xl:top-[149px] xl:!text-[52px] xl:!leading-[0]">
+						<span className="leading-[1.1]">ART-DIRECTOR </span>
+						<span className="leading-[1.1] text-[#008cff]">&amp;</span>
+						<span className="leading-[1.1]">
+							{" "}
+							<br />
+							multidisciplinary designer
+						</span>
+						{/* подчёркивание на планшете/мобайле — привязано к строке */}
+						<span className="pointer-events-none absolute bottom-[-0.35em] right-0 block h-[0.14em] w-[62%] bg-[#008cff] xl:hidden" />
+					</p>
+					<Reveal
+						variant="line"
+						delay={0.1}
+						className="hidden xl:absolute xl:left-[590px] xl:top-[263px] xl:block xl:h-[13.044px] xl:w-[342.526px]"
+					>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
+						<img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
+					</Reveal>
+				</div>
 			</div>
 		</section>
 	);

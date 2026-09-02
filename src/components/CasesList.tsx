@@ -4,23 +4,23 @@ import { useRef } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion, waveStagger } from "@/lib/gsap";
+import { useBreakpoint } from "@/lib/breakpoint";
 import { CASES } from "@/lib/cases-data";
 import Case01IconGrid from "./Case01IconGrid";
 import Reveal from "@/components/Reveal";
 
-// «кейсы» — 1:1 из Figma, секция «варианты кейсов» (node 2286:3887):
-// «Кейсы_состояние 1» (свёрнуто — номер+название, 113px) раскрывается по
-// наведению/фокусу в «Кейсы_состояние 3» (537px — + описание + обложка).
-// Раскрывается ТОЛЬКО наведённая строка, остальные остаются свёрнутыми
-// (не аккордеон на весь блок) — реализовано через grid-template-rows
-// 113px→537px на каждой строке независимо; лишнее содержимое обрезается
-// overflow-hidden, пока строка свёрнута.
-//
-// Reveal при появлении блока — «волна» (waveStagger), перенесённая как
-// анимационная техника из «Новый проект 3.0» (единственное, что оттуда
-// взято, по явной просьбе пользователя). Номер+заголовок каждой строки —
-// плоский массив cols=2, антидиагональный wave по 5 строкам.
+// «кейсы» — на десктопе (≥1200) hover-раскрывающийся список 1:1 из Figma
+// (node 2286:3887). Ниже 1200 hover нет — отдаём стопку карточек (номер +
+// название + описание + обложка всегда видны, тап → переход). Планшет-гор
+// — в две колонки, планшет-верт/мобайл — в одну. Секция ниже первого
+// экрана, поэтому переключение по useBreakpoint без вспышки.
+
 export default function CasesList() {
+  const bp = useBreakpoint();
+  return bp === "desktop" ? <CasesListDesktop /> : <CasesListStacked landscape={bp === "tabletL"} />;
+}
+
+function CasesListDesktop() {
   const scope = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -34,28 +34,26 @@ export default function CasesList() {
         ease: "siteEase",
         stagger: waveStagger(2, 0.08),
         clearProps: "transform,opacity",
-        scrollTrigger: {
-          trigger: scope.current,
-          start: "top 85%",
-        },
+        scrollTrigger: { trigger: scope.current, start: "top 85%" },
       });
     },
-    { scope }
+    { scope },
   );
 
   return (
-    <div id="cases" ref={scope} className="relative w-[1440px] bg-[#fafafa] pt-[318px] pb-[123px] scroll-mt-16">
+    <div
+      id="cases"
+      ref={scope}
+      className="relative mx-auto w-[1440px] scroll-mt-16 bg-[#fafafa] pt-[318px] pb-[123px]"
+    >
       <p className="absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
         КЕЙСЫ
       </p>
       <Reveal variant="doodle" className="absolute left-[174px] top-[89px] h-[125px] w-[158px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full max-w-none" src="/about/doodle-hooks.svg" />
       </Reveal>
 
-      {/* left-216, не mx-auto — по Figma список начинается на 216px, а НЕ
-          центрирован в 1440-canvas (216+1178=1394, правое поле 46px, а не
-          симметричные ~131px, которые давал mx-auto — реальный баг, из-за
-          которого блок "плавал" не на своём месте). */}
       <div className="ml-[216px] flex w-[1178px] flex-col items-start">
         {CASES.map((item) => (
           <Link
@@ -79,15 +77,17 @@ export default function CasesList() {
                 {item.slug === "case-01" ? (
                   <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
                 ) : (
-                  // Реальный ассет в родном разрешении Figma (2700-4100px по
-                  // длинной стороне), обрезка тем же окном, что и в макете —
-                  // не отдельный низкоразрешённый screenshot 668×536.
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={item.cover}
                     alt=""
                     className="absolute max-w-none"
-                    style={{ left: item.coverOffset.left, top: item.coverOffset.top, width: item.coverSize.width, height: item.coverSize.height }}
+                    style={{
+                      left: item.coverOffset.left,
+                      top: item.coverOffset.top,
+                      width: item.coverSize.width,
+                      height: item.coverSize.height,
+                    }}
                   />
                 )}
               </div>
@@ -96,5 +96,77 @@ export default function CasesList() {
         ))}
       </div>
     </div>
+  );
+}
+
+function CasesListStacked({ landscape }: { landscape: boolean }) {
+  const scope = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      gsap.from(gsap.utils.toArray<HTMLElement>(".case-card", scope.current), {
+        opacity: 0,
+        y: 24,
+        duration: 0.55,
+        stagger: 0.08,
+        ease: "siteEase",
+        clearProps: "transform,opacity",
+        scrollTrigger: { trigger: scope.current, start: "top 85%" },
+      });
+    },
+    { scope },
+  );
+
+  return (
+    <section
+      id="cases"
+      ref={scope}
+      className="w-full scroll-mt-16 bg-[#fafafa] px-[var(--grid-margin)] pt-[88px] pb-[72px]"
+    >
+      <p className="font-heading text-[28px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] sm:text-[32px]">
+        КЕЙСЫ
+      </p>
+
+      <div
+        className={`mt-[28px] gap-[44px] ${landscape ? "grid grid-cols-2 gap-x-[24px] gap-y-[48px]" : "flex flex-col"}`}
+      >
+        {CASES.map((item) => (
+          <Link
+            key={item.slug}
+            href={`/cases/${item.slug}`}
+            className="case-card group block border-b border-[rgba(18,18,18,0.7)] pb-[20px]"
+          >
+            <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
+              {item.slug === "case-01" ? (
+                <Case01IconGrid className="absolute inset-0 size-full overflow-clip bg-[rgba(18,18,18,0.7)]" />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={item.cover}
+                  alt=""
+                  className="absolute max-w-none"
+                  style={{
+                    left: `${(item.coverOffset.left / 668) * 100}%`,
+                    top: `${(item.coverOffset.top / 536) * 100}%`,
+                    width: `${(item.coverSize.width / 668) * 100}%`,
+                    height: `${(item.coverSize.height / 536) * 100}%`,
+                  }}
+                />
+              )}
+            </div>
+            <p className="mt-[16px] font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#008cff]">
+              {item.index}
+            </p>
+            <p className="mt-[8px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+              {item.title}
+            </p>
+            <p className="mt-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+              {item.description}
+            </p>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }
