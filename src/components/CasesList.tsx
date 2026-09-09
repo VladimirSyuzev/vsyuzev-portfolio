@@ -45,7 +45,7 @@ function CasesListDesktop() {
     <div
       id="cases"
       ref={scope}
-      className="relative mx-auto w-[1440px] scroll-mt-16 bg-[#fafafa] pt-[318px] pb-[123px]"
+      className="relative mx-auto w-full max-w-[1440px] scroll-mt-16 bg-[#fafafa] pt-[318px] pb-[123px]"
     >
       <p className="absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
         КЕЙСЫ

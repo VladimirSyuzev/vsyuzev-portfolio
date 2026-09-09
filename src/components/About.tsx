@@ -56,7 +56,7 @@ export default function About() {
     <section
       id="about"
       ref={scope}
-      className="relative w-full scroll-mt-16 bg-[#fafafa] xl:mx-auto xl:h-[900px] xl:w-[1440px] xl:overflow-clip"
+      className="relative w-full scroll-mt-16 bg-[#fafafa] xl:mx-auto xl:h-[900px] xl:w-full xl:max-w-[1440px] xl:overflow-clip"
     >
       {/* ≥1440 (абсолют по сетке 1440) + <640 (поток) */}
       <div className="flex flex-col gap-[24px] px-[var(--grid-margin)] py-[56px] sm:hidden xl:contents">

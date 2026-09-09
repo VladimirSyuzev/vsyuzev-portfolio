@@ -3,41 +3,37 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Floating, { FloatingElement } from "@/components/ui/floating";
+import { useBreakpoint, type Breakpoint } from "@/lib/breakpoint";
 import { useReducedMotion } from "@/lib/gsap";
 
 // HeroFloating — первый экран главной. В центре имя «Vova Syuzev», вокруг
-// «плавают» 6–8 работ из пула (параллакс по движению мыши). Набор картинок
-// и их слоты выбираются случайно на каждой загрузке. Клик по картинке —
-// полноэкранный просмотр. Секция всегда во всю высоту вьюпорта (100svh).
+// «плавают» работы (параллакс по движению мыши + лёгкий idle-дрейф). Набор
+// картинок, их места, размеры и наклоны — случайные на каждую загрузку.
+// Количество зависит от размера экрана. Клик по картинке — полноэкранный
+// просмотр (оригинал). Секция всегда во всю высоту вьюпорта (100svh).
 
-const POOL = [
-  "1.png", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg", "7.jpg", "8.jpg",
-  "9.jpg", "10.jpg", "11.jpg", "12.jpg", "13.jpg", "15.jpg", "17.jpg", "18.jpg",
-  "20.png",
-].map((name) => `/hero-parallax/${name}`);
-
-// Слоты вокруг центра. top/left — точка ПРИВЯЗКИ (центр картинки), заданы в
-// % от секции; держатся в стороне от центральной зоны, где имя. size —
-// ширина картинки (clamp: тесно на узких экранах, крупно на широких).
-// depth — сила параллакса. rotate — лёгкий наклон «фото».
-type Slot = { top: string; left: string; size: string; depth: number; rotate: number };
-const SLOTS: Slot[] = [
-  { top: "16%", left: "12%", size: "clamp(84px, 12vw, 210px)", depth: 1.6, rotate: -6 },
-  { top: "13%", left: "78%", size: "clamp(78px, 10vw, 180px)", depth: 2.3, rotate: 5 },
-  { top: "44%", left: "7%",  size: "clamp(80px, 11vw, 195px)", depth: 1.0, rotate: 4 },
-  { top: "40%", left: "90%", size: "clamp(74px, 9vw, 165px)",  depth: 2.8, rotate: -5 },
-  { top: "78%", left: "16%", size: "clamp(80px, 10vw, 185px)", depth: 1.9, rotate: 7 },
-  { top: "80%", left: "72%", size: "clamp(82px, 11vw, 200px)", depth: 1.3, rotate: -7 },
-  { top: "8%",  left: "44%", size: "clamp(72px, 9vw, 160px)",  depth: 2.1, rotate: 3 },
-  { top: "88%", left: "46%", size: "clamp(74px, 9vw, 165px)",  depth: 1.5, rotate: -4 },
-  { top: "60%", left: "93%", size: "clamp(66px, 8vw, 140px)",  depth: 3.1, rotate: 6 },
-  { top: "30%", left: "26%", size: "clamp(70px, 8vw, 150px)",  depth: 2.5, rotate: -9 },
+// tile — лёгкий webp-превью для коллажа, full — оригинал для полноэкрана.
+const NAMES = [
+  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
+  "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
 ];
+const EXT: Record<string, string> = {
+  "1": "png", "14": "png", "16": "png", "19": "png", "20": "png",
+};
+const POOL = NAMES.map((n) => ({
+  tile: `/hero-parallax/thumb/${n}.webp`,
+  full: `/hero-parallax/${n}.${EXT[n] ?? "jpg"}`,
+}));
 
-// mulberry32 — крошечный сид-ГСЧ (как в бывшем ZoomParallax): раскладка
-// детерминирована сидом, поэтому useMemo чистый. Сид на сервере и клиенте
-// разный, но набор рендерится только после гидратации (useSyncExternalStore)
-// — mismatch в DOM не попадает, а при перезагрузке сид новый.
+// Сколько картинок показывать по брейкпоинтам (см. RESPONSIVE.md):
+const COUNT_RANGE: Record<Breakpoint, [number, number]> = {
+  desktop: [14, 18], // ≥1440
+  tabletL: [12, 16], // 1024–1439
+  tabletP: [10, 14], // 640–1023
+  mobile: [6, 8], // <640
+};
+
+// mulberry32 — сид-ГСЧ: раскладка детерминирована сидом (useMemo чистый).
 function rng(seed: number) {
   let a = seed >>> 0;
   return () => {
@@ -57,23 +53,90 @@ function shuffle<T>(arr: readonly T[], rand: () => number): T[] {
   return a;
 }
 
+type Tile = {
+  src: string;
+  full: string;
+  x: number; // % центра по горизонтали
+  y: number; // % центра по вертикали
+  size: string; // CSS-ширина
+  depth: number;
+  rotate: number;
+  driftDur: number;
+  driftDelay: number;
+  driftY: number;
+};
+
+// Раскладка: раскидываем count плиток в кольце вокруг центра (внутренний
+// радиус держит их в стороне от имени), с проверкой на минимальную
+// дистанцию — получается «живой» коллаж без явных пересечений.
+function buildTiles(seed: number, count: number): Tile[] {
+  const rand = rng(seed);
+  const imgs = shuffle(POOL, rand).slice(0, count);
+  // чем больше плиток, тем они мельче
+  const k = count >= 15 ? 0.82 : count >= 11 ? 0.92 : count >= 9 ? 1 : 1.12;
+
+  const placed: { x: number; y: number }[] = [];
+  const tiles: Tile[] = [];
+
+  // Запретная зона по центру — примерный габарит имени «Vova Syuzev».
+  // Меньше плиток → крупнее шрифт занимает больше → зона шире.
+  const bx = count <= 9 ? 33 : 26;
+  const by = count <= 9 ? 19 : 16;
+  const goodD = count >= 13 ? 12 : 17;
+
+  for (let i = 0; i < count; i++) {
+    let best: { x: number; y: number; d: number } | null = null;
+    for (let t = 0; t < 60; t++) {
+      const ang = rand() * Math.PI * 2;
+      const r = 0.34 + rand() * 0.34;
+      const x = 50 + Math.cos(ang) * r * 66;
+      const y = 50 + Math.sin(ang) * r * 70;
+      if (x < 3 || x > 97 || y < 4 || y > 96) continue;
+      if (Math.abs(x - 50) < bx && Math.abs(y - 50) < by) continue; // на имени
+      const d = placed.length
+        ? Math.min(...placed.map((p) => Math.hypot(p.x - x, p.y - y)))
+        : 999;
+      if (!best || d > best.d) best = { x, y, d };
+      if (d > goodD) break;
+    }
+    const pos = best ?? { x: 50, y: 8 };
+    placed.push({ x: pos.x, y: pos.y });
+
+    const vmin = (8 + rand() * 5) * k;
+    const cap = Math.round((150 + rand() * 80) * k);
+    const min = Math.round(54 * k);
+    tiles.push({
+      src: imgs[i].tile,
+      full: imgs[i].full,
+      x: pos.x,
+      y: pos.y,
+      size: `clamp(${min}px, ${vmin.toFixed(1)}vmin, ${cap}px)`,
+      depth: 0.8 + rand() * 2.6,
+      rotate: (rand() * 2 - 1) * 9,
+      driftDur: 6 + rand() * 5,
+      driftDelay: rand() * -8,
+      driftY: 4 + rand() * 7,
+    });
+  }
+  return tiles;
+}
+
 const noop = () => () => {};
 
 export default function HeroFloating() {
   const reduced = useReducedMotion();
+  const bp = useBreakpoint();
+  const hydrated = useSyncExternalStore(noop, () => true, () => false);
   const [open, setOpen] = useState<string | null>(null);
 
   const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
-  const hydrated = useSyncExternalStore(noop, () => true, () => false);
 
-  // 6–8 картинок в 6–8 случайных слотах — детерминировано от seed.
-  const picks = useMemo(() => {
-    const rand = rng(seed);
-    const count = 6 + Math.floor(rand() * 3); // 6..8
-    const imgs = shuffle(POOL, rand).slice(0, count);
-    const slots = shuffle(SLOTS, rand).slice(0, count);
-    return slots.map((slot, i) => ({ slot, src: imgs[i] }));
-  }, [seed]);
+  const tiles = useMemo(() => {
+    const [lo, hi] = COUNT_RANGE[bp];
+    // count — тоже от сида, но со сдвигом, чтобы не коррелировал с раскладкой
+    const count = lo + Math.floor(rng(seed ^ 0x9e3779b9)() * (hi - lo + 1));
+    return buildTiles(seed, Math.min(count, POOL.length));
+  }, [seed, bp]);
 
   useEffect(() => {
     if (!open) return;
@@ -89,31 +152,50 @@ export default function HeroFloating() {
     };
   }, [open]);
 
-  const tiles = picks.map(({ slot, src }) => (
+  const nodes = tiles.map((t) => (
     <FloatingElement
-      key={src}
-      depth={reduced ? 0 : slot.depth}
-      style={{ top: slot.top, left: slot.left }}
+      key={t.full}
+      depth={reduced ? 0 : t.depth}
+      style={{ top: `${t.y}%`, left: `${t.x}%` }}
     >
-      {/* центрирование слота на точке привязки — transform на этом div,
-          rAF-цикл Floating пишет transform родителю, конфликта нет */}
+      {/* центрирование слота на точке привязки (transform здесь; rAF-цикл
+          Floating пишет transform родителю — не конфликтует) */}
       <div style={{ transform: "translate(-50%, -50%)" }}>
-        <button
-          type="button"
-          onClick={() => setOpen(src)}
-          aria-label="Открыть изображение на весь экран"
-          className="group block cursor-pointer overflow-hidden rounded-[4px] shadow-[0_24px_60px_-16px_rgba(0,0,0,0.65)] outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.06] focus-visible:ring-2 focus-visible:ring-white/70"
-          style={{ width: slot.size, rotate: `${slot.rotate}deg` }}
+        {/* idle-дрейф — лёгкое «дыхание», работает и без мыши (мобайл) */}
+        <motion.div
+          animate={
+            reduced
+              ? undefined
+              : { y: [0, -t.driftY, 0], rotate: [0, t.rotate * 0.14, 0] }
+          }
+          transition={
+            reduced
+              ? undefined
+              : {
+                  duration: t.driftDur,
+                  delay: t.driftDelay,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }
+          }
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={src}
-            alt=""
-            draggable={false}
-            loading="lazy"
-            className="block h-auto w-full select-none transition-[filter] duration-300 group-hover:brightness-110"
-          />
-        </button>
+          <button
+            type="button"
+            onClick={() => setOpen(t.full)}
+            aria-label="Открыть изображение на весь экран"
+            className="group block cursor-pointer overflow-hidden rounded-[4px] shadow-[0_24px_60px_-16px_rgba(0,0,0,0.65)] outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.07] focus-visible:ring-2 focus-visible:ring-white/70"
+            style={{ width: t.size, rotate: `${t.rotate}deg` }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={t.src}
+              alt=""
+              draggable={false}
+              loading="lazy"
+              className="block h-auto w-full select-none transition-[filter] duration-300 group-hover:brightness-110"
+            />
+          </button>
+        </motion.div>
       </div>
     </FloatingElement>
   ));
@@ -122,10 +204,10 @@ export default function HeroFloating() {
     <section className="relative flex h-[100svh] min-h-[100svh] w-full items-center justify-center overflow-hidden bg-[#121212]">
       {hydrated &&
         (reduced ? (
-          <div className="absolute inset-0">{tiles}</div>
+          <div className="absolute inset-0">{nodes}</div>
         ) : (
           <Floating sensitivity={1} easingFactor={0.06}>
-            {tiles}
+            {nodes}
           </Floating>
         ))}
 
