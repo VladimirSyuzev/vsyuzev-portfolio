@@ -38,7 +38,7 @@ const aeonikPro = localFont({
 
 export const metadata: Metadata = {
   title: "Вова Сюзёв, портфолио",
-  description: "Арт-директор и коммуникационный дизайнер",
+  description: "Дизайн-лид и мультидисциплинарный дизайнер",
 };
 
 export default function RootLayout({
