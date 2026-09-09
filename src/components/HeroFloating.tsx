@@ -1,11 +1,21 @@
 "use client";
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Floating, { FloatingElement } from "@/components/ui/floating";
 import { DotPattern } from "@/components/ui/dot-pattern";
+import { PixelText } from "@/components/ui/pixel-text";
 import { useBreakpoint, type Breakpoint } from "@/lib/breakpoint";
 import { useReducedMotion } from "@/lib/gsap";
+
+const NAME_LINES = ["VOVA", "SYUZEV"];
 
 // HeroFloating — первый экран главной. В центре имя «Vova Syuzev», вокруг
 // «плавают» работы (параллакс по движению мыши + лёгкий idle-дрейф). Набор
@@ -65,6 +75,7 @@ type Tile = {
   driftDur: number;
   driftDelay: number;
   driftY: number;
+  enterDelay: number; // задержка появления после текста, сек
 };
 
 // Множитель размера плиток по брейкпоинту — на больших экранах картинки
@@ -127,8 +138,17 @@ function buildTiles(seed: number, count: number, bp: Breakpoint): Tile[] {
       driftDur: 6 + rand() * 5,
       driftDelay: rand() * -8,
       driftY: 4 + rand() * 7,
+      enterDelay: 0,
     });
   }
+  // случайный порядок появления картинок — разложим задержки по перемешанным
+  // индексам (0 → count·0.11 с), чтобы вылезали вразнобой, а не по кругу
+  shuffle(
+    tiles.map((_, i) => i),
+    rng(seed * 2654435761),
+  ).forEach((tileIdx, order) => {
+    tiles[tileIdx].enterDelay = order * 0.11 + rand() * 0.06;
+  });
   return tiles;
 }
 
@@ -141,6 +161,21 @@ export default function HeroFloating() {
   const [open, setOpen] = useState<string | null>(null);
 
   const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
+
+  // Интро: сначала имя собирается из пикселей (PixelText), потом вразнобой
+  // появляются картинки. reduced-motion / до гидратации — всё сразу.
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const [introDone, setIntroDone] = useState(false);
+  const introReady = reduced || !hydrated || introDone;
+  const imagesIn = reduced || !hydrated || introDone;
+  const finishIntro = useCallback(() => setIntroDone(true), []);
+
+  // подстраховка: если PixelText не отрапортует (шрифт/канвас) — показываем всё
+  useEffect(() => {
+    if (reduced || !hydrated) return;
+    const id = window.setTimeout(() => setIntroDone(true), 5000);
+    return () => window.clearTimeout(id);
+  }, [reduced, hydrated]);
 
   const tiles = useMemo(() => {
     const [lo, hi] = COUNT_RANGE[bp];
@@ -172,6 +207,18 @@ export default function HeroFloating() {
       {/* центрирование слота на точке привязки (transform здесь; rAF-цикл
           Floating пишет transform родителю — не конфликтует) */}
       <div style={{ transform: "translate(-50%, -50%)" }}>
+        {/* появление после текста — вразнобой (enterDelay) */}
+        <motion.div
+          initial={false}
+          animate={
+            imagesIn ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
+          }
+          transition={{
+            delay: imagesIn && !reduced ? t.enterDelay : 0,
+            duration: 0.5,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+        >
         {/* idle-дрейф — лёгкое «дыхание», работает и без мыши (мобайл) */}
         <motion.div
           animate={
@@ -207,6 +254,7 @@ export default function HeroFloating() {
             />
           </button>
         </motion.div>
+        </motion.div>
       </div>
     </FloatingElement>
   ));
@@ -230,11 +278,25 @@ export default function HeroFloating() {
           </Floating>
         ))}
 
-      <h1 className="pointer-events-none relative z-10 select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-[#008CFF]">
-        Vova
-        <br />
-        Syuzev
-      </h1>
+      <div className="pointer-events-none relative z-10">
+        <h1
+          ref={nameRef}
+          className="select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-[#008CFF] transition-opacity duration-500"
+          style={{ opacity: introReady ? 1 : 0 }}
+        >
+          Vova
+          <br />
+          Syuzev
+        </h1>
+        {hydrated && !reduced && !introDone && (
+          <PixelText
+            targetRef={nameRef}
+            lines={NAME_LINES}
+            seed={seed}
+            onComplete={finishIntro}
+          />
+        )}
+      </div>
 
       <AnimatePresence>
         {open && (
