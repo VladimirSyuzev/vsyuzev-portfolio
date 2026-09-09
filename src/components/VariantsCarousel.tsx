@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { edgeFadeMaskStyle } from "@/lib/edgeFadeMask";
 import { useReducedMotion } from "@/lib/gsap";
 import { useDrag } from "@/lib/useDrag";
 
@@ -22,6 +23,7 @@ export default function VariantsCarousel({
   top,
   hSmall = 262,
   hBig = 399,
+  maxActiveWidth,
   tone = "light",
   onIndexChange,
   className,
@@ -30,14 +32,24 @@ export default function VariantsCarousel({
   top: number;
   hSmall?: number;
   hBig?: number;
+  // Ограничитель ширины ключевой (активной) карточки. Если по hBig карточка
+  // шире maxActiveWidth — она ужимается по ширине до maxActiveWidth, высота
+  // уменьшается пропорционально (нужно на узких экранах: панорамные билборды
+  // 3:1 иначе вылезают за вьюпорт).
+  maxActiveWidth?: number;
   tone?: "light" | "dark";
   onIndexChange?: (i: number) => void;
   className?: string;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
+  const activeCardRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
   const [center, setCenter] = useState(720);
   const [dragDX, setDragDX] = useState(0);
+  // Фактический зазор (px) от краёв трека до краёв активной карточки —
+  // измеряется по реальному рендеру, чтобы край-маска гарантированно не
+  // наезжала на ключевое изображение, даже если карточка не по центру.
+  const [clear, setClear] = useState<{ l: number; r: number } | null>(null);
   const idxRef = useRef(0);
   const reduced = useReducedMotion();
 
@@ -56,7 +68,14 @@ export default function VariantsCarousel({
     return () => ro.disconnect();
   }, []);
 
-  const widthOf = (c: VCard, big: boolean) => (big ? hBig : hSmall) * (c.w / c.h);
+  // Высота активной карточки: hBig, либо меньше — если по hBig ширина
+  // превысила бы maxActiveWidth (тогда ужимаемся по ширине, сохраняя AR).
+  const bigHeightOf = (c: VCard) => {
+    const w = hBig * (c.w / c.h);
+    return maxActiveWidth && w > maxActiveWidth ? maxActiveWidth * (c.h / c.w) : hBig;
+  };
+  const widthOf = (c: VCard, big: boolean) =>
+    (big ? bigHeightOf(c) : hSmall) * (c.w / c.h);
 
   const offsetFor = (active: number) => {
     let left = 0;
@@ -84,6 +103,32 @@ export default function VariantsCarousel({
 
   const offset = offsetFor(index) + (dragging ? dragDX : 0);
 
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    const measure = () => {
+      const card = activeCardRef.current;
+      if (!card) return;
+      const tr = track.getBoundingClientRect();
+      const cr = card.getBoundingClientRect();
+      if (!tr.width) return;
+      setClear({ l: cr.left - tr.left, r: tr.right - cr.right });
+    };
+    // после следующего кадра (когда translateX трека реально отрисован),
+    // плюс контрольный замер после transition сдвига
+    const raf = requestAnimationFrame(() => requestAnimationFrame(measure));
+    const t = window.setTimeout(measure, 620);
+    const onScroll = () => measure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(t);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [index, center, dragging]);
+
   const ctrl = tone === "dark" ? "text-white" : "text-[#121212]";
   const seg = tone === "dark" ? "bg-white" : "bg-[#121212]";
 
@@ -95,15 +140,22 @@ export default function VariantsCarousel({
         className={`relative overflow-hidden touch-pan-y select-none ${
           reduced ? "" : dragging ? "cursor-grabbing" : "cursor-grab"
         }`}
-        style={{ height: hBig }}
+        style={{
+          height: hBig,
+          ...edgeFadeMaskStyle(center * 2, {
+            adaptive: true,
+            clearLeft: clear?.l,
+            clearRight: clear?.r,
+          }),
+        }}
       >
         {reduced ? (
           <div className="no-scrollbar flex h-full items-center gap-[16px] overflow-x-auto pl-[46px] pr-[720px]">
             {cards.map((c) => (
               <div
                 key={c.src}
-                className="relative h-[262px] shrink-0"
-                style={{ aspectRatio: `${c.w} / ${c.h}` }}
+                className="relative shrink-0"
+                style={{ height: hSmall, aspectRatio: `${c.w} / ${c.h}` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img alt={c.alt} className="block size-full max-w-none object-contain" src={c.src} />
@@ -121,9 +173,10 @@ export default function VariantsCarousel({
             {cards.map((c, i) => (
               <div
                 key={c.src}
+                ref={i === index ? activeCardRef : undefined}
                 data-active={i === index || undefined}
-                className="relative h-[262px] shrink-0 transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] data-[active]:h-[399px]"
-                style={{ aspectRatio: `${c.w} / ${c.h}` }}
+                className="relative shrink-0 transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)]"
+                style={{ height: i === index ? bigHeightOf(c) : hSmall, aspectRatio: `${c.w} / ${c.h}` }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img

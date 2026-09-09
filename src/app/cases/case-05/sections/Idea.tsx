@@ -18,8 +18,29 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
+import Reveal from "@/components/Reveal";
+import FullBleedScale from "@/components/FullBleedScale";
 
+// <1440 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41047,
+// 1280×1929.546): поток flex-col gap-64 px-40 py-72, дисплейный опенер
+// 152px стопкой, 3 концепции (текст слева w-440 + карточка справа
+// 594×374.849) с маркер-подчёркиванием под описанием, снизу — выбор
+// команды с подчёркиванием. Овалов/GSAP-цикла на 1280 нет — только Reveal.
 const A = "/cases/case-05/sections";
+
+const IDEA_UL_1280 = [
+  { src: "idea-underline-1-1280.svg", top: 108.88, w: 347.835, h: 12.283, inset: "-24.42% -0.86%" },
+  { src: "idea-underline-2-1280.svg", top: 121.008, w: 316, h: 12, inset: "-25% -0.949%" },
+  { src: "idea-underline-3-1280.svg", top: 109.156, w: 281, h: 14, inset: "-21.429% -1.068%" },
+];
+
+// Маркер-подчёркивания под описаниями концепций для 834 (Figma
+// Vector 2835:53403 / 53402 / 53401 — внутри строки концепции, left ~24).
+const IDEA_UL_834 = [
+  { src: "idea-underline-1-834.svg", left: 24.11, top: 95.84, w: 305.828, h: 10.799, inset: "-27.78% -0.98%" },
+  { src: "idea-underline-2-834.svg", left: 25, top: 109.59, w: 272, h: 10, inset: "-30% -1.1%" },
+  { src: "idea-underline-3-834.svg", left: 24, top: 101.9, w: 275, h: 14, inset: "-21.43% -1.09%" },
+];
 
 const CONCEPTS = [
   {
@@ -130,15 +151,17 @@ export default function Idea() {
   );
 
   return (
-    <div ref={scope} className="relative h-[1717px] w-[1440px] overflow-clip bg-[#fafafa]">
+    <>
+      <div ref={scope} className="relative hidden h-[1717px] w-[1440px] overflow-clip bg-[#fafafa] xl:block">
       {/* Дисплейный заголовок (Figma frame 2210:74440 → x46 / y87, 175px). */}
       <div className="absolute left-[46px] top-[87px] flex flex-col font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
         <span className="text-[#008cff]">02</span>
         <span className="text-[#121212]">Поиск идеи</span>
       </div>
 
-      <p className="absolute left-[46px] top-[549px] w-[328px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-        Перед презентацией клиенту я подготовил три концепции:
+      <p className="absolute left-[46px] top-[592px] w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+        Перед презентацией клиенту{" "}
+        <br />я подготовил три концепции:
       </p>
 
       {CONCEPTS.map((c) => (
@@ -150,7 +173,7 @@ export default function Idea() {
             <p className="mt-[2px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
               {c.title}
             </p>
-            <p className="mt-[6px] w-[328px] text-[14px] font-normal uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+            <p className="mt-[6px] w-[328px] text-[14px] font-normal leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               {c.text}
             </p>
           </div>
@@ -190,6 +213,240 @@ export default function Idea() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline.svg`} />
       </div>
-    </div>
+      </div>
+
+      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41047,
+          1280×1929.546). Поток flex-col gap-64 px-40 py-72. */}
+      <div className="hidden w-full lg:block xl:hidden">
+        <FullBleedScale width={1280} height={1929.546} mode="grow" className="w-full">
+          <div className="relative flex h-[1929.546px] w-[1280px] flex-col items-start gap-[64px] overflow-clip bg-[#fafafa] px-[40px] py-[72px]">
+            {/* Дисплейный опенер «02 / ПОИСК ИДЕИ» стопкой, 152px. */}
+            <div className="flex w-[1042px] shrink-0 flex-col whitespace-nowrap font-heading text-[152px] font-bold uppercase leading-none tracking-[4.56px]">
+              <span className="text-[#008cff]">02</span>
+              <span className="text-[#121212]">Поиск идеи</span>
+            </div>
+
+            {/* Контент (Frame 2833:52933, w-1200). */}
+            <div className="relative w-[1200px] shrink-0" style={{ height: 1246.546 }}>
+              <p className="absolute left-0 top-0 w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+                Перед презентацией клиенту{" "}
+                <br />я подготовил три концепции:
+              </p>
+
+              <div className="absolute left-0 top-[58px] flex w-[1200px] flex-col gap-[12px]">
+                {CONCEPTS.map((c, i) => (
+                  <div key={c.n} className="relative flex w-full items-start justify-between">
+                    <div className="flex w-[440px] flex-col items-start gap-[6px] text-[#121212] [word-break:break-word]">
+                      <div className="flex flex-col items-start uppercase">
+                        <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px]">{c.n} </p>
+                        <p className="font-heading text-[32px] font-normal leading-[1.1] tracking-[0.96px]">
+                          {c.title}
+                        </p>
+                      </div>
+                      <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
+                        {c.text}
+                      </p>
+                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      alt={`Карта концепции ${c.title}`}
+                      className="block h-[374.849px] w-[594px] shrink-0 max-w-none rounded-[21.9px] object-cover"
+                      src={`${A}/idea-card-${i + 1}-1280.jpg`}
+                    />
+                    {/* Маркер-подчёркивание под описанием. */}
+                    <Reveal
+                      variant="line"
+                      start="top 92%"
+                      className="absolute left-[24px] z-10"
+                      style={{ top: IDEA_UL_1280[i].top, width: IDEA_UL_1280[i].w, height: IDEA_UL_1280[i].h }}
+                    >
+                      <div className="absolute" style={{ inset: IDEA_UL_1280[i].inset }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img alt="" className="block size-full max-w-none" src={`${A}/${IDEA_UL_1280[i].src}`} />
+                      </div>
+                    </Reveal>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Выбор команды (text 2827:44714, 40/1750.546, w-593) +
+                подчёркивание (Vector 234257367, 64.04/1805.543, 531.92×16.62).
+                Переносы 1:1 с макетом (в шрифте проекта строка чуть у́же —
+                фиксируем ручными <br>, чтобы 3-я строка была «новом
+                контексте.», а не «контексте.»). */}
+            <div className="relative w-[593px] shrink-0">
+              <p className="whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                Команда выбрала первую концепцию. Она позволяла уйти от привычного{" "}
+                <br />
+                образа машины времени и показать легендарный автомобиль в совершенно{" "}
+                <br />новом контексте.
+              </p>
+              <Reveal
+                variant="line"
+                delay={0.1}
+                start="top 92%"
+                className="absolute left-[24.04px] top-[54.99px] z-10 h-[16.62px] w-[531.92px]"
+              >
+                <div className="absolute inset-[-18.04%_-0.56%]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline-4-1280.svg`} />
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </FullBleedScale>
+      </div>
+
+      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-05 · 834» (node 2828:45554,
+          834×1347.238). Поток flex-col gap-64 px-28 py-72. Овалов/GSAP нет. */}
+      <div className="hidden w-full sm:block lg:hidden">
+        <FullBleedScale width={834} height={1347.238} mode="grow" className="w-full">
+          <div className="relative flex h-[1347.238px] w-[834px] flex-col items-start gap-[64px] overflow-clip bg-[#fafafa] px-[28px] py-[72px]">
+            {/* Дисплейный опенер «02 / Поиск идеи» стопкой, 100px. */}
+            <div className="flex w-[686px] shrink-0 flex-col whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-none tracking-[3px]">
+              <span className="text-[#008cff]">02</span>
+              <span className="text-[#121212]">Поиск идеи</span>
+            </div>
+
+            {/* Контент (Frame 2833:52934, w-full, gap 24). */}
+            <div className="flex w-[778px] shrink-0 flex-col items-start gap-[24px]">
+              <p className="w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+                Перед презентацией клиенту{" "}
+                <br />я подготовил три концепции:
+              </p>
+
+              <div className="flex w-full flex-col gap-[12px]">
+                {CONCEPTS.map((c, i) => (
+                  <div key={c.n} className="relative flex w-full items-start gap-[12px]">
+                    <div className="flex w-[383px] shrink-0 flex-col items-start gap-[6px] [word-break:break-word]">
+                      <div className="flex flex-col items-start uppercase text-[#333]">
+                        <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px]">{c.n} </p>
+                        <p className="font-heading text-[28px] font-normal leading-[1.1] tracking-[0.84px]">
+                          {c.title}
+                        </p>
+                      </div>
+                      <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                        {c.text}
+                      </p>
+                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      alt={`Карта концепции ${c.title}`}
+                      className="block h-[241.774px] w-[383px] shrink-0 max-w-none object-cover"
+                      src={`${A}/idea-card-${i + 1}-834.png`}
+                    />
+                    {/* Маркер-подчёркивание под описанием (Vector 2835:53403/02/01). */}
+                    <Reveal
+                      variant="line"
+                      start="top 92%"
+                      className="absolute z-10"
+                      style={{
+                        left: IDEA_UL_834[i].left,
+                        top: IDEA_UL_834[i].top,
+                        width: IDEA_UL_834[i].w,
+                        height: IDEA_UL_834[i].h,
+                      }}
+                    >
+                      <div className="absolute" style={{ inset: IDEA_UL_834[i].inset }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img alt="" className="block size-full max-w-none" src={`${A}/${IDEA_UL_834[i].src}`} />
+                      </div>
+                    </Reveal>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Выбор команды (text 2833:52935, 28/1207.238, w-383) +
+                подчёркивание (Vector 2835:53400, 53.07/1276.184, 366.171×15.803). */}
+            <div className="relative w-[383px] shrink-0">
+              <p className="whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                Команда выбрала первую концепцию. Она позволяла уйти от привычного образа машины
+                времени{" "}
+                <br />и показать легендарный автомобиль в совершенно новом контексте.
+              </p>
+              <Reveal
+                variant="line"
+                delay={0.1}
+                start="top 92%"
+                className="absolute left-[25.07px] top-[68.946px] z-10 h-[15.803px] w-[366.171px]"
+              >
+                <div className="absolute inset-[-18.98%_-0.819%]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline-4-834.svg`} />
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </FullBleedScale>
+      </div>
+
+      {/* <640 — 1:1 из Figma reflow-фрейма «case-05 · 375» (node 2828:49171,
+          375×1532.346). Поток flex-col gap-32 px-20 py-64. Текст концепции
+          над картой стопкой, маркеров под описаниями нет. Концовку блока в
+          макете занимает остаток кейса 4 — ставим правильный текст кейса 5. */}
+      <div className="w-full sm:hidden">
+        <FullBleedScale width={375} height={1424} mode="grow" className="w-full">
+          <div className="relative flex h-[1424px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#fafafa] px-[20px] py-[64px]">
+            {/* Дисплейный опенер «02 / Поиск идеи» стопкой, 26px. */}
+            <div className="flex shrink-0 flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase">
+              <span className="leading-none text-[#008cff]">02</span>
+              <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">Поиск идеи</span>
+            </div>
+
+            <p className="w-[328px] shrink-0 whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+              Перед презентацией клиенту{" "}
+              <br />я подготовил три концепции:
+            </p>
+
+            <div className="flex w-[335px] shrink-0 flex-col items-start gap-[32px]">
+              {CONCEPTS.map((c, i) => (
+                <div key={c.n} className="flex w-full flex-col items-start gap-[12px]">
+                  <div className="flex w-full flex-col items-start gap-[6px] text-[#121212] [word-break:break-word]">
+                    <div className="flex flex-col items-start uppercase">
+                      <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px]">{c.n} </p>
+                      <p className="font-heading text-[22px] font-normal leading-[1.1] tracking-[0.66px]">
+                        {c.title}
+                      </p>
+                    </div>
+                    <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
+                      {c.text}
+                    </p>
+                  </div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={`Карта концепции ${c.title}`}
+                    className="block h-[211.4px] w-[335px] shrink-0 max-w-none rounded-[12px] object-cover"
+                    src={`${A}/idea-card-${i + 1}-375.jpg`}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Выбор команды — правильный текст кейса 5 (в 375-макете здесь
+                остаток кейса 4). Раскладка по образцу 834: абзац w-335 +
+                маркер-подчёркивание (ассет idea-underline-4-834.svg). */}
+            <div className="relative w-[335px] shrink-0">
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                Команда выбрала первую концепцию. Она позволяла уйти от привычного образа машины
+                времени и показать легендарный автомобиль в совершенно новом контексте.
+              </p>
+              <Reveal
+                variant="line"
+                delay={0.1}
+                start="top 92%"
+                className="absolute left-[16px] top-[88px] z-10 h-[14px] w-[300px]"
+              >
+                <div className="absolute inset-[-18.98%_-0.819%]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline-4-834.svg`} />
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </FullBleedScale>
+      </div>
+    </>
   );
 }

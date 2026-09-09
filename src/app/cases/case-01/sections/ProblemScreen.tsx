@@ -3,7 +3,9 @@
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
+import { useCanvasWide } from "@/lib/breakpoint";
 import Dot from "@/components/Dot";
+import Reveal from "@/components/Reveal";
 import SlideProgress from "@/components/SlideProgress";
 
 // «01 Проблема» — в Figma это ОДИН раздел из двух слайдов ("слайд 1 из 2" —
@@ -24,6 +26,9 @@ import SlideProgress from "@/components/SlideProgress";
 //   друг в друга (не гасим общий родитель, который спрятал бы оба сразу).
 // - onRefresh дублирует ту же пороговую проверку, что и onUpdate — иначе
 //   resize/refresh может рассинхронизировать видимый слой с self.progress.
+//
+// Ниже 1440 (нет фикс-холста, см. RESPONSIVE.md) — пина нет: два слайда
+// идут обычным потоком, каждый в сетке (reflow).
 const A = "/cases/case-01/sections/screen-assets";
 
 const BULLETS = [
@@ -161,6 +166,158 @@ function ScreenContent() {
   );
 }
 
+// --- Reflow ниже 1440. ЗАХОД 1: точные значения 375 (Figma 2559:11032 /
+// 2559:11051). 834/1280 — заходы 2/3. ---
+const P = "/cases/case-01/sections";
+const R = "/cases/case-01/sections/reflow";
+
+function Board({ label, name, desc, union, tmp, bg }: {
+  label: string; name: string; desc: string; union: string; tmp: string; bg: string;
+}) {
+  return (
+    // 375: доска 335, gap доска→подпись 12. 834: доска 328, gap 10.
+    <div className="flex flex-col gap-[12px] sm:w-[328px] sm:gap-[10px]">
+      <div className="relative aspect-square w-full max-w-[335px] bg-white sm:max-w-[328px]">
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src={union} />
+        <img alt="" className="absolute inset-0 block size-full max-w-none" src={tmp} />
+        <div className="absolute inset-0 flex items-center justify-center opacity-40">
+          <img alt="" className="size-full" src={bg} />
+        </div>
+      </div>
+      {/* блок подписи — AL:V gap 6 */}
+      <div className="flex flex-col gap-[6px] text-white">
+        <div className="flex flex-col">
+          <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">ICONS</p>
+          {/* name — 375: Wix Reg 24 / ls 0.8. 834: Wix Reg 28 / ls 0.96. */}
+          <p className="font-heading text-[24px] font-normal uppercase leading-[1.1] tracking-[0.8px] sm:text-[28px] sm:tracking-[0.96px]">{name}</p>
+        </div>
+        <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{desc}</p>
+      </div>
+      <p className="sr-only">{label}</p>
+    </div>
+  );
+}
+
+function ProblemFlow() {
+  return (
+    // секция: 375 pad 64/20 gap 32 · 834 pad 72/28 gap 64 · 1280 pad 72/40
+    <section className="relative w-full overflow-clip bg-[#121212] px-[20px] py-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px]">
+      <div className="flex flex-col gap-[32px] sm:gap-[64px]">
+        {/* заголовок + интро: 375 gap 12 · 834 gap 32 (Figma 2559:11933 — vertical AL, gap 12) */}
+        <div className="flex flex-col gap-[12px] sm:gap-[32px]">
+          {/* «01 ПРОБЛЕМА» — 375: Wix Bold 26 / leading-none / col-gap 12. 834: 100 / gap 24. 1280: 152. */}
+          <div className="flex flex-wrap items-baseline gap-x-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none sm:gap-x-[24px] sm:text-[100px] lg:text-[152px] lg:leading-[1.05]">
+            <span className="text-[#008cff]">01</span>
+            <span className="text-white">ПРОБЛЕМА</span>
+          </div>
+          {/* интро — 375 w335 · 834 w382 · 1280 w291 */}
+          <p className="w-[335px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:w-[382px] lg:w-[291px]">
+            К началу проекта внутри Яндекса одновременно существовали две библиотеки иконок:
+          </p>
+        </div>
+
+        {/* доски — 375 стопкой (gap 12) · 834/1280 в ряд по центру (gap 12, пара 668
+            центрируется — Figma align CENTER) */}
+        <div className="flex flex-col gap-[12px] sm:flex-row sm:justify-center sm:gap-[12px]">
+          <Board
+            label="ICONS SYMBOLS"
+            name="Symbols"
+            desc="более старая библиотека."
+            union={`${P}/problem-union.svg`}
+            tmp={`${P}/problem-tmp.svg`}
+            bg={`${P}/problem-train.svg`}
+          />
+          <Board
+            label="ICONS REGULAR"
+            name="Regular"
+            desc="новая библиотека, которая постепенно развивалась вместе с продуктами."
+            union={`${P}/problem-union2.svg`}
+            tmp={`${P}/problem-tmp2.svg`}
+            bg={`${P}/problem-railway.svg`}
+          />
+        </div>
+      </div>
+
+      {/* Декор — линия-скетч Vector 234257366. 375: у низа секции, x26, ~тонкая.
+          834: под описанием доски 2 (x411, чуть левее её левого края), bbox
+          352×54 (артефакт волнистого штриха — реально плоская), центр ~y719
+          при высоте секции 800 → bottom ~68; слабый подъём слева-направо. */}
+      <Reveal
+        variant="line"
+        className="pointer-events-none absolute bottom-[38px] left-[26px] h-[17px] w-[300px] max-w-[calc(100%-40px)] sm:bottom-[48px] sm:left-[411px] sm:h-[22px] sm:w-[352px] sm:max-w-none lg:bottom-[36px] lg:left-[615px] lg:h-[22px] lg:w-[390px]"
+      >
+        <img aria-hidden alt="" className="block size-full sm:hidden" src={`${R}/problem-line-375.svg`} />
+        <img aria-hidden alt="" className="hidden size-full sm:block" src={`${R}/problem-line-834.svg`} />
+      </Reveal>
+    </section>
+  );
+}
+
+// Порядок вариантов точек-скетчей в списке «МЫ ОБНАРУЖИЛИ» (из макета 2559:11057).
+const DOT_VARIANTS = [1, 2, 3, 1, 3, 1, 4, 2];
+
+function ScreenFlow() {
+  return (
+    // секция: 375 pad 32/20/64/20 gap 32 · 834 pad 28/28/72/28 gap 64 · 1280 pad 72/40
+    <section className="relative w-full overflow-clip bg-[#121212] px-[20px] pb-[64px] pt-[32px] sm:px-[28px] sm:pb-[72px] sm:pt-[28px] lg:px-[40px] lg:pt-[72px]">
+      <div className="flex flex-col gap-[32px] sm:gap-[64px]">
+        {/* Frame 2147231942 — 2 абзаца. 375: w335, gap 12. 834: w383, gap 6. 1280: w498. */}
+        <div className="flex w-[335px] max-w-full flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:w-[383px] sm:gap-[6px] lg:w-[498px]">
+          <p>
+            Новые иконки появлялись под конкретные задачи и ближайшие релизы. Такой подход помогал
+            быстро закрывать потребности отдельных команд, но со временем привёл к техническому долгу.
+          </p>
+          <p>
+            На одном экране могли одновременно использоваться иконки из разных библиотек, из-за чего
+            интерфейс терял визуальную целостность.
+          </p>
+        </div>
+
+        {/* Frame 2147231908/…474 — мокап телефона. 375: screen-375.svg w335.
+            834: screen-834.svg 778×576 (телефон 746 по центру внутри). gap 64. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="Экран приложения Яндекс с одновременным использованием иконок из Icons Regular и Icons Symbols"
+          className="block w-[335px] max-w-full sm:hidden"
+          src={`${R}/screen-375.svg`}
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          aria-hidden
+          alt=""
+          className="hidden w-[778px] max-w-full sm:block lg:mx-auto lg:w-[746px]"
+          src={`${R}/screen-834.svg`}
+        />
+
+        {/* Frame 2147231943 — «МЫ ОБНАРУЖИЛИ» + список. Блок gap 12, список gap 6.
+            375: w335. 834: w327. 1280: одна колонка на всю ширину (Figma 1200). */}
+        <div className="flex w-[335px] max-w-full flex-col gap-[12px] sm:w-[327px] lg:w-full">
+          <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white">
+            МЫ ОБНАРУЖИЛИ:
+          </p>
+          <ul className="flex flex-col gap-[6px]">
+            {BULLETS.map((item, i) => (
+              <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
+                <img aria-hidden alt="" className="block size-[12px] shrink-0" src={`${R}/dot-${DOT_VARIANTS[i]}.svg`} />
+                <span className="opacity-70">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* ДУДЛ »» — только ≥640 (макет 2547:15535). Инстанс у ЛЕВОГО края
+          (x −16, обрезается), y 700 (~62% высоты). Указывает на мокап. */}
+      <Reveal
+        variant="doodle"
+        className="pointer-events-none hidden sm:absolute sm:left-[-16px] sm:top-[700px] sm:block sm:h-[125px] sm:w-[158px] lg:left-0 lg:top-[688px]"
+      >
+        <img aria-hidden alt="" className="block size-full" src={`${R}/screen-doodle-834.svg`} />
+      </Reveal>
+    </section>
+  );
+}
+
 export default function ProblemScreen() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
@@ -168,10 +325,12 @@ export default function ProblemScreen() {
   const screenRef = useRef<HTMLDivElement>(null);
   const [slide, setSlide] = useState(1);
   const reduced = useReducedMotion();
+  const wide = useCanvasWide();
+  const animate = wide && !reduced;
 
   useGSAP(
     () => {
-      if (reduced || !pinRef.current || !wrapRef.current) return;
+      if (!animate || !pinRef.current || !wrapRef.current) return;
 
       // --- Слайд 1: появление досок + доодлов при входе блока в экран ---
       gsap.set(".prob-board", { opacity: 0, scale: 0.94 });
@@ -209,10 +368,28 @@ export default function ProblemScreen() {
         if (state.slide === next) return;
         state.slide = next;
         setSlide(next);
-        gsap.to(problemRef.current, { opacity: next === 1 ? 1 : 0, duration: 0.5, ease: "siteEase" });
-        gsap.to(screenRef.current, { opacity: next === 2 ? 1 : 0, duration: 0.5, ease: "siteEase" });
+        gsap.to(problemRef.current, { opacity: next === 1 ? 1 : 0, duration: 0.5, ease: "siteEase", overwrite: "auto" });
+        gsap.to(screenRef.current, { opacity: next === 2 ? 1 : 0, duration: 0.5, ease: "siteEase", overwrite: "auto" });
         if (next === 2) playScreenIn();
       }
+
+      // onLeave/onLeaveBack — мгновенно (gsap.set, не .to) фиксируют
+      // корректное конечное состояние кроссфейда ровно в момент выхода за
+      // границы пина, даже если 0.5с таймер ещё не доиграл (см. тот же
+      // фикс и разбор в PrinciplesSlides.tsx, кейс 3, — там баг воспроизведён
+      // и измерён с более коротким буфером скролла; здесь буфер целый экран
+      // и гонка маловероятна, но защита ничего не стоит).
+      const snapTo = (next: number) => {
+        state.slide = next;
+        setSlide(next);
+        // killTweensOf — иначе ещё тикающий gsap.to() из предыдущего
+        // showSlide() на следующем кадре перезапишет наш gsap.set()
+        // своим интерполированным значением.
+        gsap.killTweensOf([problemRef.current, screenRef.current]);
+        gsap.set(problemRef.current, { opacity: next === 1 ? 1 : 0 });
+        gsap.set(screenRef.current, { opacity: next === 2 ? 1 : 0 });
+        if (next === 2) playScreenIn();
+      };
 
       const st = ScrollTrigger.create({
         trigger: wrapRef.current,
@@ -222,6 +399,8 @@ export default function ProblemScreen() {
         pinSpacing: true,
         onUpdate: (self) => showSlide(self.progress < 0.5 ? 1 : 2),
         onRefresh: (self) => showSlide(self.progress < 0.5 ? 1 : 2),
+        onLeave: () => snapTo(2),
+        onLeaveBack: () => snapTo(1),
       });
 
       return () => {
@@ -229,26 +408,16 @@ export default function ProblemScreen() {
         introST.kill();
       };
     },
-    { scope: wrapRef, dependencies: [reduced] }
+    { scope: wrapRef, dependencies: [animate] }
   );
 
-  // При "уменьшить анимацию" — без pin/скролл-джекинга, два блока подряд
-  // обычным потоком (как было изначально).
-  if (reduced) {
+  // Ниже 1440 / reduced — без pin/скролл-джекинга: два слайда обычным
+  // потоком, каждый в сетке.
+  if (!animate) {
     return (
       <>
-        <div className="flex min-h-screen w-full items-center justify-center bg-[#121212]">
-          <div className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
-            <ProblemContent />
-            <SlideProgress active={0} className="absolute left-[46px] top-[852px]" />
-          </div>
-        </div>
-        <div className="flex min-h-screen w-full items-center justify-center bg-[#121212]">
-          <div className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
-            <ScreenContent />
-            <SlideProgress active={1} className="absolute left-[46px] top-[852px]" />
-          </div>
-        </div>
+        <ProblemFlow />
+        <ScreenFlow />
       </>
     );
   }

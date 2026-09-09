@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger, useReducedMotion } from "@/lib/gsap";
+import { useCanvasWide } from "@/lib/breakpoint";
 import Reveal from "@/components/Reveal";
 
 // 05 сначала 16px — 1:1 из актуальной Figma (node 2009:12761). Заголовок
@@ -20,14 +21,10 @@ import Reveal from "@/components/Reveal";
 //     уменьшается, состояние держится до перезагрузки страницы;
 //  4) после этого пин отпускает, страница скроллится дальше.
 //
-// Тайминг по Эмилю Ковальски: это редкая «витринная» анимация (один раз
-// за загрузку) — можно делать медленно и деликатно. Рост — движение на
-// экране → ease-in-out (easeInOutCubic, сильнее CSS-кривой). Растянут на
-// ~1000px прокрутки, чтобы читался как осознанный жест, а не рывок.
-// Рост — через transform:scale() (GPU, без ре-растеризации SVG).
+// Ниже 1200 (планшет/мобайл, см. RESPONSIVE.md) пин отключён: контент —
+// статичный поток в сетке, иконка сразу в финальном размере.
 const A = "/cases/case-02/sections";
 
-const BOX = { left: 726, top: 318 };
 const RENDER_SIZE = 640;
 const SCALE_START = 16 / RENDER_SIZE;
 const OPACITY_START = 1;
@@ -46,18 +43,31 @@ export default function First16px() {
   const blueRef = useRef<HTMLImageElement>(null);
   const latch = useRef(0);
   const reduced = useReducedMotion();
+  // Пин/скраб — только на фикс-холсте ≥1440 (см. RESPONSIVE.md).
+  const animate = useCanvasWide() && !reduced;
 
   useGSAP(
     () => {
-      if (reduced || !wrapRef.current || !pinRef.current) return;
+      const el = blueRef.current;
+      if (!el) return;
 
       const render = (p: number) => {
-        const el = blueRef.current;
-        if (!el) return;
         const e = easeInOut(p);
         el.style.transform = `scale(${lerp(SCALE_START, 1, e)})`;
         el.style.opacity = `${lerp(OPACITY_START, OPACITY_END, e)}`;
       };
+
+      // Ниже 1440 / reduced-motion — пина нет: иконка в финальном размере.
+      // (Явно сбрасываем: на десктопе при гидратации мог отработать
+      //  render(0), пока useBreakpoint не отдал настоящее значение.)
+      if (!animate || !wrapRef.current || !pinRef.current) {
+        el.style.transform = "scale(1)";
+        el.style.opacity = `${OPACITY_END}`;
+        return;
+      }
+
+      // Десктоп: до первой отрисовки (useLayoutEffect) ужимаем до 16px —
+      // вспышки «большая → маленькая» не будет.
       render(0);
 
       const st = ScrollTrigger.create({
@@ -79,87 +89,142 @@ export default function First16px() {
 
       return () => st.kill();
     },
-    { scope: wrapRef, dependencies: [reduced] },
+    { scope: wrapRef, dependencies: [animate] },
   );
 
   const content = (
-    <div className="relative mx-auto w-[1440px]" style={{ height: SECTION_H }}>
-      <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-        <p className="text-[#008cff]">05</p>
-        <p className="text-[#121212]">сначала 16px</p>
+    <div className="mx-auto w-full max-w-[1440px] xl:relative xl:h-[1200px] xl:w-[1440px]">
+      {/* 1280 (Figma 2613:16471): section gap 64, py 72.
+          Группа 1 — заголовок + интро (gap 12; абзацы по 594, opacity 80).
+          Группа 2 — блок h 640: иконка 640 справа (left calc(50%+280) center),
+          текст «Маленький размер» 440 внизу-слева (top 500, наложение на иконку),
+          стрелки-дудл, подчёркивание. */}
+      <div className="flex flex-col gap-[32px] px-[var(--grid-margin)] py-[64px] sm:gap-[64px] sm:py-[72px] xl:contents">
+        <div className="flex flex-col gap-[12px] xl:contents">
+          <div className="flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:flex-row sm:items-center sm:gap-[12px] sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[134px] xl:text-[32px]">
+            <p className="text-[#008cff]">05</p>
+            <p className="text-[#121212]">сначала 16px</p>
+          </div>
+
+          {/* 1280 (Figma 2622:4702): абзацы по 594; п.1 — перенос после «px.»;
+              п.2 без хвоста «Большая версия…» (он есть на 375/834/1440). */}
+          <div className="flex flex-col gap-[6px] sm:max-w-[381px] lg:w-[594px] lg:max-w-full xl:contents">
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[496px]">
+              Каждая иконка создавалась в двух размерах: 16 × 16 px и 640 × 640 px.{" "}
+              <br className="hidden lg:inline xl:hidden" />
+              Работу всегда начинали с маленькой версии.
+            </p>
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 xl:absolute xl:left-[46px] xl:top-[221px] xl:w-[505px]">
+              После её утверждения создавали большую. Это было не простое масштабирование: менялись
+              пропорции, толщина линий и радиусы скруглений, появлялись дополнительные детали.
+              <span className="lg:hidden xl:inline">
+                {" "}Большая версия становилась самостоятельной иллюстрацией, сохраняя характер маленькой.
+              </span>
+            </p>
+          </div>
+        </div>
+
+        {/* Группа 2 — наложение иконки и текста в блоке высотой 640. */}
+        <div className="relative w-full lg:h-[640px] xl:contents">
+          {/* Иконка: чёрный контур (статичен) + голубая версия (на десктопе
+              растёт по скроллу, ниже 1440 — сразу в финальном размере). */}
+          <div className="relative aspect-square w-full lg:absolute lg:left-[calc(50%+280px)] lg:top-0 lg:size-[640px] lg:-translate-x-1/2 xl:absolute xl:left-[726px] xl:top-[318px] xl:size-[640px] xl:translate-x-0 xl:bg-transparent">
+            {/* <1440 — цельная композиция иконки (белый фон + конструкция +
+                синий 0.8), экспорт из Figma (2609:28796). */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              aria-hidden
+              alt=""
+              className="absolute inset-0 block size-full xl:hidden"
+              src={`${A}/reflow/icon16-1280.svg`}
+            />
+            {/* ≥1440 — чёрный контур (статичен, с круглыми вырезами) + 16px-версия,
+                растёт по скроллу до 640px. Экспорт 2009:12797_1440. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt=""
+              className="absolute left-0 top-0 hidden size-full max-w-none xl:block"
+              src={`${A}/reflow/icon16-black-1440.svg`}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              ref={blueRef}
+              alt="Иконка Key Management Service в размере 16×16, увеличенная до 640×640"
+              className="absolute left-0 top-0 hidden w-full max-w-none will-change-transform xl:block xl:size-[640px]"
+              src={`${A}/icon16-blue.svg`}
+              draggable={false}
+              style={{
+                transformOrigin: "top left",
+                transform: "scale(1)",
+                opacity: OPACITY_END,
+              }}
+            />
+          </div>
+
+          {/* Доодл-«стрелки» (Frame 2147231856) — 1280: (321,334) внутри блока,
+              140×139, поворот −0.9°. Десктоп — своя позиция. */}
+          <Reveal
+            variant="doodle"
+            className="pointer-events-none hidden h-[139px] w-[140px] lg:absolute lg:left-[298px] lg:top-[311px] lg:block xl:left-[481px] xl:top-[655px]"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img aria-hidden alt="" className="block size-full max-w-none lg:-rotate-[0.9deg] xl:rotate-0" src={`${A}/icon16-doodle.svg`} />
+          </Reveal>
+
+          {/* Текст «Маленький размер…» — 1280: (0,500) w440, наложение на иконку. */}
+          <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:absolute lg:left-0 lg:top-[500px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:left-[46px] xl:top-[853px] xl:w-[589px] xl:text-[32px]">
+            Маленький размер{" "}<br className="hidden xl:inline" />
+            проверял главное: силуэт, композицию и читаемость.
+          </p>
+
+          {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427.
+              Наклон +2.26° везде. 375/834 — в потоке под цитатой; 1280 —
+              абсолют (27,628) в блоке. */}
+          <Reveal
+            variant="line"
+            start="top 92%"
+            className="pointer-events-none mt-[10px] block w-[312px] max-w-full sm:hidden"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-375.svg`} />
+          </Reveal>
+          <Reveal
+            variant="line"
+            start="top 92%"
+            className="pointer-events-none mt-[10px] hidden w-[427px] max-w-full sm:block lg:absolute lg:left-[27px] lg:top-[628px] lg:mt-0 xl:hidden"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
+          </Reveal>
+        </div>
+
+        {/* Подчёркивание — десктоп (отдельный ассет 518×33). */}
+        <Reveal
+          variant="line"
+          start="top 92%"
+          className="hidden xl:absolute xl:block"
+          style={{ left: 161, top: 972, width: 518, height: 33 }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="block size-full" src={`${A}/icon16-underline.svg`} />
+        </Reveal>
       </div>
-
-      <p className="absolute left-[46px] top-[181px] w-[496px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80">
-        Каждая иконка создавалась в двух размерах: 16 × 16 px и 640 × 640 px. Работу всегда начинали
-        с маленькой версии.
-      </p>
-      <p className="absolute left-[46px] top-[221px] w-[505px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80">
-        После её утверждения создавали большую. Это было не простое масштабирование: менялись
-        пропорции, толщина линий и радиусы скруглений, появлялись дополнительные детали. Большая
-        версия становилась самостоятельной иллюстрацией, сохраняя характер маленькой.
-      </p>
-
-      {/* Иконка: чёрный контур 600×600 (статичен) + голубая версия 640×640
-          (рост через transform:scale, origin top-left — совпадает с углом
-          чёрного контура). */}
-      <div className="absolute size-[640px]" style={{ left: BOX.left, top: BOX.top }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt=""
-          className="absolute left-0 top-0 size-[600px] max-w-none"
-          src={`${A}/icon16-black.svg`}
-        />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          ref={blueRef}
-          alt="Иконка Key Management Service в размере 16×16, увеличенная до 640×640"
-          className="absolute left-0 top-0 size-[640px] max-w-none will-change-transform"
-          src={`${A}/icon16-blue.svg`}
-          draggable={false}
-          style={{
-            transformOrigin: "top left",
-            transform: `scale(${reduced ? 1 : SCALE_START})`,
-            opacity: reduced ? OPACITY_END : OPACITY_START,
-          }}
-        />
-      </div>
-
-      {/* Доодл-«стрелки» (Figma node 2383:21170). */}
-      <Reveal variant="doodle" className="absolute left-[481px] top-[655px] h-[139px] w-[140px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/icon16-doodle.svg`} />
-      </Reveal>
-
-      {/* Подчёркивание под итоговой мыслью (Figma node 2383:21156). */}
-      <Reveal
-        variant="line"
-        start="top 92%"
-        className="absolute"
-        style={{ left: 161, top: 972, width: 518, height: 33 }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full" src={`${A}/icon16-underline.svg`} />
-      </Reveal>
-
-      <p className="absolute left-[46px] top-[853px] w-[589px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-        Маленький размер
-        <br />
-        проверял главное: силуэт, композицию и читаемость.
-      </p>
     </div>
   );
 
-  if (reduced) {
-    return (
-      <section className="relative w-full bg-[#fafafa]" style={{ height: SECTION_H }}>
-        {content}
-      </section>
-    );
-  }
-
+  // ≥1440 — исходная структура пина 1:1 (жёсткие высоты, без overflow).
+  // Ниже — обычный поток, высоты не задаём.
   return (
-    <div ref={wrapRef} className="relative w-full" style={{ height: SECTION_H + SCRUB_PX }}>
-      <div ref={pinRef} className="relative w-full bg-[#fafafa]" style={{ height: SECTION_H }}>
+    <div
+      ref={wrapRef}
+      className="relative w-full"
+      style={{ height: animate ? SECTION_H + SCRUB_PX : undefined }}
+    >
+      <div
+        ref={pinRef}
+        className="relative w-full bg-[#fafafa]"
+        style={{ height: animate ? SECTION_H : undefined }}
+      >
         {content}
       </div>
     </div>

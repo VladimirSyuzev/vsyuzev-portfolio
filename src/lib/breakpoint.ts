@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 // useBreakpoint — текущий режим сетки (см. RESPONSIVE.md). SSR-safe через
 // useSyncExternalStore: getServerSnapshot всегда "desktop" (совпадает с
@@ -10,7 +10,7 @@ export type Breakpoint = "mobile" | "tabletP" | "tabletL" | "desktop";
 
 // от большего к меньшему — берём первый сработавший
 const QUERIES: readonly [Breakpoint, string][] = [
-  ["desktop", "(min-width: 1200px)"],
+  ["desktop", "(min-width: 1440px)"],
   ["tabletL", "(min-width: 1024px)"],
   ["tabletP", "(min-width: 640px)"],
 ];
@@ -32,6 +32,28 @@ export function useBreakpoint(): Breakpoint {
     current,
     () => "desktop",
   );
+}
+
+// useMinWidth — matches `(min-width: {px}px)`, СТАРТ false (в отличие от
+// useBreakpoint с getServerSnapshot 'desktop'). Для гейта GSAP-пинов и
+// скрабов на фикс-холсте ≥1440: и на сервере, и на первом клиентском
+// рендере анимации нет → useGSAP не отрабатывает лишний кадр (иначе иконка
+// застревает в стартовом масштабе). См. RESPONSIVE.md.
+export function useMinWidth(px: number) {
+  const [ok, setOk] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia(`(min-width: ${px}px)`);
+    const on = () => setOk(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, [px]);
+  return ok;
+}
+
+// Фикс-холст 1:1 из Figma (≥1440) — там живут пины/скрабы.
+export function useCanvasWide() {
+  return useMinWidth(1440);
 }
 
 // Удобные производные — тоже SSR-safe.

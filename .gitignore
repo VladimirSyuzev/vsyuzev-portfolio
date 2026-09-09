@@ -49,3 +49,6 @@ next-env.d.ts
 # dev server log (Bash tool background runs)
 dev-server.log
 dev.log
+
+# рабочие заметки, не для репозитория
+/CASE-01-SPEC.md

@@ -1,63 +1,269 @@
 import Reveal from "@/components/Reveal";
+import FullBleedScale from "@/components/FullBleedScale";
 
 // 04 Серия сценариев — 1:1 из Figma (node 2034:15790, высота 1262).
 // Заголовок «04 СЕРИЯ СЦЕНАРИЕВ» (32px), два абзаца, два KV-постера
 // (автомобиль и яхта, растр), доодл-«шеврон» и крупная мысль в обводке.
+//
+// <1440 — 1:1 из reflow-фрейма «case-04 · 1280» (node 2740:17992, 1280×1181.5).
 const A = "/cases/case-04/sections";
 
 export default function Series() {
   return (
-    <div className="relative h-[1262px] w-[1440px] overflow-clip bg-[#fafafa]">
-      <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-        <p className="text-[#008cff]">04</p>
-        <p className="text-[#121212]">Серия сценариев</p>
+    <>
+      {/* ≥1440 — нативный холст 1440. */}
+      <div className="relative hidden h-[1262px] w-[1440px] overflow-clip bg-[#fafafa] xl:block">
+        <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+          <p className="text-[#008cff]">04</p>
+          <p className="text-[#121212]">Серия сценариев</p>
+        </div>
+
+        <div className="absolute left-[46px] top-[181px] flex w-[668px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+          <p>
+            После первого KV визуальная система была расширена на другие сценарии: автомобиль и яхту.
+            Они показывают разные возможности продукта, сохраняя единый принцип построения.
+          </p>
+          <p>
+            Во всех визуалах повторяется одна формула: человек, телефон и объект покупки объединены
+            общей композицией и типографической системой. Меняется сценарий, но визуальный язык
+            остаётся узнаваемым.
+          </p>
+        </div>
+
+        {/* Два KV-постера (Figma frames 2115:30599 / 2115:30938 → y318, 668×446). */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+          className="absolute left-[46px] top-[318px] h-[446px] w-[668px] object-cover"
+          src={`${A}/series-1.jpg`}
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="KEY VISUAL Stablegate: сценарий с яхтой"
+          className="absolute left-[726px] top-[318px] h-[446px] w-[668px] object-cover"
+          src={`${A}/series-2.jpg`}
+        />
+
+        {/* Доодл-«шеврон» (Figma node 2284:40000 → x641 / y764, 158×125). */}
+        <Reveal variant="doodle" className="absolute left-[641px] top-[764px] z-10 h-[125px] w-[158px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
+        </Reveal>
+
+        {/* Обводка-эллипс вокруг мысли (Figma node 2401:35698). */}
+        <Reveal variant="line" start="top 90%" className="absolute left-[238px] top-[951px] h-[172px] w-[965px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse.svg`} />
+        </Reveal>
+        {/* Мысль (Figma node 2401:35697 → x216 / y1003, w1008, по центру). */}
+        <p className="absolute left-1/2 top-[1003px] w-[900px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          Один принцип позволил рассказывать разные истории в рамках одной кампании
+        </p>
       </div>
 
-      <div className="absolute left-[46px] top-[181px] flex w-[668px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        <p>
-          После первого KV визуальная система была расширена на другие сценарии: автомобиль и яхту.
-          Они показывают разные возможности продукта, сохраняя единый принцип построения.
-        </p>
-        <p>
-          Во всех визуалах повторяется одна формула: человек, телефон и объект покупки объединены
-          общей композицией и типографической системой. Меняется сценарий, но визуальный язык
-          остаётся узнаваемым.
-        </p>
+      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
+          2740:17992, 1280×1181.5). Абсолютные координаты. */}
+      <div className="hidden w-full lg:block xl:hidden">
+        <FullBleedScale width={1280} height={1181.524} mode="grow" className="w-full">
+          <div className="relative w-[1280px] overflow-clip bg-[#fafafa]" style={{ height: 1181.524 }}>
+            {/* Заголовок + 2 абзаца (40, 72), w-593. */}
+            <div className="absolute left-[40px] top-[72px] flex w-[593px] flex-col gap-[12px]">
+              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+                <span className="text-[#008cff]">04</span>
+                <span className="text-[#121212]">Серия сценариев</span>
+              </div>
+              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                <p>
+                  После первого KV визуальная система была расширена на другие сценарии: автомобиль и
+                  яхту. Они показывают разные возможности продукта, сохраняя единый принцип
+                  построения.
+                </p>
+                <p>
+                  Во всех визуалах повторяется одна формула: человек, телефон и объект покупки
+                  объединены общей композицией и типографической системой. Меняется сценарий, но
+                  визуальный язык остаётся узнаваемым.
+                </p>
+              </div>
+            </div>
+
+            {/* Два KV-постера с запечённым слоганом (Frame 2147231703 / 2147231705,
+                40 / 646, y291, 594×396.524). */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+              className="absolute left-[40px] top-[291px] block h-[396.524px] w-[594px] max-w-none object-cover"
+              src={`${A}/series-1-1280.jpg`}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="KEY VISUAL Stablegate: сценарий с яхтой"
+              className="absolute left-[646px] top-[291px] block h-[396.524px] w-[594px] max-w-none object-cover"
+              src={`${A}/series-2-1280.jpg`}
+            />
+
+            {/* Доодл-«шеврон вниз» (по центру фрейма 40/751.524, 158×125). */}
+            <Reveal
+              variant="doodle"
+              className="absolute left-[561px] top-[751.524px] z-10 h-[125px] w-[158px]"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
+            </Reveal>
+
+            {/* Мысль (327, 940.524, w-626, center) + обводка-эллипс
+                (Vector 234257399, 293.39/921.977, 693.378×140.448). */}
+            <Reveal
+              variant="line"
+              start="top 90%"
+              className="absolute left-[293.39px] top-[921.977px] h-[140.448px] w-[693.378px]"
+            >
+              <div className="absolute inset-[-2.14%_-0.43%]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse-1280.svg`} />
+              </div>
+            </Reveal>
+            <p className="absolute left-[327px] top-[940.524px] w-[626px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+              Один принцип позволил рассказывать разные истории в рамках одной кампании
+            </p>
+          </div>
+        </FullBleedScale>
       </div>
 
-      {/* Два KV-постера (Figma frames 2115:30599 / 2115:30938 → y318, 668×446). */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        alt="KEY VISUAL Stablegate: сценарий с автомобилем"
-        className="absolute left-[46px] top-[318px] h-[446px] w-[668px] object-cover"
-        src={`${A}/series-1.jpg`}
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        alt="KEY VISUAL Stablegate: сценарий с яхтой"
-        className="absolute left-[726px] top-[318px] h-[446px] w-[668px] object-cover"
-        src={`${A}/series-2.jpg`}
-      />
+      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-04 · 834» (node 2750:4730,
+          834×1789.706). Абсолютные координаты; 2 KV-постера СТОПКОЙ. */}
+      <div className="hidden w-full sm:block lg:hidden">
+        <FullBleedScale width={834} height={1789.706} mode="grow" className="w-full">
+          <div className="relative w-[834px] overflow-clip bg-[#fafafa]" style={{ height: 1789.706 }}>
+            {/* Заголовок + 2 абзаца (28, 72), w-778. */}
+            <div className="absolute left-[28px] top-[72px] flex w-[778px] flex-col gap-[12px]">
+              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
+                <span className="text-[#008cff]">04</span>
+                <span className="text-[#121212]">Серия сценариев</span>
+              </div>
+              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                <p>
+                  После первого KV визуальная система была расширена на другие сценарии: автомобиль и
+                  яхту. Они показывают разные возможности продукта, сохраняя единый принцип
+                  построения.
+                </p>
+                <p>
+                  Во всех визуалах повторяется одна формула: человек, телефон и объект покупки
+                  объединены общей композицией и типографической системой. Меняется сценарий, но
+                  визуальный язык остаётся узнаваемым.
+                </p>
+              </div>
+            </div>
 
-      {/* Доодл-«шеврон» (Figma node 2284:40000 → x641 / y764, 158×125). */}
-      <Reveal variant="doodle" className="absolute left-[641px] top-[764px] z-10 h-[125px] w-[158px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-      </Reveal>
+            {/* Два KV-постера с запечённым слоганом СТОПКОЙ (28, 257 / 788.353),
+                778×519.353, gap 12. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+              className="absolute left-[28px] top-[257px] block h-[519.353px] w-[778px] max-w-none object-cover"
+              src={`${A}/series-1-834.jpg`}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt="KEY VISUAL Stablegate: сценарий с яхтой"
+              className="absolute left-[28px] top-[788.353px] block h-[519.353px] w-[778px] max-w-none object-cover"
+              src={`${A}/series-2-834.jpg`}
+            />
 
-      {/* Обводка-эллипс вокруг мысли (Figma node 2401:35698). Якорь по
-          translate фонового rect экспорта: левый-верх SVG = точка секции
-          (243.57, 959.45); viewBox расширен на поля −6/−8, поэтому бокс
-          смещён на них. Раньше стоял на y975 — на 16px ниже и налезал на
-          текст. */}
-      <Reveal variant="line" start="top 90%" className="absolute left-[238px] top-[951px] h-[172px] w-[965px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse.svg`} />
-      </Reveal>
-      {/* Мысль (Figma node 2401:35697 → x216 / y1003, w1008, по центру). */}
-      <p className="absolute left-1/2 top-[1003px] w-[900px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-        Один принцип позволил рассказывать разные истории в рамках одной кампании
-      </p>
-    </div>
+            {/* Доодл-«шеврон вниз» по центру (338, 1371.706), 158×125. */}
+            <Reveal
+              variant="doodle"
+              className="absolute left-[338px] top-[1371.706px] z-10 h-[125px] w-[158px]"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
+            </Reveal>
+
+            {/* Мысль (148, 1560.706, w-538, center) + обводка-эллипс
+                (Vector 234257399, 102.383/1541.496, 628.487×138.922). */}
+            <Reveal
+              variant="line"
+              start="top 90%"
+              className="absolute left-[102.383px] top-[1541.496px] h-[138.922px] w-[628.487px]"
+            >
+              <div className="absolute inset-[-2.16%_-0.48%]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse-834.svg`} />
+              </div>
+            </Reveal>
+            <p className="absolute left-[148px] top-[1560.706px] w-[538px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
+              Один принцип позволил рассказывать разные истории в рамках одной кампании
+            </p>
+          </div>
+        </FullBleedScale>
+      </div>
+
+      {/* <640 — 1:1 из Figma reflow-фрейма «case-04 · 375» (node 2760:4728,
+          375×1240.258). Поток flex-col gap-32 pt-64; 2 KV-постера СТОПКОЙ. */}
+      <div className="w-full sm:hidden">
+        <FullBleedScale width={375} height={1240.258} mode="grow" className="w-full">
+          <div className="relative flex h-[1240.258px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#fafafa] pt-[64px]">
+            {/* Заголовок стопкой + 2 абзаца (px-20, gap 12). */}
+            <div className="flex flex-col gap-[12px] px-[20px]">
+              <div className="flex w-[279px] flex-col font-heading text-[26px] font-bold uppercase">
+                <span className="leading-none text-[#008cff]">04</span>
+                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">Серия сценариев</span>
+              </div>
+              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
+                <p className="opacity-70">
+                  После первого KV визуальная система была расширена на другие сценарии: автомобиль и
+                  яхту. Они показывают разные возможности продукта, сохраняя единый принцип
+                  построения.
+                </p>
+                <p className="opacity-70">
+                  Во всех визуалах повторяется одна формула: человек, телефон и объект покупки
+                  объединены общей композицией и типографической системой. Меняется сценарий, но
+                  визуальный язык остаётся узнаваемым.
+                </p>
+              </div>
+            </div>
+
+            {/* 2 KV-постера с запечённым слоганом СТОПКОЙ (w-335, gap 12). */}
+            <div className="flex w-[335px] shrink-0 flex-col gap-[12px] self-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+                className="block h-[223.629px] w-full max-w-none object-cover"
+                src={`${A}/series-1-375.jpg`}
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt="KEY VISUAL Stablegate: сценарий с яхтой"
+                className="block h-[223.629px] w-full max-w-none object-cover"
+                src={`${A}/series-2-375.jpg`}
+              />
+            </div>
+
+            {/* Доодл-«шеврон вниз» по центру (108.5, 830.258), 158×125. */}
+            <Reveal variant="doodle" className="h-[125px] w-[158px] shrink-0 self-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
+            </Reveal>
+
+            {/* Мысль (w-303, center, pb-64) + обводка-эллипс (Vector 234257399,
+                21.07/961.31, 334.645×185.75). */}
+            <div className="relative flex w-full shrink-0 flex-col items-center justify-center pb-[64px]">
+              <Reveal
+                variant="line"
+                start="top 92%"
+                className="absolute left-1/2 top-[-25.95px] h-[185.75px] w-[334.645px] -translate-x-1/2"
+              >
+                <div className="absolute inset-[-1.62%_-0.9%]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse-375.svg`} />
+                </div>
+              </Reveal>
+              <p className="relative w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
+                Один принцип позволил рассказывать разные истории в рамках одной кампании
+              </p>
+            </div>
+          </div>
+        </FullBleedScale>
+      </div>
+    </>
   );
 }

@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
-import { GLASS_BUBBLE } from "@/lib/glass";
+import GlassBubble from "@/components/GlassBubble";
+import { edgeFadeMaskStyle } from "@/lib/edgeFadeMask";
 import { useDrag } from "@/lib/useDrag";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
@@ -23,7 +24,7 @@ import { useDrag } from "@/lib/useDrag";
 // превращать трек в ловушку для скролла.
 const CATEGORY_STYLE = {
   design: { border: "#008cff", text: "#008cff", label: "ДИЗАЙН" },
-  artDirector: { border: "#1dbb71", text: "#1dbb71", label: "АРТ-ДИРЕКТОР" },
+  artDirector: { border: "#1dbb71", text: "#1dbb71", label: "ДИЗАЙН-ЛИД" },
   client: { border: "#805bff", text: "#805bff", label: "ЯНДЕКС" },
 } as const;
 
@@ -32,13 +33,13 @@ type Step = { number: string; title: string; text: string; category: keyof typeo
 const STEPS: Step[] = [
   { number: "01", title: "Подбор метафоры", text: "Исследуем смысл и контекст, ищем подходящие визуальные метафоры", category: "design" },
   { number: "02", title: "Разработка эскизов", text: "Создаём несколько быстрых эскизов для поиска формы", category: "design" },
-  { number: "03", title: "Проверка арт-директором", text: "Арт-директор оценивает идею, форму и соответствие стилистике", category: "artDirector", offset: 137 },
+  { number: "03", title: "Проверка дизайн-лидом", text: "Дизайн-лид оценивает идею, форму и соответствие стилистике", category: "artDirector", offset: 137 },
   { number: "04", title: "Согласование с клиентом", text: "Выбранные эскизы презентуются команде Яндекса и получаем обратную связь", category: "client", offset: 274 },
   { number: "05", title: "Отрисовка версии 24×24", text: "Отрисовываем основную версию 24×24 по всем правилам", category: "design" },
-  { number: "06", title: "Проверка арт-директором", text: "Проверяем геометрию, вес, баланс и читаемость", category: "artDirector", offset: 137 },
+  { number: "06", title: "Проверка дизайн-лидом", text: "Проверяем геометрию, вес, баланс и читаемость", category: "artDirector", offset: 137 },
   { number: "07", title: "Согласование с клиентом", text: "Отправляем клиенту и получаем финальное подтверждение", category: "client", offset: 274 },
   { number: "08", title: "Построение остальных размеров", text: "Адаптируем иконку под все необходимые размеры: 32, 20, 16, 12 px", category: "design" },
-  { number: "09", title: "Проверка арт-директором", text: "Проверяем все размеры на баланс, консистентность и читаемость", category: "artDirector", offset: 137 },
+  { number: "09", title: "Проверка дизайн-лидом", text: "Проверяем все размеры на баланс, консистентность и читаемость", category: "artDirector", offset: 137 },
   { number: "10", title: "Согласование с клиентом", text: "Выбранные эскизы презентуются команде Яндекса и получаем обратную связь", category: "client", offset: 274 },
   { number: "11", title: "Сборка компонентов", text: "Собираем иконки в компоненты по структуре библиотеки", category: "design" },
   { number: "12", title: "Передача библиотеки клиенту", text: "Передаем готовые компоненты в общую библиотеку Яндекса", category: "client", offset: 274 },
@@ -48,7 +49,6 @@ const PITCH = 340; // шаг между карточками (совпадает
 
 export default function Pipeline() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   // Отступы трека считаются в JS, а не через vw в CSS: 100vw включает
   // ширину системного скроллбара, а mx-auto-центрирование 1440-сетки —
   // нет, из-за чего vw-формула давала расхождение ~7-17px (на разных ОС/
@@ -59,7 +59,7 @@ export default function Pipeline() {
   // Дефолт до первого замера ResizeObserver — как если бы секция была
   // ровно 1440px (канонический размер макета), чтобы не было заметного
   // скачка при монтировании на самой частой ширине экрана.
-  const [padding, setPadding] = useState({ left: 46, right: 1440 / 2 - 164 });
+  const [padding, setPadding] = useState({ left: 46, top: 40, width: 1440 });
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -68,108 +68,155 @@ export default function Pipeline() {
       const w = entries[0]?.contentRect.width;
       if (!w) return;
       const gutter = Math.max(0, (w - 1440) / 2);
-      setPadding({ left: 46 + gutter, right: w / 2 - 164 });
+      // Левый отступ первой карточки: 375 — x20; 640…1023 — x28; 1024…1439 —
+      // x40 (макет 1280, трек на грид-марджине); ≥1440 — 46 + гаттер.
+      // Верхний отступ трека: 640…1439 — карточки начинаются ниже
+      // (полосатая подложка просвечивает сверху).
+      const mid = w >= 640 && w < 1440;
+      setPadding({
+        left: w >= 1440 ? 46 + gutter : w >= 1024 ? 40 : w >= 640 ? 28 : 20,
+        top: mid ? 130 : 40,
+        width: w,
+      });
     });
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
 
-  // Перетаскивание вбок вместо колеса (см. useDrag): тянем нативный
-  // scrollLeft, на отпускании — короткая инерция.
-  const startSL = useRef(0);
-  const inertia = useRef(0);
+  // Перетаскивание вбок вместо колеса (см. useDrag) — БЕЗ нативного скролла
+  // (не overflow-x-auto/scrollLeft), точно так же, как в VariantsCarousel:
+  // индекс карточки + transform: translateX(), трек «catch»-ится в
+  // overflow-hidden. Раньше был нативный scrollLeft, которым мы рулили
+  // руками через JS — на реальных touch-устройствах это на практике
+  // конфликтовало с системными жестами/инерцией браузера и обратная
+  // прокрутка не проходила, хотя вся арифметика (проверено симуляцией)
+  // была верна в обе стороны. Без native-scroll конфликтовать нечему.
+  //
+  // На отпускании — РОВНО один шаг ±1 карточка (или 0, если палец прошёл
+  // мало): dx <= -70 || vx <= -0.4 → шаг, порог тот же, что в «Вариантах».
+  const [index, setIndex] = useState(0);
+  const idxRef = useRef(0);
+  const [dragDX, setDragDX] = useState(0);
+  useEffect(() => {
+    idxRef.current = index;
+  }, [index]);
+
   const { dragging, bind } = useDrag({
-    onStart: () => {
-      cancelAnimationFrame(inertia.current);
-      startSL.current = trackRef.current?.scrollLeft ?? 0;
-    },
     onMove: (dx) => {
-      if (trackRef.current) trackRef.current.scrollLeft = startSL.current - dx;
+      const cur = idxRef.current;
+      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === STEPS.length - 1);
+      setDragDX(atEdge ? dx * 0.32 : dx);
     },
-    onEnd: (_dx, vx) => {
-      const el = trackRef.current;
-      if (!el) return;
-      let v = -vx * 16;
-      const step = () => {
-        if (Math.abs(v) < 0.5) return;
-        el.scrollLeft += v;
-        v *= 0.92;
-        inertia.current = requestAnimationFrame(step);
-      };
-      inertia.current = requestAnimationFrame(step);
+    onEnd: (dx, vx) => {
+      setDragDX(0);
+      let step = 0;
+      if (dx <= -70 || vx <= -0.4) step = 1;
+      else if (dx >= 70 || vx >= 0.4) step = -1;
+      setIndex((cur) => Math.max(0, Math.min(STEPS.length - 1, cur + step)));
     },
   });
-  useEffect(() => () => cancelAnimationFrame(inertia.current), []);
+
+  const offset = padding.left - index * PITCH + (dragging ? dragDX : 0);
 
   return (
-    <div ref={sectionRef} className="relative h-[900px] w-full overflow-clip bg-[#121212]">
-      <div className="relative mx-auto h-full w-[1440px]">
-        {/* Заголовок — Figma node 1961:32085, top 181 (на одной линии с
-            декоративной подложкой). */}
-        <div className="absolute left-[46px] top-[181px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
-          <p className="text-[#008cff]">04</p>
-          <p className="text-white">ПОСТРОЕНИЕ ПРОЦЕССА</p>
+    <div ref={sectionRef} className="relative w-full overflow-clip bg-[#121212] xl:h-[900px]">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[24px] px-[var(--grid-margin)] pt-[64px] pb-[32px] sm:pt-[72px] xl:absolute xl:left-1/2 xl:top-0 xl:block xl:h-full xl:w-[1440px] xl:max-w-none xl:-translate-x-1/2 xl:p-0">
+        {/* Заголовок + интро. 375 (Figma 2559:11137/…40): стек «04» /
+            «ПОСТРОЕНИЕ ПРОЦЕССА», Wix Bold 26 / ls 0.8 · Inter 14, gap 24.
+            834 (Figma 2539:9109/…12): одна строка Wix Bold 32 / ls 0.96,
+            интро Aeonik Reg 14 / 120% / ls 0.28 / w383, gap 12. */}
+        <div className="flex flex-col gap-[24px] sm:gap-[12px]">
+          <div className="flex flex-col font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.8px] sm:flex-row sm:items-baseline sm:gap-x-[12px] sm:whitespace-nowrap sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[181px]">
+            <p className="whitespace-nowrap text-[#008cff]">04</p>
+            <p className="w-[289px] text-white sm:w-auto">ПОСТРОЕНИЕ ПРОЦЕССА</p>
+          </div>
+
+          {/* Интро — только <1440. 834: w383 · 1280: w593. */}
+          <p className="font-inter text-[14px] font-normal leading-[1.3] tracking-[0.2px] text-white opacity-70 sm:w-[383px] sm:font-body sm:leading-[1.2] sm:tracking-[0.28px] lg:w-[593px] xl:hidden">
+            После того как основные принципы стали понятны, мы превратили их в рабочий процесс и
+            зафиксировали внутренние правила: работу с метафорами, последовательность этапов и критерии
+            перехода между ними.
+          </p>
         </div>
 
-        {/* Декоративная подложка — статична, x46/y181, 1348×673 (1:1 Figma) */}
-        <div className="absolute left-[46px] top-[181px] h-[673px] w-[1348px] opacity-60">
-          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-bg.svg" />
-        </div>
+        {/* Линейка-риска — SVG-<img> внутри самого трека (см. ниже),
+            едет вместе с ним; карточки поверх, их frost её размывает. */}
 
-        {/* Стрелки-доодлы, указывающие на карточку "05" в состоянии покоя
-            (scrollLeft=0) — статичные, не двигаются вместе с треком (как и
-            в самом макете, это единичная аннотация).
-            ИСПРАВЛЕНО дважды: сначала обновил только путь/толщину (8px
-            вместо устаревших 6px), но контейнеры остались старого размера
-            (44.66×58.33 и 87.48×22.63) — их пропорции НЕ совпадают с
-            настоящей формой (42×63 и 96×12, подтверждено PNG-рендером
-            узлов из Figma), и preserveAspectRatio="none" растягивал/сжимал
-            стрелки с искажением. Размеры контейнеров пересчитаны на
-            настоящие native-пропорции экспорта, позиция сдвинута так,
-            чтобы центр остался на месте. */}
-        <Reveal variant="doodle" className="absolute left-[1313.47px] top-[761.57px] h-[63px] w-[42px]">
+        {/* Стрелки-доодлы указывают на карточку «05» в покое — контекстная
+            аннотация под конкретную позицию скролла, ниже xl трек листается
+            и якорь теряется, поэтому только на десктопе. */}
+        <Reveal variant="doodle" className="hidden xl:absolute xl:left-[1313.47px] xl:top-[761.57px] xl:block xl:h-[63px] xl:w-[42px]">
           <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-1.svg" />
         </Reveal>
-        <Reveal variant="doodle" delay={0.08} className="absolute left-[1259.3px] top-[783.91px] h-[12px] w-[96px]">
+        <Reveal variant="doodle" delay={0.08} className="hidden xl:absolute xl:left-[1259.3px] xl:top-[783.91px] xl:block xl:h-[12px] xl:w-[96px]">
           <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-2.svg" />
         </Reveal>
       </div>
 
-      {/* Видимое окно трека — на всю ширину экрана (w-full), нативный
-          overflow-x-auto со скрытым скроллбаром. Слева — отступ,
-          вычисленный в JS (см. выше) так, чтобы первая карточка стояла
-          строго под заголовком на любой ширине экрана. Справа — тоже
-          вычисленный отступ (половина ширины секции минус половина
-          карточки), чтобы в конце скролла ПОСЛЕДНЯЯ (12-я) карточка
-          останавливалась своим центром ровно по центру экрана. */}
-      <div
-        ref={trackRef}
-        {...bind}
-        className={`no-scrollbar absolute left-0 top-[278px] h-[479px] w-full touch-pan-y select-none overflow-x-auto ${
-          dragging ? "cursor-grabbing" : "cursor-grab"
-        }`}
-        style={{ paddingLeft: padding.left, paddingRight: padding.right, paddingTop: 40, paddingBottom: 40 }}
-      >
-        <div className="relative h-[399px] w-[4068px]">
+      {/* Видимое окно трека — на всю ширину экрана, нативный overflow-x-auto
+          со скрытым скроллбаром; на десктопе абсолют на y278, ниже — поток.
+          Обёртка relative — чтобы <1440 положить полосы-фон ровно за карточки. */}
+      <div className="relative w-full xl:contents">
+        <div
+          {...bind}
+          className={`relative w-full touch-pan-y select-none overflow-x-clip overflow-y-visible pb-[72px] sm:pb-[210px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
+            dragging ? "cursor-grabbing" : "cursor-grab"
+          }`}
+          style={{ paddingTop: padding.top, ...edgeFadeMaskStyle(padding.width) }}
+        >
+          <div
+            className="relative h-[399px] w-[4068px] will-change-transform"
+            style={{
+              transform: `translateX(${offset}px)`,
+              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
+            }}
+          >
+          {/* Линейка-риска (Group 2136141446/47) — первый ребёнок трека, но
+              в ОБРАТНОМ translateX (гасит скролл трека): визуально стоит на
+              месте, карточки листаются поверх (в макете это отдельный слой
+              внутри фрейма трека, шириной с экран). Тот же backdrop-контекст
+              → frost карточек её размывает. Точные экспорты из Figma: path
+              opacity 0.2, БЕЗ доп. CSS-прозрачности. 375 → 8 линий (h420),
+              834 → 14 (h673), ≥1024 → 20 (h673). */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              transform: `translateX(${index * PITCH - (dragging ? dragDX : 0)}px)`,
+              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
+            }}
+          >
+            {/* top из макета: линейка торчит над и под «змейкой» карточек.
+                375 — Frame 2147232047: трек на y10.8 внутри 420-фрейма → -11.
+                834/1280/деск — Group на y228, трек на y365 → -137. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt="" aria-hidden className="absolute left-0 top-[-11px] h-[420px] w-[375px] max-w-none sm:hidden" src="/cases/case-01/sections/pipeline-bg-375.svg" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt="" aria-hidden className="absolute left-0 top-[-137px] hidden h-[673px] w-[778px] max-w-none sm:block lg:hidden" src="/cases/case-01/sections/pipeline-bg-834.svg" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt="" aria-hidden className="absolute left-0 top-[-137px] hidden h-[673px] w-[1200px] max-w-none lg:block xl:w-[1348px]" src="/cases/case-01/sections/pipeline-bg.svg" />
+          </div>
           {STEPS.map((step, i) => {
             const style = CATEGORY_STYLE[step.category];
             return (
-              <div
-                key={i}
-                className={`absolute flex h-[125px] w-[328px] flex-col gap-[8px] ${GLASS_BUBBLE}`}
-                style={{ left: i * PITCH, top: step.offset ?? 0, borderColor: style.border }}
-              >
-                <p className="text-[14px] font-bold uppercase tracking-[0.84px]" style={{ color: style.text }}>
-                  {step.number}
-                </p>
-                <p className="text-[11px] font-medium uppercase leading-[1.2] tracking-[0.66px] text-white">{step.title}</p>
-                <p className="text-[11px] leading-[1.2] tracking-[0.66px] text-white">{step.text}</p>
-                <p className="text-[9px] font-medium tracking-[0.27px]" style={{ color: style.text }}>
-                  {style.label}
-                </p>
+              <div key={i} className="absolute h-[125px] w-[328px] shrink-0" style={{ left: i * PITCH, top: step.offset ?? 0 }}>
+                {/* Единый <GlassBubble> для кейсов 1/2/3. БЕЗ тёмного
+                    «занавеса» под карточкой (frost просвечивает фоновые
+                    полосы) и БЕЗ border (даёт ложное свечение) — акцент
+                    слева отдельным дочерним элементом. */}
+                <GlassBubble accent={style.border} className="flex size-full flex-col gap-[8px]">
+                  <p className="text-[14px] font-bold uppercase tracking-[0.84px]" style={{ color: style.text }}>
+                    {step.number}
+                  </p>
+                  <p className="text-[11px] font-medium uppercase leading-[1.2] tracking-[0.66px] text-white">{step.title}</p>
+                  <p className="text-[11px] leading-[1.2] tracking-[0.66px] text-white">{step.text}</p>
+                  <p className="text-[9px] font-medium tracking-[0.27px]" style={{ color: style.text }}>
+                    {style.label}
+                  </p>
+                </GlassBubble>
               </div>
             );
           })}
+          </div>
         </div>
       </div>
     </div>

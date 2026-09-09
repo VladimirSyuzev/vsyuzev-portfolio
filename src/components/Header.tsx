@@ -41,25 +41,34 @@ export default function Header() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hidden, setHidden] = useState(false);
   const [casesOpen, setCasesOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); // мобильное бургер-меню
+  const [menuCasesOpen, setMenuCasesOpen] = useState(false); // под-аккордеон «Кейсы» в бургере
   const pathname = usePathname();
 
-  // Закрываем выпадающий список кейсов при смене маршрута — коррекция
-  // состояния прямо в рендере (штатный паттерн React, без setState-в-effect).
+  // Закрываем выпадающие панели при смене маршрута — коррекция состояния
+  // прямо в рендере (штатный паттерн React, без setState-в-effect).
   const [seenPath, setSeenPath] = useState(pathname);
   if (pathname !== seenPath) {
     setSeenPath(pathname);
     setCasesOpen(false);
+    setMenuOpen(false);
+    setMenuCasesOpen(false);
   }
 
-  // Закрытие списка: Escape и клик вне шапки.
+  // Закрытие панелей: Escape и клик вне шапки.
   useEffect(() => {
-    if (!casesOpen) return;
+    if (!casesOpen && !menuOpen) return;
+    function closeAll() {
+      setCasesOpen(false);
+      setMenuOpen(false);
+      setMenuCasesOpen(false);
+    }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setCasesOpen(false);
+      if (e.key === "Escape") closeAll();
     }
     function onDown(e: PointerEvent) {
       const el = e.target as HTMLElement;
-      if (!el.closest("header")) setCasesOpen(false);
+      if (!el.closest("header")) closeAll();
     }
     window.addEventListener("keydown", onKey);
     window.addEventListener("pointerdown", onDown);
@@ -67,7 +76,7 @@ export default function Header() {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("pointerdown", onDown);
     };
-  }, [casesOpen]);
+  }, [casesOpen, menuOpen]);
 
   // Scroll-spy — какой пункт подсвечен рамкой по положению скролла.
   useEffect(() => {
@@ -124,6 +133,8 @@ export default function Header() {
         else if (delta > DIRECTION_THRESHOLD) {
           setHidden(true);
           setCasesOpen(false);
+          setMenuOpen(false);
+          setMenuCasesOpen(false);
         } else if (delta < -DIRECTION_THRESHOLD) setHidden(false);
         lastY = y;
         ticking = false;
@@ -144,7 +155,37 @@ export default function Header() {
           <Image src="/brand/wordmark.svg" alt="Вова Сюзёв" width={140} height={18.162} priority />
         </Link>
 
-        <nav className="flex items-center gap-[16px]">
+        {/* Мобайл (<640) — бургер из 3 линий вместо трёх пунктов. Правый край
+            иконки выровнен по контейнеру (px 3.056%) — зеркально левому краю
+            лого. Тач-зона 40×40 (justify-end прижимает иконку вправо). */}
+        <button
+          type="button"
+          aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
+          aria-expanded={menuOpen}
+          onClick={() => {
+            setMenuOpen((v) => !v);
+            setCasesOpen(false);
+            if (menuOpen) setMenuCasesOpen(false);
+          }}
+          className="flex size-[40px] shrink-0 items-center justify-end sm:hidden"
+        >
+          <span className="relative block h-[14px] w-[24px]">
+            <span
+              className="absolute left-0 block h-[2px] w-full rounded-full bg-[#121212] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{ top: menuOpen ? 6 : 0, transform: menuOpen ? "rotate(45deg)" : "none" }}
+            />
+            <span
+              className="absolute left-0 top-[6px] block h-[2px] w-full rounded-full bg-[#121212] transition-opacity duration-200"
+              style={{ opacity: menuOpen ? 0 : 1 }}
+            />
+            <span
+              className="absolute left-0 block h-[2px] w-full rounded-full bg-[#121212] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{ top: menuOpen ? 6 : 12, transform: menuOpen ? "rotate(-45deg)" : "none" }}
+            />
+          </span>
+        </button>
+
+        <nav className="hidden items-center gap-[16px] sm:flex">
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.id}
@@ -183,11 +224,87 @@ export default function Header() {
         </nav>
       </div>
 
+      {/* Мобильное меню (<640) — «выезжает» из-под шапки: КЕЙСЫ / О СЕБЕ /
+          КОНТАКТЫ. Тап по «КЕЙСЫ» разъезжает меню между «КЕЙСЫ» и «О СЕБЕ»
+          и показывает под-список кейсов (аккордеон). */}
+      <div
+        className="overflow-hidden bg-[#fafafa] transition-[max-height,opacity] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] sm:hidden"
+        style={{ maxHeight: menuOpen ? 720 : 0, opacity: menuOpen ? 1 : 0 }}
+        aria-hidden={!menuOpen}
+      >
+        <nav className="flex flex-col px-[3.056%] pt-[8px] pb-[24px]">
+          {/* КЕЙСЫ — тоггл под-списка */}
+          <button
+            type="button"
+            tabIndex={menuOpen ? 0 : -1}
+            aria-expanded={menuCasesOpen}
+            onClick={() => setMenuCasesOpen((v) => !v)}
+            className="flex items-center justify-between border-b border-[rgba(18,18,18,0.15)] py-[18px] text-left text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]"
+          >
+            <span>КЕЙСЫ</span>
+            <span
+              className="block size-[8px] border-b-2 border-r-2 border-[#121212] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              style={{ transform: menuCasesOpen ? "translateY(2px) rotate(-135deg)" : "translateY(-2px) rotate(45deg)" }}
+            />
+          </button>
+
+          {/* Под-список кейсов */}
+          <div
+            className="overflow-hidden transition-[max-height,opacity] duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+            style={{ maxHeight: menuCasesOpen ? 520 : 0, opacity: menuCasesOpen ? 1 : 0 }}
+            aria-hidden={!menuCasesOpen}
+          >
+            <div className="flex flex-col pl-[12px]">
+              {CASES.map((c) => {
+                const isCurrent = pathname === `/cases/${c.slug}`;
+                return (
+                  <Link
+                    key={c.slug}
+                    href={`/cases/${c.slug}`}
+                    tabIndex={menuOpen && menuCasesOpen ? 0 : -1}
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isCurrent ? "page" : undefined}
+                    className="flex items-baseline gap-[12px] border-b border-[rgba(18,18,18,0.12)] py-[12px] last:border-b-0"
+                  >
+                    <span className={`font-heading text-[22px] font-bold leading-[1] tracking-[0.66px] text-[#008cff] ${isCurrent ? "opacity-100" : "opacity-60"}`}>
+                      {c.index}
+                    </span>
+                    <span className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80">
+                      {c.title}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* О СЕБЕ / КОНТАКТЫ */}
+          {NAV_ITEMS.filter((i) => i.id !== "cases").map((item) => (
+            <Link
+              key={item.id}
+              href={item.hash}
+              tabIndex={menuOpen ? 0 : -1}
+              onClick={(e) => {
+                const el = document.getElementById(item.id);
+                if (el) {
+                  e.preventDefault();
+                  setMenuOpen(false);
+                  el.scrollIntoView({ behavior: "smooth" });
+                } else setMenuOpen(false);
+              }}
+              className="border-b border-[rgba(18,18,18,0.15)] py-[18px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] last:border-b-0"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
       {/* Выпадающий список кейсов — «выезжает» из-под шапки (max-height +
           opacity). Номер (52px, синий) + заголовок (14px, uppercase) +
           нижняя разделительная линия у каждой строки. */}
       <div
-        className="overflow-hidden bg-[#fafafa] transition-[max-height,opacity] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+        className="hidden overflow-hidden bg-[#fafafa] transition-[max-height,opacity] duration-[450ms] ease-[cubic-bezier(0.16,1,0.3,1)] sm:block"
         style={{ maxHeight: casesOpen ? 900 : 0, opacity: casesOpen ? 1 : 0 }}
         aria-hidden={!casesOpen}
       >

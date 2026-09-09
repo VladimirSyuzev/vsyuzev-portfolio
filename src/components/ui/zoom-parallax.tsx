@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 // ZoomParallax — скролл-зум коллажа (в основе — компонент из промпта,
@@ -73,7 +73,7 @@ function buildLayout(
 	count: number,
 	seed: number,
 	aspects: Record<number, number> | null,
-): { boxes: Box[]; width: number; height: number; originX: number; originY: number } {
+): { boxes: Box[]; width: number; height: number; originX: number; originY: number; keyBox: Box } {
 	const rand = rng(seed || 1);
 	const ar = (i: number) => (aspects?.[i] ?? 1) || 1;
 
@@ -144,7 +144,8 @@ function buildLayout(
 	boxes.push({ img: above, x: keyLeft, y: cy, w: keyW, h: aboveH });
 	cy += aboveH + GAP;
 	const keyY = cy;
-	boxes.push({ img: keyImg, x: keyLeft, y: cy, w: keyW, h: keyH });
+	const keyBox: Box = { img: keyImg, x: keyLeft, y: cy, w: keyW, h: keyH };
+	boxes.push(keyBox);
 	cy += keyH + GAP;
 	boxes.push({ img: below, x: keyLeft, y: cy, w: keyW, h: belowH });
 
@@ -154,6 +155,7 @@ function buildLayout(
 		height: contentH,
 		originX: centerAxis,
 		originY: keyY + keyH / 2,
+		keyBox,
 	};
 }
 
@@ -163,7 +165,6 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 		target: container,
 		offset: ["start start", "end end"],
 	});
-	const scale = useTransform(scrollYProgress, [0, 1], [1, 5.5]);
 
 	const hydrated = useHydrated();
 	const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
@@ -171,13 +172,43 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 	const [aspects, setAspects] = useState<Record<number, number>>({});
 	const allLoaded = Object.keys(aspects).length >= images.length;
 
-	const { boxes, width, height, originX, originY } = useMemo(
+	const { boxes, width, height, originX, originY, keyBox } = useMemo(
 		() => buildLayout(images.length, seed, allLoaded ? aspects : null),
 		[images.length, seed, allLoaded, aspects],
 	);
 
 	const maxWByHeight = (92 * width) / height;
 	const cssWidth = `min(92vw, ${maxWByHeight.toFixed(2)}vh)`;
+
+	// Начальный и конечный масштаб адаптируются под форму экрана:
+	//  - startScale: на узких/высоких экранах коллаж стартует крупнее, чтобы
+	//    не было большого чёрного зазора между «VOVA SYUZEV» и картинками;
+	//  - endScale: подбираем так, чтобы ключевая на максимуме гарантированно
+	//    закрыла вьюпорт по обеим сторонам — тогда соседние (above/below) уходят
+	//    за кадр. На широком десктопе оба значения = дефолтные 1 / 5.5.
+	// Считаем чистой арифметикой от размера окна и формулы cssWidth (без
+	// замера DOM — чтобы не ловить гонку с догрузкой картинок).
+	const [vp, setVp] = useState({ w: 1440, h: 900 });
+	useEffect(() => {
+		const upd = () => setVp({ w: window.innerWidth, h: window.innerHeight });
+		upd();
+		window.addEventListener("resize", upd);
+		return () => window.removeEventListener("resize", upd);
+	}, []);
+
+	const [startScale, endScale] = useMemo(() => {
+		const collagePxW = Math.min(0.92 * vp.w, (maxWByHeight / 100) * vp.h);
+		const collagePxH = (collagePxW * height) / width;
+		const keyPxW = (keyBox.w / width) * collagePxW;
+		const keyPxH = (keyBox.h / height) * collagePxH;
+		const need = Math.max(vp.w / keyPxW, vp.h / keyPxH);
+		return [
+			Math.min(1.75, Math.max(1, (vp.h * 0.62) / collagePxH)),
+			Math.min(9, Math.max(5.5, need * 1.06)),
+		];
+	}, [vp, width, height, keyBox, maxWByHeight]);
+
+	const scale = useTransform(scrollYProgress, [0, 1], [startScale, endScale]);
 
 	return (
 		<div ref={container} className="relative h-[300vh]">

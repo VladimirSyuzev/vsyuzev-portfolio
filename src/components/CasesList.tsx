@@ -125,7 +125,7 @@ function CasesListStacked({ landscape }: { landscape: boolean }) {
       ref={scope}
       className="w-full scroll-mt-16 bg-[#fafafa] px-[var(--grid-margin)] pt-[88px] pb-[72px]"
     >
-      <p className="font-heading text-[28px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] sm:text-[32px]">
+      <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] sm:text-[32px]">
         КЕЙСЫ
       </p>
 

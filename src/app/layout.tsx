@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Wix_Madefor_Display } from "next/font/google";
+import { Wix_Madefor_Display, Inter } from "next/font/google";
 import localFont from "next/font/local";
 import ScrollTriggerRefresh from "@/components/ScrollTriggerRefresh";
 import Typographer from "@/components/Typographer";
@@ -18,6 +18,14 @@ const wixMadefor = Wix_Madefor_Display({
 // Foundry), содержат кириллицу (проверено через fontTools: U+0400–U+04FF
 // присутствуют). Подключён локально через next/font/local — больше не
 // нужен Manrope-заменитель.
+// Inter — используется точечно там, где так задано в макете Figma
+// (напр. интро блока «02 Задача» на адаптиве, футер-заглушка).
+const inter = Inter({
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500"],
+  variable: "--font-inter",
+});
+
 const aeonikPro = localFont({
   src: [
     { path: "../fonts/AeonikPro/AeonikPro-Light.otf", weight: "300", style: "normal" },
@@ -39,7 +47,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${wixMadefor.variable} ${aeonikPro.variable}`}>
+    <html lang="ru" className={`${wixMadefor.variable} ${aeonikPro.variable} ${inter.variable}`}>
       <body>
         {children}
         <Typographer />

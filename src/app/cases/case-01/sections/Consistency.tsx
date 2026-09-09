@@ -3,35 +3,23 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion, waveStagger } from "@/lib/gsap";
+import { useCanvasWide } from "@/lib/breakpoint";
 import BalanceBoard1 from "./BalanceBoard1";
 import BalanceBoard2 from "./BalanceBoard2";
 import Reveal from "@/components/Reveal";
 
-// 06 Контроль консистентности — 1:1 из Figma (node 1961:32477), полностью
-// пересверено повторным запросом после переподключения Figma MCP —
-// расхождений оказалось много:
-// - обе Balance Board стояли не на своих местах и не того размера (386/896
-//   вместо 46/386, 498px вместо 328px — см. поправку масштаба в самих
-//   компонентах BalanceBoard1/2.tsx) и были перепутаны местами (bAAALANCE_1
-//   с медицинскими иконками — слева, bAAALANCE_2 с категориями сервиса —
-//   справа от неё, было наоборот);
-// - вторая фраза "Именно этот инструмент..." была маленьким серым текстом
-//   рядом с первым абзацем — на деле это отдельная крупная жирная цитата
-//   (Body/Bold, 32px, справа у BalanceBoard2), а первый абзац сам по себе
-//   стоит наверху (top-181), а не внизу (top-638);
-// - двух декоративных элементов не было вообще (доодл-«глаз» справа сверху
-//   и рукописное подчёркивание под цитатой); старый consistency-doodle.svg
-//   слева снизу не соответствовал ничему в текущем дереве Figma — убран.
-//
-// Фон растянут на весь экран (w-full, как Pipeline/Footer/Итог) — стоящее
-// правило для всех тёмных/картиночных блоков сайта.
+const R = "/cases/case-01/sections/reflow";
+
+// 06 Контроль консистентности — тёмный full-bleed блок. На десктопе (≥1440)
+// контент — абсолют 1:1 из Figma (node 1961:32477, высота 900). Ниже 1440 —
+// поток в сетке: заголовок и текст на всю ширину, обе Balance Board (328px)
+// в ряд/стопкой, рукописные доодлы скрыты.
 export default function Consistency() {
   const scope = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const wide = useCanvasWide();
 
-  // «Волна» по каждой иконке обеих Balance Board — диагональный reveal
-  // (waveStagger, 5 колонок на доску; вторая доска идёт следом, продолжая
-  // диагональ). Иконки появляются по отдельности.
+  // «Волна» по каждой иконке обеих Balance Board — диагональный reveal.
   useGSAP(
     () => {
       if (reduced || !scope.current) return;
@@ -49,66 +37,130 @@ export default function Consistency() {
         tw.kill();
       };
     },
-    { scope, dependencies: [reduced] },
+    { scope, dependencies: [reduced, wide] },
   );
 
+  // <1440 — переверстка по макету 2559:11213: заголовок стопкой + интро,
+  // 2 Balance Board стопкой, мысль-цитата по центру, тонкая линия у низа
+  // (Vector 234257394). Доодла-«глаза» нет.
+  if (!wide) {
+    return (
+      <section ref={scope} className="relative w-full overflow-clip bg-[#121212] px-[20px] py-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px]">
+        <div className="flex flex-col gap-[32px] lg:gap-[64px]">
+          {/* Frame 2147231952/…919/…914 — заголовок + интро, vertical gap 12 */}
+          <div className="flex flex-col gap-[12px]">
+            {/* 06 / КОНТРОЛЬ / КОНСИСТЕНТНОСТИ — стопкой. 375: Wix Bold 26 / ls 0.8 ·
+                834/1280: 32 / lh 110 / ls 0.96 */}
+            <div className="flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.8px] sm:text-[32px] sm:tracking-[0.96px]">
+              <span className="text-[#008cff]">06</span>
+              <span className="text-white">КОНТРОЛЬ</span>
+              <span className="text-white">КОНСИСТЕНТНОСТИ</span>
+            </div>
+            {/* интро — Aeonik Regular 14/120%/ls0.28/op70. 375: w335, pre-wrap +
+                двойные пробелы · 834: во всю ширину · 1280: w593 (Figma 2535:8971). */}
+            <p className="w-[335px] max-w-full whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:w-full sm:whitespace-normal lg:w-[593px]">
+              {"Чтобы новые иконки оставались частью  единой системы, мы использовали несколько инструментов проверки. Главным из них стал Balance Board: общая сетка, в которой существующие и новые иконки можно было сравнить между собой в одном контексте.  Это позволяло быстро оценить их визуальный вес, пропорции, толщину линий, характер скруглений и общий баланс библиотеки."}
+            </p>
+          </div>
+
+          {/* Frame 2147231956/2539:9191 — 2 Balance Board (328×328).
+              375: стопкой · 834: в ряд по центру, gap 12. */}
+          <div className="flex flex-col gap-[12px] sm:flex-row sm:justify-center sm:gap-[12px]">
+            <div className="size-[328px] max-w-full shrink-0 overflow-hidden">
+              <BalanceBoard1 />
+            </div>
+            <div className="size-[328px] max-w-full shrink-0 overflow-hidden">
+              <BalanceBoard2 />
+            </div>
+          </div>
+
+          {/* Frame 2147231953/…915 — мысль-цитата, pad-y 32, текст ВЛЕВО.
+              375: Wix Reg 22 / ls 0.6, w335, жёсткие <br> · 834: 28 / lh 110 /
+              ls 0.96, w578, автоперенос (Figma 2558:9300).
+              Линия-скетч Vector 234257394 — у низа блока. */}
+          <div className="relative flex flex-col items-start py-[32px]">
+            <p className="w-[335px] max-w-full whitespace-pre-wrap font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.6px] text-white opacity-70 sm:w-[578px] sm:whitespace-normal sm:text-[28px] sm:leading-[1.1] sm:tracking-[0.96px]">
+              Balance Board{" "}
+              <br className="sm:hidden" />
+              помогал находить несоответствия{" "}
+              <br className="sm:hidden" />
+              и принимать решения ещё до передачи работы клиенту
+            </p>
+            {/* линия. 375: consistency-line-375.svg 332×24, bottom 20 / left 4 ·
+                834: consistency-underline.svg 518×31 (Figma w518, наклон ~−2.7°
+                уже в пути), left 30 / bottom 6. */}
+            <Reveal
+              variant="line"
+              className="pointer-events-none absolute bottom-[20px] left-[4px] h-[24px] w-[332px] max-w-[calc(100%-4px)] sm:-bottom-[8px] sm:left-[30px] sm:h-[31px] sm:w-[518px] sm:max-w-none"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img aria-hidden alt="" className="block size-full sm:hidden" src={`${R}/consistency-line-375.svg`} />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img aria-hidden alt="" className="hidden size-full sm:block" src="/cases/case-01/sections/consistency-underline.svg" />
+            </Reveal>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <div ref={scope} className="relative h-[900px] w-full overflow-clip bg-[#121212]">
-      <div className="relative mx-auto h-full w-[1440px]">
-        {/* Заголовок — стопкой: «06 / КОНТРОЛЬ / КОНСИСТЕНТНОСТИ» (Figma
-            node 2359:3916, 32px, top 64). */}
-        <div className="absolute left-[46px] top-[64px] flex flex-col font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px]">
-          <span className="whitespace-nowrap text-[#008cff]">06</span>
-          <span className="whitespace-nowrap text-white">КОНТРОЛЬ</span>
-          <span className="whitespace-nowrap text-white">КОНСИСТЕНТНОСТИ</span>
+    <div ref={scope} className="w-full overflow-clip bg-[#121212]">
+      <div className="mx-auto w-full max-w-[1440px] xl:relative xl:h-[900px]">
+        <div className="flex flex-col gap-[28px] px-[var(--grid-margin)] py-[72px] xl:contents">
+          {/* Заголовок стопкой: «06 / КОНТРОЛЬ / КОНСИСТЕНТНОСТИ». */}
+          <div className="flex flex-col font-heading text-[26px] font-bold leading-[1.1] tracking-[0.96px] sm:text-[32px] xl:absolute xl:left-[46px] xl:top-[64px] xl:text-[32px]">
+            <span className="whitespace-nowrap text-[#008cff]">06</span>
+            <span className="text-white">КОНТРОЛЬ</span>
+            <span className="text-white">КОНСИСТЕНТНОСТИ</span>
+          </div>
+
+          <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:max-w-[668px] xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[668px]">
+            Чтобы новые иконки оставались частью единой системы, мы использовали несколько
+            инструментов проверки. Главным из них стал Balance Board: общая сетка, в которой
+            существующие и новые иконки можно было сравнить между собой в одном контексте.{" "}
+            <br className="hidden xl:inline" />
+            Это позволяло быстро оценить их визуальный вес, пропорции, толщину линий, характер
+            скруглений и общий баланс библиотеки.
+          </p>
+
+          {/* Balance Board — две доски 328×328. */}
+          <div className="flex flex-wrap gap-[12px] xl:contents">
+            <div className="size-[328px] shrink-0 overflow-hidden xl:absolute xl:left-[726px] xl:top-[389px]">
+              <BalanceBoard1 />
+            </div>
+            <div className="size-[328px] shrink-0 overflow-hidden xl:absolute xl:left-[1066px] xl:top-[389px]">
+              <BalanceBoard2 />
+            </div>
+          </div>
+
+          {/* Крупная фраза (Wix Madefor Display Regular) с рукописным
+              подчёркиванием — по левому краю на всех ширинах (по макетам). */}
+          <div className="relative w-full sm:max-w-[578px] xl:absolute xl:left-[46px] xl:top-[581.98px] xl:w-[578.354px]">
+            <p className="font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 sm:text-[28px] xl:text-[32px]">
+              Balance Board помогал находить несоответствия{" "}
+              <br className="hidden xl:inline" />
+              и принимать решения ещё{" "}
+              <br className="hidden xl:inline" />
+              до передачи работы клиенту
+            </p>
+            <Reveal
+              variant="line"
+              className="pointer-events-none absolute left-[8%] bottom-[-14px] h-[22px] w-[86%] xl:left-[106px] xl:bottom-auto xl:top-[141px] xl:h-[31px] xl:w-[518px]"
+            >
+              <img alt="" className="block size-full" src="/cases/case-01/sections/consistency-underline.svg" />
+            </Reveal>
+          </div>
+
+          {/* Доодл-«глаз» — на всех ширинах: справа от вводного текста.
+              ≥1440: 1:1 из Figma (instance 2359:4040, (1079.255, 134)). */}
+          <Reveal
+            variant="doodle"
+            className="ml-auto flex h-[100px] w-[116px] items-center justify-center xl:absolute xl:left-[1079.255px] xl:top-[134px] xl:ml-0 xl:h-[155.398px] xl:w-[180.731px]"
+          >
+            <img alt="" className="block h-full w-full max-w-none object-contain" src="/cases/case-01/sections/consistency-eye-doodle.svg" />
+          </Reveal>
         </div>
-
-        <p className="absolute left-[46px] top-[181px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Чтобы новые иконки оставались частью единой системы, мы использовали несколько
-          инструментов проверки. Главным из них стал Balance Board: общая сетка, в которой
-          существующие и новые иконки можно было сравнить между собой в одном контексте.
-          <br />
-          Это позволяло быстро оценить их визуальный вес, пропорции, толщину линий, характер
-          скруглений и общий баланс библиотеки.
-        </p>
-
-        {/* Balance Board: после переверстки обе доски уехали вправо
-            (Figma node 2359:3981 «bAAALANCE_1», медицинские иконки — слева
-            на x726; node 2359:3921 «bAAALANCE_2», категории сервиса —
-            справа на x1066). */}
-        <div className="absolute left-[726px] top-[389px] size-[328px] overflow-hidden">
-          <BalanceBoard1 />
-        </div>
-        <div className="absolute left-[1066px] top-[389px] size-[328px] overflow-hidden">
-          <BalanceBoard2 />
-        </div>
-
-        {/* Крупная фраза — Wix Madefor Display Regular, 32px (Figma node
-            2359:4039, left 46, top 581.98, три строки). */}
-        <p className="absolute left-[46px] top-[581.98px] w-[578.354px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Balance Board помогал находить несоответствия
-          <br />
-          и принимать решения ещё
-          <br />
-          до передачи работы клиенту
-        </p>
-
-        {/* Доодл-«глаз» — x/y 1:1 из Figma (node 2285:45879 → 1136.2/229). */}
-        <Reveal variant="doodle" className="absolute left-[1136.2px] top-[229px] flex h-[155.398px] w-[180.731px] items-center justify-center">
-          <img alt="" className="block h-[93.828px] w-[150.421px] max-w-none" src="/cases/case-01/sections/consistency-eye-doodle.svg" />
-        </Reveal>
-
-        {/* Рукописное подчёркивание под цитатой (Figma node 2359:4041) —
-            плоская линия с лёгким наклоном вверх-вправо, узел рендерится
-            как 524×28 (reported «rotate 2.73° / 71px» — артефакт bbox
-            волнистого path). */}
-        <Reveal
-          variant="line"
-          className="absolute"
-          style={{ left: 152, top: 723, width: 518, height: 31 }}
-        >
-          <img alt="" className="block size-full" src="/cases/case-01/sections/consistency-underline.svg" />
-        </Reveal>
       </div>
     </div>
   );
