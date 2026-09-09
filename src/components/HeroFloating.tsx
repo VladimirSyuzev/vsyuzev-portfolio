@@ -230,7 +230,7 @@ export default function HeroFloating() {
           </Floating>
         ))}
 
-      <h1 className="pointer-events-none relative z-10 select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-white">
+      <h1 className="pointer-events-none relative z-10 select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-[#008CFF]">
         Vova
         <br />
         Syuzev
