@@ -67,29 +67,39 @@ type Tile = {
   driftY: number;
 };
 
+// Множитель размера плиток по брейкпоинту — на больших экранах картинки
+// крупнее (иначе теряются в пространстве).
+const BP_SIZE: Record<Breakpoint, number> = {
+  desktop: 1.5, // ≥1440
+  tabletL: 1.3, // 1024–1439
+  tabletP: 1.15, // 640–1023
+  mobile: 1.0, // <640
+};
+
 // Раскладка: раскидываем count плиток в кольце вокруг центра (внутренний
 // радиус держит их в стороне от имени), с проверкой на минимальную
 // дистанцию — получается «живой» коллаж без явных пересечений.
-function buildTiles(seed: number, count: number): Tile[] {
+function buildTiles(seed: number, count: number, bp: Breakpoint): Tile[] {
   const rand = rng(seed);
   const imgs = shuffle(POOL, rand).slice(0, count);
-  // чем больше плиток, тем они мельче
-  const k = count >= 15 ? 0.82 : count >= 11 ? 0.92 : count >= 9 ? 1 : 1.12;
+  // размер = база × поправка на кол-во (много плиток → чуть мельче) × брейкпоинт
+  const kCount = count >= 15 ? 0.9 : count >= 11 ? 0.97 : 1.05;
+  const k = kCount * BP_SIZE[bp];
 
   const placed: { x: number; y: number }[] = [];
   const tiles: Tile[] = [];
 
   // Запретная зона по центру — примерный габарит имени «Vova Syuzev».
   // Меньше плиток → крупнее шрифт занимает больше → зона шире.
-  const bx = count <= 9 ? 33 : 26;
-  const by = count <= 9 ? 19 : 16;
-  const goodD = count >= 13 ? 12 : 17;
+  const bx = count <= 9 ? 36 : 29;
+  const by = count <= 9 ? 21 : 18;
+  const goodD = count >= 13 ? 13 : 18;
 
   for (let i = 0; i < count; i++) {
     let best: { x: number; y: number; d: number } | null = null;
     for (let t = 0; t < 60; t++) {
       const ang = rand() * Math.PI * 2;
-      const r = 0.34 + rand() * 0.34;
+      const r = 0.37 + rand() * 0.34;
       const x = 50 + Math.cos(ang) * r * 66;
       const y = 50 + Math.sin(ang) * r * 70;
       if (x < 3 || x > 97 || y < 4 || y > 96) continue;
@@ -103,9 +113,9 @@ function buildTiles(seed: number, count: number): Tile[] {
     const pos = best ?? { x: 50, y: 8 };
     placed.push({ x: pos.x, y: pos.y });
 
-    const vmin = (8 + rand() * 5) * k;
-    const cap = Math.round((150 + rand() * 80) * k);
-    const min = Math.round(54 * k);
+    const vmin = (9 + rand() * 6) * k;
+    const cap = Math.round((170 + rand() * 95) * k);
+    const min = Math.round(62 * k);
     tiles.push({
       src: imgs[i].tile,
       full: imgs[i].full,
@@ -136,7 +146,7 @@ export default function HeroFloating() {
     const [lo, hi] = COUNT_RANGE[bp];
     // count — тоже от сида, но со сдвигом, чтобы не коррелировал с раскладкой
     const count = lo + Math.floor(rng(seed ^ 0x9e3779b9)() * (hi - lo + 1));
-    return buildTiles(seed, Math.min(count, POOL.length));
+    return buildTiles(seed, Math.min(count, POOL.length), bp);
   }, [seed, bp]);
 
   useEffect(() => {
