@@ -1,52 +1,16 @@
 "use client";
 
-import { useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import FullBleedScale from "@/components/FullBleedScale";
-import { ZoomParallax } from "@/components/ui/zoom-parallax";
+import HeroFloating from "@/components/HeroFloating";
 
-// Hero = два блока из Figma:
-//  ART   (node 2238:94139) — имя «VOVA SYUZEV» на весь экран (#121212),
-//         затем скролл-зум коллажа работ (ZoomParallax).
+// Hero = два блока:
+//  FLOATING — имя «Vova Syuzev» по центру, вокруг плавают работы (параллакс
+//         по мыши, случайный набор, клик = полноэкран). Секция во всю
+//         высоту вьюпорта — см. HeroFloating.
 //  REGAL (node 2499:5398) — строка «DESIGN LEAD & multidisciplinary
 //         designer» с подчёркиванием, на светлом фоне, по сетке 1440.
 // Только после REGAL начинается блок «О себе».
-//
-// Картинки коллажа лежат в /public/hero-parallax. Порядок и «ключевая»
-// (из неё растёт зум) выбираются случайно на каждой загрузке — см.
-// ZoomParallax. Замена: положить/переименовать файлы и поправить список.
-const IMAGES = [
-	"1.png",
-	"2.jpg",
-	"3.jpg",
-	"4.jpg",
-	"5.jpg",
-	"6.jpg",
-	"7.jpg",
-	"8.jpg",
-	"9.jpg",
-	"10.jpg",
-	"11.jpg",
-	"12.jpg",
-	"13.jpg",
-	"14.png",
-	"15.jpg",
-	"16.png",
-	"17.jpg",
-	"18.jpg",
-	"19.png",
-	"20.png",
-].map((name) => ({ src: `/hero-parallax/${name}` }));
-
-function ArtTitle() {
-	return (
-		<h1 className="text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-white">
-			Vova
-			<br />
-			Syuzev
-		</h1>
-	);
-}
 
 // REGAL — 1:1 из Figma по 4 брейкпоинтам:
 // ≥1440 — абсолют по сетке 1440 (node 2499:5398): текст x46/y149 52px,
@@ -183,25 +147,9 @@ function Regal() {
 }
 
 export default function Hero() {
-	const reduced = useReducedMotion();
-
 	return (
 		<>
-			{/* ART */}
-			{reduced ? (
-				<section className="flex min-h-screen w-full items-center justify-center bg-[#121212] px-6">
-					<ArtTitle />
-				</section>
-			) : (
-				<div className="w-full bg-[#121212]">
-					<section className="flex h-screen w-full items-center justify-center px-6">
-						<ArtTitle />
-					</section>
-					<ZoomParallax images={IMAGES} />
-				</div>
-			)}
-
-			{/* REGAL */}
+			<HeroFloating />
 			<Regal />
 		</>
 	);

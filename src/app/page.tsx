@@ -4,16 +4,15 @@ import About from "@/components/About";
 import CasesList from "@/components/CasesList";
 import Footer from "@/components/Footer";
 
-// Header — нативно флюидный. Hero = ART (скролл-зум коллажа) + REGAL.
-// About/CasesList/Footer сами центрируют себя на 1440 при ≥1200, а ниже
-// раскладываются в колоночную сетку (см. RESPONSIVE.md).
+// Header — нативно флюидный, прозрачный поверх тёмного Hero у самого верха
+// главной. Hero = FLOATING (имя + плавающие работы, во всю высоту экрана) +
+// REGAL. Спейсер под шапку тут НЕ нужен — Hero начинается от y0, шапка
+// наезжает поверх. About/CasesList/Footer центрируются на 1440 при ≥1200,
+// ниже — колоночная сетка (см. RESPONSIVE.md).
 export default function Home() {
   return (
     <div className="flex w-full flex-col items-center" id="top">
       <Header />
-      {/* Header fixed (auto-hide) — не занимает место в потоке, спейсер
-          возвращает те же 62px. */}
-      <div className="h-[62px] w-full shrink-0" />
       <Hero />
       <About />
       <CasesList />

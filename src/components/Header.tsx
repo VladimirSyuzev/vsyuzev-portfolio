@@ -40,10 +40,15 @@ const BORDER_OFF = "rgba(50,50,60,0)";
 export default function Header() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hidden, setHidden] = useState(false);
+  const [atTop, setAtTop] = useState(true);
   const [casesOpen, setCasesOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false); // мобильное бургер-меню
   const [menuCasesOpen, setMenuCasesOpen] = useState(false); // под-аккордеон «Кейсы» в бургере
   const pathname = usePathname();
+
+  // Прозрачная шапка поверх тёмного Hero — только на главной у самого верха
+  // и когда не раскрыта ни одна панель (иначе выпадашку не видно на фоне).
+  const transparent = pathname === "/" && atTop && !casesOpen && !menuOpen;
 
   // Закрываем выпадающие панели при смене маршрута — коррекция состояния
   // прямо в рендере (штатный паттерн React, без setState-в-effect).
@@ -129,6 +134,7 @@ export default function Header() {
       requestAnimationFrame(() => {
         const y = window.scrollY;
         const delta = y - lastY;
+        setAtTop(y <= 24);
         if (y <= REVEAL_ZONE) setHidden(false);
         else if (delta > DIRECTION_THRESHOLD) {
           setHidden(true);
@@ -147,12 +153,21 @@ export default function Header() {
 
   return (
     <header
-      className="fixed inset-x-0 top-0 z-50 w-full bg-[#fafafa] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+      className={`fixed inset-x-0 top-0 z-50 w-full transition-[transform,background-color] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        transparent ? "bg-transparent" : "bg-[#fafafa]"
+      }`}
       style={{ transform: hidden ? "translateY(-100%)" : "translateY(0)" }}
     >
       <div className="flex h-[62px] items-center justify-between px-[3.056%]">
         <Link href="/" className="block h-[18.162px] w-[140px] shrink-0">
-          <Image src="/brand/wordmark.svg" alt="Вова Сюзёв" width={140} height={18.162} priority />
+          <Image
+            src="/brand/wordmark.svg"
+            alt="Вова Сюзёв"
+            width={140}
+            height={18.162}
+            priority
+            className={`transition-[filter] duration-300 ${transparent ? "brightness-0 invert" : ""}`}
+          />
         </Link>
 
         {/* Мобайл (<640) — бургер из 3 линий вместо трёх пунктов. Правый край
@@ -171,15 +186,21 @@ export default function Header() {
         >
           <span className="relative block h-[14px] w-[24px]">
             <span
-              className="absolute left-0 block h-[2px] w-full rounded-full bg-[#121212] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              className={`absolute left-0 block h-[2px] w-full rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                transparent ? "bg-white" : "bg-[#121212]"
+              }`}
               style={{ top: menuOpen ? 6 : 0, transform: menuOpen ? "rotate(45deg)" : "none" }}
             />
             <span
-              className="absolute left-0 top-[6px] block h-[2px] w-full rounded-full bg-[#121212] transition-opacity duration-200"
+              className={`absolute left-0 top-[6px] block h-[2px] w-full rounded-full transition-opacity duration-200 ${
+                transparent ? "bg-white" : "bg-[#121212]"
+              }`}
               style={{ opacity: menuOpen ? 0 : 1 }}
             />
             <span
-              className="absolute left-0 block h-[2px] w-full rounded-full bg-[#121212] transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              className={`absolute left-0 block h-[2px] w-full rounded-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                transparent ? "bg-white" : "bg-[#121212]"
+              }`}
               style={{ top: menuOpen ? 6 : 12, transform: menuOpen ? "rotate(-45deg)" : "none" }}
             />
           </span>
@@ -212,10 +233,20 @@ export default function Header() {
                 }
                 // иначе («о себе» со страницы кейса) — Link уводит на "/#..."
               }}
-              className="rounded-[10px] border px-[12px] py-[10px] text-[14px] leading-[1.2] tracking-[0.28px] whitespace-nowrap text-[#121212] opacity-100 transition-[border-color] duration-300 hover:!border-[rgba(50,50,60,0.8)]"
+              className={`rounded-[10px] border px-[12px] py-[10px] text-[14px] leading-[1.2] tracking-[0.28px] whitespace-nowrap opacity-100 transition-[border-color,color] duration-300 ${
+                transparent
+                  ? "text-white hover:!border-[rgba(255,255,255,0.8)]"
+                  : "text-[#121212] hover:!border-[rgba(50,50,60,0.8)]"
+              }`}
               style={{
                 borderColor:
-                  activeId === item.id || (item.id === "cases" && casesOpen) ? BORDER_ON : BORDER_OFF,
+                  activeId === item.id || (item.id === "cases" && casesOpen)
+                    ? transparent
+                      ? "rgba(255,255,255,0.8)"
+                      : BORDER_ON
+                    : transparent
+                      ? "rgba(255,255,255,0)"
+                      : BORDER_OFF,
               }}
             >
               {item.label}
@@ -336,7 +367,11 @@ export default function Header() {
         </nav>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 h-px bg-[#121212]" />
+      <div
+        className={`absolute inset-x-0 bottom-0 h-px transition-opacity duration-300 ${
+          transparent ? "opacity-0" : "bg-[#121212] opacity-100"
+        }`}
+      />
     </header>
   );
 }
