@@ -1,21 +1,10 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Floating, { FloatingElement } from "@/components/ui/floating";
-import { DotPattern } from "@/components/ui/dot-pattern";
-import { PixelText } from "@/components/ui/pixel-text";
 import { useBreakpoint, type Breakpoint } from "@/lib/breakpoint";
 import { useReducedMotion } from "@/lib/gsap";
-
-const NAME_LINES = ["VOVA", "SYUZEV"];
 
 // HeroFloating — первый экран главной. В центре имя «Vova Syuzev», вокруг
 // «плавают» работы (параллакс по движению мыши + лёгкий idle-дрейф). Набор
@@ -162,20 +151,14 @@ export default function HeroFloating() {
 
   const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
 
-  // Интро: сначала имя собирается из пикселей (PixelText), потом вразнобой
-  // появляются картинки. reduced-motion / до гидратации — всё сразу.
-  const nameRef = useRef<HTMLHeadingElement>(null);
+  // Интро: сначала появляется имя, затем вразнобой — картинки.
+  // reduced-motion — всё сразу.
   const [introDone, setIntroDone] = useState(false);
-  // до гидратации имя скрыто (иначе на долю секунды мелькнёт чёткий текст
-  // перед пиксельной сборкой); reduced-motion — показываем сразу
-  const nameVisible = reduced || introDone;
   const imagesIn = reduced || introDone;
-  const finishIntro = useCallback(() => setIntroDone(true), []);
 
-  // подстраховка: если PixelText не отрапортует (шрифт/канвас) — показываем всё
   useEffect(() => {
     if (reduced || !hydrated) return;
-    const id = window.setTimeout(() => setIntroDone(true), 5000);
+    const id = window.setTimeout(() => setIntroDone(true), 900);
     return () => window.clearTimeout(id);
   }, [reduced, hydrated]);
 
@@ -263,14 +246,6 @@ export default function HeroFloating() {
 
   return (
     <section className="relative flex h-[100svh] min-h-[100svh] w-full items-center justify-center overflow-hidden bg-[#121212]">
-      {/* сетка точек на фоне — под парящими картинками, мягко гаснет к краям */}
-      <DotPattern
-        width={26}
-        height={26}
-        cr={1}
-        className="fill-white/[0.09] [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_92%)]"
-      />
-
       {hydrated &&
         (reduced ? (
           <div className="absolute inset-0">{nodes}</div>
@@ -280,25 +255,16 @@ export default function HeroFloating() {
           </Floating>
         ))}
 
-      <div className="pointer-events-none relative z-10">
-        <h1
-          ref={nameRef}
-          className="select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-[#008CFF] transition-opacity duration-500"
-          style={{ opacity: nameVisible ? 1 : 0 }}
-        >
-          Vova
-          <br />
-          Syuzev
-        </h1>
-        {hydrated && !reduced && !introDone && (
-          <PixelText
-            targetRef={nameRef}
-            lines={NAME_LINES}
-            seed={seed}
-            onComplete={finishIntro}
-          />
-        )}
-      </div>
+      <motion.h1
+        initial={reduced ? false : { opacity: 0, y: 22 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        className="pointer-events-none relative z-10 select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-white"
+      >
+        Vova
+        <br />
+        Syuzev
+      </motion.h1>
 
       <AnimatePresence>
         {open && (
