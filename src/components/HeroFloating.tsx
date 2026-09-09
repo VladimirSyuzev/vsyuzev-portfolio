@@ -166,8 +166,10 @@ export default function HeroFloating() {
   // появляются картинки. reduced-motion / до гидратации — всё сразу.
   const nameRef = useRef<HTMLHeadingElement>(null);
   const [introDone, setIntroDone] = useState(false);
-  const introReady = reduced || !hydrated || introDone;
-  const imagesIn = reduced || !hydrated || introDone;
+  // до гидратации имя скрыто (иначе на долю секунды мелькнёт чёткий текст
+  // перед пиксельной сборкой); reduced-motion — показываем сразу
+  const nameVisible = reduced || introDone;
+  const imagesIn = reduced || introDone;
   const finishIntro = useCallback(() => setIntroDone(true), []);
 
   // подстраховка: если PixelText не отрапортует (шрифт/канвас) — показываем всё
@@ -282,7 +284,7 @@ export default function HeroFloating() {
         <h1
           ref={nameRef}
           className="select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-[#008CFF] transition-opacity duration-500"
-          style={{ opacity: introReady ? 1 : 0 }}
+          style={{ opacity: nameVisible ? 1 : 0 }}
         >
           Vova
           <br />
