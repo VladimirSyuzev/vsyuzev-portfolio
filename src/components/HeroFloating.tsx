@@ -1,18 +1,20 @@
 "use client";
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import Floating, { FloatingElement } from "@/components/ui/floating";
+import { useGSAP } from "@gsap/react";
+import { gsap, useReducedMotion } from "@/lib/gsap";
 import { useBreakpoint, type Breakpoint } from "@/lib/breakpoint";
-import { useReducedMotion } from "@/lib/gsap";
 
-// HeroFloating — первый экран главной. В центре имя «Vova Syuzev», вокруг
-// «плавают» работы (параллакс по движению мыши + лёгкий idle-дрейф). Набор
-// картинок, их места, размеры и наклоны — случайные на каждую загрузку.
-// Количество зависит от размера экрана. Клик по картинке — полноэкранный
-// просмотр (оригинал). Секция всегда во всю высоту вьюпорта (100svh).
+// HeroFloating — скролл-сценарий первого экрана:
+//  1. появляется имя;
+//  2. при скролле справа в один ряд въезжают обложки работ;
+//  3. ряд вместе с именем уезжает влево — имя пропадает, ряд встаёт по центру;
+//  4. каждая обложка закручивается и уходит на окружность — образуется круг;
+//  5. круг наезжает (scale) и смещается — в кадре остаётся дуга из обложек.
+// Секция запинена на всё время сценария (GSAP ScrollTrigger, scrub).
+// prefers-reduced-motion / до гидратации — статичный круг + имя, без пина.
 
-// tile — лёгкий webp-превью для коллажа, full — оригинал для полноэкрана.
 const NAMES = [
   "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
   "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
@@ -25,15 +27,13 @@ const POOL = NAMES.map((n) => ({
   full: `/hero-parallax/${n}.${EXT[n] ?? "jpg"}`,
 }));
 
-// Сколько картинок показывать по брейкпоинтам (см. RESPONSIVE.md):
-const COUNT_RANGE: Record<Breakpoint, [number, number]> = {
-  desktop: [14, 18], // ≥1440
-  tabletL: [12, 16], // 1024–1439
-  tabletP: [10, 14], // 640–1023
-  mobile: [6, 8], // <640
+const COUNT: Record<Breakpoint, number> = {
+  desktop: 20,
+  tabletL: 16,
+  tabletP: 13,
+  mobile: 10,
 };
 
-// mulberry32 — сид-ГСЧ: раскладка детерминирована сидом (useMemo чистый).
 function rng(seed: number) {
   let a = seed >>> 0;
   return () => {
@@ -43,7 +43,6 @@ function rng(seed: number) {
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
   };
 }
-
 function shuffle<T>(arr: readonly T[], rand: () => number): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -53,121 +52,145 @@ function shuffle<T>(arr: readonly T[], rand: () => number): T[] {
   return a;
 }
 
-type Tile = {
-  src: string;
-  full: string;
-  x: number; // % центра по горизонтали
-  y: number; // % центра по вертикали
-  size: string; // CSS-ширина
-  depth: number;
-  rotate: number;
-  driftDur: number;
-  driftDelay: number;
-  driftY: number;
-  enterDelay: number; // задержка появления после текста, сек
-};
-
-// Множитель размера плиток по брейкпоинту — на больших экранах картинки
-// крупнее (иначе теряются в пространстве).
-const BP_SIZE: Record<Breakpoint, number> = {
-  desktop: 1.5, // ≥1440
-  tabletL: 1.3, // 1024–1439
-  tabletP: 1.15, // 640–1023
-  mobile: 1.0, // <640
-};
-
-// Раскладка: раскидываем count плиток в кольце вокруг центра (внутренний
-// радиус держит их в стороне от имени), с проверкой на минимальную
-// дистанцию — получается «живой» коллаж без явных пересечений.
-function buildTiles(seed: number, count: number, bp: Breakpoint): Tile[] {
-  const rand = rng(seed);
-  const imgs = shuffle(POOL, rand).slice(0, count);
-  // размер = база × поправка на кол-во (много плиток → чуть мельче) × брейкпоинт
-  const kCount = count >= 15 ? 0.9 : count >= 11 ? 0.97 : 1.05;
-  const k = kCount * BP_SIZE[bp];
-
-  const placed: { x: number; y: number }[] = [];
-  const tiles: Tile[] = [];
-
-  // Запретная зона по центру — примерный габарит имени «Vova Syuzev».
-  // Меньше плиток → крупнее шрифт занимает больше → зона шире.
-  const bx = count <= 9 ? 36 : 29;
-  const by = count <= 9 ? 21 : 18;
-  const goodD = count >= 13 ? 13 : 18;
-
-  for (let i = 0; i < count; i++) {
-    let best: { x: number; y: number; d: number } | null = null;
-    for (let t = 0; t < 60; t++) {
-      const ang = rand() * Math.PI * 2;
-      const r = 0.37 + rand() * 0.34;
-      const x = 50 + Math.cos(ang) * r * 66;
-      const y = 50 + Math.sin(ang) * r * 70;
-      if (x < 3 || x > 97 || y < 4 || y > 96) continue;
-      if (Math.abs(x - 50) < bx && Math.abs(y - 50) < by) continue; // на имени
-      const d = placed.length
-        ? Math.min(...placed.map((p) => Math.hypot(p.x - x, p.y - y)))
-        : 999;
-      if (!best || d > best.d) best = { x, y, d };
-      if (d > goodD) break;
-    }
-    const pos = best ?? { x: 50, y: 8 };
-    placed.push({ x: pos.x, y: pos.y });
-
-    const vmin = (9 + rand() * 6) * k;
-    const cap = Math.round((170 + rand() * 95) * k);
-    const min = Math.round(62 * k);
-    tiles.push({
-      src: imgs[i].tile,
-      full: imgs[i].full,
-      x: pos.x,
-      y: pos.y,
-      size: `clamp(${min}px, ${vmin.toFixed(1)}vmin, ${cap}px)`,
-      depth: 0.8 + rand() * 2.6,
-      rotate: (rand() * 2 - 1) * 9,
-      driftDur: 6 + rand() * 5,
-      driftDelay: rand() * -8,
-      driftY: 4 + rand() * 7,
-      enterDelay: 0,
-    });
-  }
-  // случайный порядок появления картинок — разложим задержки по перемешанным
-  // индексам (0 → count·0.11 с), чтобы вылезали вразнобой, а не по кругу
-  shuffle(
-    tiles.map((_, i) => i),
-    rng(seed * 2654435761),
-  ).forEach((tileIdx, order) => {
-    tiles[tileIdx].enterDelay = order * 0.11 + rand() * 0.06;
-  });
-  return tiles;
-}
-
 const noop = () => () => {};
 
 export default function HeroFloating() {
   const reduced = useReducedMotion();
   const bp = useBreakpoint();
   const hydrated = useSyncExternalStore(noop, () => true, () => false);
+  const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
   const [open, setOpen] = useState<string | null>(null);
 
-  const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
-
-  // Интро: сначала появляется имя, затем вразнобой — картинки.
-  // reduced-motion — всё сразу.
-  const [introDone, setIntroDone] = useState(false);
-  const imagesIn = reduced || introDone;
-
+  const [vw, setVw] = useState(1440);
   useEffect(() => {
-    if (reduced || !hydrated) return;
-    const id = window.setTimeout(() => setIntroDone(true), 900);
-    return () => window.clearTimeout(id);
-  }, [reduced, hydrated]);
+    const upd = () => setVw(window.innerWidth);
+    upd();
+    window.addEventListener("resize", upd);
+    return () => window.removeEventListener("resize", upd);
+  }, []);
 
-  const tiles = useMemo(() => {
-    const [lo, hi] = COUNT_RANGE[bp];
-    // count — тоже от сида, но со сдвигом, чтобы не коррелировал с раскладкой
-    const count = lo + Math.floor(rng(seed ^ 0x9e3779b9)() * (hi - lo + 1));
-    return buildTiles(seed, Math.min(count, POOL.length), bp);
-  }, [seed, bp]);
+  const items = useMemo(
+    () => shuffle(POOL, rng(seed)).slice(0, COUNT[bp]),
+    [seed, bp],
+  );
+  const N = items.length;
+
+  const rootRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const reelRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const hintRef = useRef<HTMLParagraphElement>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // габариты карточки от ширины экрана (высоту не трогаем — на мобиле
+  // адресная строка дёргает vh и перестраивала бы весь ScrollTrigger)
+  const card = useMemo(() => {
+    const unit = Math.min(vw, 900);
+    const w = Math.max(58, Math.min(unit * 0.13, 132));
+    return { w, h: w * 1.34 };
+  }, [vw]);
+
+  useGSAP(
+    () => {
+      if (reduced || !hydrated) return;
+      const stage = stageRef.current;
+      const reel = reelRef.current;
+      const nameEl = nameRef.current;
+      const hintEl = hintRef.current;
+      const els = itemRefs.current.slice(0, N);
+      if (!stage || !reel || !nameEl || els.some((e) => !e)) return;
+
+      const vh = window.innerHeight;
+      const unit = Math.min(vw, vh);
+      const S = card.w;
+      const rowGap = S * 1.08;
+      const R = unit * (N > 16 ? 0.46 : 0.42);
+
+      const rowX = (i: number) => (i - (N - 1) / 2) * rowGap;
+      const rowY = (i: number) => Math.sin(i * 1.6) * (S * 0.14);
+      const rowRot = (i: number) => ((i * 47) % 13) - 6;
+      const ang = (i: number) => ((-90 + (360 * i) / N) * Math.PI) / 180;
+      const circX = (i: number) => Math.cos(ang(i)) * R;
+      const circY = (i: number) => Math.sin(ang(i)) * R;
+      const circRot = (i: number) => (360 * i) / N;
+
+      els.forEach((el, i) => {
+        gsap.set(el, {
+          x: vw * 0.62 + i * S * 0.42,
+          y: rowY(i) + (i % 2 ? 22 : -16),
+          rotation: rowRot(i) + 10,
+          scale: 0.92,
+          opacity: 0,
+        });
+      });
+      gsap.set(reel, { scale: 1, x: 0, y: 0 });
+
+      // появление имени (не привязано к скроллу)
+      gsap.from(nameEl, { opacity: 0, yPercent: 26, duration: 0.8, ease: "siteEase", delay: 0.05 });
+      if (hintEl) gsap.from(hintEl, { opacity: 0, duration: 0.6, delay: 0.55 });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: rootRef.current,
+          start: "top top",
+          end: "+=" + Math.round(vh * 3.4),
+          scrub: 1,
+          pin: stage,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      if (hintEl) tl.to(hintEl, { opacity: 0, duration: 0.04 }, 0.015);
+
+      // 1 — обложки въезжают справа в ряд (ряд смещён правее центра)
+      els.forEach((el, i) => {
+        tl.to(
+          el,
+          {
+            x: rowX(i) + vw * 0.2,
+            y: rowY(i),
+            rotation: rowRot(i),
+            scale: 1,
+            opacity: 1,
+            ease: "power3.out",
+            duration: 0.3,
+          },
+          0.03 + i * (0.14 / N),
+        );
+      });
+
+      // 2 — ряд + имя едут влево; имя гаснет; ряд встаёт по центру
+      els.forEach((el, i) => {
+        tl.to(el, { x: rowX(i), ease: "power1.inOut", duration: 0.16 }, 0.34);
+      });
+      tl.to(nameEl, { xPercent: -160, opacity: 0, ease: "power2.in", duration: 0.16 }, 0.34);
+
+      // 3 — закручивание в круг
+      els.forEach((el, i) => {
+        tl.to(
+          el,
+          {
+            x: circX(i),
+            y: circY(i),
+            rotation: circRot(i),
+            ease: "power2.inOut",
+            duration: 0.3,
+          },
+          0.52 + i * (0.1 / N),
+        );
+      });
+
+      // 4 — наезд: круг увеличивается и уходит вниз → остаётся верхняя дуга
+      tl.to(reel, { scale: 2.6, y: R * 1.7, ease: "power1.in", duration: 0.16 }, 0.86);
+
+      return () => {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+      };
+    },
+    { dependencies: [reduced, hydrated, bp, seed, vw, N], scope: rootRef },
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -183,88 +206,67 @@ export default function HeroFloating() {
     };
   }, [open]);
 
-  const nodes = tiles.map((t) => (
-    <FloatingElement
-      key={t.full}
-      depth={reduced ? 0 : t.depth}
-      style={{ top: `${t.y}%`, left: `${t.x}%` }}
-    >
-      {/* центрирование слота на точке привязки (transform здесь; rAF-цикл
-          Floating пишет transform родителю — не конфликтует) */}
-      <div style={{ transform: "translate(-50%, -50%)" }}>
-        {/* появление после текста — вразнобой (enterDelay) */}
-        <motion.div
-          initial={false}
-          animate={
-            imagesIn ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }
-          }
-          transition={{
-            delay: imagesIn && !reduced ? t.enterDelay : 0,
-            duration: 0.5,
-            ease: [0.16, 1, 0.3, 1],
-          }}
-        >
-        {/* idle-дрейф — лёгкое «дыхание», работает и без мыши (мобайл) */}
-        <motion.div
-          animate={
-            reduced
-              ? undefined
-              : { y: [0, -t.driftY, 0], rotate: [0, t.rotate * 0.14, 0] }
-          }
-          transition={
-            reduced
-              ? undefined
-              : {
-                  duration: t.driftDur,
-                  delay: t.driftDelay,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }
-          }
-        >
-          <button
-            type="button"
-            onClick={() => setOpen(t.full)}
-            aria-label="Открыть изображение на весь экран"
-            className="group block cursor-pointer overflow-hidden rounded-[4px] shadow-[0_24px_60px_-16px_rgba(0,0,0,0.65)] outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.07] focus-visible:ring-2 focus-visible:ring-white/70"
-            style={{ width: t.size, rotate: `${t.rotate}deg` }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={t.src}
-              alt=""
-              draggable={false}
-              loading="lazy"
-              className="block h-auto w-full select-none transition-[filter] duration-300 group-hover:brightness-110"
-            />
-          </button>
-        </motion.div>
-        </motion.div>
-      </div>
-    </FloatingElement>
-  ));
+  // статичная раскладка (reduced / до гидратации): круг или скрытый центр
+  const staticTransform = (i: number) => {
+    if (!reduced) return "translate(0px, 0px)"; // до гидратации — спрятаны в центре (opacity 0)
+    const R = Math.min(vw, 900) * 0.42;
+    const a = ((-90 + (360 * i) / N) * Math.PI) / 180;
+    return `translate(${(Math.cos(a) * R).toFixed(1)}px, ${(Math.sin(a) * R).toFixed(1)}px) rotate(${((360 * i) / N).toFixed(1)}deg)`;
+  };
 
   return (
-    <section className="relative flex h-[100svh] min-h-[100svh] w-full items-center justify-center overflow-hidden bg-[#121212]">
-      {hydrated &&
-        (reduced ? (
-          <div className="absolute inset-0">{nodes}</div>
-        ) : (
-          <Floating sensitivity={1} easingFactor={0.06}>
-            {nodes}
-          </Floating>
-        ))}
-
-      <motion.h1
-        initial={reduced ? false : { opacity: 0, y: 22 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="pointer-events-none relative z-10 select-none text-center font-heading text-[clamp(2.75rem,12vw,175px)] font-bold uppercase leading-none tracking-[0.03em] text-white"
+    <section ref={rootRef} className="relative w-full bg-[#121212]">
+      <div
+        ref={stageRef}
+        className="relative flex h-[100svh] min-h-[100svh] w-full items-center justify-center overflow-hidden"
       >
-        Vova
-        <br />
-        Syuzev
-      </motion.h1>
+        <div ref={reelRef} className="absolute inset-0 z-10">
+          {hydrated &&
+            items.map((it, i) => (
+            <button
+              key={it.full}
+              ref={(el) => {
+                itemRefs.current[i] = el;
+              }}
+              type="button"
+              onClick={() => setOpen(it.full)}
+              aria-label="Открыть изображение на весь экран"
+              className="group absolute left-1/2 top-1/2 overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+              style={{
+                width: card.w,
+                height: card.h,
+                marginLeft: -card.w / 2,
+                marginTop: -card.h / 2,
+                transform: staticTransform(i),
+                opacity: reduced ? 1 : 0,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={it.tile}
+                alt=""
+                draggable={false}
+                loading="lazy"
+                className="h-full w-full select-none object-cover transition-[filter] duration-300 group-hover:brightness-110"
+                />
+              </button>
+            ))}
+        </div>
+
+        <h1
+          ref={nameRef}
+          className="pointer-events-none absolute inset-0 z-20 flex select-none items-center justify-center whitespace-nowrap px-6 text-center font-heading text-[clamp(2rem,9vw,132px)] font-bold uppercase leading-none tracking-[0.02em] text-white"
+        >
+          Vova Syuzev
+        </h1>
+
+        <p
+          ref={hintRef}
+          className="pointer-events-none absolute left-1/2 top-[calc(50%+clamp(3rem,7vw,6rem))] z-20 -translate-x-1/2 text-[11px] font-medium uppercase tracking-[0.3em] text-white/40"
+        >
+          Scroll to explore
+        </p>
+      </div>
 
       <AnimatePresence>
         {open && (
