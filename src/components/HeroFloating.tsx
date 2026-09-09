@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Floating, { FloatingElement } from "@/components/ui/floating";
+import { DotPattern } from "@/components/ui/dot-pattern";
 import { useBreakpoint, type Breakpoint } from "@/lib/breakpoint";
 import { useReducedMotion } from "@/lib/gsap";
 
@@ -202,6 +203,14 @@ export default function HeroFloating() {
 
   return (
     <section className="relative flex h-[100svh] min-h-[100svh] w-full items-center justify-center overflow-hidden bg-[#121212]">
+      {/* сетка точек на фоне — под парящими картинками, мягко гаснет к краям */}
+      <DotPattern
+        width={26}
+        height={26}
+        cr={1}
+        className="fill-white/[0.09] [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_92%)]"
+      />
+
       {hydrated &&
         (reduced ? (
           <div className="absolute inset-0">{nodes}</div>
