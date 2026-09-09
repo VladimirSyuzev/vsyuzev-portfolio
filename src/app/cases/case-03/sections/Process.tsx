@@ -7,7 +7,7 @@ import { useBreakpoint } from "@/lib/breakpoint";
 import Reveal from "@/components/Reveal";
 import FullBleedScale from "@/components/FullBleedScale";
 import GlassBubble from "@/components/GlassBubble";
-import { edgeFadeMaskStyle } from "@/lib/edgeFadeMask";
+import EdgeFade from "@/components/EdgeFade";
 import { useDrag } from "@/lib/useDrag";
 
 // 05 Процесс — 1:1 из актуальной Figma (node 2022:14827, высота 2980).
@@ -228,7 +228,6 @@ export default function Process() {
         // внутри 286-фрейма линейки. При 40 её обрезало у нижнего края карточек.
         paddingTop: 80,
         paddingBottom: 80,
-        ...edgeFadeMaskStyle(padding.width),
       }}
     >
       <div className="relative h-[125px] w-[2368px]">
@@ -427,6 +426,11 @@ export default function Process() {
           xl:absolute xl:left-0 тянет его на всю ширину экрана, а не режет
           центрированным 1440-боксом. */}
       {track}
+      {/* Затухание краёв трека до цвета секции на >1440. Трек — нативный
+          скролл-контейнер, поэтому EdgeFade кладётся снаружи и позиционируется
+          по координатам трека (xl:top-582 xl:h-286). Замена mask — она в
+          Chrome ломала frost карточек. */}
+      <EdgeFade width={padding.width} className="absolute left-0 right-0" style={{ top: 582, height: 286 }} />
       </>
       ) : mob ? (
       /* <640 — 1:1 из Figma reflow-фрейма «case-03 · 375» (node 2695:19938,

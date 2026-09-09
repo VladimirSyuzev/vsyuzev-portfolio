@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
 import GlassBubble from "@/components/GlassBubble";
-import { edgeFadeMaskStyle } from "@/lib/edgeFadeMask";
+import EdgeFade from "@/components/EdgeFade";
 import { useDrag } from "@/lib/useDrag";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
@@ -162,7 +162,7 @@ export default function Pipeline() {
           className={`relative w-full touch-pan-y select-none overflow-x-clip overflow-y-visible pb-[72px] sm:pb-[210px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
             dragging ? "cursor-grabbing" : "cursor-grab"
           }`}
-          style={{ paddingTop: padding.top, ...edgeFadeMaskStyle(padding.width) }}
+          style={{ paddingTop: padding.top }}
         >
           <div
             className="relative h-[399px] w-[4068px] will-change-transform"
@@ -217,6 +217,9 @@ export default function Pipeline() {
             );
           })}
           </div>
+          {/* Затухание краёв до цвета секции на >1440 (замена mask —
+              она ломала frost карточек). */}
+          <EdgeFade width={padding.width} />
         </div>
       </div>
     </div>

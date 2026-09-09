@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Reveal from "@/components/Reveal";
 import GlassBubble from "@/components/GlassBubble";
-import { edgeFadeMaskStyle } from "@/lib/edgeFadeMask";
+import EdgeFade from "@/components/EdgeFade";
 import { useDrag } from "@/lib/useDrag";
 
 // 04 Процесс — тёмный full-bleed блок. На десктопе (≥1200) текст — абсолют
@@ -90,7 +90,7 @@ export default function Process() {
       className={`relative w-full touch-pan-y select-none overflow-hidden ${
         dragging ? "cursor-grabbing" : "cursor-grab"
       } lg:relative lg:z-[1] xl:absolute xl:left-0 xl:top-[580px] xl:h-[286px]`}
-      style={{ paddingTop: 80, paddingBottom: 81, ...edgeFadeMaskStyle(trackWidth) }}
+      style={{ paddingTop: 80, paddingBottom: 81 }}
     >
       <div
         className="relative h-[125px] w-[2368px] will-change-transform"
@@ -148,6 +148,9 @@ export default function Process() {
           </div>
         ))}
       </div>
+      {/* Затухание краёв до цвета секции на >1440 (замена mask — она ломала
+          frost карточек). */}
+      <EdgeFade width={trackWidth} />
     </div>
   );
 
