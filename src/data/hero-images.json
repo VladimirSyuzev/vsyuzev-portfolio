@@ -1,0 +1,122 @@
+[
+  {
+    "name": "1",
+    "full": "/hero-parallax/1.png",
+    "tile": "/hero-parallax/thumb/1.webp",
+    "aspect": 0.7143
+  },
+  {
+    "name": "2",
+    "full": "/hero-parallax/2.jpg",
+    "tile": "/hero-parallax/thumb/2.webp",
+    "aspect": 1
+  },
+  {
+    "name": "3",
+    "full": "/hero-parallax/3.jpg",
+    "tile": "/hero-parallax/thumb/3.webp",
+    "aspect": 0.7293
+  },
+  {
+    "name": "4",
+    "full": "/hero-parallax/4.jpg",
+    "tile": "/hero-parallax/thumb/4.webp",
+    "aspect": 0.8
+  },
+  {
+    "name": "5",
+    "full": "/hero-parallax/5.jpg",
+    "tile": "/hero-parallax/thumb/5.webp",
+    "aspect": 0.7778
+  },
+  {
+    "name": "6",
+    "full": "/hero-parallax/6.jpg",
+    "tile": "/hero-parallax/thumb/6.webp",
+    "aspect": 0.7778
+  },
+  {
+    "name": "7",
+    "full": "/hero-parallax/7.jpg",
+    "tile": "/hero-parallax/thumb/7.webp",
+    "aspect": 1.7766
+  },
+  {
+    "name": "8",
+    "full": "/hero-parallax/8.jpg",
+    "tile": "/hero-parallax/thumb/8.webp",
+    "aspect": 2.0028
+  },
+  {
+    "name": "9",
+    "full": "/hero-parallax/9.jpg",
+    "tile": "/hero-parallax/thumb/9.webp",
+    "aspect": 1.5556
+  },
+  {
+    "name": "10",
+    "full": "/hero-parallax/10.jpg",
+    "tile": "/hero-parallax/thumb/10.webp",
+    "aspect": 0.7064
+  },
+  {
+    "name": "11",
+    "full": "/hero-parallax/11.jpg",
+    "tile": "/hero-parallax/thumb/11.webp",
+    "aspect": 0.7071
+  },
+  {
+    "name": "12",
+    "full": "/hero-parallax/12.jpg",
+    "tile": "/hero-parallax/thumb/12.webp",
+    "aspect": 1.5889
+  },
+  {
+    "name": "13",
+    "full": "/hero-parallax/13.jpg",
+    "tile": "/hero-parallax/thumb/13.webp",
+    "aspect": 1
+  },
+  {
+    "name": "14",
+    "full": "/hero-parallax/14.png",
+    "tile": "/hero-parallax/thumb/14.webp",
+    "aspect": 1
+  },
+  {
+    "name": "15",
+    "full": "/hero-parallax/15.jpg",
+    "tile": "/hero-parallax/thumb/15.webp",
+    "aspect": 1
+  },
+  {
+    "name": "16",
+    "full": "/hero-parallax/16.png",
+    "tile": "/hero-parallax/thumb/16.webp",
+    "aspect": 1
+  },
+  {
+    "name": "17",
+    "full": "/hero-parallax/17.jpg",
+    "tile": "/hero-parallax/thumb/17.webp",
+    "aspect": 1
+  },
+  {
+    "name": "18",
+    "full": "/hero-parallax/18.jpg",
+    "tile": "/hero-parallax/thumb/18.webp",
+    "aspect": 1.3332
+  },
+  {
+    "name": "19",
+    "full": "/hero-parallax/19.png",
+    "tile": "/hero-parallax/thumb/19.webp",
+    "aspect": 1
+  },
+  {
+    "name": "20",
+    "full": "/hero-parallax/20.png",
+    "tile": "/hero-parallax/thumb/20.webp",
+    "aspect": 1.479
+  }
+]

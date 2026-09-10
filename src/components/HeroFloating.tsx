@@ -5,33 +5,26 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import { useBreakpoint, type Breakpoint } from "@/lib/breakpoint";
+import HERO_IMAGES from "@/data/hero-images.json";
 
 // HeroFloating — скролл-сценарий первого экрана:
-//  1. появляется имя;
-//  2. при скролле справа в один ряд въезжают обложки работ;
-//  3. ряд вместе с именем уезжает влево — имя пропадает, ряд встаёт по центру;
-//  4. каждая обложка закручивается и уходит на окружность — образуется круг;
-//  5. круг наезжает (scale) и смещается — в кадре остаётся дуга из обложек.
-// Секция запинена на всё время сценария (GSAP ScrollTrigger, scrub).
+//  1. появляется имя + «scroll to explore»;
+//  2. при скролле справа въезжают обложки и ВЫТАЛКИВАЮТ имя за левый край;
+//  3. обложки закручиваются и собираются в круг;
+//  4. круг увеличивается и уходит вверх — дуга остаётся НИЖЕ центра экрана;
+//  5. дальше скролл ВРАЩАЕТ круг (страница ещё запинена), потом открепляется.
+// Обложки показываются целиком (карточка по соотношению сторон картинки).
+// Набор и порядок обложек случайны на каждую загрузку.
 // prefers-reduced-motion / до гидратации — статичный круг + имя, без пина.
 
-const NAMES = [
-  "1", "2", "3", "4", "5", "6", "7", "8", "9", "10",
-  "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-];
-const EXT: Record<string, string> = {
-  "1": "png", "14": "png", "16": "png", "19": "png", "20": "png",
-};
-const POOL = NAMES.map((n) => ({
-  tile: `/hero-parallax/thumb/${n}.webp`,
-  full: `/hero-parallax/${n}.${EXT[n] ?? "jpg"}`,
-}));
+type Img = { name: string; full: string; tile: string; aspect: number };
+const POOL = HERO_IMAGES as Img[];
 
 const COUNT: Record<Breakpoint, number> = {
-  desktop: 20,
-  tabletL: 16,
-  tabletP: 13,
-  mobile: 10,
+  desktop: 18,
+  tabletL: 15,
+  tabletP: 12,
+  mobile: 9,
 };
 
 function rng(seed: number) {
@@ -70,7 +63,7 @@ export default function HeroFloating() {
   }, []);
 
   const items = useMemo(
-    () => shuffle(POOL, rng(seed)).slice(0, COUNT[bp]),
+    () => shuffle(POOL, rng(seed)).slice(0, Math.min(COUNT[bp], POOL.length)),
     [seed, bp],
   );
   const N = items.length;
@@ -78,62 +71,65 @@ export default function HeroFloating() {
   const rootRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const reelRef = useRef<HTMLDivElement>(null);
+  const spinRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const hintRef = useRef<HTMLParagraphElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // габариты карточки от ширины экрана (высоту не трогаем — на мобиле
-  // адресная строка дёргает vh и перестраивала бы весь ScrollTrigger)
-  const card = useMemo(() => {
-    const unit = Math.min(vw, 900);
-    const w = Math.max(58, Math.min(unit * 0.13, 132));
-    return { w, h: w * 1.34 };
+  const cardW = useMemo(() => {
+    const u = Math.min(vw, 1000);
+    return Math.round(Math.max(78, Math.min(u * 0.135, 156)));
   }, [vw]);
+  const cardH = (i: number) => {
+    const a = Math.min(2, Math.max(0.55, items[i]?.aspect ?? 0.78));
+    return Math.round(cardW / a);
+  };
 
   useGSAP(
     () => {
       if (reduced || !hydrated) return;
       const stage = stageRef.current;
       const reel = reelRef.current;
+      const spin = spinRef.current;
       const nameEl = nameRef.current;
       const hintEl = hintRef.current;
       const els = itemRefs.current.slice(0, N);
-      if (!stage || !reel || !nameEl || els.some((e) => !e)) return;
+      if (!stage || !reel || !spin || !nameEl || els.some((e) => !e)) return;
 
       const vh = window.innerHeight;
       const unit = Math.min(vw, vh);
-      const S = card.w;
-      const rowGap = S * 1.08;
-      const R = unit * (N > 16 ? 0.46 : 0.42);
+      const S = cardW;
+      const rowGap = S * 1.16;
+      const R = unit * 0.46;
 
       const rowX = (i: number) => (i - (N - 1) / 2) * rowGap;
-      const rowY = (i: number) => Math.sin(i * 1.6) * (S * 0.14);
-      const rowRot = (i: number) => ((i * 47) % 13) - 6;
-      const ang = (i: number) => ((-90 + (360 * i) / N) * Math.PI) / 180;
-      const circX = (i: number) => Math.cos(ang(i)) * R;
-      const circY = (i: number) => Math.sin(ang(i)) * R;
-      const circRot = (i: number) => (360 * i) / N;
+      const rowY = (i: number) => Math.sin(i * 1.7 + 1) * (S * 0.14);
+      const rowRot = (i: number) => ((i * 53) % 15) - 7;
+      const cA = (i: number) => ((-90 + (360 * i) / N) * Math.PI) / 180;
+      const cX = (i: number) => Math.cos(cA(i)) * R;
+      const cY = (i: number) => Math.sin(cA(i)) * R;
+      const cRot = (i: number) => (360 * i) / N;
 
       els.forEach((el, i) => {
         gsap.set(el, {
-          x: vw * 0.62 + i * S * 0.42,
-          y: rowY(i) + (i % 2 ? 22 : -16),
-          rotation: rowRot(i) + 10,
-          scale: 0.92,
+          x: vw * 0.66 + i * S * 0.5,
+          y: rowY(i) + (i % 2 ? 28 : -20),
+          rotation: rowRot(i) + 12,
+          scale: 0.9,
           opacity: 0,
         });
       });
-      gsap.set(reel, { scale: 1, x: 0, y: 0 });
+      gsap.set(reel, { x: 0, y: 0, scale: 1 });
+      gsap.set(spin, { rotation: 0 });
 
-      // появление имени (не привязано к скроллу)
-      gsap.from(nameEl, { opacity: 0, yPercent: 26, duration: 0.8, ease: "siteEase", delay: 0.05 });
-      if (hintEl) gsap.from(hintEl, { opacity: 0, duration: 0.6, delay: 0.55 });
+      gsap.from(nameEl, { opacity: 0, yPercent: 24, duration: 0.8, ease: "siteEase", delay: 0.05 });
+      if (hintEl) gsap.fromTo(hintEl, { opacity: 0 }, { opacity: 1, duration: 0.6, delay: 0.5 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: rootRef.current,
           start: "top top",
-          end: "+=" + Math.round(vh * 3.4),
+          end: "+=" + Math.round(vh * 4.6),
           scrub: 1,
           pin: stage,
           anticipatePin: 1,
@@ -141,48 +137,53 @@ export default function HeroFloating() {
         },
       });
 
-      if (hintEl) tl.to(hintEl, { opacity: 0, duration: 0.04 }, 0.015);
+      if (hintEl) tl.to(hintEl, { opacity: 0, duration: 0.03 }, 0.01);
 
-      // 1 — обложки въезжают справа в ряд (ряд смещён правее центра)
+      // 1 — обложки въезжают справа в ряд по центру и выталкивают имя влево
       els.forEach((el, i) => {
         tl.to(
           el,
           {
-            x: rowX(i) + vw * 0.2,
+            x: rowX(i),
             y: rowY(i),
             rotation: rowRot(i),
             scale: 1,
             opacity: 1,
-            ease: "power3.out",
-            duration: 0.3,
+            ease: "power2.out",
+            duration: 0.36,
           },
-          0.03 + i * (0.14 / N),
+          0.04 + i * (0.14 / N),
         );
       });
+      tl.to(nameEl, { x: () => -window.innerWidth * 1.05, ease: "none", duration: 0.3 }, 0.1);
+      tl.to(nameEl, { opacity: 0, duration: 0.05 }, 0.34);
 
-      // 2 — ряд + имя едут влево; имя гаснет; ряд встаёт по центру
-      els.forEach((el, i) => {
-        tl.to(el, { x: rowX(i), ease: "power1.inOut", duration: 0.16 }, 0.34);
-      });
-      tl.to(nameEl, { xPercent: -160, opacity: 0, ease: "power2.in", duration: 0.16 }, 0.34);
-
-      // 3 — закручивание в круг
+      // 2 — обложки по очереди отрываются от ряда и уходят на окружность
+      //     (крупный stagger → в полёте всегда 1–2 карточки, без свалки)
       els.forEach((el, i) => {
         tl.to(
           el,
           {
-            x: circX(i),
-            y: circY(i),
-            rotation: circRot(i),
+            x: cX(i),
+            y: cY(i),
+            rotation: cRot(i),
             ease: "power2.inOut",
-            duration: 0.3,
+            duration: 0.22,
           },
-          0.52 + i * (0.1 / N),
+          0.4 + i * (0.24 / N),
         );
       });
 
-      // 4 — наезд: круг увеличивается и уходит вниз → остаётся верхняя дуга
-      tl.to(reel, { scale: 2.6, y: R * 1.7, ease: "power1.in", duration: 0.16 }, 0.86);
+      // 3 — круг увеличивается и уходит вверх → дуга оказывается ниже центра
+      tl.to(
+        reel,
+        { scale: 1.75, y: -R * 0.72, ease: "power1.inOut", duration: 0.12 },
+        0.72,
+      );
+      tl.to(spin, { rotation: 34, ease: "power1.inOut", duration: 0.12 }, 0.72);
+
+      // 4 — дальше скролл вращает круг (страница ещё запинена)
+      tl.to(spin, { rotation: 34 + 150, ease: "none", duration: 0.16 }, 0.84);
 
       return () => {
         tl.scrollTrigger?.kill();
@@ -206,9 +207,9 @@ export default function HeroFloating() {
     };
   }, [open]);
 
-  // статичная раскладка (reduced / до гидратации): круг или скрытый центр
+  // статичная раскладка (reduced / до гидратации)
   const staticTransform = (i: number) => {
-    if (!reduced) return "translate(0px, 0px)"; // до гидратации — спрятаны в центре (opacity 0)
+    if (!reduced) return "translate(0px, 0px)";
     const R = Math.min(vw, 900) * 0.42;
     const a = ((-90 + (360 * i) / N) * Math.PI) / 180;
     return `translate(${(Math.cos(a) * R).toFixed(1)}px, ${(Math.sin(a) * R).toFixed(1)}px) rotate(${((360 * i) / N).toFixed(1)}deg)`;
@@ -216,41 +217,39 @@ export default function HeroFloating() {
 
   return (
     <section ref={rootRef} className="relative w-full bg-[#121212]">
-      <div
-        ref={stageRef}
-        className="relative flex h-[100svh] min-h-[100svh] w-full items-center justify-center overflow-hidden"
-      >
+      <div ref={stageRef} className="relative h-[100svh] min-h-[100svh] w-full overflow-hidden">
         <div ref={reelRef} className="absolute inset-0 z-10">
-          {hydrated &&
-            items.map((it, i) => (
-            <button
-              key={it.full}
-              ref={(el) => {
-                itemRefs.current[i] = el;
-              }}
-              type="button"
-              onClick={() => setOpen(it.full)}
-              aria-label="Открыть изображение на весь экран"
-              className="group absolute left-1/2 top-1/2 overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-              style={{
-                width: card.w,
-                height: card.h,
-                marginLeft: -card.w / 2,
-                marginTop: -card.h / 2,
-                transform: staticTransform(i),
-                opacity: reduced ? 1 : 0,
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={it.tile}
-                alt=""
-                draggable={false}
-                loading="lazy"
-                className="h-full w-full select-none object-cover transition-[filter] duration-300 group-hover:brightness-110"
-                />
-              </button>
-            ))}
+          <div ref={spinRef} className="absolute inset-0">
+            {hydrated &&
+              items.map((it, i) => (
+                <button
+                  key={it.full}
+                  ref={(el) => {
+                    itemRefs.current[i] = el;
+                  }}
+                  type="button"
+                  onClick={() => setOpen(it.full)}
+                  aria-label="Открыть изображение на весь экран"
+                  className="group absolute left-1/2 top-1/2 overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                  style={{
+                    width: cardW,
+                    height: cardH(i),
+                    marginLeft: -cardW / 2,
+                    marginTop: -cardH(i) / 2,
+                    transform: staticTransform(i),
+                    opacity: reduced ? 1 : 0,
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={it.tile}
+                    alt=""
+                    draggable={false}
+                    className="h-full w-full select-none object-cover transition-[filter] duration-300 group-hover:brightness-110"
+                  />
+                </button>
+              ))}
+          </div>
         </div>
 
         <h1
