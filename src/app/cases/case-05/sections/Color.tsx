@@ -21,6 +21,8 @@ import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C5 } from "../i18n";
 
 const A = "/cases/case-05/sections";
 
@@ -219,6 +221,7 @@ function Tile({ s }: { s: Swatch }) {
 export default function Color() {
   const scope = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const t = C5[useLang()];
 
   useGSAP(
     () => {
@@ -274,18 +277,15 @@ export default function Color() {
       {/* Дисплейный заголовок (Figma frame 2210:74850 → x46 / y143, 175px). */}
       <div className="absolute left-[46px] top-[143px] flex items-baseline gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
         <span className="text-[#008cff]">05</span>
-        <span className="text-[#121212]">цвет</span>
+        <span className="text-[#121212]">{t.colorHeading}</span>
       </div>
 
       <div className="absolute left-[46px] top-[364px] flex w-[668px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
         <p>
-          Цветовая палитра определялась брифом: в иллюстрации нужно было использовать фирменные
-          цвета Авто.ру и Т-Банка — красный и жёлтый. Они стали основой цветового решения всей
-          композиции.
+          {t.colorPara1}
         </p>
         <p>
-          Главным цветом DeLorean стал фирменный красный Авто.ру — #E60000. Он выделил автомобиль
-          как центральный объект и помог сохранить его выразительность даже в небольшом формате.
+          {t.colorPara2}
         </p>
       </div>
 
@@ -315,20 +315,16 @@ export default function Color() {
             {/* Дисплейный заголовок «05 / ЦВЕТ» (Frame 2828:45403, 734×175). */}
             <div className="flex shrink-0 items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-none tracking-[5.25px]">
               <span className="text-[#008cff]">05</span>
-              <span className="text-[#121212]">цвет</span>
+              <span className="text-[#121212]">{t.colorHeading}</span>
             </div>
 
             {/* 2 абзаца (Frame 2828:45407, w-594). */}
             <div className="flex w-[594px] shrink-0 flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               <p>
-                Цветовая палитра определялась брифом: в иллюстрации нужно было использовать фирменные
-                цвета Авто.ру и Т-Банка — красный и жёлтый. Они стали основой цветового решения всей
-                композиции.
+                {t.colorPara1}
               </p>
               <p>
-                Главным цветом DeLorean стал фирменный красный Авто.ру — #E60000. Он выделил
-                автомобиль как центральный объект и помог сохранить его выразительность даже в
-                небольшом формате.
+                {t.colorPara2}
               </p>
             </div>
 
@@ -377,22 +373,16 @@ export default function Color() {
             {/* Дисплейный заголовок «05 / ЦВЕТ» (Frame 2834:52978), 100px inline. */}
             <div className="flex shrink-0 items-center gap-[24px] whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-none tracking-[3px]">
               <span className="text-[#008cff]">05</span>
-              <span className="text-[#121212]">цвет</span>
+              <span className="text-[#121212]">{t.colorHeading}</span>
             </div>
 
             {/* 2 абзаца (Frame 2834:52982). */}
             <div className="flex w-[776px] shrink-0 flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               <p className="w-[760px]">
-                Цветовая палитра определялась брифом: в иллюстрации нужно было использовать фирменные
-                цвета Авто.ру и Т-Банка — красный и жёлтый. Они стали основой цветового решения всей
-                композиции.
+                {t.colorPara1}
               </p>
               <p className="w-[776px] whitespace-pre-wrap">
-                Главным цветом DeLorean стал фирменный красный Авто.ру — #E60000. Он выделил
-                автомобиль{" "}
-                <br />
-                как центральный объект и помог сохранить его выразительность даже в небольшом
-                формате.
+                {t.colorPara2}
               </p>
             </div>
 
@@ -430,18 +420,14 @@ export default function Color() {
             <div className="flex w-[335px] shrink-0 flex-col items-start gap-[12px] [word-break:break-word]">
               <div className="flex items-start gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase">
                 <span className="leading-none text-[#008cff]">05</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">цвет</span>
+                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.colorHeading}</span>
               </div>
               <div className="flex w-full flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                 <p>
-                  Цветовая палитра определялась брифом: в иллюстрации нужно было использовать
-                  фирменные цвета Авто.ру и Т-Банка — красный и жёлтый. Они стали основой цветового
-                  решения всей композиции.
+                  {t.colorPara1}
                 </p>
                 <p className="whitespace-pre-wrap">
-                  Главным цветом DeLorean стал фирменный красный Авто.ру — #E60000. Он выделил
-                  автомобиль как центральный объект{" "}
-                  <br />и помог сохранить его выразительность даже в небольшом формате.
+                  {t.colorPara2}
                 </p>
               </div>
             </div>

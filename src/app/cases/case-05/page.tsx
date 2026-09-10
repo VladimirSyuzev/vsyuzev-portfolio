@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
@@ -9,8 +11,11 @@ import Concept from "./sections/Concept";
 import Details from "./sections/Details";
 import Color from "./sections/Color";
 import Result from "./sections/Result";
+import { useLang } from "@/lib/lang";
+import { CASES } from "@/lib/cases-data";
+import { C5 } from "./i18n";
 
-// Кейс 005 «Карты для пэтролхэдов» (Авто.ру × Т-Банк, иллюстрация карты
+// Кейс 005 «{title}» (Авто.ру × Т-Банк, иллюстрация карты
 // DeLorean в духе Mad Max) — собран 1:1 из Figma (frame 2210:74380) по
 // образцу кейсов 001–004: реальный DOM с настоящим текстом, векторные
 // доодлы — SVG/прозрачный PNG, фото и иллюстрации — растровые ассеты.
@@ -25,6 +30,9 @@ import Result from "./sections/Result";
 const CASE = "/cases/case-05/sections";
 
 export default function Case05Page() {
+  const lang = useLang();
+  const t = C5[lang];
+  const title = lang === "en" ? CASES[4].titleEn : CASES[4].title;
   return (
     <div className="flex w-full flex-col items-center overflow-x-clip">
       <Header />
@@ -45,7 +53,7 @@ export default function Case05Page() {
                 />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Четыре лимитированные карты Т-Банка с иллюстрациями культовых автомобилей"
+                  alt=""
                   className="absolute inset-0 size-full object-cover"
                   src={`${CASE}/cover-cards.jpg`}
                 />
@@ -56,8 +64,7 @@ export default function Case05Page() {
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
               <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                Карты <br />
-                для пэтролхэдов
+                {title}
               </p>
               <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
                 005
@@ -66,25 +73,21 @@ export default function Case05Page() {
           </div>
 
           <div className="relative mx-auto w-[1440px]" style={{ height: 320 }}>
-            <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
-            </p>
+            <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">{t.aboutHeading}</p>
             <p className="absolute left-[46px] top-[149px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              В рамках коллаборации Авто.ру и Т-Банка была создана серия лимитированных банковских
-              карт, посвящённых культовым автомобилям.
+              {t.aboutPara1}
             </p>
             <p className="absolute left-[46px] top-[189px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              К проекту пригласили четырёх иллюстраторов. Каждый получил один легендарный автомобиль
-              и должен был переосмыслить его через собственный визуальный язык.
+              {t.aboutPara2}
             </p>
 
             <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Иллюстратор</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
             </div>
             <div className="absolute left-[1236px] top-[149px] flex w-[130px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Авто.ру и Т-Банк</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
             </div>
 
             <Reveal variant="line" delay={0.25} className="absolute left-[1078px] top-[194px] h-[24px] w-[294px]">
@@ -102,7 +105,7 @@ export default function Case05Page() {
             <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Лимитированные карты Т-Банка с иллюстрациями культовых автомобилей на красном фоне"
+                alt=""
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-1280.jpg`}
               />
@@ -114,8 +117,7 @@ export default function Case05Page() {
                 005
               </p>
               <p className="absolute left-[40px] top-[631px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                Карты <br />
-                для пэтролхэдов
+                {title}
               </p>
             </div>
           </FullBleedScale>
@@ -125,28 +127,24 @@ export default function Case05Page() {
           <FullBleedScale width={1280} height={249} mode="grow" className="w-full">
             <div className="relative flex h-[249px] w-[1280px] flex-col items-start gap-[24px] bg-[#fafafa] px-[40px] py-[64px]">
               <div className="flex w-[1199px] flex-col items-start gap-[12px] [word-break:break-word]">
-                <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-                  О ПРОЕКТЕ
-                </p>
+                <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">{t.aboutHeading}</p>
                 <div className="flex w-full items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[592px] flex-col items-start gap-[6px] text-[#121212]">
                     <p className="opacity-70">
-                      В рамках коллаборации Авто.ру и Т-Банка была создана серия лимитированных
-                      банковских карт, посвящённых культовым автомобилям.
+                      {t.aboutPara1}
                     </p>
                     <p className="opacity-70">
-                      К проекту пригласили четырёх иллюстраторов. Каждый получил один легендарный
-                      автомобиль и должен был переосмыслить его через собственный визуальный язык.
+                      {t.aboutPara2}
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap text-[#121212]">
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Позиция</p>
-                      <p className="opacity-70">Иллюстратор</p>
+                      <p className="font-medium uppercase">{t.metaRole}</p>
+                      <p className="opacity-70">{t.metaRoleValue}</p>
                     </div>
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Клиент</p>
-                      <p className="opacity-70">Авто.ру и Т-Банк</p>
+                      <p className="font-medium uppercase">{t.metaClient}</p>
+                      <p className="opacity-70">{t.metaClientValue}</p>
                     </div>
                   </div>
                 </div>
@@ -175,7 +173,7 @@ export default function Case05Page() {
             <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Четыре лимитированные карты Т-Банка с иллюстрациями культовых автомобилей на красном фоне"
+                alt=""
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-834.jpg`}
               />
@@ -184,8 +182,7 @@ export default function Case05Page() {
               <div className="absolute left-[40px] top-[66px] flex w-[760px] flex-col gap-[457px] font-heading font-bold leading-[1.2] text-white">
                 <span className="text-[100px] tracking-[3px] opacity-60">005</span>
                 <span className="whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                  Карты{" "}
-                  <br />для пэтролхэдов
+                  {title}
                 </span>
               </div>
             </div>
@@ -197,24 +194,20 @@ export default function Case05Page() {
           <FullBleedScale width={834} height={316} mode="grow" className="w-full">
             <div className="relative flex h-[316px] w-[834px] flex-col items-start bg-[#fafafa] px-[28px] py-[72px]">
               <div className="flex w-[778px] flex-col items-start gap-[12px] [word-break:break-word]">
-                <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-                  О ПРОЕКТЕ
-                </p>
+                <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">{t.aboutHeading}</p>
                 <div className="flex w-full items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[383px] flex-col items-start gap-[6px] text-[#121212]">
                     <p className="opacity-70">
-                      В рамках коллаборации Авто.ру и Т-Банка была создана серия лимитированных
-                      банковских карт, посвящённых культовым автомобилям.
+                      {t.aboutPara1}
                     </p>
                     <p className="opacity-70">
-                      К проекту пригласили четырёх иллюстраторов. Каждый получил один легендарный
-                      автомобиль и должен был переосмыслить его через собственный визуальный язык.
+                      {t.aboutPara2}
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap text-[#121212]">
                     <div className="relative flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Позиция</p>
-                      <p className="opacity-70">Иллюстратор</p>
+                      <p className="font-medium uppercase">{t.metaRole}</p>
+                      <p className="opacity-70">{t.metaRoleValue}</p>
                       {/* Декор-линия под мета (Vector 234257363, node 2885:14358) —
                           внутри колонки «Позиция» (0, 45), 249×7, тянется под обе
                           колонки. */}
@@ -230,8 +223,8 @@ export default function Case05Page() {
                       </Reveal>
                     </div>
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Клиент</p>
-                      <p className="opacity-70">Авто.ру и Т-Банк</p>
+                      <p className="font-medium uppercase">{t.metaClient}</p>
+                      <p className="opacity-70">{t.metaClientValue}</p>
                     </div>
                   </div>
                 </div>
@@ -248,7 +241,7 @@ export default function Case05Page() {
             <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Лимитированные карты Т-Банка с иллюстрациями культовых автомобилей на биллборде"
+                alt=""
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-375.jpg`}
               />
@@ -256,8 +249,7 @@ export default function Case05Page() {
                 005
               </p>
               <p className="absolute left-[20px] top-[250px] w-[335px] whitespace-pre-wrap font-heading text-[26px] font-bold uppercase leading-[1.15] tracking-[0.16px] text-white">
-                Карты <br />
-                для пэтролхэдов
+                {title}
               </p>
             </div>
           </FullBleedScale>
@@ -267,28 +259,24 @@ export default function Case05Page() {
           <FullBleedScale width={375} height={432} mode="grow" className="w-full">
             <div className="flex h-[432px] w-[375px] flex-col items-start gap-[32px] bg-[#fafafa] px-[20px] py-[64px] [word-break:break-word]">
               <div className="flex w-[335px] flex-col items-start gap-[12px] text-[#121212]">
-                <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-                  О ПРОЕКТЕ
-                </p>
+                <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">{t.aboutHeading}</p>
                 <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px]">
                   <p className="w-[335px] opacity-70">
-                    В рамках коллаборации Авто.ру и Т-Банка была создана серия лимитированных
-                    банковских карт, посвящённых культовым автомобилям.
+                    {t.aboutPara1}
                   </p>
                   <p className="w-[335px] opacity-70">
-                    К проекту пригласили четырёх иллюстраторов. Каждый получил один легендарный
-                    автомобиль и должен был переосмыслить его через собственный визуальный язык.
+                    {t.aboutPara2}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-[40px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="font-medium uppercase">Позиция</p>
-                  <p className="whitespace-nowrap opacity-70">Иллюстратор</p>
+                  <p className="font-medium uppercase">{t.metaRole}</p>
+                  <p className="whitespace-nowrap opacity-70">{t.metaRoleValue}</p>
                 </div>
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="font-medium uppercase">Клиент</p>
-                  <p className="opacity-70">Авто.ру и Т-Банк</p>
+                  <p className="font-medium uppercase">{t.metaClient}</p>
+                  <p className="opacity-70">{t.metaClientValue}</p>
                 </div>
               </div>
             </div>
@@ -322,25 +310,25 @@ export default function Case05Page() {
       <div className="w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt=""
           className="hidden w-full xl:block"
           src={`${CASE}/mockup.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt=""
           className="hidden w-full lg:block xl:hidden"
           src={`${CASE}/mockup-1280.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt=""
           className="hidden w-full sm:block lg:hidden"
           src={`${CASE}/mockup-834.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt=""
           className="block w-full sm:hidden"
           src={`${CASE}/mockup-375.jpg`}
         />

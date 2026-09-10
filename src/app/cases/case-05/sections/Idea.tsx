@@ -20,6 +20,8 @@ import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C5 } from "../i18n";
 
 // <1440 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41047,
 // 1280×1929.546): поток flex-col gap-64 px-40 py-72, дисплейный опенер
@@ -46,7 +48,6 @@ const CONCEPTS = [
   {
     n: "001",
     title: "Mad Max DeLorean",
-    text: "Постапокалиптическая версия автомобиля, созданная для выживания в мире будущего.",
     img: "idea-1.jpg",
     top: 592,
     // Якорь по translate фонового rect экспорта (node 2284:39923): левый-
@@ -57,7 +58,6 @@ const CONCEPTS = [
   {
     n: "002",
     title: "Racing DeLorean",
-    text: "Экстремально модифицированный гоночный автомобиль с акцентом на скорость и технологии.",
     img: "idea-2.jpg",
     top: 866,
     circle: { src: "idea-circle-2.svg", left: 483, top: 822, w: 462, h: 193 },
@@ -65,7 +65,6 @@ const CONCEPTS = [
   {
     n: "003",
     title: "Classic Drift",
-    text: "Более традиционная интерпретация оригинального DeLorean в динамичном повороте.",
     img: "idea-3.jpg",
     top: 1140,
     circle: { src: "idea-circle-3.svg", left: 480, top: 1099, w: 439, h: 186 },
@@ -75,6 +74,7 @@ const CONCEPTS = [
 export default function Idea() {
   const scope = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const t = C5[useLang()];
 
   useGSAP(
     () => {
@@ -156,15 +156,14 @@ export default function Idea() {
       {/* Дисплейный заголовок (Figma frame 2210:74440 → x46 / y87, 175px). */}
       <div className="absolute left-[46px] top-[87px] flex flex-col font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
         <span className="text-[#008cff]">02</span>
-        <span className="text-[#121212]">Поиск идеи</span>
+        <span className="text-[#121212]">{t.ideaHeading}</span>
       </div>
 
       <p className="absolute left-[46px] top-[592px] w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-        Перед презентацией клиенту{" "}
-        <br />я подготовил три концепции:
+        {t.ideaLead}
       </p>
 
-      {CONCEPTS.map((c) => (
+      {CONCEPTS.map((c, i) => (
         <div key={c.n}>
           <div className="absolute left-[556px] w-[440px]" style={{ top: c.top }}>
             <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212]">
@@ -174,12 +173,12 @@ export default function Idea() {
               {c.title}
             </p>
             <p className="mt-[6px] w-[328px] text-[14px] font-normal leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {c.text}
+              {t.ideaConcepts[i]}
             </p>
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt={`Превью концепции ${c.title}`}
+            alt=""
             className="idea-img absolute left-[979px] h-[262px] w-[415px] object-cover"
             style={{ top: c.top }}
             src={`${A}/${c.img}`}
@@ -202,8 +201,7 @@ export default function Idea() {
 
       {/* Выбор команды (Figma node 2215:79909 → x556 / y1414, w330). */}
       <p className="absolute left-[556px] top-[1414px] w-[330px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Команда выбрала первую концепцию. Она позволяла уйти от привычного образа машины времени и
-        показать легендарный автомобиль в совершенно новом контексте.
+        {t.ideaTeamChoice}
       </p>
       {/* Подчёркивание (Figma node 2411:4291 → x621 / y1480, 293×34).
           Включено в общий цикл овалов: «дорисовывается» слева направо сразу
@@ -223,14 +221,13 @@ export default function Idea() {
             {/* Дисплейный опенер «02 / ПОИСК ИДЕИ» стопкой, 152px. */}
             <div className="flex w-[1042px] shrink-0 flex-col whitespace-nowrap font-heading text-[152px] font-bold uppercase leading-none tracking-[4.56px]">
               <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">Поиск идеи</span>
+              <span className="text-[#121212]">{t.ideaHeading}</span>
             </div>
 
             {/* Контент (Frame 2833:52933, w-1200). */}
             <div className="relative w-[1200px] shrink-0" style={{ height: 1246.546 }}>
               <p className="absolute left-0 top-0 w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-                Перед презентацией клиенту{" "}
-                <br />я подготовил три концепции:
+                {t.ideaLead}
               </p>
 
               <div className="absolute left-0 top-[58px] flex w-[1200px] flex-col gap-[12px]">
@@ -244,12 +241,12 @@ export default function Idea() {
                         </p>
                       </div>
                       <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
-                        {c.text}
+                        {t.ideaConcepts[i]}
                       </p>
                     </div>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      alt={`Карта концепции ${c.title}`}
+                      alt=""
                       className="block h-[374.849px] w-[594px] shrink-0 max-w-none rounded-[21.9px] object-cover"
                       src={`${A}/idea-card-${i + 1}-1280.jpg`}
                     />
@@ -277,10 +274,7 @@ export default function Idea() {
                 контексте.», а не «контексте.»). */}
             <div className="relative w-[593px] shrink-0">
               <p className="whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Команда выбрала первую концепцию. Она позволяла уйти от привычного{" "}
-                <br />
-                образа машины времени и показать легендарный автомобиль в совершенно{" "}
-                <br />новом контексте.
+                {t.ideaTeamChoice}
               </p>
               <Reveal
                 variant="line"
@@ -306,14 +300,13 @@ export default function Idea() {
             {/* Дисплейный опенер «02 / Поиск идеи» стопкой, 100px. */}
             <div className="flex w-[686px] shrink-0 flex-col whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-none tracking-[3px]">
               <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">Поиск идеи</span>
+              <span className="text-[#121212]">{t.ideaHeading}</span>
             </div>
 
             {/* Контент (Frame 2833:52934, w-full, gap 24). */}
             <div className="flex w-[778px] shrink-0 flex-col items-start gap-[24px]">
               <p className="w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-                Перед презентацией клиенту{" "}
-                <br />я подготовил три концепции:
+                {t.ideaLead}
               </p>
 
               <div className="flex w-full flex-col gap-[12px]">
@@ -327,12 +320,12 @@ export default function Idea() {
                         </p>
                       </div>
                       <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                        {c.text}
+                        {t.ideaConcepts[i]}
                       </p>
                     </div>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      alt={`Карта концепции ${c.title}`}
+                      alt=""
                       className="block h-[241.774px] w-[383px] shrink-0 max-w-none object-cover"
                       src={`${A}/idea-card-${i + 1}-834.png`}
                     />
@@ -362,9 +355,7 @@ export default function Idea() {
                 подчёркивание (Vector 2835:53400, 53.07/1276.184, 366.171×15.803). */}
             <div className="relative w-[383px] shrink-0">
               <p className="whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Команда выбрала первую концепцию. Она позволяла уйти от привычного образа машины
-                времени{" "}
-                <br />и показать легендарный автомобиль в совершенно новом контексте.
+                {t.ideaTeamChoice}
               </p>
               <Reveal
                 variant="line"
@@ -392,12 +383,11 @@ export default function Idea() {
             {/* Дисплейный опенер «02 / Поиск идеи» стопкой, 26px. */}
             <div className="flex shrink-0 flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase">
               <span className="leading-none text-[#008cff]">02</span>
-              <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">Поиск идеи</span>
+              <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.ideaHeading}</span>
             </div>
 
             <p className="w-[328px] shrink-0 whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-              Перед презентацией клиенту{" "}
-              <br />я подготовил три концепции:
+              {t.ideaLead}
             </p>
 
             <div className="flex w-[335px] shrink-0 flex-col items-start gap-[32px]">
@@ -411,12 +401,12 @@ export default function Idea() {
                       </p>
                     </div>
                     <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
-                      {c.text}
+                      {t.ideaConcepts[i]}
                     </p>
                   </div>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    alt={`Карта концепции ${c.title}`}
+                    alt=""
                     className="block h-[211.4px] w-[335px] shrink-0 max-w-none rounded-[12px] object-cover"
                     src={`${A}/idea-card-${i + 1}-375.jpg`}
                   />
@@ -429,8 +419,7 @@ export default function Idea() {
                 маркер-подчёркивание (ассет idea-underline-4-834.svg). */}
             <div className="relative w-[335px] shrink-0">
               <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Команда выбрала первую концепцию. Она позволяла уйти от привычного образа машины
-                времени и показать легендарный автомобиль в совершенно новом контексте.
+                {t.ideaTeamChoice}
               </p>
               <Reveal
                 variant="line"

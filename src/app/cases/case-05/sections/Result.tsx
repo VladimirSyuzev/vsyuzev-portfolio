@@ -5,6 +5,8 @@ import { gsap, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import FullBleedScale from "@/components/FullBleedScale";
 import VariantsCarousel from "@/components/VariantsCarousel";
+import { useLang } from "@/lib/lang";
+import { C5 } from "../i18n";
 
 // 06 Финальный результат — 1:1 из актуальной Figma (node 2210:78310,
 // высота 1265). Заголовок «06 / ФИНАЛЬНЫЙ РЕЗУЛЬТАТ» и два абзаца слева,
@@ -22,10 +24,10 @@ import VariantsCarousel from "@/components/VariantsCarousel";
 const A = "/cases/case-05/sections";
 
 const CARDS = [
-  { src: `${A}/result-var-1.png`, w: 1265, h: 798, alt: "Готовая карта Mad Max DeLorean" },
-  { src: `${A}/result-var-2.png`, w: 1270, h: 798, alt: "Карта в интерьере проекта" },
-  { src: `${A}/result-var-3.png`, w: 1271, h: 798, alt: "Карта среди других карт коллекции" },
-  { src: `${A}/result-var-4.png`, w: 1267, h: 798, alt: "Фрагмент финальной иллюстрации" },
+  { src: `${A}/result-var-1.png`, w: 1265, h: 798, alt: "" },
+  { src: `${A}/result-var-2.png`, w: 1270, h: 798, alt: "" },
+  { src: `${A}/result-var-3.png`, w: 1271, h: 798, alt: "" },
+  { src: `${A}/result-var-4.png`, w: 1267, h: 798, alt: "" },
 ];
 
 export default function Result() {
@@ -34,6 +36,7 @@ export default function Result() {
   const starFirst = useRef(true);
   const reduced = useReducedMotion();
   const [, setIdx] = useState(0);
+  const t = C5[useLang()];
 
   // Пульс звёздочки при каждом переключении карточки (обе ветки —
   // видима только одна, анимация скрытой безвредна).
@@ -67,16 +70,14 @@ export default function Result() {
       <div className="relative mx-auto h-full w-[1440px]">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">06</p>
-          <p className="text-[#121212]">Финальный результат</p>
+          <p className="text-[#121212]">{t.resultHeading}</p>
         </div>
 
         <p className="absolute left-[46px] top-[181px] w-[496px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          Вместо очередной интерпретации машины времени появился новый образ культового автомобиля.
+          {t.resultPara1}
         </p>
         <p className="absolute left-[46px] top-[221px] w-[496px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          DeLorean сохранил узнаваемый силуэт, но оказался в другой реальности — мире, где главной
-          ценностью становится не возможность путешествовать во времени, а способность выжить и
-          продолжать движение вперёд.
+          {t.resultPara2}
         </p>
 
         {/* Доодл-«звёздочка» (Figma node 2284:39991 → x1009 / y270, 158×125). */}
@@ -94,7 +95,7 @@ export default function Result() {
         </Reveal>
         {/* Мысль (Figma node 2412:4341 → x386 / y955.7, w668, по центру). */}
         <p className="absolute left-1/2 top-[956px] w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
+          {t.resultQuote}
         </p>
       </div>
 
@@ -112,7 +113,7 @@ export default function Result() {
               style={{ left: 40, top: 72 }}
             >
               <span className="text-[#008cff]">06</span>
-              <span className="text-[#121212]">Финальный результат</span>
+              <span className="text-[#121212]">{t.resultHeading}</span>
             </div>
 
             <div
@@ -120,14 +121,10 @@ export default function Result() {
               style={{ left: 40, top: 119 }}
             >
               <p className="whitespace-pre-wrap opacity-70">
-                Вместо очередной интерпретации машины времени появился новый образ{" "}
-                <br />культового автомобиля.
+                {t.resultPara1}
               </p>
               <p className="whitespace-pre-wrap opacity-70">
-                DeLorean сохранил узнаваемый силуэт, но оказался в другой реальности — мире,{" "}
-                <br />
-                где главной ценностью становится не возможность путешествовать во времени,{" "}
-                <br />а способность выжить и продолжать движение вперёд.
+                {t.resultPara2}
               </p>
             </div>
 
@@ -169,7 +166,7 @@ export default function Result() {
               className="absolute left-1/2 w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70"
               style={{ top: 821 }}
             >
-              Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
+              {t.resultQuote}
             </p>
           </div>
         </FullBleedScale>
@@ -185,7 +182,7 @@ export default function Result() {
               style={{ left: 28, top: 72 }}
             >
               <span className="text-[#008cff]">06</span>
-              <span className="text-[#121212]">Финальный результат</span>
+              <span className="text-[#121212]">{t.resultHeading}</span>
             </div>
 
             <div
@@ -193,13 +190,10 @@ export default function Result() {
               style={{ left: 28, top: 119 }}
             >
               <p className="opacity-70">
-                Вместо очередной интерпретации машины времени появился новый образ культового
-                автомобиля.
+                {t.resultPara1}
               </p>
               <p className="opacity-70">
-                DeLorean сохранил узнаваемый силуэт, но оказался в другой реальности — мире, где
-                главной ценностью становится не возможность путешествовать во времени, а способность
-                выжить и продолжать движение вперёд.
+                {t.resultPara2}
               </p>
             </div>
 
@@ -214,8 +208,7 @@ export default function Result() {
               style={{ left: 28, top: 703 }}
             >
               <p className="w-[461px] whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
-                Узнаваемый автомобиль получил историю, которую раньше{" "}
-                <br />с ним не связывали
+                {t.resultQuote}
               </p>
               <Reveal
                 variant="line"
@@ -243,19 +236,14 @@ export default function Result() {
             <div className="absolute left-[20px] top-[64px] flex w-[335px] flex-col items-start gap-[16px] [word-break:break-word]">
               <div className="flex flex-col font-heading text-[26px] font-bold uppercase">
                 <span className="leading-none text-[#008cff]">06</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">Финальный результат</span>
+                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.resultHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <p className="opacity-70">
-                  Вместо очередной интерпретации машины времени появился новый образ культового
-                  автомобиля.
+                  {t.resultPara1}
                 </p>
                 <p className="whitespace-pre-wrap opacity-70">
-                  DeLorean сохранил узнаваемый силуэт,{" "}
-                  <br />
-                  но оказался в другой реальности — мире, где главной ценностью становится не
-                  возможность путешествовать во времени, а способность выжить и продолжать движение
-                  вперёд.
+                  {t.resultPara2}
                 </p>
               </div>
             </div>
@@ -279,8 +267,7 @@ export default function Result() {
             <div className="absolute left-1/2 top-[627px] -translate-x-1/2 pb-[32px] pt-[48px]">
               <div className="relative flex items-center justify-center">
                 <p className="relative z-10 w-[287px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 [word-break:break-word]">
-                  Узнаваемый автомобиль получил историю, которую раньше{" "}
-                  <br />с ним не связывали
+                  {t.resultQuote}
                 </p>
                 {/* Обводка-эллипс (Vector 234257399, node 2836:54217) —
                     центрируется ровно по тексту (translate -50/-50). */}

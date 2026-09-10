@@ -1,4 +1,8 @@
+"use client";
+
 import Reveal from "@/components/Reveal";
+import { useLang } from "@/lib/lang";
+import { C5 } from "../i18n";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 03 Концепция — 1:1 из Figma (node 2210:74460, высота 900). Тёмный
@@ -12,26 +16,24 @@ import FullBleedScale from "@/components/FullBleedScale";
 const A = "/cases/case-05/sections";
 
 export default function Concept() {
+  const t = C5[useLang()];
   return (
     <>
       <div className="hidden w-full overflow-clip bg-[#121212] xl:block">
       <div className="relative mx-auto h-[900px] w-[1440px]">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">03</p>
-          <p className="text-white">Концепция</p>
+          <p className="text-white">{t.conceptHeading}</p>
         </div>
 
         <p className="absolute left-[46px] top-[181px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          DeLorean настолько тесно связан с образом машины времени, что большинство интерпретаций
-          неизбежно отсылают к «Назад в будущее». Мне было интересно разрушить эту ассоциацию и
-          поместить автомобиль в постапокалиптическую вселенную.
+          {t.conceptPara1}
         </p>
         <p className="absolute left-[726px] top-[181px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Я представил, как DeLorean мог бы выглядеть после десятилетий жизни в пустошах: с
-          внедорожными колёсами, канистрами, силовым обвесом и солнечными панелями.
+          {t.conceptPara2}
         </p>
         <p className="absolute left-[726px] top-[221px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          При этом главным условием оставалось сохранить узнаваемый силуэт оригинального автомобиля.
+          {t.conceptPara3}
         </p>
 
         {/* Доодл-стрелка (Figma node 2284:39959). Геометрия и viewBox — из
@@ -47,13 +49,13 @@ export default function Concept() {
         {/* Фото + скетч (Figma frames 2223:80174 / 2215:79911 → y318, 668×427). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Реальный DeLorean DMC-12 с открытой дверью в студийном свете"
+          alt=""
           className="absolute left-[46px] top-[318px] h-[427px] w-[668px] object-cover"
           src={`${A}/concept-photo.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Скетч постапокалиптического DeLorean с внедорожными колёсами и солнечными панелями"
+          alt=""
           className="absolute left-[726px] top-[318px] h-[427px] w-[668px] object-cover"
           src={`${A}/concept-sketch.jpg`}
         />
@@ -69,22 +71,18 @@ export default function Concept() {
             <div className="flex w-full shrink-0 flex-col gap-[12px] [word-break:break-word]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">03</span>
-                <span className="text-white">Концепция</span>
+                <span className="text-white">{t.conceptHeading}</span>
               </div>
               <div className="flex w-full items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <p className="w-[594px] opacity-70">
-                  DeLorean настолько тесно связан с образом машины времени, что большинство
-                  интерпретаций неизбежно отсылают к «Назад в будущее». Мне было интересно разрушить
-                  эту ассоциацию и поместить автомобиль в постапокалиптическую вселенную.
+                  {t.conceptPara1}
                 </p>
                 <div className="flex w-[594px] flex-col gap-[6px]">
                   <p className="whitespace-pre-wrap opacity-70">
-                    Я представил, как DeLorean мог бы выглядеть после десятилетий жизни в пустошах:{" "}
-                    <br />с внедорожными колёсами, канистрами, силовым обвесом и солнечными панелями.
+                    {t.conceptPara2}
                   </p>
                   <p className="opacity-70">
-                    При этом главным условием оставалось сохранить узнаваемый силуэт оригинального
-                    автомобиля.
+                    {t.conceptPara3}
                   </p>
                 </div>
               </div>
@@ -94,13 +92,13 @@ export default function Concept() {
             <div className="relative w-full shrink-0" style={{ height: 384.237 }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Реальный DeLorean DMC-12 с открытыми дверями в студийном свете"
+                alt=""
                 className="absolute left-0 top-[0.31px] block h-[384px] w-[594px] max-w-none object-cover"
                 src={`${A}/concept-img-1-1280.jpg`}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Скетч постапокалиптического DeLorean с внедорожными колёсами, солнечными панелями и выжившим"
+                alt=""
                 className="absolute left-[606px] top-[0.31px] block h-[384px] w-[594px] max-w-none object-cover"
                 src={`${A}/concept-img-2-1280.jpg`}
               />
@@ -118,23 +116,18 @@ export default function Concept() {
             <div className="flex w-full shrink-0 flex-col gap-[12px] [word-break:break-word]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">03</span>
-                <span className="text-white">Концепция</span>
+                <span className="text-white">{t.conceptHeading}</span>
               </div>
               <div className="flex w-full items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <p className="w-[383px] opacity-70">
-                  DeLorean настолько тесно связан с образом машины времени, что большинство
-                  интерпретаций неизбежно отсылают к «Назад в будущее». Мне было интересно разрушить
-                  эту ассоциацию и поместить автомобиль в постапокалиптическую вселенную.
+                  {t.conceptPara1}
                 </p>
                 <div className="flex w-[383px] flex-col gap-[6px]">
                   <p className="whitespace-pre-wrap opacity-70">
-                    Я представил, как DeLorean мог бы выглядеть после десятилетий жизни в пустошах: с
-                    внедорожными колёсами, канистрами, силовым обвесом{" "}
-                    <br />и солнечными панелями.
+                    {t.conceptPara2}
                   </p>
                   <p className="opacity-70">
-                    При этом главным условием оставалось сохранить узнаваемый силуэт оригинального
-                    автомобиля.
+                    {t.conceptPara3}
                   </p>
                 </div>
               </div>
@@ -145,7 +138,7 @@ export default function Concept() {
               <div className="h-[247.596px] w-[383px] shrink-0 overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Реальный DeLorean DMC-12 с открытыми дверями в студийном свете"
+                  alt=""
                   className="block size-full object-cover"
                   src={`${A}/concept-img-1-834.jpg`}
                 />
@@ -153,7 +146,7 @@ export default function Concept() {
               <div className="h-[249px] w-[383px] shrink-0 overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Скетч постапокалиптического DeLorean с внедорожными колёсами, солнечными панелями и выжившим"
+                  alt=""
                   className="block size-full object-cover"
                   src={`${A}/concept-img-2-834.jpg`}
                 />
@@ -173,22 +166,18 @@ export default function Concept() {
             <div className="flex shrink-0 flex-col items-start gap-[12px] px-[20px] [word-break:break-word]">
               <div className="flex items-start gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase">
                 <span className="leading-none text-[#008cff]">03</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-white">Концепция</span>
+                <span className="leading-[1.1] tracking-[0.78px] text-white">{t.conceptHeading}</span>
               </div>
               <div className="flex w-[335px] flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <p className="opacity-70">
-                  DeLorean настолько тесно связан с образом машины времени, что большинство
-                  интерпретаций неизбежно отсылают к «Назад в будущее». Мне было интересно разрушить
-                  эту ассоциацию и поместить автомобиль в постапокалиптическую вселенную.
+                  {t.conceptPara1}
                 </p>
                 <div className="flex flex-col gap-[6px]">
                   <p className="whitespace-pre-wrap opacity-70">
-                    Я представил, как DeLorean мог бы выглядеть после десятилетий жизни в пустошах:{" "}
-                    <br />с внедорожными колёсами, канистрами, силовым обвесом и солнечными панелями.
+                    {t.conceptPara2}
                   </p>
                   <p className="opacity-70">
-                    При этом главным условием оставалось сохранить узнаваемый силуэт оригинального
-                    автомобиля.
+                    {t.conceptPara3}
                   </p>
                 </div>
               </div>
@@ -199,7 +188,7 @@ export default function Concept() {
               <div className="h-[216.566px] w-[335px] overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Реальный DeLorean DMC-12 с открытыми дверями в студийном свете"
+                  alt=""
                   className="block size-full object-cover"
                   src={`${A}/concept-img-1-375.jpg`}
                 />
@@ -207,7 +196,7 @@ export default function Concept() {
               <div className="h-[217.794px] w-[335px] overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Скетч постапокалиптического DeLorean с внедорожными колёсами, солнечными панелями и выжившим"
+                  alt=""
                   className="block size-full object-cover"
                   src={`${A}/concept-img-2-375.jpg`}
                 />
