@@ -1,8 +1,13 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
 import Reveal from "@/components/Reveal";
+import { useLang } from "@/lib/lang";
+import { CASES } from "@/lib/cases-data";
+import { C2 } from "./i18n";
 import Task from "./sections/Task";
 import Research from "./sections/Research";
 import VisualLanguage from "./sections/VisualLanguage";
@@ -23,6 +28,9 @@ import Summary from "./sections/Summary";
 // - Блоки-мокапы (Мокап1/Мокап2) — цельное изображение, пропорционально
 //   растягивается на всю ширину экрана (img w-full).
 export default function Case02Page() {
+  const lang = useLang();
+  const t = C2[lang];
+  const title = lang === "en" ? CASES[1].titleEn : CASES[1].title;
   return (
     <div className="flex w-full flex-col items-center">
       <Header />
@@ -41,7 +49,7 @@ export default function Case02Page() {
                 <div className="absolute left-0 top-[-221px] h-[1095.464px] w-[1642.995px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    alt="Сайт Yandex Cloud на экране ноутбука"
+                    alt=""
                     className="absolute inset-0 size-full object-cover"
                     src="/cases/case-02/sections/cover-mockup.png"
                   />
@@ -53,8 +61,7 @@ export default function Case02Page() {
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-full max-w-[1440px] px-[var(--grid-margin)] xl:px-0">
               <p className="absolute bottom-[16%] left-[var(--grid-margin)] w-[80%] max-w-[1180px] whitespace-pre-wrap font-heading text-[clamp(1.9rem,6vw,52px)] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white xl:bottom-[138px] xl:left-[46px] xl:!text-[52px]">
-                ИКОНКИ <br />
-                YANDEX CLOUD
+                {title}
               </p>
               <p className="absolute left-[var(--grid-margin)] top-[-2px] whitespace-nowrap font-heading text-[clamp(4rem,14vw,175px)] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60 xl:left-[40px] xl:!text-[175px]">
                 002
@@ -76,7 +83,7 @@ export default function Case02Page() {
           <div className="relative h-[356px] w-full overflow-clip bg-[#121212] sm:h-[834px] lg:h-[828px] xl:hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Сайт Yandex Cloud на экране ноутбука"
+              alt=""
               className="absolute left-[calc(50%-232.5px)] top-0 h-full w-[534px] max-w-none object-cover sm:left-[-282px] sm:top-[-90px] sm:h-[1008px] sm:w-[1512px] lg:left-[-50px] lg:top-[-134px] lg:h-[1095px] lg:w-[1643px]"
               src="/cases/case-02/sections/cover-mockup.png"
             />
@@ -91,7 +98,7 @@ export default function Case02Page() {
                 002
               </p>
               <p className="whitespace-pre-line text-[26px] leading-[1.15] tracking-[0.6px] sm:text-[52px] sm:leading-[1.2] sm:tracking-[1.04px]">
-                ИКОНКИ{"\n"}YANDEX CLOUD
+                {title}
               </p>
             </div>
           </div>
@@ -103,27 +110,25 @@ export default function Case02Page() {
         <div className="w-full max-w-[1440px] xl:relative xl:mx-auto">
           <div className="flex flex-col gap-[12px] px-[var(--grid-margin)] py-[64px] sm:py-[72px] lg:py-[56px] xl:contents">
             <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px] text-[#121212] sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[102px] xl:whitespace-nowrap xl:text-[32px]">
-              О ПРОЕКТЕ
+              {t.aboutHeading}
             </p>
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px] xl:contents">
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[382px] sm:shrink-0 lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
-              В начале 2026 года Yandex Cloud обновлял визуальный язык продукта. За три недели нашей
-              команде нужно было разработать 34 иконки в двух размерах, параллельно формируя принципы
-              нового стиля.
+              {t.aboutIntro}
             </p>
 
             <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] sm:flex-nowrap sm:gap-x-[40px] xl:contents">
               <div className="flex flex-col items-start gap-[4px] sm:w-[102px] xl:absolute xl:left-[896px] xl:top-[149px]">
-                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Lead designer</p>
+                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
               </div>
               <div className="flex flex-col items-start gap-[4px] sm:w-[98px] xl:absolute xl:left-[1066px] xl:top-[149px]">
-                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Команда</p>
-                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">1 дизайнер</p>
+                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaTeam}</p>
+                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaTeamValue}</p>
               </div>
               <div className="flex flex-col items-start gap-[4px] sm:w-[98px] xl:absolute xl:left-[1236px] xl:top-[149px]">
-                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
+                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
               </div>
 
               {/* Декор-подчёркивание под метой — reflow 834/1280 (в макете
@@ -172,7 +177,7 @@ export default function Case02Page() {
       <div className="w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Сайт Yandex Cloud Stackland на экране ноутбука"
+          alt=""
           className="block w-full"
           src="/cases/case-02/sections/mockup-1.png"
         />
@@ -184,7 +189,7 @@ export default function Case02Page() {
       <div className="w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Архитектура Yandex Cloud Stackland на экранах двух ноутбуков"
+          alt=""
           className="block w-full"
           src="/cases/case-02/sections/mockup-2.png"
         />

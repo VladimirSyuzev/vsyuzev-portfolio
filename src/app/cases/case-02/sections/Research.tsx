@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Reveal from "@/components/Reveal";
 import { useMinWidth } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C2 } from "../i18n";
 
 // 02 Исследование — на десктопе (≥1200) абсолют 1:1 из Figma (node
 // 2009:12143, высота 1065). Ниже 1200 — поток: заголовок + вводный текст
@@ -13,12 +15,11 @@ import { useMinWidth } from "@/lib/breakpoint";
 // по нажатию раскрываются до 1:1 в горизонтально-прокручиваемом окне —
 // приём один в один с «Гайдом» кейса 1 (src/app/cases/case-01/sections/Guide.tsx).
 const A = "/cases/case-02/sections";
-const CARDS_ALT =
-  "Список из 10 сервисов Yandex Cloud с метафорами, поиск формы иконок и итоговые иконки";
-
 export default function Research() {
   const sm = useMinWidth(640);
   const [open, setOpen] = useState(false);
+  const t = C2[useLang()];
+  const CARDS_ALT = "";
 
   return (
     <section className="w-full bg-[#fafafa] xl:relative xl:mx-auto xl:h-[1065px] xl:w-[1440px] xl:overflow-clip">
@@ -26,20 +27,14 @@ export default function Research() {
       <div className="flex flex-col gap-[12px] px-[var(--grid-margin)] py-[64px] sm:gap-[24px] sm:py-[72px] xl:contents">
         <div className="flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:flex-row sm:items-center sm:gap-[12px] sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[134px] xl:text-[32px]">
           <p className="text-[#008cff]">02</p>
-          <p className="text-[#121212]">Исследование</p>
+          <p className="text-[#121212]">{t.researchHeading}</p>
         </div>
 
         {/* 375: интро на всю ширину 335. 1280 (Figma 2613:16468): интро почти во
             всю ширину — п.1 ≈889, п.2 ≈1062. */}
         <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:max-w-none lg:max-w-[1062px] xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[498px]">
-          <p className="opacity-70 lg:w-[889px] lg:max-w-full">
-            Метафоры сервисов уже существовали, поэтому мы не искали новые образы, а переосмысляли
-            знакомые символы внутри нового визуального языка. Для этого анализировали предыдущую
-            библиотеку, первые примеры новых иконок и визуальные референсы.
-          </p>
-          <p className="opacity-70">
-            Главной целью было сохранить узнаваемость сервисов и привести их к единому стилю.
-          </p>
+          <p className="opacity-70 lg:w-[889px] lg:max-w-full">{t.researchPara1}</p>
+          <p className="opacity-70">{t.researchPara2}</p>
         </div>
 
         {/* Доодл-«лупа» — только на десктопе. */}
@@ -59,7 +54,7 @@ export default function Research() {
             type="button"
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
-            aria-label={open ? "Свернуть карточки исследования" : "Раскрыть карточки исследования 1:1"}
+            aria-label={t.tapToExpand}
             className={`group relative block w-full ${open ? "cursor-zoom-out" : "cursor-zoom-in"}`}
           >
             <div className={`no-scrollbar w-full ${open ? "overflow-x-auto" : "overflow-hidden"}`}>
@@ -76,7 +71,7 @@ export default function Research() {
             </div>
             {!open && (
               <span className="pointer-events-none absolute bottom-[10px] right-[10px] rounded-full bg-[#121212]/80 px-[10px] py-[4px] text-[11px] font-medium uppercase tracking-[0.22px] text-white">
-                нажмите, чтобы раскрыть
+                {t.tapToExpand}
               </span>
             )}
           </button>
