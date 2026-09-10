@@ -100,19 +100,19 @@ function ProblemContent() {
       </div>
 
       {/* Доодл-«звезда» справа сверху (Figma node 2359:4422 → 1210 / 376.70). */}
-      <div className="prob-doodle absolute left-[1210px] top-[376.7px] flex h-[191.363px] w-[200.725px] items-center justify-center">
-        <img alt="" className="h-[125px] w-[158px] max-w-none" src="/cases/case-01/sections/problem-star-doodle.svg" />
-      </div>
+      <DrawIn
+        src="/cases/case-01/sections/problem-star-doodle.svg"
+        fit="contain"
+        className="absolute left-[1210px] top-[376.7px] h-[191.363px] w-[200.725px]"
+      />
 
       {/* Стрелка-доодл под правой колонкой (Figma node 2284:39939 → 884 / 756.18). */}
-      <div className="prob-doodle absolute left-[884px] top-[756.18px] flex h-[112.796px] w-[389.623px] items-center justify-center">
-        <div className="rotate-[6.99deg]">
-          <div className="relative h-[66.502px] w-[384.386px]">
-            <div className="absolute inset-[-4.51%_-0.78%]">
-              <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/problem-arrow.svg" />
-            </div>
-          </div>
-        </div>
+      <div className="absolute left-[884px] top-[756.18px] flex h-[112.796px] w-[389.623px] items-center justify-center">
+        <DrawIn
+          src="/cases/case-01/sections/problem-arrow.svg"
+          fit="contain"
+          className="h-[66.502px] w-[384.386px] rotate-[6.99deg]"
+        />
       </div>
     </>
   );
@@ -146,9 +146,11 @@ function ScreenContent() {
         </ul>
       </div>
 
-      <div className="scr-doodle absolute left-[353px] top-[623px] h-[125px] w-[158px]">
-        <img alt="" className="block size-full max-w-none" src={`${A}/doodle-hooks.svg`} />
-      </div>
+      <DrawIn
+        src={`${A}/doodle-hooks.svg`}
+        fit="contain"
+        className="absolute left-[353px] top-[623px] h-[125px] w-[158px]"
+      />
 
       {/* Телефон + аннотация — два слоя, тот же холст, друг на друге
           (Figma node 1965:41937 → 517 / 162, 746×576). При появлении
@@ -330,14 +332,12 @@ export default function ProblemScreen() {
 
       // --- Слайд 1: появление досок + доодлов при входе блока в экран ---
       gsap.set(".prob-board", { opacity: 0, scale: 0.94 });
-      gsap.set(".prob-doodle", { opacity: 0, scale: 0.86, rotate: -5 });
       const introST = ScrollTrigger.create({
         trigger: wrapRef.current,
         start: "top 75%",
         once: true,
         onEnter: () => {
           gsap.to(".prob-board", { opacity: 1, scale: 1, duration: 0.55, ease: "siteEase", stagger: 0.1 });
-          gsap.to(".prob-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.6, ease: "siteEase", stagger: 0.12, delay: 0.15 });
         },
       });
 
@@ -346,7 +346,6 @@ export default function ProblemScreen() {
       gsap.set(".scr-bullet", { opacity: 0, x: -10 });
       gsap.set(".scr-mock", { opacity: 0, scale: 0.97 });
       gsap.set(".scr-anno", { clipPath: "inset(50% 50% 50% 50%)", opacity: 0 });
-      gsap.set(".scr-doodle", { opacity: 0, scale: 0.86, rotate: -5 });
       let screenPlayed = false;
       function playScreenIn() {
         if (screenPlayed) return;
@@ -355,8 +354,7 @@ export default function ProblemScreen() {
           .timeline({ defaults: { ease: "siteEase" } })
           .to(".scr-bullet", { opacity: 1, x: 0, duration: 0.4, stagger: 0.06, clearProps: "opacity" })
           .to(".scr-mock", { opacity: 1, scale: 1, duration: 0.5 }, "-=0.1")
-          .to(".scr-anno", { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.15")
-          .to(".scr-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.5 }, "-=0.3");
+          .to(".scr-anno", { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, duration: 0.6, ease: "power2.out" }, "-=0.15");
       }
 
       const state = { slide: 1 };

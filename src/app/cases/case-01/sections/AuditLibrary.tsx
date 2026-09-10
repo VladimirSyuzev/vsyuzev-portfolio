@@ -230,7 +230,6 @@ export default function AuditLibrary() {
         scrollTrigger: { trigger: scope.current, start: "top 72%", once: true },
       });
       tl.from(".audit-intro", { opacity: 0, x: -12, duration: 0.5, stagger: 0.05 })
-        .from(".audit-doodle", { opacity: 0, scale: 0.86, rotate: -5, duration: 0.6, stagger: 0.12 }, 0.1)
         .from(".audit-table", { opacity: 0, y: 16, duration: 0.5 }, 0.15)
         .from(
           ".audit-cell",
@@ -292,10 +291,12 @@ export default function AuditLibrary() {
 
         {/* Стрелка-доодл — на всех ширинах (по макетам). Ниже xl вписана
             над таблицей справа. */}
-        <div className="audit-doodle flex h-[90px] w-[104px] items-center justify-center self-end xl:absolute xl:left-[1255.82px] xl:top-[857px] xl:h-[161.104px] xl:w-[184.616px] xl:self-auto">
-          <div className="rotate-[14.75deg]">
-            <img alt="" className="block h-[72px] w-[91px] max-w-none xl:h-[125px] xl:w-[158px]" src={`${A}/arrow-doodle.svg`} />
-          </div>
+        <div className="flex h-[90px] w-[104px] items-center justify-center self-end xl:absolute xl:left-[1255.82px] xl:top-[857px] xl:h-[161.104px] xl:w-[184.616px] xl:self-auto">
+          <DrawIn
+            src={`${A}/arrow-doodle.svg`}
+            fit="contain"
+            className="h-[72px] w-[91px] rotate-[14.75deg] xl:h-[125px] xl:w-[158px]"
+          />
         </div>
 
         {/* Таблица аудита — настоящий DOM, 1:1 из Figma (node 1965:42569).
@@ -342,9 +343,10 @@ export default function AuditLibrary() {
 
         {/* Обводка-эллипс вокруг итоговой мысли — на всех ширинах. */}
         <div className="relative mx-auto w-full max-w-[589px] xl:absolute xl:left-1/2 xl:top-[1420.63px] xl:w-[589px] xl:-translate-x-1/2">
-          <div className="audit-doodle pointer-events-none absolute left-1/2 top-1/2 h-[152%] w-[120%] -translate-x-1/2 -translate-y-1/2 xl:h-[253px] xl:w-[674px]">
-            <img alt="" className="block size-full max-w-none" src={`${A}/ellipse-doodle.svg`} />
-          </div>
+          <DrawIn
+            src={`${A}/ellipse-doodle.svg`}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[152%] w-[120%] -translate-x-1/2 -translate-y-1/2 xl:h-[253px] xl:w-[674px]"
+          />
           <p className="audit-intro relative text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70 sm:text-[28px] xl:text-[32px]">
             Полная карта библиотеки показала, что уже есть, чего не хватает и что нужно сделать в
             первую очередь

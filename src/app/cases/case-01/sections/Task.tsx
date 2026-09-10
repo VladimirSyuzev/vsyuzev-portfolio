@@ -2,8 +2,9 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
+import { ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
+import DrawIn from "@/components/DrawIn";
 
 // 02 Задача — 1:1 из Figma (node 1961:29100). Витрина категорий — "зум энд
 // кроп": ОДНО изображение (state-2.svg) непрерывно масштабируется/сдвигается
@@ -65,16 +66,6 @@ export default function Task() {
 
       render(0);
 
-      // Доодл-«молния» — появление при входе блока в экран (до пина).
-      gsap.set(".task-doodle", { opacity: 0, scale: 0.86, rotate: -6 });
-      const doodleST = ScrollTrigger.create({
-        trigger: wrapRef.current,
-        start: "top 72%",
-        once: true,
-        onEnter: () =>
-          gsap.to(".task-doodle", { opacity: 1, scale: 1, rotate: 0, duration: 0.6, ease: "siteEase" }),
-      });
-
       const st = ScrollTrigger.create({
         trigger: wrapRef.current,
         start: "top top",
@@ -89,7 +80,6 @@ export default function Task() {
 
       return () => {
         st.kill();
-        doodleST.kill();
       };
     },
     { scope: wrapRef, dependencies: [animate] }
@@ -116,10 +106,11 @@ export default function Task() {
         />
       </div>
 
-      <div className="task-doodle absolute left-[692.95px] top-[1045px] h-[120.909px] w-[92.566px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" src={`${A}/doodle-flash.svg`} className="block size-full max-w-none" />
-      </div>
+      <DrawIn
+        src={`${A}/doodle-flash.svg`}
+        fit="contain"
+        className="absolute left-[692.95px] top-[1045px] h-[120.909px] w-[92.566px]"
+      />
     </>
   );
 
@@ -171,8 +162,11 @@ export default function Task() {
             1280: AABB 93×121 @ x594 y831 в секции 962 → bottom 10, не обрезается.
             Наклон +14° (rotation −14.02 в Figma = по часовой). */}
         <div className="pointer-events-none hidden sm:absolute sm:-bottom-[10px] sm:left-[366px] sm:flex sm:h-[121px] sm:w-[93px] sm:items-center sm:justify-center lg:bottom-[10px] lg:left-[594px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img aria-hidden alt="" className="w-[69px] max-w-none rotate-[14deg]" src={`${R}/task-doodle-834.svg`} />
+          <DrawIn
+            src={`${R}/task-doodle-834.svg`}
+            fit="contain"
+            className="h-[91px] w-[69px] rotate-[14deg]"
+          />
         </div>
       </section>
     );
