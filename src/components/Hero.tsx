@@ -8,7 +8,7 @@ import HeroDraw from "@/components/HeroDraw";
 //  DRAW — леттеринг «VOVA / SYUZEV» на тёмном фоне #121212, линии
 //         прочерчиваются по очереди при загрузке страницы (не по
 //         скроллу). Секция во всю высоту вьюпорта — см. HeroDraw.
-//  REGAL (node 2499:5398) — строка «DESIGN LEAD & multidisciplinary
+//  REGAL (node 2499:5398) — строка «LEAD DESIGNER & multidisciplinary
 //         designer» с подчёркиванием, на светлом фоне, по сетке 1440.
 // Только после REGAL начинается блок «О себе».
 
@@ -33,7 +33,7 @@ function Regal() {
 				<div className="relative mx-auto w-full max-w-[1440px] xl:h-[411px]">
 					<div className="flex flex-col px-[var(--grid-margin)] py-[64px] sm:py-[88px] xl:contents">
 						<p className="relative inline-block whitespace-normal font-heading text-[clamp(1.9rem,5.2vw,52px)] font-bold uppercase leading-[1.1] tracking-[1.56px] text-[#121212] xl:absolute xl:left-[46px] xl:top-[149px] xl:whitespace-pre xl:!text-[52px] xl:!leading-[0]">
-							<span className="leading-[1.1]">DESIGN LEAD </span>
+							<span className="leading-[1.1]">LEAD DESIGNER </span>
 							<span className="leading-[1.1] text-[#008cff]">&amp;</span>
 							<span className="leading-[1.1]">
 								{" "}
@@ -61,7 +61,7 @@ function Regal() {
 				<FullBleedScale width={375} height={215} mode="grow" className="w-full">
 					<div className="relative h-[215px] w-[375px] bg-[#fafafa]">
 						<p className="absolute left-[20px] top-[64px] whitespace-pre font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] text-[#121212]">
-							<span>DESIGN LEAD </span>
+							<span>LEAD DESIGNER </span>
 							<span className="text-[#008cff]">&amp;</span>
 							<span>
 								{" "}
@@ -83,12 +83,12 @@ function Regal() {
 
 			{/* 640–1023 — 1:1 из Figma reflow-фрейма «главная · 834» (node
 					2886:29823), холст 834×411. Текст в 3 строки, подчёркивание у
-					левого края под «DESIGN LEAD». */}
+					левого края под «LEAD DESIGNER». */}
 			<div className="hidden sm:block lg:hidden">
 				<FullBleedScale width={834} height={411} mode="grow" className="w-full">
 					<div className="relative h-[411px] w-[834px] bg-[#fafafa]">
 						<p className="absolute left-[25px] top-[120px] whitespace-pre font-heading text-[52px] font-bold uppercase leading-[1.1] tracking-[1.56px] text-[#121212]">
-							<span>DESIGN LEAD </span>
+							<span>LEAD DESIGNER </span>
 							<span className="text-[#008cff]">&amp;</span>
 							<span>
 								{" "}
@@ -114,7 +114,7 @@ function Regal() {
 				<FullBleedScale width={1280} height={411} mode="grow" className="w-full">
 					<div className="relative h-[411px] w-[1280px] bg-[#fafafa]">
 						<p className="absolute left-[40px] top-[149px] whitespace-pre font-heading text-[52px] font-bold uppercase leading-[1.1] tracking-[1.56px] text-[#121212]">
-							<span>DESIGN LEAD </span>
+							<span>LEAD DESIGNER </span>
 							<span className="text-[#008cff]">&amp;</span>
 							<span>
 								{" "}
