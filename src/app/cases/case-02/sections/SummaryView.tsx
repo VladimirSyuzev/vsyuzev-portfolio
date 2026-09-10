@@ -69,7 +69,7 @@ export default function SummaryView({
           dangerouslySetInnerHTML={{ __html: iconWall }}
         />
       </div>
-      <IconWallPulse />
+      <IconWallPulse ready={Boolean(iconWall) || Boolean(iconWall375)} />
     </section>
   );
 }

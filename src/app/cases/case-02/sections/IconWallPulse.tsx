@@ -1,7 +1,7 @@
 "use client";
 
 import { useGSAP } from "@gsap/react";
-import { gsap, useReducedMotion } from "@/lib/gsap";
+import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 
 // Анимация стены(-ен) иконок в блоке «Итог». Волной проходит по всем плиткам:
 // каждая по очереди увеличивается на 10 %, перекрашивается в #2B9FFE и
@@ -27,18 +27,24 @@ const PULSE = 0.506; // длительность одного «удара» (т
 const PUSH = 5; // на сколько px расходятся соседи
 const LOOP_DELAY = 3; // пауза между проходами волны, с
 
-export default function IconWallPulse() {
+// `ready` — сигнал, что инлайн-SVG стен иконок уже вставлены в DOM
+// (Summary.tsx подтягивает их fetch-ем после монтирования). Без него
+// useGSAP отрабатывает один раз до загрузки SVG, не находит `.si` и волна
+// никогда не запускается.
+export default function IconWallPulse({ ready = true }: { ready?: boolean }) {
   const reduced = useReducedMotion();
 
   useGSAP(
     () => {
-      if (reduced) return;
+      if (reduced || !ready) return;
       const walls = gsap.utils.toArray<HTMLElement>(".summary-wall");
       if (!walls.length) return;
 
+      let built = false;
       walls.forEach((wall) => {
         const icons = gsap.utils.toArray<SVGGElement>(".si", wall);
         if (!icons.length) return;
+        built = true;
         const cols = Number(wall.dataset.cols) || DEFAULT_COLS;
 
         gsap.set(icons, { transformOrigin: "50% 50%" });
@@ -85,8 +91,16 @@ export default function IconWallPulse() {
           }
         });
       });
+
+      // Стены иконок грузятся fetch-ем уже после первого layout/`load`, а
+      // ScrollTrigger кэширует start/end в момент создания. Без refresh триггер
+      // указывает на устаревшую позицию секции (высота страницы ещё росла по
+      // мере догрузки картинок) и волна не стартует.
+      if (built) {
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+      }
     },
-    { dependencies: [reduced] }
+    { dependencies: [reduced, ready] }
   );
 
   return null;

@@ -125,7 +125,7 @@ export default function First16px() {
         </div>
 
         {/* Группа 2 — наложение иконки и текста в блоке высотой 640. */}
-        <div className="relative w-full lg:h-[640px] xl:contents">
+        <div className="relative w-full lg:min-h-[640px] xl:contents">
           {/* Иконка: чёрный контур (статичен) + голубая версия (на десктопе
               растёт по скроллу, ниже 1440 — сразу в финальном размере). */}
           <div className="relative aspect-square w-full lg:absolute lg:left-[calc(50%+280px)] lg:top-0 lg:size-[640px] lg:-translate-x-1/2 xl:absolute xl:left-[726px] xl:top-[318px] xl:size-[640px] xl:translate-x-0 xl:bg-transparent">
@@ -171,30 +171,35 @@ export default function First16px() {
             <img aria-hidden alt="" className="block size-full max-w-none lg:-rotate-[0.9deg] xl:rotate-0" src={`${A}/icon16-doodle.svg`} />
           </Reveal>
 
-          {/* Текст «Маленький размер…» — 1280: (0,500) w440, наложение на иконку. */}
-          <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:absolute lg:left-0 lg:top-[500px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:left-[46px] xl:top-[853px] xl:w-[589px] xl:text-[32px]">
-            {t.first16Quote}
-          </p>
+          {/* Текст «Маленький размер…» + подчёркивание. На 1280 весь блок
+              абсолютно позиционирован (0,500), но подчёркивание следует за
+              НИЗОМ текста (в EN цитата на строку длиннее — фикс-координата
+              линии наезжала на текст). */}
+          <div className="contents lg:absolute lg:left-0 lg:top-[500px] lg:block lg:w-[440px] xl:contents">
+            {/* 1280: (0,500) w440, наложение на иконку. */}
+            <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:absolute xl:left-[46px] xl:top-[853px] xl:w-[589px] xl:text-[32px]">
+              {t.first16Quote}
+            </p>
 
-          {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427.
-              Наклон +2.26° везде. 375/834 — в потоке под цитатой; 1280 —
-              абсолют (27,628) в блоке. */}
-          <Reveal
-            variant="line"
-            start="top 92%"
-            className="pointer-events-none mt-[10px] block w-[312px] max-w-full sm:hidden"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-375.svg`} />
-          </Reveal>
-          <Reveal
-            variant="line"
-            start="top 92%"
-            className="pointer-events-none mt-[10px] hidden w-[427px] max-w-full sm:block lg:absolute lg:left-[27px] lg:top-[628px] lg:mt-0 xl:hidden"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
-          </Reveal>
+            {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427.
+                Наклон +2.26° везде. 375/834/1280 — в потоке под цитатой. */}
+            <Reveal
+              variant="line"
+              start="top 92%"
+              className="pointer-events-none mt-[10px] block w-[312px] max-w-full sm:hidden"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-375.svg`} />
+            </Reveal>
+            <Reveal
+              variant="line"
+              start="top 92%"
+              className="pointer-events-none mt-[10px] hidden w-[427px] max-w-full sm:block lg:ml-[27px] xl:hidden"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
+            </Reveal>
+          </div>
         </div>
 
         {/* Подчёркивание — десктоп (отдельный ассет 518×33). */}

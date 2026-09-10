@@ -171,13 +171,13 @@ export default function Task() {
             Размер в % от фактической высоты <p> (число строк «плавает»). */}
         <div className="pt-[64px] pb-[36px] sm:hidden">
           <div className="relative mx-auto w-[320px] max-w-full">
-            <p className="text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
+            <p className="relative z-10 text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
               {t.taskQuote}
             </p>
             <Reveal
               variant="line"
               start="top 92%"
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[116%] w-[112%] max-w-none -translate-x-1/2 -translate-y-1/2"
+              className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[calc(100%+64px)] w-[calc(100%+44px)] max-w-none -translate-x-1/2 -translate-y-1/2"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img aria-hidden alt="" className="block size-full max-w-none object-fill" src={`${A}/reflow/task-ellipse-375.svg`} />
@@ -187,16 +187,16 @@ export default function Task() {
 
         {/* 834: +16.63° (bbox ≈581); 1280: та же обводка шире (649). */}
         <div className="relative hidden justify-center py-[44px] sm:flex lg:py-[64px] xl:contents">
-          <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 lg:max-w-[594px] lg:text-[32px] lg:tracking-[0.96px] xl:absolute xl:left-1/2 xl:top-[1205.63px] xl:w-[589px] xl:-translate-x-1/2 xl:text-[32px]">
+          <p className="relative z-10 max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 lg:max-w-[594px] lg:text-[32px] lg:tracking-[0.96px] xl:absolute xl:left-1/2 xl:top-[1205.63px] xl:w-[589px] xl:-translate-x-1/2 xl:text-[32px]">
             {t.taskQuote}
           </p>
           <Reveal
             variant="line"
             start="top 92%"
-            className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 sm:block xl:hidden"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden -translate-x-1/2 -translate-y-1/2 sm:block xl:hidden"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block w-[560px] max-w-none rotate-[16.63deg] lg:w-[649px]" src={`${A}/reflow/task-ellipse-1280.svg`} />
+            <img aria-hidden alt="" className="block w-[624px] max-w-none rotate-[16.63deg] lg:w-[700px]" src={`${A}/reflow/task-ellipse-1280.svg`} />
           </Reveal>
         </div>
       </div>
