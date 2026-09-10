@@ -1,4 +1,8 @@
+"use client";
+
 import Reveal from "@/components/Reveal";
+import { useLang } from "@/lib/lang";
+import { C4 } from "../i18n";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 04 Серия сценариев — 1:1 из Figma (node 2034:15790, высота 1262).
@@ -9,37 +13,35 @@ import FullBleedScale from "@/components/FullBleedScale";
 const A = "/cases/case-04/sections";
 
 export default function Series() {
+  const t = C4[useLang()];
   return (
     <>
       {/* ≥1440 — нативный холст 1440. */}
       <div className="relative hidden h-[1262px] w-[1440px] overflow-clip bg-[#fafafa] xl:block">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">04</p>
-          <p className="text-[#121212]">Серия сценариев</p>
+          <p className="text-[#121212]">{t.seriesHeading}</p>
         </div>
 
         <div className="absolute left-[46px] top-[181px] flex w-[668px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
           <p>
-            После первого KV визуальная система была расширена на другие сценарии: автомобиль и яхту.
-            Они показывают разные возможности продукта, сохраняя единый принцип построения.
+            {t.seriesPara1}
           </p>
           <p>
-            Во всех визуалах повторяется одна формула: человек, телефон и объект покупки объединены
-            общей композицией и типографической системой. Меняется сценарий, но визуальный язык
-            остаётся узнаваемым.
+            {t.seriesPara2}
           </p>
         </div>
 
         {/* Два KV-постера (Figma frames 2115:30599 / 2115:30938 → y318, 668×446). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+          alt=""
           className="absolute left-[46px] top-[318px] h-[446px] w-[668px] object-cover"
           src={`${A}/series-1.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="KEY VISUAL Stablegate: сценарий с яхтой"
+          alt=""
           className="absolute left-[726px] top-[318px] h-[446px] w-[668px] object-cover"
           src={`${A}/series-2.jpg`}
         />
@@ -57,7 +59,7 @@ export default function Series() {
         </Reveal>
         {/* Мысль (Figma node 2401:35697 → x216 / y1003, w1008, по центру). */}
         <p className="absolute left-1/2 top-[1003px] w-[900px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Один принцип позволил рассказывать разные истории в рамках одной кампании
+          {t.seriesQuote}
         </p>
       </div>
 
@@ -70,18 +72,14 @@ export default function Series() {
             <div className="absolute left-[40px] top-[72px] flex w-[593px] flex-col gap-[12px]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">04</span>
-                <span className="text-[#121212]">Серия сценариев</span>
+                <span className="text-[#121212]">{t.seriesHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                 <p>
-                  После первого KV визуальная система была расширена на другие сценарии: автомобиль и
-                  яхту. Они показывают разные возможности продукта, сохраняя единый принцип
-                  построения.
+                  {t.seriesPara1}
                 </p>
                 <p>
-                  Во всех визуалах повторяется одна формула: человек, телефон и объект покупки
-                  объединены общей композицией и типографической системой. Меняется сценарий, но
-                  визуальный язык остаётся узнаваемым.
+                  {t.seriesPara2}
                 </p>
               </div>
             </div>
@@ -90,13 +88,13 @@ export default function Series() {
                 40 / 646, y291, 594×396.524). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+              alt=""
               className="absolute left-[40px] top-[291px] block h-[396.524px] w-[594px] max-w-none object-cover"
               src={`${A}/series-1-1280.jpg`}
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="KEY VISUAL Stablegate: сценарий с яхтой"
+              alt=""
               className="absolute left-[646px] top-[291px] block h-[396.524px] w-[594px] max-w-none object-cover"
               src={`${A}/series-2-1280.jpg`}
             />
@@ -123,7 +121,7 @@ export default function Series() {
               </div>
             </Reveal>
             <p className="absolute left-[327px] top-[940.524px] w-[626px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-              Один принцип позволил рассказывать разные истории в рамках одной кампании
+              {t.seriesQuote}
             </p>
           </div>
         </FullBleedScale>
@@ -138,18 +136,14 @@ export default function Series() {
             <div className="absolute left-[28px] top-[72px] flex w-[778px] flex-col gap-[12px]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">04</span>
-                <span className="text-[#121212]">Серия сценариев</span>
+                <span className="text-[#121212]">{t.seriesHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                 <p>
-                  После первого KV визуальная система была расширена на другие сценарии: автомобиль и
-                  яхту. Они показывают разные возможности продукта, сохраняя единый принцип
-                  построения.
+                  {t.seriesPara1}
                 </p>
                 <p>
-                  Во всех визуалах повторяется одна формула: человек, телефон и объект покупки
-                  объединены общей композицией и типографической системой. Меняется сценарий, но
-                  визуальный язык остаётся узнаваемым.
+                  {t.seriesPara2}
                 </p>
               </div>
             </div>
@@ -158,13 +152,13 @@ export default function Series() {
                 778×519.353, gap 12. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+              alt=""
               className="absolute left-[28px] top-[257px] block h-[519.353px] w-[778px] max-w-none object-cover"
               src={`${A}/series-1-834.jpg`}
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="KEY VISUAL Stablegate: сценарий с яхтой"
+              alt=""
               className="absolute left-[28px] top-[788.353px] block h-[519.353px] w-[778px] max-w-none object-cover"
               src={`${A}/series-2-834.jpg`}
             />
@@ -191,7 +185,7 @@ export default function Series() {
               </div>
             </Reveal>
             <p className="absolute left-[148px] top-[1560.706px] w-[538px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
-              Один принцип позволил рассказывать разные истории в рамках одной кампании
+              {t.seriesQuote}
             </p>
           </div>
         </FullBleedScale>
@@ -206,18 +200,14 @@ export default function Series() {
             <div className="flex flex-col gap-[12px] px-[20px]">
               <div className="flex w-[279px] flex-col font-heading text-[26px] font-bold uppercase">
                 <span className="leading-none text-[#008cff]">04</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">Серия сценариев</span>
+                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.seriesHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <p className="opacity-70">
-                  После первого KV визуальная система была расширена на другие сценарии: автомобиль и
-                  яхту. Они показывают разные возможности продукта, сохраняя единый принцип
-                  построения.
+                  {t.seriesPara1}
                 </p>
                 <p className="opacity-70">
-                  Во всех визуалах повторяется одна формула: человек, телефон и объект покупки
-                  объединены общей композицией и типографической системой. Меняется сценарий, но
-                  визуальный язык остаётся узнаваемым.
+                  {t.seriesPara2}
                 </p>
               </div>
             </div>
@@ -226,13 +216,13 @@ export default function Series() {
             <div className="flex w-[335px] shrink-0 flex-col gap-[12px] self-center">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="KEY VISUAL Stablegate: сценарий с автомобилем"
+                alt=""
                 className="block h-[223.629px] w-full max-w-none object-cover"
                 src={`${A}/series-1-375.jpg`}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="KEY VISUAL Stablegate: сценарий с яхтой"
+                alt=""
                 className="block h-[223.629px] w-full max-w-none object-cover"
                 src={`${A}/series-2-375.jpg`}
               />
@@ -258,7 +248,7 @@ export default function Series() {
                 </div>
               </Reveal>
               <p className="relative w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
-                Один принцип позволил рассказывать разные истории в рамках одной кампании
+                {t.seriesQuote}
               </p>
             </div>
           </div>

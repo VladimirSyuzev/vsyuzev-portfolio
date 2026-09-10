@@ -1,4 +1,8 @@
+"use client";
+
 import Reveal from "@/components/Reveal";
+import { useLang } from "@/lib/lang";
+import { C4 } from "../i18n";
 import VariantsCarousel from "@/components/VariantsCarousel";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -16,17 +20,18 @@ import FullBleedScale from "@/components/FullBleedScale";
 const A = "/cases/case-04/sections";
 
 const CARDS = [
-  { src: `${A}/adapt-1.jpg`, w: 533, h: 798, alt: "Вертикальный постер CRYPTO. PAYMENTS. SETTLED." },
-  { src: `${A}/adapt-2.jpg`, w: 1153, h: 798, alt: "Формат 3:2 с фотографией и белой панелью" },
-  { src: `${A}/adapt-3.jpg`, w: 1089, h: 798, alt: "Формат с двумя постерами" },
-  { src: `${A}/adapt-4.jpg`, w: 1196, h: 798, alt: "Горизонтальный формат с фотографией" },
-  { src: `${A}/adapt-5.jpg`, w: 1411, h: 798, alt: "Широкий горизонтальный формат" },
-  { src: `${A}/adapt-6.jpg`, w: 1620, h: 798, alt: "Билборд-формат" },
-  { src: `${A}/adapt-7.jpg`, w: 1800, h: 675, alt: "Вытянутый билборд-формат" },
-  { src: `${A}/adapt-8.jpg`, w: 1800, h: 615, alt: "Панорамный билборд-формат" },
+  { src: `${A}/adapt-1.jpg`, w: 533, h: 798, alt: "" },
+  { src: `${A}/adapt-2.jpg`, w: 1153, h: 798, alt: "" },
+  { src: `${A}/adapt-3.jpg`, w: 1089, h: 798, alt: "" },
+  { src: `${A}/adapt-4.jpg`, w: 1196, h: 798, alt: "" },
+  { src: `${A}/adapt-5.jpg`, w: 1411, h: 798, alt: "" },
+  { src: `${A}/adapt-6.jpg`, w: 1620, h: 798, alt: "" },
+  { src: `${A}/adapt-7.jpg`, w: 1800, h: 675, alt: "" },
+  { src: `${A}/adapt-8.jpg`, w: 1800, h: 615, alt: "" },
 ];
 
 export default function Adaptation() {
+  const t = C4[useLang()];
   return (
     <>
       {/* ≥1440 — нативный холст 1440. */}
@@ -35,16 +40,13 @@ export default function Adaptation() {
           {/* Дисплейный заголовок (Figma frame 2118:32684 → x46 / y87, 175px). */}
           <div className="absolute left-[46px] top-[87px] flex flex-col font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
             <span className="text-[#008cff]">05</span>
-            <span className="text-white">Адаптация</span>
+            <span className="text-white">{t.adaptHeading}</span>
           </div>
 
           {/* Текст 1 — ЛЕВАЯ колонка (46, 529), w-491, Aeonik Medium 14
               UPPERCASE. Ручные <br> после «система », «outdoor-носители ». */}
           <p className="absolute left-[46px] top-[529px] w-[491px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white opacity-70">
-            После разработки ключевого формата система{" "}
-            <br />
-            была адаптирована под разные outdoor-носители{" "}
-            <br />и соотношения сторон
+            {t.adaptPara1}
           </p>
 
           {/* Доодл-«звёздочка» (Figma node 2284:39980 → x1150 / y529, 158×125). */}
@@ -54,9 +56,7 @@ export default function Adaptation() {
           </Reveal>
 
           <p className="absolute left-[726px] top-[1140px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-            Белая панель, крупная типографика, фотография и фирменная цветовая среда сохранялись во
-            всех версиях. При этом менялись пропорции блоков, масштаб текста и положение изображения,
-            чтобы коммуникация оставалась читаемой в любом формате.
+            {t.adaptPara2}
           </p>
 
           {/* Обводка-эллипс (Figma node 2401:35701 → x290 / y1377, 884×130). */}
@@ -66,7 +66,7 @@ export default function Adaptation() {
           </Reveal>
           {/* Мысль (Figma node 2401:35699 → x338 / y1407, w765, по центру). */}
           <p className="absolute left-1/2 top-[1407px] w-[765px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-            Один Key Visual адаптируется под разные носители без потери идеи
+            {t.adaptQuote}
           </p>
         </div>
 
@@ -83,14 +83,13 @@ export default function Adaptation() {
             {/* Дисплейный заголовок «05 / АДАПТАЦИЯ» стопкой (40, 72), 152px. */}
             <div className="absolute left-[40px] top-[72px] flex flex-col whitespace-nowrap font-heading text-[152px] font-bold uppercase leading-none tracking-[4.56px]">
               <span className="text-[#008cff]">05</span>
-              <span className="text-white">Адаптация</span>
+              <span className="text-white">{t.adaptHeading}</span>
             </div>
 
             {/* Текст 1 — ЛЕВАЯ колонка (40, 440), w-346, Aeonik Medium 14
                 UPPERCASE (Frame 2147232078). */}
             <p className="absolute left-[40px] top-[440px] w-[346px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              После разработки ключевого формата система была адаптирована под разные outdoor-носители
-              и соотношения сторон
+              {t.adaptPara1}
             </p>
 
             {/* Доодл-«звёздочка» (1007, 411.477, 158×125). */}
@@ -108,10 +107,7 @@ export default function Adaptation() {
             {/* Текст 2 — правая колонка (649, 1020), w-581 (Frame 2147232080).
                 Ручной <br> после «читаемой ». */}
             <p className="absolute left-[649px] top-[1020px] w-[581px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              Белая панель, крупная типографика, фотография и фирменная цветовая среда сохранялись во
-              всех версиях. При этом менялись пропорции блоков, масштаб текста и положение
-              изображения, чтобы коммуникация оставалась читаемой{" "}
-              <br />в любом формате.
+              {t.adaptPara2}
             </p>
 
             {/* Мысль (355, 1267, w-570, center) + обводка-эллипс (Vector 234257386,
@@ -128,11 +124,7 @@ export default function Adaptation() {
               </div>
             </Reveal>
             <p className="absolute left-[355px] top-[1267px] w-[570px] whitespace-pre-wrap text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-              Один Key Visual адаптируется{" "}
-              <br />
-              под разные носители{" "}
-              <br />
-              без потери идеи
+              {t.adaptQuote}
             </p>
           </div>
         </FullBleedScale>
@@ -147,15 +139,13 @@ export default function Adaptation() {
             {/* Дисплейный заголовок «05 / АДАПТАЦИЯ» стопкой (28, 72), 100px. */}
             <div className="absolute left-[28px] top-[72px] flex flex-col whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-none tracking-[3px]">
               <span className="text-[#008cff]">05</span>
-              <span className="text-white">Адаптация</span>
+              <span className="text-white">{t.adaptHeading}</span>
             </div>
 
             {/* Текст 1 (28, 336), w-389, Aeonik Medium 14 UPPERCASE.
                 Ручной <br> после «формата ». */}
             <p className="absolute left-[28px] top-[336px] w-[389px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              После разработки ключевого формата{" "}
-              <br />
-              система была адаптирована под разные outdoor-носители и соотношения сторон
+              {t.adaptPara1}
             </p>
 
             {/* Доодл-«звёздочка» (614, 298.199, 158×125). */}
@@ -173,10 +163,7 @@ export default function Adaptation() {
             {/* Текст 2 (28, 777), w-381 (узкая левая колонка). Ручной <br>
                 после «фотография ». */}
             <p className="absolute left-[28px] top-[777px] w-[381px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              Белая панель, крупная типографика, фотография{" "}
-              <br />и фирменная цветовая среда сохранялись во всех версиях. При этом менялись пропорции
-              блоков, масштаб текста и положение изображения, чтобы коммуникация оставалась читаемой в
-              любом формате.
+              {t.adaptPara2}
             </p>
 
             {/* Мысль (center, w-378, y990) + обводка-эллипс (Vector 234257386,
@@ -193,9 +180,7 @@ export default function Adaptation() {
               </div>
             </Reveal>
             <p className="absolute left-1/2 top-[990px] w-[378px] -translate-x-1/2 whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-              Один Key Visual адаптируется{" "}
-              <br />
-              под разные носители без потери идеи
+              {t.adaptQuote}
             </p>
           </div>
         </FullBleedScale>
@@ -212,18 +197,14 @@ export default function Adaptation() {
             <div className="absolute left-0 top-[64px] flex w-full flex-col gap-[12px] px-[20px]">
               <div className="flex w-[182px] flex-col font-heading text-[26px] font-bold uppercase">
                 <span className="leading-none text-[#008cff]">05</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-white">Адаптация</span>
+                <span className="leading-[1.1] tracking-[0.78px] text-white">{t.adaptHeading}</span>
               </div>
               <div className="flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <p className="opacity-70">
-                  После разработки ключевого формата система была адаптирована под разные
-                  outdoor-носители и соотношения сторон.
+                  {t.adaptPara1}.
                 </p>
                 <p className="whitespace-pre-wrap opacity-70">
-                  Белая панель, крупная типографика, фотография и фирменная цветовая среда сохранялись{" "}
-                  <br />
-                  во всех версиях. При этом менялись пропорции блоков, масштаб текста и положение
-                  изображения, чтобы коммуникация оставалась читаемой в любом формате.
+                  {t.adaptPara2}
                 </p>
               </div>
             </div>
@@ -245,9 +226,7 @@ export default function Adaptation() {
                 перекрывает бар карусели. Vector 234257394 (2835:53383) —
                 тонкое подчёркивание. */}
             <p className="absolute left-[20px] top-[672px] w-[335px] whitespace-pre-wrap font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white opacity-70">
-              Один Key Visual адаптируется{" "}
-              <br />
-              под разные носители без потери идеи
+              {t.adaptQuote}
             </p>
             <Reveal
               variant="line"

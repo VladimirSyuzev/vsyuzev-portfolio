@@ -1,4 +1,8 @@
+"use client";
+
 import Reveal from "@/components/Reveal";
+import { useLang } from "@/lib/lang";
+import { C4 } from "../i18n";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 02 Концепция — 1:1 из актуальной Figma (node 2034:15738, высота 1539).
@@ -16,34 +20,35 @@ const A = "/cases/case-04/sections";
 // Слоган CRYPTO · PAYMENTS · SETTLED — теперь векторные подписи
 // (Figma nodes 2440:62462 / 62463 / 62464), а не текст.
 const SLOGAN: { svg: string; w: number; left: number; caption: string; capLeft: number; capW: number }[] = [
-  { svg: "slogan-crypto.svg", w: 224, left: 556, caption: "Ресурс, которым вы уже располагаете.", capLeft: 556, capW: 222 },
-  { svg: "slogan-payments.svg", w: 291, left: 819, caption: "Как это используется в реальной жизни.", capLeft: 847, capW: 234 },
-  { svg: "slogan-settled.svg", w: 245, left: 1149, caption: "Сделка завершена.", capLeft: 1216, capW: 111 },
+  { svg: "slogan-crypto.svg", w: 224, left: 556, caption: "", capLeft: 556, capW: 222 },
+  { svg: "slogan-payments.svg", w: 291, left: 819, caption: "", capLeft: 847, capW: 234 },
+  { svg: "slogan-settled.svg", w: 245, left: 1149, caption: "", capLeft: 1216, capW: 111 },
 ];
 
 // 1280: те же ассеты слогана, свои left/width из reflow-фрейма 2736:17999.
 const SLOGAN_1280: { svg: string; w: number; left: number; caption: string; capLeft: number }[] = [
-  { svg: "slogan-crypto.svg", w: 223.172, left: 323, caption: "Ресурс, которым вы уже располагаете.", capLeft: 324 },
-  { svg: "slogan-payments.svg", w: 290.621, left: 606, caption: "Как это используется в реальной жизни.", capLeft: 634 },
-  { svg: "slogan-settled.svg", w: 244.613, left: 947, caption: "Сделка завершена.", capLeft: 1014 },
+  { svg: "slogan-crypto.svg", w: 223.172, left: 323, caption: "", capLeft: 324 },
+  { svg: "slogan-payments.svg", w: 290.621, left: 606, caption: "", capLeft: 634 },
+  { svg: "slogan-settled.svg", w: 244.613, left: 947, caption: "", capLeft: 1014 },
 ];
 
 // 834: те же ассеты, свои left/width из reflow-фрейма 2748:4706.
 const SLOGAN_834: { svg: string; w: number; left: number; caption: string; capLeft: number }[] = [
-  { svg: "slogan-crypto.svg", w: 194.65, left: 13, caption: "Ресурс, которым вы уже располагаете.", capLeft: 0 },
-  { svg: "slogan-payments.svg", w: 253.479, left: 260, caption: "Как это используется в реальной жизни.", capLeft: 270 },
-  { svg: "slogan-settled.svg", w: 213.351, left: 557, caption: "Сделка завершена.", capLeft: 609 },
+  { svg: "slogan-crypto.svg", w: 194.65, left: 13, caption: "", capLeft: 0 },
+  { svg: "slogan-payments.svg", w: 253.479, left: 260, caption: "", capLeft: 270 },
+  { svg: "slogan-settled.svg", w: 213.351, left: 557, caption: "", capLeft: 609 },
 ];
 
 // 375: 3 блока стопкой по центру — слоган-SVG + подпись + AI-фото под ним
 // (reflow-фрейм 2819:36176). Ширина/высота слогана и картинки — из макета.
 const SLOGAN_375: { svg: string; w: number; capW: number; img: string; imgW: number; imgH: number; caption: string }[] = [
-  { svg: "slogan-crypto.svg", w: 194.65, capW: 222, img: "concept-img-1-375.jpg", imgW: 229, imgH: 229, caption: "Ресурс, которым вы уже располагаете." },
-  { svg: "slogan-payments.svg", w: 253.479, capW: 253.479, img: "concept-img-2-375.jpg", imgW: 228.516, imgH: 230.21, caption: "Как это используется в реальной жизни." },
-  { svg: "slogan-settled.svg", w: 213.351, capW: 213.351, img: "concept-img-3-375.jpg", imgW: 228.516, imgH: 230.21, caption: "Сделка завершена." },
+  { svg: "slogan-crypto.svg", w: 194.65, capW: 222, img: "concept-img-1-375.jpg", imgW: 229, imgH: 229, caption: "" },
+  { svg: "slogan-payments.svg", w: 253.479, capW: 253.479, img: "concept-img-2-375.jpg", imgW: 228.516, imgH: 230.21, caption: "" },
+  { svg: "slogan-settled.svg", w: 213.351, capW: 213.351, img: "concept-img-3-375.jpg", imgW: 228.516, imgH: 230.21, caption: "" },
 ];
 
 export default function Concept() {
+  const t = C4[useLang()];
   return (
     <>
       {/* ≥1440 — нативный холст 1440. */}
@@ -51,37 +56,35 @@ export default function Concept() {
         {/* Дисплейный заголовок (Figma frame 2034:15742, 175px, leading-[1.1]). */}
         <div className="absolute left-[46px] top-[181px] flex flex-col font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
           <span className="text-[#008cff]">02</span>
-          <span className="text-[#121212]">Концепция</span>
+          <span className="text-[#121212]">{t.conceptHeading}</span>
         </div>
 
         {/* Левая колонка. «В основе кампании лежит идея:» — обычный наборный
             текст: Aeonik Pro Regular, opacity 70 (Figma node 2034:15747). */}
         <p className="absolute left-[46px] top-[730px] w-[327px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          В основе кампании лежит идея:
+          {t.conceptIdeaLead}
         </p>
         <p className="absolute left-[46px] top-[747px] w-[327px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
           Your crypto, ready for real life.
         </p>
         <p className="absolute left-[46px] top-[776px] w-[327px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          Мы не показываем процесс транзакции. Вместо этого фокусируемся на результате: crypto
-          становится частью реальной жизни и помогает совершать конкретные покупки.
+          {t.conceptIdeaPara}
         </p>
         <p className="absolute left-[46px] top-[1060px] w-[327px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          Слоган <span className="font-medium">CRYPTO. PAYMENTS. SETTLED.</span> собирает эту идею в три
-          коротких состояния. Визуальная формула ещё проще: человек, телефон и объект покупки.
+          {t.conceptSloganPara}
         </p>
 
         {/* Билборд (Figma frame 2082:18144 → x556 / y730, 838×262). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Билборд Stablegate: «Your crypto, ready for real life.» с парой у дома"
+          alt=""
           className="absolute left-[556px] top-[730px] h-[262px] w-[838px] object-cover"
           src={`${A}/concept-billboard.jpg`}
         />
 
         {/* Слоган CRYPTO · PAYMENTS · SETTLED — векторные подписи + мелкие
             пояснения под каждой (Figma nodes 2440:62462…62464 / 2083:18175…). */}
-        {SLOGAN.map((s) => (
+        {SLOGAN.map((s, i) => (
           <span key={s.svg}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -94,7 +97,7 @@ export default function Concept() {
               className="absolute top-[1115px] text-[11px] leading-[1.2] tracking-[0.22px] text-[#121212] opacity-70"
               style={{ left: s.capLeft, width: s.capW }}
             >
-              {s.caption}
+              {t.conceptSloganCaptions[i]}
             </p>
           </span>
         ))}
@@ -102,7 +105,7 @@ export default function Concept() {
         {/* Три кроп-фото (Figma frame 2093:18192 → x556 / y1140, 836×262). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Телефон Stablegate, женщина с ключами и связка ключей от дома"
+          alt=""
           className="absolute left-[556px] top-[1140px] h-[262px] w-[836px] object-cover"
           src={`${A}/concept-crops.jpg`}
         />
@@ -111,13 +114,7 @@ export default function Concept() {
             uppercase) слева снизу, с рукописным подчёркиванием. 1:1 из Figma
             (текст 2399:35409 → (46, 1265), w406; underline 2399:35413 → (132, 1415)). */}
         <p className="absolute left-[46px] top-[1265px] w-[406px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-70">
-          Вместо технологии
-          <br />
-          мы показываем
-          <br />
-          результат, который
-          <br />
-          она даёт человеку
+          {t.conceptHighlight}
         </p>
         <Reveal
           variant="line"
@@ -137,24 +134,21 @@ export default function Concept() {
             {/* Дисплейный заголовок «02 / КОНЦЕПЦИЯ» стопкой (h-304, 152px). */}
             <div className="relative h-[304px] w-[1042px] shrink-0 whitespace-nowrap font-heading text-[152px] font-bold uppercase leading-none tracking-[4.56px]">
               <span className="absolute left-0 top-0 text-[#008cff]">02</span>
-              <span className="absolute left-0 top-[152px] text-[#121212]">Концепция</span>
+              <span className="absolute left-0 top-[152px] text-[#121212]">{t.conceptHeading}</span>
             </div>
 
             {/* Блок 1 — текст идеи (w-293) + билборд-бейк (304, 0, 896×262). */}
             <div className="relative h-[262px] w-[1200px] shrink-0">
               <div className="absolute left-0 top-0 w-[293px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="opacity-70">В основе кампании лежит идея:</p>
+                <p className="opacity-70">{t.conceptIdeaLead}</p>
                 <p className="font-medium uppercase opacity-70">Your crypto, ready for real life.</p>
                 <p className="mt-[12px] whitespace-pre-wrap opacity-70">
-                  Мы не показываем процесс транзакции. Вместо этого фокусируемся{" "}
-                  <br />
-                  на результате: crypto становится частью реальной жизни и помогает совершать
-                  конкретные покупки.
+                  {t.conceptIdeaPara}
                 </p>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Билборд Stablegate: «Your crypto, ready for real life.» с парой у дома"
+                alt=""
                 className="absolute left-[304px] top-0 block h-[262px] w-[896px] max-w-none object-cover"
                 src={`${A}/concept-billboard-1280.jpg`}
               />
@@ -164,11 +158,9 @@ export default function Concept() {
                 3 кропов (304, 85, 896×262). */}
             <div className="relative h-[347px] w-[1200px] shrink-0">
               <p className="absolute left-0 top-0 w-[291px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Слоган <span className="font-medium">CRYPTO. PAYMENTS. SETTLED.</span> собирает эту
-                идею в три коротких состояния. Визуальная формула ещё проще: человек, телефон и объект
-                покупки.
+                {t.conceptSloganPara}
               </p>
-              {SLOGAN_1280.map((s) => (
+              {SLOGAN_1280.map((s, i) => (
                 <span key={s.svg}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -181,13 +173,13 @@ export default function Concept() {
                     className="absolute top-[59.69px] whitespace-nowrap text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70"
                     style={{ left: s.capLeft }}
                   >
-                    {s.caption}
+                    {t.conceptSloganCaptions[i]}
                   </p>
                 </span>
               ))}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Телефон Stablegate в руке, женщина с ключами, связка ключей от дома"
+                alt=""
                 className="absolute left-[304px] top-[85px] block h-[262px] w-[896px] max-w-none object-cover"
                 src={`${A}/concept-crops-1280.jpg`}
               />
@@ -206,7 +198,7 @@ export default function Concept() {
                 </div>
               </Reveal>
               <p className="relative w-[406px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80">
-                Вместо технологии мы показываем результат, который она даёт человеку
+                {t.conceptHighlight}
               </p>
             </div>
           </div>
@@ -221,27 +213,23 @@ export default function Concept() {
             {/* Дисплейный заголовок «02 / КОНЦЕПЦИЯ» стопкой (h-200, 100px). */}
             <div className="relative h-[200px] w-[686px] shrink-0 whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-none tracking-[3px]">
               <span className="absolute left-0 top-0 text-[#008cff]">02</span>
-              <span className="absolute left-0 top-[100px] text-[#121212]">Концепция</span>
+              <span className="absolute left-0 top-[100px] text-[#121212]">{t.conceptHeading}</span>
             </div>
 
             {/* Блок 1 — текст w-384 + билборд-бейк (778×262). gap 32. */}
             <div className="flex w-[778px] shrink-0 flex-col items-start gap-[32px]">
               <div className="flex w-[384px] flex-col items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <div>
-                  <p className="opacity-70">В основе кампании лежит идея:</p>
+                  <p className="opacity-70">{t.conceptIdeaLead}</p>
                   <p className="font-medium uppercase opacity-70">Your crypto, ready for real life.</p>
                 </div>
                 <p className="whitespace-pre-wrap opacity-70">
-                  Мы не показываем процесс транзакции.{" "}
-                  <br />
-                  Вместо этого фокусируемся на результате:{" "}
-                  <br />
-                  crypto становится частью реальной жизни и помогает совершать конкретные покупки.
+                  {t.conceptIdeaPara}
                 </p>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Билборд Stablegate: «Your crypto, ready for real life.» с парой у дома"
+                alt=""
                 className="block h-[262px] w-[778px] max-w-none object-cover"
                 src={`${A}/concept-billboard-834.jpg`}
               />
@@ -251,14 +239,10 @@ export default function Concept() {
                 3 кропов. gap 32. */}
             <div className="flex w-full shrink-0 flex-col items-start gap-[32px]">
               <p className="w-[383px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Слоган <span className="font-medium">CRYPTO. PAYMENTS. SETTLED.</span>{" "}
-                <br />
-                собирает эту идею в три коротких состояния. Визуальная формула ещё проще: человек,
-                телефон{" "}
-                <br />и объект покупки.
+                {t.conceptSloganPara}
               </p>
               <div className="relative h-[304.897px] w-full">
-                {SLOGAN_834.map((s) => (
+                {SLOGAN_834.map((s, i) => (
                   <span key={s.svg}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -271,13 +255,13 @@ export default function Concept() {
                       className="absolute top-[52.45px] whitespace-nowrap text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70"
                       style={{ left: s.capLeft }}
                     >
-                      {s.caption}
+                      {t.conceptSloganCaptions[i]}
                     </p>
                   </span>
                 ))}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Телефон Stablegate в руке, женщина с ключами, связка ключей от дома"
+                  alt=""
                   className="absolute left-1/2 top-[74.69px] block h-[230.21px] w-[781.489px] max-w-none -translate-x-1/2 object-cover"
                   src={`${A}/concept-crops-834.jpg`}
                 />
@@ -297,11 +281,7 @@ export default function Concept() {
                 </div>
               </Reveal>
               <p className="relative w-[406px] whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80">
-                Вместо технологии{" "}
-                <br />
-                мы показываем результат, который{" "}
-                <br />
-                она даёт человеку
+                {t.conceptHighlight}
               </p>
             </div>
           </div>
@@ -316,29 +296,24 @@ export default function Concept() {
             {/* Опенер «02 / КОНЦЕПЦИЯ» стопкой (px-20, 26px). */}
             <div className="flex flex-col px-[20px] font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
               <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">Концепция</span>
+              <span className="text-[#121212]">{t.conceptHeading}</span>
             </div>
 
             {/* Блок 1 — текст идеи + билборд-бейк (375×322). Внутр. gap 24. */}
             <div className="flex w-full shrink-0 flex-col gap-[24px]">
               <div className="flex flex-col gap-[12px] px-[20px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <div className="w-[290px]">
-                  <p className="opacity-70">В основе кампании лежит идея:</p>
+                  <p className="opacity-70">{t.conceptIdeaLead}</p>
                   <p className="font-medium uppercase opacity-70">Your crypto, ready for real life.</p>
                 </div>
                 <p className="w-[335px] whitespace-pre-wrap opacity-70">
-                  Мы не показываем процесс транзакции.{" "}
-                  <br />
-                  Вместо этого фокусируемся на результате:{" "}
-                  <br />
-                  crypto становится частью реальной жизни{" "}
-                  <br />и помогает совершать конкретные покупки.
+                  {t.conceptIdeaPara}
                 </p>
               </div>
               <div className="relative h-[322px] w-full overflow-clip bg-[#ececec]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Билборд Stablegate: «Your crypto, ready for real life.» с парой у дома"
+                  alt=""
                   className="absolute inset-0 size-full max-w-none object-cover"
                   src={`${A}/concept-billboard-375.jpg`}
                 />
@@ -349,13 +324,7 @@ export default function Concept() {
                 стопкой по центру. Внутр. gap 24. */}
             <div className="flex w-full shrink-0 flex-col gap-[24px]">
               <p className="w-full whitespace-pre-wrap px-[20px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Слоган{" "}
-                <span className="font-medium">
-                  CRYPTO. PAYMENTS. SETTLED.{" "}
-                  <br />
-                </span>
-                собирает эту идею в три коротких состояния. Визуальная формула ещё проще: человек,
-                телефон и объект покупки.
+                {t.conceptSloganPara}
               </p>
               <div className="flex w-full flex-col items-center gap-[24px]">
                 {SLOGAN_375.map((s, i) => (
@@ -374,7 +343,7 @@ export default function Concept() {
                       <p
                         className={`text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70 ${i === 0 ? "" : "text-center"}`}
                       >
-                        {s.caption}
+                        {t.conceptSloganCaptions[i]}
                       </p>
                     </div>
                     <div
@@ -406,7 +375,7 @@ export default function Concept() {
                 </div>
               </Reveal>
               <p className="relative w-[311px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-black opacity-80">
-                Вместо технологии мы показываем результат, который она даёт человеку
+                {t.conceptHighlight}
               </p>
             </div>
           </div>
