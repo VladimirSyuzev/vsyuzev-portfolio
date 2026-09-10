@@ -12,20 +12,20 @@ import FullBleedScale from "@/components/FullBleedScale";
 // квадратные окна 595×595, gap 12. `img` — позиция/размер вложенного
 // рендера внутри окна, 1:1 из Figma (переведены в % от 595 при вёрстке).
 const TILES_1280: { src: string; alt: string; left: number; top: number; size: number }[] = [
-  { src: "pr1-1280-wallet.png", alt: "3D-иллюстрация Wallet", left: -653, top: -302.2, size: 1306 },
-  { src: "pr1-1280-coin.png", alt: "3D-иллюстрация Coin: стопка монет", left: -178, top: -187.2, size: 936 },
-  { src: "pr1-1280-exchainge.png", alt: "3D-иллюстрация Exchange", left: -447, top: -429.2, size: 1137 },
-  { src: "pr1-1280-fees.png", alt: "3D-иллюстрация Fees: синяя стеклянная форма", left: -131, top: -890.2, size: 1914 },
+  { src: "pr1-1280-wallet.webp", alt: "3D-иллюстрация Wallet", left: -653, top: -302.2, size: 1306 },
+  { src: "pr1-1280-coin.webp", alt: "3D-иллюстрация Coin: стопка монет", left: -178, top: -187.2, size: 936 },
+  { src: "pr1-1280-exchainge.webp", alt: "3D-иллюстрация Exchange", left: -447, top: -429.2, size: 1137 },
+  { src: "pr1-1280-fees.webp", alt: "3D-иллюстрация Fees: синяя стеклянная форма", left: -131, top: -890.2, size: 1914 },
 ];
 
 // Рендеры слайда 1 в 834-раскладке (Figma node 2695:19060): сетка 2×2,
 // окна 383×383 (Wallet-окно 381.01), gap 12. Позиция/размер вложенного
 // рендера — 1:1 из Figma. Ассеты те же, что в 1280.
 const TILES_834: { src: string; alt: string; left: number; top: number; size: number }[] = [
-  { src: "pr1-1280-wallet.png", alt: "3D-иллюстрация Wallet", left: -420.46, top: -194.59, size: 840.923 },
-  { src: "pr1-1280-coin.png", alt: "3D-иллюстрация Coin: стопка монет", left: -115.21, top: -121.17, size: 605.83 },
-  { src: "pr1-1280-exchainge.png", alt: "3D-иллюстрация Exchange", left: -289.32, top: -277.8, size: 735.928 },
-  { src: "pr1-1280-fees.png", alt: "3D-иллюстрация Fees: синяя стеклянная форма", left: -88, top: -576.19, size: 1238.845 },
+  { src: "pr1-1280-wallet.webp", alt: "3D-иллюстрация Wallet", left: -420.46, top: -194.59, size: 840.923 },
+  { src: "pr1-1280-coin.webp", alt: "3D-иллюстрация Coin: стопка монет", left: -115.21, top: -121.17, size: 605.83 },
+  { src: "pr1-1280-exchainge.webp", alt: "3D-иллюстрация Exchange", left: -289.32, top: -277.8, size: 735.928 },
+  { src: "pr1-1280-fees.webp", alt: "3D-иллюстрация Fees: синяя стеклянная форма", left: -88, top: -576.19, size: 1238.845 },
 ];
 
 // Рендеры слайда 1 в 375-раскладке (Figma node 2695:19856): 1 колонка,

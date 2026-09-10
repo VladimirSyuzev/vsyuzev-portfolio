@@ -43,8 +43,9 @@ next-env.d.ts
 # скриншоты (черновые, из тестов) — не отслеживаем
 /shots
 
-# исходные 3D-рендеры (тяжёлые PNG, только для экспорта ассетов) — локально
-/public/cases/case-03/sections/renders
+# исходники ассетов (тяжёлые PNG/3D-рендеры, только для экспорта) — локально,
+# ВНЕ public/, чтобы не попадали в статический билд и деплой
+/asset-src
 
 # dev server log (Bash tool background runs)
 dev-server.log
