@@ -95,7 +95,7 @@ export default function DrawIn({
   fit = "stretch",
   stroke,
   strokeWidth,
-  nonScalingStroke = false,
+  nonScalingStroke = true,
 }: {
   src: string;
   className?: string;
@@ -114,7 +114,9 @@ export default function DrawIn({
   stroke?: string;
   /** переопределить толщину обводки из файла */
   strokeWidth?: number | string;
-  /** держать толщину обводки в экранных px (сильный несимметричный масштаб) */
+  /** толщина обводки в экранных px независимо от масштаба бокса (по
+   *  умолчанию true — иначе `preserveAspectRatio="none"` плющит линию, и
+   *  6px становится не 6px). false — если стрейч обводки нужен намеренно. */
   nonScalingStroke?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);

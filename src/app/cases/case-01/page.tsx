@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import SnapScrollController from "./sections/SnapScrollController";
 import Stats from "./sections/Stats";
 import ProblemScreen from "./sections/ProblemScreen";
@@ -174,12 +174,10 @@ export default function Case01Page() {
                 {/* ДУДЛ — подчёркивание под метой (только ≥640). В макете
                     Vector 234257354 стоит ровно от левого края меты (x490 =
                     начало меты при justify-between) до ~4px за правым краем. */}
-                <Reveal
-                  variant="line"
+                <DrawIn
+                  src="/cases/case-01/sections/reflow/cover-underline-834.svg"
                   className="pointer-events-none hidden sm:absolute sm:left-0 sm:top-[44px] sm:block sm:h-[11px] sm:w-[326px] lg:w-[320px]"
-                >
-                  <img aria-hidden alt="" className="block size-full" src="/cases/case-01/sections/reflow/cover-underline-834.svg" />
-                </Reveal>
+                />
               </div>
             </div>
           </div>
@@ -207,13 +205,11 @@ export default function Case01Page() {
               <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
             </div>
           </div>
-          <Reveal
-            variant="line"
+          <DrawIn
+            src="/cases/case-01/underline.svg"
             delay={0.25}
             className="hidden xl:absolute xl:left-[930.5px] xl:top-[204.84px] xl:block xl:h-[13.646px] xl:w-[426.348px]"
-          >
-            <img alt="" className="block size-full max-w-none" src="/cases/case-01/underline.svg" />
-          </Reveal>
+          />
           <div className="xl:h-[318px]" aria-hidden />
         </div>
       </div>
