@@ -160,8 +160,11 @@ export default function HeroFloating() {
           x: vw * 0.66 + i * span * 0.4,
           y: rowY(i) + (i % 2 ? 28 : -20),
           rotation: rowRot(i) + 12,
+          rotationY: 0,
           scale: 0.9,
           opacity: 0,
+          transformPerspective: 760,
+          transformOrigin: "50% 50%",
         });
       });
       gsap.set(reel, { x: 0, y: 0, scale: 1 });
@@ -204,21 +207,31 @@ export default function HeroFloating() {
       tl.to(nameEl, { x: () => -window.innerWidth * 1.05, ease: "none", duration: 0.26 }, 0.1);
       tl.to(nameEl, { opacity: 0, duration: 0.05 }, 0.32);
 
-      // 2 — лента СКАТЫВАЕТСЯ в круг (общий параметр t), карточки не пересекаются
+      // 2 — лента СКАТЫВАЕТСЯ в круг + каждая обложка на лету делает ПОЛНЫЙ
+      //     3D-переворот (rotateY), волной по кольцу; на пол-оборота видна
+      //     размытая изнанка. Направление переворота чередуется.
+      const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+      const smooth = (v: number) => v * v * (3 - 2 * v);
       const bend = { t: 0 };
       tl.to(
         bend,
         {
           t: 1,
           ease: "power1.inOut",
-          duration: 0.28,
+          duration: 0.34,
           onUpdate: () => {
+            const t = bend.t;
             els.forEach((el, i) => {
-              const p = roll(i, bend.t);
+              const p = roll(i, t);
+              const fs = (i / N) * 0.5; // старт переворота этой карточки (волна)
+              const fp = clamp01((t - fs) / 0.42); // прогресс её переворота
+              const dir = i % 2 ? 1 : -1;
               gsap.set(el, {
                 x: p.x,
-                y: p.y + rowY(i) * (1 - bend.t),
+                y: p.y + rowY(i) * (1 - t),
                 rotation: p.rotation,
+                rotationY: dir * smooth(fp) * 360,
+                scale: 1 - Math.sin(fp * Math.PI) * 0.07,
               });
             });
           },
@@ -297,7 +310,7 @@ export default function HeroFloating() {
                     setOpenIdx(i);
                   }}
                   aria-label="Открыть изображение на весь экран"
-                  className="group absolute left-1/2 top-1/2 cursor-pointer overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.05] focus-visible:ring-2 focus-visible:ring-white/70"
+                  className="group absolute left-1/2 top-1/2 cursor-pointer outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] [transform-style:preserve-3d] hover:scale-[1.05]"
                   style={{
                     width: dims(i).w,
                     height: dims(i).h,
@@ -307,13 +320,26 @@ export default function HeroFloating() {
                     opacity: reduced ? 1 : 0,
                   }}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={it.tile}
-                    alt=""
-                    draggable={false}
-                    className="h-full w-full select-none object-cover transition-[filter] duration-300 group-hover:brightness-110"
-                  />
+                  {/* лицевая сторона */}
+                  <span className="absolute inset-0 overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] [backface-visibility:hidden] group-focus-visible:ring-2 group-focus-visible:ring-white/70">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={it.tile}
+                      alt=""
+                      draggable={false}
+                      className="h-full w-full select-none object-cover transition-[filter] duration-300 group-hover:brightness-110"
+                    />
+                  </span>
+                  {/* изнанка — размытая копия, видна на пол-оборота */}
+                  <span className="absolute inset-0 overflow-hidden rounded-[20px] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={it.tile}
+                      alt=""
+                      draggable={false}
+                      className="h-full w-full select-none object-cover blur-[6px] brightness-[0.5] saturate-[1.3]"
+                    />
+                  </span>
                 </button>
               ))}
           </div>
