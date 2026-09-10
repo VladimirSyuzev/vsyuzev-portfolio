@@ -30,10 +30,16 @@ jobs:
       - name: Upload out/ to beget
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
+          # beget поддерживает FTPS (explicit TLS) на 21 порту — пароль не
+          # уходит открытым текстом. server = <логин>.beget.tech
+          protocol: ftps
+          port: 21
           server: ${{ secrets.BEGET_FTP_HOST }}
           username: ${{ secrets.BEGET_FTP_USER }}
           password: ${{ secrets.BEGET_FTP_PASSWORD }}
           local-dir: ./out/
+          # server-dir относительно домашней папки FTP-аккаунта, со слешем
+          # в конце. Напр. /syuzevb1.beget.tech/public_html/
           server-dir: ${{ secrets.BEGET_FTP_DIR }}
           exclude: |
             **/.git*
