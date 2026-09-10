@@ -60,7 +60,7 @@ function CasesListDesktop() {
             className="group grid w-full grid-rows-[113px] overflow-hidden border-b border-[rgba(18,18,18,0.7)] transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:grid-rows-[537px] focus-visible:grid-rows-[537px]"
           >
             <div className="flex h-[537px] w-full">
-              <div className="w-[510px] shrink-0 pl-[12px] pt-[24px]">
+              <div className="relative w-[510px] shrink-0 pl-[12px] pt-[24px]">
                 <p className="case-wave-cell font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#008cff]">
                   {item.index}
                 </p>
@@ -70,6 +70,13 @@ function CasesListDesktop() {
                 <p className="mt-[12px] w-[454px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-0 transition-opacity duration-300 group-hover:opacity-70 group-focus-visible:opacity-70">
                   {item.description}
                 </p>
+                {/* Стрелка «открыть» — отступ 40px от правого и нижнего края
+                    левой панели (510×537). Появляется вместе с раскрытием. */}
+                <DrawIn
+                  src="/cases/lil-arrow.svg"
+                  play="mount"
+                  className="pointer-events-none absolute bottom-[40px] right-[40px] h-[42px] w-[56px] opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+                />
               </div>
               <div className="relative h-[536px] w-[668px] shrink-0 overflow-hidden opacity-0 transition-opacity delay-150 duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
                 {item.slug === "case-01" ? (
@@ -133,7 +140,7 @@ function CasesListStacked({ landscape }: { landscape: boolean }) {
           <Link
             key={item.slug}
             href={`/cases/${item.slug}`}
-            className="case-card group block border-b border-[rgba(18,18,18,0.7)] pb-[20px]"
+            className="case-card group block border-b border-[rgba(18,18,18,0.7)] pb-[24px]"
           >
             {item.slug === "case-01" ? (
               // фикс-композиция 668×536 — масштабируем целиком под ширину
@@ -167,6 +174,14 @@ function CasesListStacked({ landscape }: { landscape: boolean }) {
             <p className="mt-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               {item.description}
             </p>
+            {/* Стрелка «открыть» — по правому краю под описанием. */}
+            <div className="mt-[20px] flex justify-end pr-[8px]">
+              <DrawIn
+                src="/cases/lil-arrow.svg"
+                play="mount"
+                className="pointer-events-none h-[42px] w-[56px]"
+              />
+            </div>
           </Link>
         ))}
       </div>
