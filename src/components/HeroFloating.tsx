@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
@@ -52,7 +59,8 @@ export default function HeroFloating() {
   const bp = useBreakpoint();
   const hydrated = useSyncExternalStore(noop, () => true, () => false);
   const [seed] = useState(() => 1 + Math.floor(Math.random() * 1_000_000_000));
-  const [open, setOpen] = useState<string | null>(null);
+  const [openIdx, setOpenIdx] = useState<number | null>(null);
+  const [navDir, setNavDir] = useState(1);
 
   const [vw, setVw] = useState(1440);
   useEffect(() => {
@@ -239,10 +247,20 @@ export default function HeroFloating() {
     { dependencies: [reduced, hydrated, bp, seed, vw, N], scope: rootRef },
   );
 
+  const navLightbox = useCallback(
+    (dir: number) => {
+      setNavDir(dir);
+      setOpenIdx((i) => (i === null ? i : (i + dir + N) % N));
+    },
+    [N],
+  );
+
   useEffect(() => {
-    if (!open) return;
+    if (openIdx === null) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(null);
+      if (e.key === "Escape") setOpenIdx(null);
+      else if (e.key === "ArrowRight") navLightbox(1);
+      else if (e.key === "ArrowLeft") navLightbox(-1);
     };
     window.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
@@ -251,7 +269,7 @@ export default function HeroFloating() {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [open]);
+  }, [openIdx, navLightbox]);
 
   // статичная раскладка (reduced / до гидратации)
   const staticTransform = (i: number) => {
@@ -274,7 +292,10 @@ export default function HeroFloating() {
                     itemRefs.current[i] = el;
                   }}
                   type="button"
-                  onClick={() => setOpen(it.full)}
+                  onClick={() => {
+                    setNavDir(1);
+                    setOpenIdx(i);
+                  }}
                   aria-label="Открыть изображение на весь экран"
                   className="group absolute left-1/2 top-1/2 cursor-pointer overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.05] focus-visible:ring-2 focus-visible:ring-white/70"
                   style={{
@@ -314,35 +335,100 @@ export default function HeroFloating() {
       </div>
 
       <AnimatePresence>
-        {open && (
+        {openIdx !== null && (
           <motion.div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/92 p-4 sm:p-10"
+            className="fixed inset-0 z-[100] flex flex-col bg-black/92"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={() => setOpen(null)}
+            onClick={() => setOpenIdx(null)}
           >
-            <motion.img
-              src={open}
-              alt=""
-              className="max-h-full max-w-full object-contain shadow-2xl"
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 220, damping: 26 }}
-              onClick={(e) => e.stopPropagation()}
-            />
             <button
               type="button"
               aria-label="Закрыть"
-              onClick={() => setOpen(null)}
-              className="absolute right-4 top-4 flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-8 sm:top-8"
+              onClick={() => setOpenIdx(null)}
+              className="absolute right-4 top-4 z-10 flex size-11 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 sm:right-8 sm:top-8"
             >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
                 <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
               </svg>
             </button>
+
+            {/* картинка — сменяется со сдвигом в сторону навигации */}
+            <div className="relative flex flex-1 items-center justify-center overflow-hidden p-4 sm:p-12">
+              <AnimatePresence custom={navDir} initial={false}>
+                <motion.img
+                  key={openIdx}
+                  src={items[openIdx]?.full}
+                  alt=""
+                  custom={navDir}
+                  draggable={false}
+                  variants={{
+                    enter: (d: number) => ({ x: d > 0 ? 80 : -80, opacity: 0 }),
+                    center: { x: 0, opacity: 1 },
+                    exit: (d: number) => ({ x: d > 0 ? -80 : 80, opacity: 0 }),
+                  }}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute max-h-full max-w-full object-contain shadow-2xl"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.18}
+                  onClick={(e) => e.stopPropagation()}
+                  onDragEnd={(_, info) => {
+                    if (info.offset.x < -70) navLightbox(1);
+                    else if (info.offset.x > 70) navLightbox(-1);
+                  }}
+                />
+              </AnimatePresence>
+            </div>
+
+            {/* нижний бар состояния — как у карусели «варианты» */}
+            <div
+              className="flex items-center justify-center gap-[18px] pb-[max(24px,env(safe-area-inset-bottom))] pt-2 text-white"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                type="button"
+                aria-label="Предыдущее изображение"
+                onClick={() => navLightbox(-1)}
+                className="grid size-[28px] place-items-center opacity-60 transition-opacity hover:opacity-100"
+              >
+                <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
+                  <path d="M8 1 1.5 8 8 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <div className="flex items-center gap-[4px]">
+                {items.map((it, i) => (
+                  <button
+                    key={it.full}
+                    type="button"
+                    aria-label={`Изображение ${i + 1}`}
+                    aria-current={i === openIdx || undefined}
+                    onClick={() => {
+                      setNavDir(i > openIdx ? 1 : -1);
+                      setOpenIdx(i);
+                    }}
+                    className={`h-[2px] rounded-full bg-white transition-all duration-300 ${
+                      i === openIdx ? "w-[22px] opacity-100" : "w-[10px] opacity-30"
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                aria-label="Следующее изображение"
+                onClick={() => navLightbox(1)}
+                className="grid size-[28px] place-items-center opacity-60 transition-opacity hover:opacity-100"
+              >
+                <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
+                  <path d="M1 1 7.5 8 1 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
