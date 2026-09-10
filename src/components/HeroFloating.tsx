@@ -93,7 +93,7 @@ export default function HeroFloating() {
   // (горизонтальные — короче и шире, вертикальные — выше и уже)
   const span = useMemo(() => {
     const u = Math.min(vw, 1100);
-    return Math.round(Math.max(224, Math.min(u * 0.28, 380)));
+    return Math.round(Math.max(230, Math.min(u * 0.31, 400)));
   }, [vw]);
   const dims = (i: number) => {
     const a = Math.min(1.5, Math.max(0.7, items[i]?.aspect ?? 0.78));
@@ -113,13 +113,20 @@ export default function HeroFloating() {
       if (!stage || !reel || !spin || !nameEl || els.some((e) => !e)) return;
 
       const vh = window.innerHeight;
-      const unit = Math.min(vw, vh);
-      // радиус финального круга — чуть больше половины экрана (круг слегка
-      // перекрывает верх/низ, как на референсе), дальше НЕ опускается
-      const R = unit * 0.6;
-      // ряд = развёрнутая окружность: равный шаг = длина дуги на одну карточку
-      const step = (2 * Math.PI * R) / N;
-      const s = (i: number) => (i - (N - 1) / 2) * step;
+      // ПЛОТНАЯ упаковка: каждая карточка занимает дугу = своя ширина + зазор,
+      // радиус круга ВЫВОДИТСЯ из суммы (карточки почти касаются, без больших
+      // промежутков независимо от их размеров)
+      const gap = span * 0.05;
+      const arcW = items.map((_, i) => dims(i).w + gap);
+      const totalArc = arcW.reduce((s2, w) => s2 + w, 0);
+      const R = totalArc / (2 * Math.PI);
+      const cum: number[] = [];
+      arcW.reduce((acc, w, i) => {
+        cum[i] = acc;
+        return acc + w;
+      }, 0);
+      // положение центра карточки вдоль ленты (0 = «шов» круга сверху)
+      const s = (i: number) => cum[i] + arcW[i] / 2 - totalArc / 2;
 
       const rowY = (i: number) => Math.sin(i * 1.7 + 1) * (span * 0.04);
       const rowRot = (i: number) => ((i * 53) % 13) - 6;
@@ -211,17 +218,18 @@ export default function HeroFloating() {
         0.42,
       );
 
-      // 3 — круг слегка «наезжает» и опускается совсем чуть-чуть — и ВСЁ,
-      //     ниже этого положения не уходит
+      // 3 — «большой круг»: увеличиваем в 2 раза, опускаем так, чтобы ВЕРХНЯЯ
+      //     точка круга села ровно на середину экрана (y = scale·R). Дальше НЕ
+      //     опускается.
       tl.to(
         reel,
-        { scale: 1.12, y: R * 0.12, ease: "power1.inOut", duration: 0.14 },
-        0.7,
+        { scale: 2, y: 2 * R, ease: "power1.inOut", duration: 0.16 },
+        0.68,
       );
-      tl.to(spin, { rotation: 30, ease: "power1.inOut", duration: 0.14 }, 0.7);
+      tl.to(spin, { rotation: 26, ease: "power1.inOut", duration: 0.16 }, 0.68);
 
       // 4 — дальше скролл только ВРАЩАЕТ круг на месте (страница ещё запинена)
-      tl.to(spin, { rotation: 30 + 200, ease: "none", duration: 0.16 }, 0.84);
+      tl.to(spin, { rotation: 26 + 200, ease: "none", duration: 0.16 }, 0.84);
 
       return () => {
         tl.scrollTrigger?.kill();
