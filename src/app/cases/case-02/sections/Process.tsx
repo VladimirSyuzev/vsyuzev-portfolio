@@ -157,7 +157,10 @@ export default function Process() {
   return (
     <div
       ref={sectionRef}
-      className="relative w-full overflow-clip bg-[#121212] xl:h-[987px]"
+      // isolate + собственный слой композитинга: иначе frost-карточки трека
+      // (backdrop-filter + will-change) в Chrome «протекают» за overflow-clip
+      // секции и накладываются размытием на следующий блок «Сначала 16px».
+      className="relative w-full overflow-clip bg-[#121212] [isolation:isolate] [transform:translateZ(0)] xl:h-[987px]"
     >
       {/* 375: заголовок→текст gap 12 (Figma 2631:4740). 1280: gap 32, заголовок 152px, интро широкая (897/809). */}
       <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-[12px] px-[var(--grid-margin)] pt-[72px] pb-[40px] sm:gap-[32px] xl:absolute xl:left-1/2 xl:top-0 xl:block xl:h-full xl:w-[1440px] xl:max-w-none xl:-translate-x-1/2 xl:p-0">
