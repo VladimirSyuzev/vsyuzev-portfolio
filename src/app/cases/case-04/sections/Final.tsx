@@ -1,4 +1,3 @@
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -44,10 +43,11 @@ export default function Final() {
       />
 
       {/* Доодл-«шеврон» (Figma node 2402:35708 → x46 / y993, 158×125). */}
-      <Reveal variant="doodle" className="absolute left-[46px] top-[993px] z-10 h-[125px] w-[158px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-      </Reveal>
+      <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="absolute left-[46px] top-[993px] z-10 h-[125px] w-[158px]"
+          />
       {/* Мысль (Figma node 2401:35703 → x726 / y1003, w633). */}
       <p className="absolute left-[726px] top-[1003px] w-[633px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
         Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
@@ -99,10 +99,11 @@ export default function Final() {
 
             {/* Мысль + доодл-«шеврон вправо» (Frame 2147232085, py-64, gap 451). */}
             <div className="flex shrink-0 items-start gap-[451px] py-[64px]">
-              <Reveal variant="doodle" className="h-[125px] w-[158px] shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/final-chevron-1280.png`} />
-              </Reveal>
+              <DrawIn
+            src={`${A}/final-chevron.svg`}
+            fit="contain"
+            className="h-[125px] w-[158px] shrink-0"
+          />
               <p className="w-[591px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
                 Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
               </p>

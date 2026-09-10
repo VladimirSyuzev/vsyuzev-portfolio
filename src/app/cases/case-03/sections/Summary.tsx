@@ -1,4 +1,3 @@
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -32,10 +31,11 @@ export default function Summary() {
         </p>
 
         {/* Доодл-«шеврон» между колонками (Figma node 2437:54102 → 527 / 348). */}
-        <Reveal variant="doodle" className="absolute left-[527px] top-[348px] z-10 h-[125px] w-[158px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-        </Reveal>
+        <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="absolute left-[527px] top-[348px] z-10 h-[125px] w-[158px]"
+          />
       </div>
 
       {/* ≥1440 — мокап сайта на ноутбуке (Figma node 2030:15609) во всю

@@ -1,4 +1,3 @@
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -46,10 +45,11 @@ export default function Series() {
         />
 
         {/* Доодл-«шеврон» (Figma node 2284:40000 → x641 / y764, 158×125). */}
-        <Reveal variant="doodle" className="absolute left-[641px] top-[764px] z-10 h-[125px] w-[158px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-        </Reveal>
+        <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="absolute left-[641px] top-[764px] z-10 h-[125px] w-[158px]"
+          />
 
         {/* Обводка-эллипс вокруг мысли (Figma node 2401:35698). */}
         <DrawIn
@@ -103,13 +103,11 @@ export default function Series() {
             />
 
             {/* Доодл-«шеврон вниз» (по центру фрейма 40/751.524, 158×125). */}
-            <Reveal
-              variant="doodle"
-              className="absolute left-[561px] top-[751.524px] z-10 h-[125px] w-[158px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-            </Reveal>
+            <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="absolute left-[561px] top-[751.524px] z-10 h-[125px] w-[158px]"
+          />
 
             {/* Мысль (327, 940.524, w-626, center) + обводка-эллипс
                 (Vector 234257399, 293.39/921.977, 693.378×140.448). */}
@@ -164,13 +162,11 @@ export default function Series() {
             />
 
             {/* Доодл-«шеврон вниз» по центру (338, 1371.706), 158×125. */}
-            <Reveal
-              variant="doodle"
-              className="absolute left-[338px] top-[1371.706px] z-10 h-[125px] w-[158px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-            </Reveal>
+            <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="absolute left-[338px] top-[1371.706px] z-10 h-[125px] w-[158px]"
+          />
 
             {/* Мысль (148, 1560.706, w-538, center) + обводка-эллипс
                 (Vector 234257399, 102.383/1541.496, 628.487×138.922). */}
@@ -226,10 +222,11 @@ export default function Series() {
             </div>
 
             {/* Доодл-«шеврон вниз» по центру (108.5, 830.258), 158×125. */}
-            <Reveal variant="doodle" className="h-[125px] w-[158px] shrink-0 self-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-            </Reveal>
+            <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="h-[125px] w-[158px] shrink-0 self-center"
+          />
 
             {/* Мысль (w-303, center, pb-64) + обводка-эллипс (Vector 234257399,
                 21.07/961.31, 334.645×185.75). */}

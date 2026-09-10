@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import SlideProgress from "@/components/SlideProgress";
 import FullBleedScale from "@/components/FullBleedScale";
@@ -45,10 +44,11 @@ function Slide1() {
       </p>
 
       {/* Доодл-«глаз» (Figma node 2284:40104 → 1155 / 188, 157×110). */}
-      <Reveal variant="doodle" className="kv-s1-doodle absolute left-[1155px] top-[188px] z-10 h-[110px] w-[157px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/eye.png`} />
-      </Reveal>
+      <DrawIn
+            src={`${A}/eye.svg`}
+            fit="contain"
+            className="kv-s1-doodle absolute left-[1155px] top-[188px] z-10 h-[110px] w-[157px]"
+          />
 
       {/* Метро-билборд (Figma frame 2094:18197 → x46 / y318, 1348×536). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}

@@ -19,7 +19,6 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -291,10 +290,11 @@ export default function Color() {
       </div>
 
       {/* Доодл-«шеврон» (Figma node 2413:4343 → x726 / y347, 158×125). */}
-      <Reveal variant="doodle" className="absolute left-[726px] top-[347px] z-10 h-[125px] w-[158px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-      </Reveal>
+      <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="absolute left-[726px] top-[347px] z-10 h-[125px] w-[158px]"
+          />
 
       {SWATCHES.map((s) => (
         <Tile key={s.name} s={s} />

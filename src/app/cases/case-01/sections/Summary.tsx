@@ -1,6 +1,5 @@
 "use client";
 
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import { useCanvasWide, useMinWidth } from "@/lib/breakpoint";
 
@@ -152,13 +151,11 @@ export default function Summary() {
         />
 
         {/* Доодл-«шеврон» — на всех ширинах. */}
-        <Reveal
-          variant="doodle"
-          className="pointer-events-none absolute right-[8%] top-[36%] z-10 hidden h-[56px] w-[70px] xl:left-[526px] xl:right-auto xl:top-[348px] xl:block xl:h-[125px] xl:w-[158px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
-        </Reveal>
+        <DrawIn
+            src={`${A}/chevron.svg`}
+            fit="contain"
+            className="pointer-events-none absolute right-[8%] top-[36%] z-10 hidden h-[56px] w-[70px] xl:left-[526px] xl:right-auto xl:top-[348px] xl:block xl:h-[125px] xl:w-[158px]"
+          />
         <DrawIn
           src={`${A}/summary-doodle-1.svg`}
           fit="contain"

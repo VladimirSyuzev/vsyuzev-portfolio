@@ -1,4 +1,3 @@
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import Dot from "@/components/Dot";
 import FullBleedScale from "@/components/FullBleedScale";
@@ -70,10 +69,11 @@ export default function Research() {
       />
 
       {/* Доодл-«лупа» (Figma node 2412:4334 → x897 / y866, 158×125). */}
-      <Reveal variant="doodle" className="absolute left-[897px] top-[866px] z-10 h-[125px] w-[158px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/magnifier.png`} />
-      </Reveal>
+      <DrawIn
+            src={`${A}/magnifier.svg`}
+            fit="contain"
+            className="absolute left-[897px] top-[866px] z-10 h-[125px] w-[158px]"
+          />
 
       {/* Крупная мысль (Figma node 2411:4290 → x46 / y1003, w888). */}
       <p className="absolute left-[46px] top-[1003px] w-[888px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
@@ -168,10 +168,11 @@ export default function Research() {
             </div>
 
             {/* Доодл-«лупа» (node 2829:52812, 1002/836, 158×125). */}
-            <Reveal variant="doodle" className="absolute left-[1002px] top-[836px] z-10 h-[125px] w-[158px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/magnifier.png`} />
-            </Reveal>
+            <DrawIn
+            src={`${A}/magnifier.svg`}
+            fit="contain"
+            className="absolute left-[1002px] top-[836px] z-10 h-[125px] w-[158px]"
+          />
 
             {/* Крупная мысль (Frame 2147232144, w-full, pb-64) + двойное
                 подчёркивание (Vector 234257378 / 234257379). */}
@@ -292,10 +293,11 @@ export default function Research() {
             </div>
 
             {/* Доодл-«лупа» (node 2829:52809, 572/1063, 158×125). */}
-            <Reveal variant="doodle" className="absolute left-[572px] top-[1063px] z-10 h-[125px] w-[158px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/magnifier.png`} />
-            </Reveal>
+            <DrawIn
+            src={`${A}/magnifier.svg`}
+            fit="contain"
+            className="absolute left-[572px] top-[1063px] z-10 h-[125px] w-[158px]"
+          />
           </div>
         </FullBleedScale>
       </div>

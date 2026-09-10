@@ -1,4 +1,3 @@
-import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import VariantsCarousel from "@/components/VariantsCarousel";
 import FullBleedScale from "@/components/FullBleedScale";
@@ -49,10 +48,11 @@ export default function Adaptation() {
           </p>
 
           {/* Доодл-«звёздочка» (Figma node 2284:39980 → x1150 / y529, 158×125). */}
-          <Reveal variant="doodle" className="absolute left-[1150px] top-[529px] z-10 h-[125px] w-[158px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src={`${A}/asterisk.png`} />
-          </Reveal>
+          <DrawIn
+            src={`${A}/asterisk.svg`}
+            fit="contain"
+            className="absolute left-[1150px] top-[529px] z-10 h-[125px] w-[158px]"
+          />
 
           <p className="absolute left-[726px] top-[1140px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
             Белая панель, крупная типографика, фотография и фирменная цветовая среда сохранялись во
@@ -95,13 +95,11 @@ export default function Adaptation() {
             </p>
 
             {/* Доодл-«звёздочка» (1007, 411.477, 158×125). */}
-            <Reveal
-              variant="doodle"
-              className="absolute left-[1007px] top-[411.477px] z-10 h-[125px] w-[158px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/asterisk.png`} />
-            </Reveal>
+            <DrawIn
+            src={`${A}/asterisk.svg`}
+            fit="contain"
+            className="absolute left-[1007px] top-[411.477px] z-10 h-[125px] w-[158px]"
+          />
 
             {/* Снап-карусель форматов (Frame 2147232079 → y557). */}
             <VariantsCarousel cards={CARDS} top={557} tone="dark" />
@@ -153,13 +151,11 @@ export default function Adaptation() {
             </p>
 
             {/* Доодл-«звёздочка» (614, 298.199, 158×125). */}
-            <Reveal
-              variant="doodle"
-              className="absolute left-[614px] top-[298.199px] z-10 h-[125px] w-[158px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/asterisk.png`} />
-            </Reveal>
+            <DrawIn
+            src={`${A}/asterisk.svg`}
+            fit="contain"
+            className="absolute left-[614px] top-[298.199px] z-10 h-[125px] w-[158px]"
+          />
 
             {/* Снап-карусель форматов (Frame 2147232079 → y451), hSmall 172. */}
             <VariantsCarousel cards={CARDS} top={451} hSmall={172} hBig={262} tone="dark" />
