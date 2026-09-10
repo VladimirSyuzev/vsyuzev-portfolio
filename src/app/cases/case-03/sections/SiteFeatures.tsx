@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "@/lib/lang";
+import { C3 } from "../i18n";
 
 // C3-02 «Секция сайта» — 1:1 из Figma (node 2022:14474). Плотный мокап
 // секции сайта Stablegate (белая карточка + 4 карточки-фичи с 3D) —
@@ -9,10 +11,10 @@ import { useState } from "react";
 // <640 (node 2695:19371) — по умолчанию вписан по ширине (375), по
 // нажатию РАСКРЫВАЕТСЯ до ~2.8× в горизонтально-прокручиваемом окне,
 // чтобы прочитать мелкий текст мини-лендинга (как «Гайд» в кейсе 1).
-const ALT =
-  "Секция сайта Stablegate: Financial infrastructure built for modern businesses";
+
 
 export default function SiteFeatures() {
+  const t = C3[useLang()];
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,7 +30,7 @@ export default function SiteFeatures() {
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
-          aria-label={open ? "Свернуть секцию сайта" : "Раскрыть секцию сайта для просмотра"}
+          aria-label={t.tapToExpand}
           className={`group relative block w-full ${open ? "cursor-zoom-out" : "cursor-zoom-in"}`}
         >
           <div
@@ -38,7 +40,7 @@ export default function SiteFeatures() {
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt={ALT}
+              alt={t.siteFeaturesCaption}
               width={1340}
               height={873}
               className={`block h-auto max-w-none transition-[width] duration-[500ms] ease-[cubic-bezier(0.23,1,0.32,1)] ${
@@ -49,7 +51,7 @@ export default function SiteFeatures() {
           </div>
           {!open && (
             <span className="pointer-events-none absolute bottom-[10px] right-[10px] rounded-full bg-[#121212]/80 px-[10px] py-[4px] text-[11px] font-medium uppercase tracking-[0.22px] text-white">
-              нажмите, чтобы раскрыть
+              {t.tapToExpand}
             </span>
           )}
         </button>
@@ -59,7 +61,7 @@ export default function SiteFeatures() {
           834×651): у него своя ширина белой карточки (778) и свои поля. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt={ALT}
+        alt={t.siteFeaturesCaption}
         className="hidden w-full sm:block lg:hidden"
         src="/cases/case-03/sections/site-features-834.jpg"
       />
@@ -67,7 +69,7 @@ export default function SiteFeatures() {
           тот же ассет пропорционально во всю доступную ширину. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt={ALT}
+        alt={t.siteFeaturesCaption}
         className="hidden w-full lg:block xl:absolute xl:inset-0 xl:size-full"
         src="/cases/case-03/sections/site-features.jpg"
       />

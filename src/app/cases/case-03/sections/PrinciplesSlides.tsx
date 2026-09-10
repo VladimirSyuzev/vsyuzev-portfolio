@@ -7,35 +7,37 @@ import { useBreakpoint } from "@/lib/breakpoint";
 import Reveal from "@/components/Reveal";
 import SlideProgress from "@/components/SlideProgress";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C3 } from "../i18n";
 
 // Рендеры слайда 1 в 1280-раскладке (Figma node 2707:41640): сетка 2×2,
 // квадратные окна 595×595, gap 12. `img` — позиция/размер вложенного
 // рендера внутри окна, 1:1 из Figma (переведены в % от 595 при вёрстке).
 const TILES_1280: { src: string; alt: string; left: number; top: number; size: number }[] = [
-  { src: "pr1-1280-wallet.png", alt: "3D-иллюстрация Wallet", left: -653, top: -302.2, size: 1306 },
-  { src: "pr1-1280-coin.png", alt: "3D-иллюстрация Coin: стопка монет", left: -178, top: -187.2, size: 936 },
-  { src: "pr1-1280-exchainge.png", alt: "3D-иллюстрация Exchange", left: -447, top: -429.2, size: 1137 },
-  { src: "pr1-1280-fees.png", alt: "3D-иллюстрация Fees: синяя стеклянная форма", left: -131, top: -890.2, size: 1914 },
+  { src: "pr1-1280-wallet.png", alt: "", left: -653, top: -302.2, size: 1306 },
+  { src: "pr1-1280-coin.png", alt: "", left: -178, top: -187.2, size: 936 },
+  { src: "pr1-1280-exchainge.png", alt: "", left: -447, top: -429.2, size: 1137 },
+  { src: "pr1-1280-fees.png", alt: "", left: -131, top: -890.2, size: 1914 },
 ];
 
 // Рендеры слайда 1 в 834-раскладке (Figma node 2695:19060): сетка 2×2,
 // окна 383×383 (Wallet-окно 381.01), gap 12. Позиция/размер вложенного
 // рендера — 1:1 из Figma. Ассеты те же, что в 1280.
 const TILES_834: { src: string; alt: string; left: number; top: number; size: number }[] = [
-  { src: "pr1-1280-wallet.png", alt: "3D-иллюстрация Wallet", left: -420.46, top: -194.59, size: 840.923 },
-  { src: "pr1-1280-coin.png", alt: "3D-иллюстрация Coin: стопка монет", left: -115.21, top: -121.17, size: 605.83 },
-  { src: "pr1-1280-exchainge.png", alt: "3D-иллюстрация Exchange", left: -289.32, top: -277.8, size: 735.928 },
-  { src: "pr1-1280-fees.png", alt: "3D-иллюстрация Fees: синяя стеклянная форма", left: -88, top: -576.19, size: 1238.845 },
+  { src: "pr1-1280-wallet.png", alt: "", left: -420.46, top: -194.59, size: 840.923 },
+  { src: "pr1-1280-coin.png", alt: "", left: -115.21, top: -121.17, size: 605.83 },
+  { src: "pr1-1280-exchainge.png", alt: "", left: -289.32, top: -277.8, size: 735.928 },
+  { src: "pr1-1280-fees.png", alt: "", left: -88, top: -576.19, size: 1238.845 },
 ];
 
 // Рендеры слайда 1 в 375-раскладке (Figma node 2695:19856): 1 колонка,
 // 4 окна 335×335, gap 12. Позиция/размер вложенного рендера — 1:1 из
 // Figma. Ассеты те же, что в ≥1440 (principles1-*.png).
 const TILES_375: { src: string; alt: string; left: number; top: number; size: number }[] = [
-  { src: "principles1-wallet.png", alt: "3D-иллюстрация Wallet: телефон со списком крипто-активов", left: -516, top: -213, size: 924.094 },
-  { src: "principles1-exchainge.png", alt: "3D-иллюстрация Exchange: стрелка обмена и евро-монета", left: -347, top: -264, size: 738 },
-  { src: "principles1-coin.png", alt: "3D-иллюстрация Coin: стопка монет", left: -138, top: -109, size: 652 },
-  { src: "principles1-fees.png", alt: "3D-иллюстрация Fees: синяя стеклянная форма", left: -68, top: -464, size: 1024 },
+  { src: "principles1-wallet.png", alt: "", left: -516, top: -213, size: 924.094 },
+  { src: "principles1-exchainge.png", alt: "", left: -347, top: -264, size: 738 },
+  { src: "principles1-coin.png", alt: "", left: -138, top: -109, size: 652 },
+  { src: "principles1-fees.png", alt: "", left: -68, top: -464, size: 1024 },
 ];
 
 // 04 Принципы дизайна — в Figma ОДИН раздел из двух слайдов (node
@@ -66,49 +68,47 @@ const TILES: {
 }[] = [
   {
     src: "principles1-wallet.png",
-    alt: "3D-иллюстрация Wallet: телефон со списком крипто-активов",
+    alt: "",
     left: 46,
     img: { left: -519.4, top: -184.29, size: 924.094 },
   },
   {
     src: "principles1-exchainge.png",
-    alt: "3D-иллюстрация Exchange: стрелка обмена и евро-монета",
+    alt: "",
     left: 386,
     img: { left: -347, top: -273.25, size: 738 },
   },
   {
     src: "principles1-coin.png",
-    alt: "3D-иллюстрация Coin: стопка монет",
+    alt: "",
     left: 726,
     img: { left: -138, top: -109, size: 652 },
   },
   {
     src: "principles1-fees.png",
-    alt: "3D-иллюстрация Fees: синяя стеклянная форма",
+    alt: "",
     left: 1066,
     img: { left: -53, top: -408.25, size: 1024 },
   },
 ];
 
 function Slide1() {
+  const t = C3[useLang()];
   return (
     <div className="relative w-full xl:h-[900px]">
       {/* ≥1440 — заголовок, текст и рендеры в центрированной 1440-сетке. */}
       <div className="relative mx-auto hidden h-[900px] w-[1440px] xl:block">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">04</p>
-          <p className="text-white">Принципы дизайна</p>
+          <p className="text-white">{t.principlesHeading}</p>
         </div>
 
         <div className="absolute left-[46px] top-[181px] flex w-[668px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
           <p className="opacity-70">
-            В основе визуального языка лежат простые округлые формы, реалистичные материалы и
-            ограниченная фирменная палитра. Во всех сценах использовались пластик, стекло и металл, а
-            также единая схема освещения.
+            {t.principlesPara1}
           </p>
           <p className="opacity-70">
-            Приоритетом была не максимальная реалистичность, а ясность формы и быстрое считывание
-            смысла композиции.
+            {t.principlesPara2}
           </p>
         </div>
 
@@ -139,17 +139,14 @@ function Slide1() {
           <div className="relative h-[1944px] w-[375px] overflow-clip bg-[#121212]">
             <div className="absolute left-[20px] top-[64px] flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
               <span className="text-[#008cff]">04</span>
-              <span className="text-white">Принципы дизайна</span>
+              <span className="text-white">{t.principlesHeading}</span>
             </div>
             <div className="absolute left-[20px] top-[134px] flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 [word-break:break-word]">
               <p className="whitespace-pre-wrap">
-                В основе визуального языка лежат простые округлые формы, реалистичные материалы{" "}
-                <br />и ограниченная фирменная палитра. Во всех сценах использовались пластик,
-                стекло и металл, а также единая схема освещения.
+                {t.principlesPara1}
               </p>
               <p>
-                Приоритетом была не максимальная реалистичность, а ясность формы и быстрое
-                считывание смысла композиции.
+                {t.principlesPara2}
               </p>
             </div>
 
@@ -173,7 +170,7 @@ function Slide1() {
             {/* Послесловие (20, 1748), 336, Wix Regular 22 leading-1.15 —
                 в Figma БЕЗ прозрачности и по левому краю. */}
             <p className="absolute left-[20px] top-[1748px] w-[336px] font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white [word-break:break-word]">
-              Материалы добавляли характер, сохраняя простоту и ясность формы
+              {t.principlesQuote}
             </p>
             {/* Подчёркивание-доодл (Vector 234257382) — (65.996, 1844.27),
                 283.762×16.591, картинка inset -18.08%/-1.06%. */}
@@ -199,17 +196,14 @@ function Slide1() {
           <div className="relative h-[1460px] w-[834px] overflow-clip bg-[#121212]">
             <div className="absolute left-[28px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
               <span className="text-[#008cff]">04</span>
-              <span className="text-white">Принципы дизайна</span>
+              <span className="text-white">{t.principlesHeading}</span>
             </div>
             <div className="absolute left-[28px] top-[119px] flex w-[383px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
               <p>
-                В основе визуального языка лежат простые округлые формы, реалистичные материалы и
-                ограниченная фирменная палитра. Во всех сценах использовались пластик, стекло и
-                металл, а также единая схема освещения.
+                {t.principlesPara1}
               </p>
               <p>
-                Приоритетом была не максимальная реалистичность, а ясность формы и быстрое
-                считывание смысла композиции.
+                {t.principlesPara2}
               </p>
             </div>
 
@@ -245,7 +239,7 @@ function Slide1() {
               </div>
             </Reveal>
             <p className="absolute left-[159px] top-[1231px] w-[516px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-              Материалы добавляли характер, сохраняя простоту и ясность формы
+              {t.principlesQuote}
             </p>
           </div>
         </FullBleedScale>
@@ -260,17 +254,14 @@ function Slide1() {
           <div className="relative h-[1857px] w-[1280px] overflow-clip bg-[#121212]">
             <div className="absolute left-[40px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
               <span className="text-[#008cff]">04</span>
-              <span className="text-white">Принципы дизайна</span>
+              <span className="text-white">{t.principlesHeading}</span>
             </div>
             <div className="absolute left-[40px] top-[119px] flex w-[595px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
               <p>
-                В основе визуального языка лежат простые округлые формы, реалистичные материалы и
-                ограниченная фирменная палитра. Во всех сценах использовались пластик, стекло и
-                металл, а также единая схема освещения.
+                {t.principlesPara1}
               </p>
               <p>
-                Приоритетом была не максимальная реалистичность, а ясность формы и быстрое
-                считывание смысла композиции.
+                {t.principlesPara2}
               </p>
             </div>
 
@@ -300,7 +291,7 @@ function Slide1() {
               </div>
             </Reveal>
             <p className="absolute left-[341px] top-[1616px] w-[598px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-              Материалы добавляли характер, сохраняя простоту и ясность формы
+              {t.principlesQuote}
             </p>
           </div>
         </FullBleedScale>
@@ -310,6 +301,7 @@ function Slide1() {
 }
 
 function Slide2Content() {
+  const t = C3[useLang()];
   return (
     <>
       {/* ≥1440 — контент в ЦЕНТРИРОВАННОЙ 1440-сетке, координаты 1:1 из Figma
@@ -320,20 +312,20 @@ function Slide2Content() {
         {/* Монеты — левая (тёмная) половина, (98, 185), 524×524. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="3D-стек монет Stablegate с галочкой"
+          alt=""
           className="absolute left-[98px] top-[185px] size-[524px] max-w-none"
           src={`${A}/pr2-coin.png`}
         />
         {/* Замок+карта — правая (светлая) половина, (818, 185), 524×524. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="3D-иллюстрация: карта Stablegate, замок и Face ID"
+          alt=""
           className="absolute left-[818px] top-[185px] size-[524px] max-w-none"
           src={`${A}/pr2-lock.png`}
         />
         {/* Цитата (764, 728), 599×105. */}
         <p className="absolute left-[764px] top-[728px] w-[599px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Материалы добавляли характер, сохраняя простоту и ясность формы
+          {t.principlesQuote}
         </p>
         {/* Подчёркивание (Vector 234257382, node 2880:14353) — 1:1 из Figma:
             (908, 838.908), 356.45×14.943; наклон уже в пути (без CSS-rotate). */}

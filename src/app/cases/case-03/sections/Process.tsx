@@ -9,6 +9,8 @@ import FullBleedScale from "@/components/FullBleedScale";
 import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
 import { useDrag } from "@/lib/useDrag";
+import { useLang } from "@/lib/lang";
+import { C3 } from "../i18n";
 
 // 05 Процесс — 1:1 из актуальной Figma (node 2022:14827, высота 2980).
 // В новой версии Figma «Процесс», «Дизайн-система» и сет 3D-иконок слиты
@@ -23,13 +25,13 @@ import { useDrag } from "@/lib/useDrag";
 const A = "/cases/case-03/sections";
 
 const STEPS = [
-  { n: "01", title: "Sketch", desc: "Поиск идеи и композиции" },
-  { n: "02", title: "Blocking", desc: "Построение базовых форм" },
-  { n: "03", title: "Modeling", desc: "Создание финальной геометрии" },
-  { n: "04", title: "Materials", desc: "Выбираем решение и согласовываем направление" },
-  { n: "05", title: "Lighting", desc: "Постановка света и акцентов" },
-  { n: "06", title: "Render", desc: "Финальный рендер и постобработка" },
-  { n: "07", title: "Final Key Visual", desc: "Готовая иллюстрация" },
+  { n: "01", title: "Sketch" },
+  { n: "02", title: "Blocking" },
+  { n: "03", title: "Modeling" },
+  { n: "04", title: "Materials" },
+  { n: "05", title: "Lighting" },
+  { n: "06", title: "Render" },
+  { n: "07", title: "Final Key Visual" },
 ];
 
 const PITCH = 340;
@@ -114,6 +116,7 @@ export default function Process() {
   const wide = bp === "desktop"; // ≥1440 — фикс-канвас 1440
   const mob = bp === "mobile"; // <640 — канвас 375
   const narrow = bp === "tabletP"; // 640–1023 — канвас 834
+  const t = C3[useLang()];
 
   // «Волна» по 4 объектам дизайн-системы: каждый по очереди чуть
   // подскакивает (scale + подъём) и возвращается; проход повторяется с
@@ -260,7 +263,7 @@ export default function Process() {
               {s.n}
             </p>
             <p className="text-[11px] font-medium uppercase leading-[1.2] tracking-[0.66px] text-white">{s.title}</p>
-            <p className="text-[11px] leading-[1.2] tracking-[0.66px] text-white">{s.desc}</p>
+            <p className="text-[11px] leading-[1.2] tracking-[0.66px] text-white">{t.steps[i].desc}</p>
           </GlassBubble>
         ))}
       </div>
@@ -368,18 +371,15 @@ export default function Process() {
         {/* — Процесс — */}
         <div className="absolute left-[46px] top-[143px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
           <p className="text-[#008cff]">05</p>
-          <p className="text-white">Процесс</p>
+          <p className="text-white">{t.processHeading}</p>
         </div>
 
         <div className="absolute left-[46px] top-[368px] flex w-[670px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           <p>
-            Каждая иллюстрация проходила один рабочий цикл: поиск метафоры, быстрый скетч,
-            построение композиции, настройка материалов и освещения, затем финальный рендер.
+            {t.processPara1}
           </p>
           <p>
-            Такой подход позволял принимать ключевые решения на ранних этапах. Библиотека
-            материалов и готовых объектов ускоряла создание новых сцен и помогала сохранять единый
-            стиль.
+            {t.processPara2}
           </p>
         </div>
 
@@ -392,12 +392,11 @@ export default function Process() {
         {/* — Дизайн-система — (пользователь выровнял заголовок и текст по левому краю) */}
         <div className="absolute left-[46px] top-[1092px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">06</p>
-          <p className="text-white">Дизайн-система</p>
+          <p className="text-white">{t.dsystemHeading}</p>
         </div>
 
         <p className="absolute left-[46px] top-[1139px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-80">
-          Каждая иллюстрация создавалась как часть общей системы. Геометрия, материалы, освещение и
-          цветовая палитра формировали единый визуальный язык независимо от темы конкретной сцены.
+          {t.dsystemPara}
         </p>
 
         {dsystemCard}
@@ -413,9 +412,7 @@ export default function Process() {
         </Reveal>
 
         <p className="absolute left-1/2 top-[1812px] w-[669px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Разные функции продукта.
-          <br />
-          Один визуальный язык
+          {t.dsystemQuote}
         </p>
 
         <Reveal variant="fade" className="absolute left-[220px] top-[2099px]">
@@ -441,18 +438,15 @@ export default function Process() {
             {/* 05 Процесс — заголовок 26px (20, 64), inline, gap 12. */}
             <div className="absolute left-[20px] top-[64px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
               <span className="text-[#008cff]">05</span>
-              <span className="text-white">Процесс</span>
+              <span className="text-white">{t.processHeading}</span>
             </div>
             {/* Интро (20, 105), 335, gap 6. */}
             <div className="absolute left-[20px] top-[105px] flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
               <p>
-                Каждая иллюстрация проходила один рабочий цикл: поиск метафоры, быстрый скетч,
-                построение композиции, настройка материалов и освещения, затем финальный рендер.
+                {t.processPara1}
               </p>
               <p>
-                Такой подход позволял принимать ключевые решения на ранних этапах. Библиотека
-                материалов и готовых объектов ускоряла создание новых сцен и помогала сохранять
-                единый стиль.
+                {t.processPara2}
               </p>
             </div>
 
@@ -463,12 +457,10 @@ export default function Process() {
             {/* 06 Дизайн-система — заголовок (20, 614), текст (20, 655), 335. */}
             <div className="absolute left-[20px] top-[614px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
               <span className="text-[#008cff]">06</span>
-              <span className="text-white">Дизайн-система</span>
+              <span className="text-white">{t.dsystemHeading}</span>
             </div>
             <p className="absolute left-[20px] top-[655px] w-[335px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              Каждая иллюстрация создавалась как часть общей системы. Геометрия, материалы,
-              освещение и цветовая палитра формировали единый визуальный язык независимо от темы
-              конкретной сцены.
+              {t.dsystemPara}
             </p>
 
             {/* Белая карточка (2695:19943, 20/772, 335×1308): вертикальный стек
@@ -510,9 +502,7 @@ export default function Process() {
               </div>
             </Reveal>
             <p className="absolute left-[20px] top-[2176px] w-[335px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
-              Разные функции продукта.
-              <br />
-              Один визуальный язык
+              {t.dsystemQuote}
             </p>
 
             {/* Сет 12 иконок (2712:14256, 0/2344, 375×489.7), иконка 105.077. */}
@@ -545,18 +535,15 @@ export default function Process() {
             {/* 05 Процесс — заголовок 100px (28, 72), gap 24. */}
             <div className="absolute left-[28px] top-[72px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-[1.1]">
               <span className="text-[#008cff]">05</span>
-              <span className="text-white">Процесс</span>
+              <span className="text-white">{t.processHeading}</span>
             </div>
             {/* Интро (28, 214), 670, gap 6. */}
             <div className="absolute left-[28px] top-[214px] flex w-[670px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
               <p>
-                Каждая иллюстрация проходила один рабочий цикл: поиск метафоры, быстрый скетч,
-                построение композиции, настройка материалов и освещения, затем финальный рендер.
+                {t.processPara1}
               </p>
               <p>
-                Такой подход позволял принимать ключевые решения на ранних этапах. Библиотека
-                материалов и готовых объектов ускоряла создание новых сцен и помогала сохранять
-                единый стиль.
+                {t.processPara2}
               </p>
             </div>
 
@@ -577,12 +564,10 @@ export default function Process() {
             {/* 06 Дизайн-система — заголовок (28, 796), текст (28, 843), 383. */}
             <div className="absolute left-[28px] top-[796px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
               <span className="text-[#008cff]">06</span>
-              <span className="text-white">Дизайн-система</span>
+              <span className="text-white">{t.dsystemHeading}</span>
             </div>
             <p className="absolute left-[28px] top-[843px] w-[383px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-80">
-              Каждая иллюстрация создавалась как часть общей системы. Геометрия, материалы,
-              освещение и цветовая палитра формировали единый визуальный язык независимо от темы
-              конкретной сцены.
+              {t.dsystemPara}
             </p>
 
             {/* Белая карточка 4 объектов (2695:19147, 28/975, 778×399). */}
@@ -595,9 +580,7 @@ export default function Process() {
               <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse-834.svg`} />
             </Reveal>
             <p className="absolute left-[28px] top-[1502px] w-[778px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-              Разные функции продукта.
-              <br />
-              Один визуальный язык
+              {t.dsystemQuote}
             </p>
 
             {/* Сет 12 иконок (2695:19207, 28/1692, 778×1016). */}
@@ -616,20 +599,16 @@ export default function Process() {
             {/* 05 Процесс — заголовок 175px (40,72). */}
             <div className="absolute left-[40px] top-[72px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
               <span className="text-[#008cff]">05</span>
-              <span className="text-white">Процесс</span>
+              <span className="text-white">{t.processHeading}</span>
             </div>
             {/* Интро (40, 297), 593. Переносы после «на ранних этапах. » и
                 «создание новых сцен » (Figma 2695:18375). */}
             <div className="absolute left-[40px] top-[297px] flex w-[593px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
               <p>
-                Каждая иллюстрация проходила один рабочий цикл: поиск метафоры, быстрый скетч,
-                построение композиции, настройка материалов и освещения, затем финальный рендер.
+                {t.processPara1}
               </p>
               <p>
-                Такой подход позволял принимать ключевые решения на ранних этапах.
-                <br />
-                Библиотека материалов и готовых объектов ускоряла создание новых сцен
-                <br />и помогала сохранять единый стиль.
+                {t.processPara2}
               </p>
             </div>
 
@@ -651,12 +630,10 @@ export default function Process() {
             {/* 06 Дизайн-система — заголовок (40, 947), текст (40, 994). */}
             <div className="absolute left-[40px] top-[947px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
               <span className="text-[#008cff]">06</span>
-              <span className="text-white">Дизайн-система</span>
+              <span className="text-white">{t.dsystemHeading}</span>
             </div>
             <p className="absolute left-[40px] top-[994px] w-[590px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-80">
-              Каждая иллюстрация создавалась как часть общей системы. Геометрия, материалы,
-              освещение и цветовая палитра формировали единый визуальный язык независимо от темы
-              конкретной сцены.
+              {t.dsystemPara}
             </p>
 
             {/* Белая карточка 4 объектов (2387:22353, 40/1109, 1200×399). */}
@@ -669,9 +646,7 @@ export default function Process() {
               <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse-1280.svg`} />
             </Reveal>
             <p className="absolute left-[40px] top-[1636px] w-[1200px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-              Разные функции продукта.
-              <br />
-              Один визуальный язык
+              {t.dsystemQuote}
             </p>
 
             {/* Сет 12 иконок (2695:18411, 40/1834, 1200×756). Внутренний

@@ -1,4 +1,8 @@
+"use client";
+
 import Reveal from "@/components/Reveal";
+import { useLang } from "@/lib/lang";
+import { C3 } from "../i18n";
 import VariantsCarousel from "@/components/VariantsCarousel";
 import FullBleedScale from "@/components/FullBleedScale";
 import { C3_TEXT } from "../tokens";
@@ -12,17 +16,10 @@ import { C3_TEXT } from "../tokens";
 const A = "/cases/case-03/sections";
 
 const CARDS = [
-  { src: `${A}/variant1.jpg`, w: 1419, h: 798, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
-  { src: `${A}/variant2.jpg`, w: 639, h: 798, alt: "Пост: Move digital assets with confidence" },
-  { src: `${A}/variant3.jpg`, w: 798, h: 798, alt: "Пост: Payments without delays" },
-  { src: `${A}/variant4.jpg`, w: 1197, h: 798, alt: "Пост: Real-time transactions" },
-];
-
-const REQS: [string, string][] = [
-  ["Сохранять", "визуальную целостность"],
-  ["Объяснять", "особенности продукта"],
-  ["Масштабироваться", "в маркетинговых материалах"],
-  ["Использоваться", "на любом фоне"],
+  { src: `${A}/variant1.jpg`, w: 1419, h: 798, alt: "" },
+  { src: `${A}/variant2.jpg`, w: 639, h: 798, alt: "" },
+  { src: `${A}/variant3.jpg`, w: 798, h: 798, alt: "" },
+  { src: `${A}/variant4.jpg`, w: 1197, h: 798, alt: "" },
 ];
 
 function Req({ head, sub, icon = "task-check.svg" }: { head: string; sub: string; icon?: string }) {
@@ -40,18 +37,19 @@ function Req({ head, sub, icon = "task-check.svg" }: { head: string; sub: string
 }
 
 export default function Task() {
+  const t = C3[useLang()];
+  const REQS = t.taskBullets;
   return (
     <section className="relative w-full overflow-clip bg-[#fafafa]">
       {/* ≥1440 — 1:1 из Figma-канваса 1440. */}
       <div className="relative mx-auto hidden h-[1672px] w-[1440px] xl:block">
         <div className="absolute left-[46px] top-[143px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
           <p className="text-[#008cff]">01</p>
-          <p className="text-[#121212]">Задача</p>
+          <p className="text-[#121212]">{t.taskHeading}</p>
         </div>
 
         <p className="absolute left-[46px] top-[368px] w-[668px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-          Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая объясняет
-          функциональность продукта без текста и работает в разных форматах и контекстах.
+          {t.taskPara}
         </p>
 
         {/* Доодл-«молния» (Figma node 2384:21368 → 1216 / 394). */}
@@ -60,9 +58,7 @@ export default function Task() {
           <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-flash.svg`} />
         </Reveal>
 
-        <p className="absolute left-[726px] top-[1140px] w-[564px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-          Система должна была:
-        </p>
+        <p className="absolute left-[726px] top-[1140px] w-[564px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">{t.taskSystemMust}</p>
 
         <div className="absolute left-[726px] top-[1169px] flex gap-[12px]">
           <div className="flex w-[328px] flex-col gap-[12px]">
@@ -78,12 +74,11 @@ export default function Task() {
         {/* 3D-стек монет (Figma node 2399:35306, x216 / y1293, 328×328). */}
         <Reveal variant="fade" className="absolute left-[216px] top-[1293px] size-[328px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
+          <img alt="" className="block size-full" src={`${A}/task-coin.jpg`} />
         </Reveal>
 
         <p className="absolute left-[726px] top-[1369px] w-[624px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-          Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как пользователь
-          прочитает текст
+          {t.taskQuote}
         </p>
 
         {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369). */}
@@ -115,7 +110,7 @@ export default function Task() {
             {/* Заголовок 175px — «01» + «Задача», gap 24, items-center. */}
             <div className={`absolute left-[40px] top-[72px] flex items-center gap-[24px] whitespace-nowrap ${C3_TEXT.displayXl}`}>
               <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">Задача</span>
+              <span className="text-[#121212]">{t.taskHeading}</span>
             </div>
 
             {/* Молния (Vector 234257381) — (1077.04, 250.8), 92.57×120.91. */}
@@ -127,9 +122,7 @@ export default function Task() {
             {/* Вводный абзац (40, 297), 594×51, Aeonik Pro Medium uppercase
                 (перенос после «без текста »). */}
             <p className={`absolute left-[40px] top-[297px] w-[594px] text-[#121212] ${C3_TEXT.bodyMediumCaps}`}>
-              Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая
-              объясняет функциональность продукта без текста
-              <br />и работает в разных форматах и контекстах.
+              {t.taskPara}
             </p>
 
             {/* Витрина «варианты» (2707:41600, 40/412) — VariantsCarousel на
@@ -142,9 +135,7 @@ export default function Task() {
 
             {/* «Система должна была:» (646, 875+54=929) — medium uppercase,
                 но С opacity-70 (Figma 2695:17976). */}
-            <p className={`absolute left-[646px] top-[929px] w-[594px] text-[#121212] opacity-70 ${C3_TEXT.bodyMediumCaps}`}>
-              Система должна была:
-            </p>
+            <p className={`absolute left-[646px] top-[929px] w-[594px] text-[#121212] opacity-70 ${C3_TEXT.bodyMediumCaps}`}>{t.taskSystemMust}</p>
             {/* Сетка 4 требований (646, 904+54=958), 2 колонки 291, gap 12. */}
             <div className="absolute left-[646px] top-[958px] flex gap-[12px]">
               <div className="flex w-[291px] flex-col gap-[12px]">
@@ -160,13 +151,12 @@ export default function Task() {
             {/* 3D-стек монет (178, 1036+54=1090), 328×328. */}
             <Reveal variant="fade" className="absolute left-[178px] top-[1090px] size-[328px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
+              <img alt="" className="block size-full" src={`${A}/task-coin.jpg`} />
             </Reveal>
 
             {/* Цитата (646, 1112+54=1166), 594×175. */}
             <p className={`absolute left-[646px] top-[1166px] w-[594px] text-[#121212] ${C3_TEXT.quote}`}>
-              Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как
-              пользователь прочитает текст
+              {t.taskQuote}
             </p>
 
             {/* Волнистое подчёркивание (Vector 234257367) — (798, 1266+54=1320), 387.57×90.44. */}
@@ -186,13 +176,11 @@ export default function Task() {
             {/* «01 Задача» — Wix Bold 26, gap 12, (20, 64). */}
             <div className="absolute left-[20px] top-[64px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none">
               <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">Задача</span>
+              <span className="text-[#121212]">{t.taskHeading}</span>
             </div>
             {/* Вводный абзац (20, 102), 335, Aeonik Medium 14 UPPERCASE. */}
             <p className="absolute left-[20px] top-[102px] w-[335px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-              Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая
-              объясняет функциональность продукта без текста и работает в разных форматах и
-              контекстах.
+              {t.taskPara}
             </p>
 
             {/* Витрина «варианты» (2823:40971, y219) — VariantsCarousel, свои
@@ -201,9 +189,7 @@ export default function Task() {
 
             {/* «Система должна была:» (20, 429 + 54 = 483) — Aeonik Medium 14
                 UPPERCASE opacity-70. */}
-            <p className="absolute left-[20px] top-[483px] w-[335px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Система должна была:
-            </p>
+            <p className="absolute left-[20px] top-[483px] w-[335px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">{t.taskSystemMust}</p>
             {/* Чек-лист — 1 колонка, 4 строки (20, 429 + 29 + 54 = 512), gap 12. */}
             <div className="absolute left-[20px] top-[512px] flex w-[328px] flex-col gap-[12px]">
               <Req head={REQS[0][0]} sub={REQS[0][1]} icon="task-check-375.svg" />
@@ -216,15 +202,14 @@ export default function Task() {
                 На 375 виден (на 834 был hidden). */}
             <Reveal variant="fade" className="absolute left-[20px] top-[716px] size-[328px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
+              <img alt="" className="block size-full" src={`${A}/task-coin.jpg`} />
             </Reveal>
 
             {/* Цитата (Frame 2147232030, 20, 1022 + 54 = 1076), w-329, Wix
                 Regular 22 UPPERCASE opacity-70. БЕЗ ручного переноса —
                 естественная вёрстка в 6 строк (макет обновлён). */}
             <p className="absolute left-[20px] top-[1076px] w-[329px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70">
-              Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как
-              пользователь прочитает текст
+              {t.taskQuote}
             </p>
             {/* Подчёркивание-хайлайт (Vector 234257367, 2835:53360) — Figma abs
                 (20.4, 2250.3) → секц. y ≈ 1173 + 54 = 1227, 339.01×23.08,
@@ -249,18 +234,14 @@ export default function Task() {
             {/* «01 Задача» — Wix Bold 100, gap 24, items-center, (28, 72). */}
             <div className="absolute left-[28px] top-[72px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-[1.1]">
               <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">Задача</span>
+              <span className="text-[#121212]">{t.taskHeading}</span>
             </div>
 
             {/* Вводный абзац (28, 214), w-384, Aeonik Medium 14 UPPERCASE.
                 Ручные <br> точь-в-точь как в макете: после «функциональность
                 продукта » и после «в разных форматах ». */}
             <p className="absolute left-[28px] top-[214px] w-[384px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-              Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая
-              объясняет функциональность продукта{" "}
-              <br />
-              без текста и работает в разных форматах{" "}
-              <br />и контекстах.
+              {t.taskPara}
             </p>
 
             {/* Флэш-доодл (Vector 234257381) — теперь В ХЕДЕРЕ: Figma abs
@@ -286,9 +267,7 @@ export default function Task() {
 
             {/* «Система должна была:» (28, 826 + 54 = 880) — Aeonik Medium 14
                 UPPERCASE opacity-70. */}
-            <p className="absolute left-[28px] top-[880px] w-[594px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Система должна была:
-            </p>
+            <p className="absolute left-[28px] top-[880px] w-[594px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">{t.taskSystemMust}</p>
             {/* Сетка 4 требований (28, 826 + 28.8 + 54 ≈ 909), 2 колонки 228 / 291, gap 12. */}
             <div className="absolute left-[28px] top-[909px] flex w-[594px] gap-[12px]">
               <div className="flex w-[228px] flex-col gap-[12px]">
@@ -307,15 +286,7 @@ export default function Task() {
                 шире, поэтому строки жёсткие, как в макете. */}
             <div className="absolute left-[422px] top-[1107px] w-[471px] -translate-x-1/2">
               <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
-                Каждая иллюстрация
-                <br />
-                должна была объяснять
-                <br />
-                функцию продукта ещё
-                <br />
-                до того, как пользователь
-                <br />
-                прочитает текст
+                {t.taskQuote}
               </p>
               {/* Подчёркивание (Vector 234257367, node 2836:53648 — перерисовано
                   в макете: теперь плавная линия). Figma bbox 453.51×19.17,

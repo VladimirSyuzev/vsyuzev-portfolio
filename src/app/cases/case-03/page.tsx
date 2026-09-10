@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
@@ -10,6 +12,9 @@ import VisualSystem from "./sections/VisualSystem";
 import PrinciplesSlides from "./sections/PrinciplesSlides";
 import Process from "./sections/Process";
 import Summary from "./sections/Summary";
+import { useLang } from "@/lib/lang";
+import { CASES } from "@/lib/cases-data";
+import { C3 } from "./i18n";
 
 // Кейс 003 «3D-иллюстраций для финтех-продукта» (Stablegate) — собран
 // 1:1 из Figma (frame 2022:14228) по образцу кейсов 001/002: реальный
@@ -18,6 +23,9 @@ import Summary from "./sections/Summary";
 // (мокапы, фото, 3D-сеты) — пропорционально на всю ширину экрана.
 // Обложка/«О проекте» — весь первый экран (min-h-screen, FullBleedScale).
 export default function Case03Page() {
+  const lang = useLang();
+  const t = C3[lang];
+  const title = lang === "en" ? CASES[2].titleEn : CASES[2].title;
   return (
     <div className="flex w-full flex-col items-center overflow-x-clip">
       <Header />
@@ -40,7 +48,7 @@ export default function Case03Page() {
               <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
                 <div className="absolute left-[461px] top-[-92px] h-[678px] w-[1020px]">
                   <img
-                    alt="Сайт Stablegate на экране ноутбука"
+                    alt=""
                     className="absolute inset-0 size-full object-cover"
                     src="/cases/case-03/sections/cover-mockup.jpg"
                   />
@@ -61,8 +69,7 @@ export default function Case03Page() {
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
               <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                3D-иллюстраций <br />
-                для финтех-продукта
+                {title}
               </p>
               <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white" style={{ opacity: 0.56 }}>
                 003
@@ -78,7 +85,7 @@ export default function Case03Page() {
               <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
                 {/* Фото ноутбука (behance-675a93f92dc0a 1). */}
                 <img
-                  alt="Сайт Stablegate на экране ноутбука"
+                  alt=""
                   className="absolute left-[-35.35px] top-[-282.1px] h-[1109.675px] w-[1667.974px] max-w-none object-cover"
                   src="/cases/case-03/sections/hero1280-mockup.jpg"
                 />
@@ -114,8 +121,7 @@ export default function Case03Page() {
                     003
                   </p>
                   <p className="w-[1278px] whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                    3D-иллюстраций <br />
-                    для финтех-продукта
+                    {title}
                   </p>
                 </div>
               </div>
@@ -127,7 +133,7 @@ export default function Case03Page() {
           <div className="w-full sm:hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Сайт Stablegate на экране ноутбука · 3D-иллюстраций для финтех-продукта"
+              alt=""
               className="block w-full"
               src="/cases/case-03/sections/hero375.jpg"
             />
@@ -142,7 +148,7 @@ export default function Case03Page() {
                 {/* Фото ноутбука (behance-675a93f92dc0a 1) — (-76,-18), 1020×921. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Сайт Stablegate на экране ноутбука"
+                  alt=""
                   className="absolute left-[-76px] top-[-18px] h-[921px] w-[1020px] max-w-none object-cover"
                   src="/cases/case-03/sections/hero834-mockup.jpg"
                 />
@@ -175,8 +181,7 @@ export default function Case03Page() {
                     003
                   </p>
                   <p className="w-[1278px] whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                    3D-иллюстраций <br />
-                    для финтех-продукта
+                    {title}
                   </p>
                 </div>
               </div>
@@ -191,23 +196,18 @@ export default function Case03Page() {
         <div className="relative mx-auto w-full max-w-[1200px] xl:w-[1440px] xl:max-w-none xl:flex-1" style={{ minHeight: 318 }}>
           {/* ≥1440 */}
           <div className="hidden xl:contents">
-            <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
-            </p>
+            <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">{t.aboutHeading}</p>
             <p className="absolute left-[46px] top-[148px] w-[670px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Для Stablegate я разработал систему 3D key visuals, которая помогает наглядно объяснять
-              ключевые функции финтех-продукта. Проект охватил весь цикл работы: от поиска визуальных
-              метафор и построения дизайн-системы до создания готовых иллюстраций для сайта,
-              презентаций, email-рассылок и социальных сетей.
+              {t.aboutIntro}
             </p>
 
             <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
               <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">3D Artist</p>
             </div>
             <div className="absolute left-[1236px] top-[149px] flex w-[98px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Stablegate</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
             </div>
 
             <Reveal
@@ -225,25 +225,19 @@ export default function Case03Page() {
               ряд (gap 24). Клиент «Stablegate». Без декор-линии. */}
           <div className="flex flex-col gap-[32px] px-[20px] py-[64px] sm:hidden">
             <div className="flex flex-col gap-[12px] text-[#121212]">
-              <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px]">О ПРОЕКТЕ</p>
+              <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px]">{t.aboutHeading}</p>
               <p className="whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
-                Для Stablegate я разработал систему{" "}
-                <br />
-                3D key visuals, которая помогает наглядно объяснять ключевые функции
-                финтех-продукта. Проект охватил весь цикл работы: от поиска визуальных метафор и
-                построения дизайн-системы до создания готовых иллюстраций{" "}
-                <br />
-                для сайта, презентаций, email-рассылок и социальных сетей.
+                {t.aboutIntro}
               </p>
             </div>
             <div className="flex items-center gap-[24px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-black">
               <div className="flex w-[102px] flex-col items-start gap-[4px]">
-                <p className="font-medium uppercase">Позиция</p>
+                <p className="font-medium uppercase">{t.metaRole}</p>
                 <p className="opacity-70">3D Artist</p>
               </div>
               <div className="flex w-[98px] flex-col items-start gap-[4px]">
-                <p className="font-medium uppercase">Клиент</p>
-                <p className="opacity-70">Stablegate</p>
+                <p className="font-medium uppercase">{t.metaClient}</p>
+                <p className="opacity-70">{t.metaClientValue}</p>
               </div>
             </div>
           </div>
@@ -252,25 +246,19 @@ export default function Case03Page() {
               2695:18452, 834×310): фрейм контента (28,72,778×166), gap 12;
               строка «left» — абзац 382 + мета (x613). Клиент «Яндекс». */}
           <div className="hidden flex-col gap-[12px] px-[28px] py-[72px] sm:flex lg:hidden">
-            <p className="whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
-            </p>
+            <p className="whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">{t.aboutHeading}</p>
             <div className="flex items-start justify-between">
               <p className="w-[382px] max-w-[62%] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Для Stablegate я разработал систему 3D key visuals, которая помогает наглядно
-                объяснять ключевые функции финтех-продукта. Проект охватил весь цикл работы: от
-                поиска визуальных метафор и построения дизайн-системы до создания готовых
-                иллюстраций для сайта, презентаций, email-рассылок{" "}
-                <br />и социальных сетей.
+                {t.aboutIntro}
               </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">Позиция</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">{t.metaRole}</p>
                   <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">3D Artist</p>
                 </div>
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">Клиент</p>
-                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">Яндекс</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">{t.metaClient}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">{t.metaClientAlt}</p>
                 </div>
 
                 {/* Декор-подчёркивание (Vector 234257362) — по замеру Figma
@@ -294,25 +282,19 @@ export default function Case03Page() {
               абзац 594 + мета (x1036). Клиент «Яндекс» (как в 1280-фрейме,
               не «Stablegate»). */}
           <div className="hidden flex-col gap-[12px] px-[40px] py-[64px] lg:flex xl:hidden">
-            <p className="whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
-            </p>
+            <p className="whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">{t.aboutHeading}</p>
             <div className="flex items-start justify-between gap-[40px]">
               <p className="w-[594px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Для Stablegate я разработал систему 3D key visuals, которая помогает наглядно
-                объяснять ключевые функции финтех-продукта. Проект охватил весь цикл работы:{" "}
-                <br />
-                от поиска визуальных метафор и построения дизайн-системы до создания готовых
-                иллюстраций для сайта, презентаций, email-рассылок и социальных сетей.
+                {t.aboutIntro}
               </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
                   <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">3D Artist</p>
                 </div>
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientAlt}</p>
                 </div>
 
                 {/* Декор-подчёркивание под метой — reflow 1280 (в макете
