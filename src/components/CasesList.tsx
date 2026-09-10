@@ -180,7 +180,7 @@ function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: b
             </p>
             {/* Стрелка «открыть» — привязана к нижней линии карточки: 40px
                 от неё и от правого края, одинаково во всех карточках.
-                На 375 обводка тоньше — 5px. */}
+                Обводка — 6px (в файле), на 375 тоньше — 5px. */}
             <DrawIn
               src="/cases/lil-arrow.svg"
               play="mount"
