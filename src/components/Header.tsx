@@ -87,6 +87,7 @@ export default function Header() {
   const pathname = usePathname();
   const lang = useLang();
   const isHome = pathname === "/";
+  const showLang = isHome || pathname.startsWith("/cases/");
   const label = NAV_LABEL[lang];
   const caseTitle = (c: (typeof CASES)[number]) => (lang === "en" ? c.titleEn : c.title);
 
@@ -300,7 +301,7 @@ export default function Header() {
               {label[item.id]}
             </Link>
           ))}
-          {isHome && (
+          {showLang && (
             <div
               className="ml-[6px] flex items-center border-l pl-[12px]"
               style={{ borderColor: transparent ? "rgba(255,255,255,0.2)" : "rgba(50,50,60,0.2)" }}
@@ -385,7 +386,7 @@ export default function Header() {
             </Link>
           ))}
 
-          {isHome && (
+          {showLang && (
             <div className="pt-[18px]">
               <LangToggle transparent={false} />
             </div>
