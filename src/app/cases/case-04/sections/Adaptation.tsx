@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import VariantsCarousel from "@/components/VariantsCarousel";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -60,10 +61,10 @@ export default function Adaptation() {
           </p>
 
           {/* Обводка-эллипс (Figma node 2401:35701 → x290 / y1377, 884×130). */}
-          <Reveal variant="line" start="top 88%" className="absolute left-[290px] top-[1377px] h-[130px] w-[884px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src={`${A}/adapt-ellipse.svg`} />
-          </Reveal>
+          <DrawIn
+            src={`${A}/adapt-ellipse.svg`}
+            className="absolute left-[290px] top-[1377px] h-[130px] w-[884px]"
+          />
           {/* Мысль (Figma node 2401:35699 → x338 / y1407, w765, по центру). */}
           <p className="absolute left-1/2 top-[1407px] w-[765px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
             Один Key Visual адаптируется под разные носители без потери идеи
@@ -117,16 +118,9 @@ export default function Adaptation() {
             {/* Мысль (355, 1267, w-570, center) + обводка-эллипс (Vector 234257386,
                 390/1248.477, 500×207). Ручные <br> после «адаптируется »,
                 «под разные носители ». */}
-            <Reveal
-              variant="line"
-              start="top 88%"
-              className="absolute left-[390px] top-[1248.477px] h-[207px] w-[500px]"
-            >
-              <div className="absolute inset-[-1.41%_-0.59%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/adapt-ellipse-1280.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[390px] top-[1248.477px] h-[207px] w-[500px]">
+              <DrawIn src={`${A}/adapt-ellipse-1280.svg`} className="absolute inset-[-1.41%_-0.59%]" />
+            </div>
             <p className="absolute left-[355px] top-[1267px] w-[570px] whitespace-pre-wrap text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
               Один Key Visual адаптируется{" "}
               <br />
@@ -182,16 +176,9 @@ export default function Adaptation() {
             {/* Мысль (center, w-378, y990) + обводка-эллипс (Vector 234257386,
                 центр, y961.199, 419×182). Блок Frame 2147232100 сдвинут вниз
                 (y926) — текст 2 стал узкой колонкой в 5 строк. */}
-            <Reveal
-              variant="line"
-              start="top 88%"
-              className="absolute left-1/2 top-[961.199px] h-[182px] w-[419px] -translate-x-1/2"
-            >
-              <div className="absolute inset-[-1.65%_-0.72%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/adapt-ellipse-834.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-1/2 top-[961.199px] h-[182px] w-[419px] -translate-x-1/2">
+              <DrawIn src={`${A}/adapt-ellipse-834.svg`} className="absolute inset-[-1.65%_-0.72%]" />
+            </div>
             <p className="absolute left-1/2 top-[990px] w-[378px] -translate-x-1/2 whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
               Один Key Visual адаптируется{" "}
               <br />
@@ -249,16 +236,9 @@ export default function Adaptation() {
               <br />
               под разные носители без потери идеи
             </p>
-            <Reveal
-              variant="line"
-              start="top 92%"
-              className="absolute left-[19.531px] top-[776.863px] h-[17.209px] w-[335.94px]"
-            >
-              <div className="absolute inset-[-17.43%_-0.89%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/adapt-underline-375.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[19.531px] top-[776.863px] h-[17.209px] w-[335.94px]">
+              <DrawIn src={`${A}/adapt-underline-375.svg`} className="absolute inset-[-17.43%_-0.89%]" />
+            </div>
           </div>
         </FullBleedScale>
       </div>

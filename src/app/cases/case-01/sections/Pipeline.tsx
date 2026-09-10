@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
 import { useDrag } from "@/lib/useDrag";
@@ -145,12 +145,17 @@ export default function Pipeline() {
         {/* Стрелки-доодлы указывают на карточку «05» в покое — контекстная
             аннотация под конкретную позицию скролла, ниже xl трек листается
             и якорь теряется, поэтому только на десктопе. */}
-        <Reveal variant="doodle" className="hidden xl:absolute xl:left-[1313.47px] xl:top-[761.57px] xl:block xl:h-[63px] xl:w-[42px]">
-          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-1.svg" />
-        </Reveal>
-        <Reveal variant="doodle" delay={0.08} className="hidden xl:absolute xl:left-[1259.3px] xl:top-[783.91px] xl:block xl:h-[12px] xl:w-[96px]">
-          <img alt="" className="block size-full max-w-none" src="/cases/case-01/sections/pipeline-arrow-2.svg" />
-        </Reveal>
+        <DrawIn
+          src="/cases/case-01/sections/pipeline-arrow-1.svg"
+          fit="contain"
+          className="hidden xl:absolute xl:left-[1313.47px] xl:top-[761.57px] xl:block xl:h-[63px] xl:w-[42px]"
+        />
+        <DrawIn
+          src="/cases/case-01/sections/pipeline-arrow-2.svg"
+          fit="contain"
+          delay={0.08}
+          className="hidden xl:absolute xl:left-[1259.3px] xl:top-[783.91px] xl:block xl:h-[12px] xl:w-[96px]"
+        />
       </div>
 
       {/* Видимое окно трека — на всю ширину экрана, нативный overflow-x-auto

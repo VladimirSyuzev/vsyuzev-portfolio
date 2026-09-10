@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import SiteFeatures from "./sections/SiteFeatures";
 import Task from "./sections/Task";
 import Research from "./sections/Research";
@@ -210,14 +210,12 @@ export default function Case03Page() {
               <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Stablegate</p>
             </div>
 
-            <Reveal
-              variant="line"
+            <DrawIn
+              src="/cases/case-03/sections/cover-underline.svg"
               delay={0.35}
-              start="top bottom"
+              play="mount"
               className="absolute left-[1076.81px] top-[196.26px] h-[17.294px] w-[267.713px]"
-            >
-              <img alt="" className="block size-full max-w-none" src="/cases/case-03/sections/cover-underline.svg" />
-            </Reveal>
+            />
           </div>
 
           {/* <640 — 1:1 из Figma «case-03 · 375» (node 2695:19248, 375×375):
@@ -277,14 +275,10 @@ export default function Case03Page() {
                     линия занимает x 638–818 (виден участок ~180), правый край
                     на ~12px правее меты. Держим right-[-14px] w-190 (viewBox
                     201×14.4 → h 13.6), лёгкий наклон вверх-вправо — в самом SVG. */}
-                <Reveal
-                  variant="line"
-                  start="top 92%"
+                <DrawIn
+                  src="/cases/case-03/sections/oproekte-underline-834.svg"
                   className="pointer-events-none absolute right-[-14px] top-[calc(100%+8px)] h-[13.6px] w-[190px]"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src="/cases/case-03/sections/oproekte-underline-834.svg" />
-                </Reveal>
+                />
               </div>
             </div>
           </div>
@@ -317,14 +311,10 @@ export default function Case03Page() {
 
                 {/* Декор-подчёркивание под метой — reflow 1280 (в макете
                     Figma есть; xl использует свою абсолютную копию выше). */}
-                <Reveal
-                  variant="line"
-                  start="top 92%"
+                <DrawIn
+                  src="/cases/case-03/sections/cover-underline.svg"
                   className="pointer-events-none absolute right-0 top-[calc(100%+8px)] h-[16px] w-[224px]"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src="/cases/case-03/sections/cover-underline.svg" />
-                </Reveal>
+                />
               </div>
             </div>
           </div>

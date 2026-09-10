@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useBreakpoint } from "@/lib/breakpoint";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import SlideProgress from "@/components/SlideProgress";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -177,16 +177,9 @@ function Slide1() {
             </p>
             {/* Подчёркивание-доодл (Vector 234257382) — (65.996, 1844.27),
                 283.762×16.591, картинка inset -18.08%/-1.06%. */}
-            <Reveal
-              variant="line"
-              start="top 90%"
-              className="absolute left-[65.996px] top-[1844.27px] h-[16.591px] w-[283.762px]"
-            >
-              <div className="absolute inset-[-18.08%_-1.06%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/pr1-underline-375.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[65.996px] top-[1844.27px] h-[16.591px] w-[283.762px]">
+              <DrawIn src={`${A}/pr1-underline-375.svg`} className="absolute inset-[-18.08%_-1.06%]" />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -238,12 +231,10 @@ function Slide1() {
 
             {/* Цитата (159, 1231), 516, WHITE opacity-70 + обводка-доодл
                 (Vector 234257386, 134.58, 1195.5, 567×169.4, наклон -1.37°). */}
-            <Reveal variant="line" start="top 86%" className="absolute left-[135px] top-[1196px] h-[169.371px] w-[567px]">
-              <div className="size-full rotate-[-1.37deg]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/pr1-ellipse-834.svg`} />
-              </div>
-            </Reveal>
+            <DrawIn
+              src={`${A}/pr1-ellipse-834.svg`}
+              className="absolute left-[135px] top-[1196px] h-[169.371px] w-[567px] rotate-[-1.37deg]"
+            />
             <p className="absolute left-[159px] top-[1231px] w-[516px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
               Материалы добавляли характер, сохраняя простоту и ясность формы
             </p>
@@ -293,12 +284,10 @@ function Slide1() {
 
             {/* Цитата (341, 1616), 598, WHITE opacity-70 + обводка-доодл
                 (Vector 234257386, 309, 1570, 662×198, наклон -1.37°). */}
-            <Reveal variant="line" start="top 86%" className="absolute left-[309px] top-[1570px] h-[198px] w-[662px]">
-              <div className="size-full rotate-[-1.37deg]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/pr1-1280-ellipse.svg`} />
-              </div>
-            </Reveal>
+            <DrawIn
+              src={`${A}/pr1-1280-ellipse.svg`}
+              className="absolute left-[309px] top-[1570px] h-[198px] w-[662px] rotate-[-1.37deg]"
+            />
             <p className="absolute left-[341px] top-[1616px] w-[598px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
               Материалы добавляли характер, сохраняя простоту и ясность формы
             </p>
@@ -337,16 +326,9 @@ function Slide2Content() {
         </p>
         {/* Подчёркивание (Vector 234257382, node 2880:14353) — 1:1 из Figma:
             (908, 838.908), 356.45×14.943; наклон уже в пути (без CSS-rotate). */}
-        <Reveal
-          variant="line"
-          start="top 80%"
-          className="absolute left-[908px] top-[838.908px] h-[14.943px] w-[356.45px]"
-        >
-          <div className="absolute inset-[-20.08%_-0.84%]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src={`${A}/pr2-underline.svg`} />
-          </div>
-        </Reveal>
+        <div className="absolute left-[908px] top-[838.908px] h-[14.943px] w-[356.45px]">
+          <DrawIn src={`${A}/pr2-underline.svg`} className="absolute inset-[-20.08%_-0.84%]" />
+        </div>
       </div>
 
       {/* <640 — 1:1 из Figma «case-03 · 375» (node 2712:14252, 375×749.583):

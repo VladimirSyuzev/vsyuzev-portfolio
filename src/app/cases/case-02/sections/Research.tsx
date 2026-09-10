@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import { useMinWidth } from "@/lib/breakpoint";
 
 // 02 Исследование — на десктопе (≥1200) абсолют 1:1 из Figma (node
@@ -43,14 +44,12 @@ export default function Research() {
         </div>
 
         {/* Доодл-«лупа» — только на десктопе. */}
-        <Reveal
-          variant="doodle"
+        <DrawIn
+          src={`${A}/research-doodle.svg`}
+          fit="contain"
           delay={0.1}
           className="hidden xl:absolute xl:left-[582px] xl:top-[138px] xl:z-10 xl:block xl:h-[168px] xl:w-[138px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/research-doodle.svg`} />
-        </Reveal>
+        />
 
         {/* Карточки-документ — единый экспорт 1008×645 (макет 1440). 375: по
             нажатию раскрывается 1:1 (как «Гайд» кейса 1). */}

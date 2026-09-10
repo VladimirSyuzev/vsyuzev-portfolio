@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 04 Серия сценариев — 1:1 из Figma (node 2034:15790, высота 1262).
@@ -51,10 +52,10 @@ export default function Series() {
         </Reveal>
 
         {/* Обводка-эллипс вокруг мысли (Figma node 2401:35698). */}
-        <Reveal variant="line" start="top 90%" className="absolute left-[238px] top-[951px] h-[172px] w-[965px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/series-ellipse.svg`}
+          className="absolute left-[238px] top-[951px] h-[172px] w-[965px]"
+        />
         {/* Мысль (Figma node 2401:35697 → x216 / y1003, w1008, по центру). */}
         <p className="absolute left-1/2 top-[1003px] w-[900px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
           Один принцип позволил рассказывать разные истории в рамках одной кампании
@@ -112,16 +113,9 @@ export default function Series() {
 
             {/* Мысль (327, 940.524, w-626, center) + обводка-эллипс
                 (Vector 234257399, 293.39/921.977, 693.378×140.448). */}
-            <Reveal
-              variant="line"
-              start="top 90%"
-              className="absolute left-[293.39px] top-[921.977px] h-[140.448px] w-[693.378px]"
-            >
-              <div className="absolute inset-[-2.14%_-0.43%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse-1280.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[293.39px] top-[921.977px] h-[140.448px] w-[693.378px]">
+              <DrawIn src={`${A}/series-ellipse-1280.svg`} className="absolute inset-[-2.14%_-0.43%]" />
+            </div>
             <p className="absolute left-[327px] top-[940.524px] w-[626px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
               Один принцип позволил рассказывать разные истории в рамках одной кампании
             </p>
@@ -180,16 +174,9 @@ export default function Series() {
 
             {/* Мысль (148, 1560.706, w-538, center) + обводка-эллипс
                 (Vector 234257399, 102.383/1541.496, 628.487×138.922). */}
-            <Reveal
-              variant="line"
-              start="top 90%"
-              className="absolute left-[102.383px] top-[1541.496px] h-[138.922px] w-[628.487px]"
-            >
-              <div className="absolute inset-[-2.16%_-0.48%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse-834.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[102.383px] top-[1541.496px] h-[138.922px] w-[628.487px]">
+              <DrawIn src={`${A}/series-ellipse-834.svg`} className="absolute inset-[-2.16%_-0.48%]" />
+            </div>
             <p className="absolute left-[148px] top-[1560.706px] w-[538px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
               Один принцип позволил рассказывать разные истории в рамках одной кампании
             </p>
@@ -247,16 +234,9 @@ export default function Series() {
             {/* Мысль (w-303, center, pb-64) + обводка-эллипс (Vector 234257399,
                 21.07/961.31, 334.645×185.75). */}
             <div className="relative flex w-full shrink-0 flex-col items-center justify-center pb-[64px]">
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-1/2 top-[-25.95px] h-[185.75px] w-[334.645px] -translate-x-1/2"
-              >
-                <div className="absolute inset-[-1.62%_-0.9%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/series-ellipse-375.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-1/2 top-[-25.95px] h-[185.75px] w-[334.645px] -translate-x-1/2">
+                <DrawIn src={`${A}/series-ellipse-375.svg`} className="absolute inset-[-1.62%_-0.9%]" />
+              </div>
               <p className="relative w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
                 Один принцип позволил рассказывать разные истории в рамках одной кампании
               </p>

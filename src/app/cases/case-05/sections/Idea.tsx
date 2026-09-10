@@ -18,7 +18,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // <1440 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41047,
@@ -254,17 +254,16 @@ export default function Idea() {
                       src={`${A}/idea-card-${i + 1}-1280.jpg`}
                     />
                     {/* Маркер-подчёркивание под описанием. */}
-                    <Reveal
-                      variant="line"
-                      start="top 92%"
+                    <div
                       className="absolute left-[24px] z-10"
                       style={{ top: IDEA_UL_1280[i].top, width: IDEA_UL_1280[i].w, height: IDEA_UL_1280[i].h }}
                     >
-                      <div className="absolute" style={{ inset: IDEA_UL_1280[i].inset }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img alt="" className="block size-full max-w-none" src={`${A}/${IDEA_UL_1280[i].src}`} />
-                      </div>
-                    </Reveal>
+                      <DrawIn
+                        src={`${A}/${IDEA_UL_1280[i].src}`}
+                        className="absolute"
+                        style={{ inset: IDEA_UL_1280[i].inset }}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -282,17 +281,9 @@ export default function Idea() {
                 образа машины времени и показать легендарный автомобиль в совершенно{" "}
                 <br />новом контексте.
               </p>
-              <Reveal
-                variant="line"
-                delay={0.1}
-                start="top 92%"
-                className="absolute left-[24.04px] top-[54.99px] z-10 h-[16.62px] w-[531.92px]"
-              >
-                <div className="absolute inset-[-18.04%_-0.56%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline-4-1280.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[24.04px] top-[54.99px] z-10 h-[16.62px] w-[531.92px]">
+                <DrawIn src={`${A}/idea-underline-4-1280.svg`} delay={0.1} className="absolute inset-[-18.04%_-0.56%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>
@@ -337,9 +328,7 @@ export default function Idea() {
                       src={`${A}/idea-card-${i + 1}-834.png`}
                     />
                     {/* Маркер-подчёркивание под описанием (Vector 2835:53403/02/01). */}
-                    <Reveal
-                      variant="line"
-                      start="top 92%"
+                    <div
                       className="absolute z-10"
                       style={{
                         left: IDEA_UL_834[i].left,
@@ -348,11 +337,12 @@ export default function Idea() {
                         height: IDEA_UL_834[i].h,
                       }}
                     >
-                      <div className="absolute" style={{ inset: IDEA_UL_834[i].inset }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img alt="" className="block size-full max-w-none" src={`${A}/${IDEA_UL_834[i].src}`} />
-                      </div>
-                    </Reveal>
+                      <DrawIn
+                        src={`${A}/${IDEA_UL_834[i].src}`}
+                        className="absolute"
+                        style={{ inset: IDEA_UL_834[i].inset }}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -366,17 +356,9 @@ export default function Idea() {
                 времени{" "}
                 <br />и показать легендарный автомобиль в совершенно новом контексте.
               </p>
-              <Reveal
-                variant="line"
-                delay={0.1}
-                start="top 92%"
-                className="absolute left-[25.07px] top-[68.946px] z-10 h-[15.803px] w-[366.171px]"
-              >
-                <div className="absolute inset-[-18.98%_-0.819%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline-4-834.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[25.07px] top-[68.946px] z-10 h-[15.803px] w-[366.171px]">
+                <DrawIn src={`${A}/idea-underline-4-834.svg`} delay={0.1} className="absolute inset-[-18.98%_-0.819%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>
@@ -432,17 +414,9 @@ export default function Idea() {
                 Команда выбрала первую концепцию. Она позволяла уйти от привычного образа машины
                 времени и показать легендарный автомобиль в совершенно новом контексте.
               </p>
-              <Reveal
-                variant="line"
-                delay={0.1}
-                start="top 92%"
-                className="absolute left-[16px] top-[88px] z-10 h-[14px] w-[300px]"
-              >
-                <div className="absolute inset-[-18.98%_-0.819%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/idea-underline-4-834.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[16px] top-[88px] z-10 h-[14px] w-[300px]">
+                <DrawIn src={`${A}/idea-underline-4-834.svg`} delay={0.1} className="absolute inset-[-18.98%_-0.819%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>

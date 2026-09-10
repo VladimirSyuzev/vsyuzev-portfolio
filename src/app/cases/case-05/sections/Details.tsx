@@ -1,4 +1,4 @@
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 04 Работа с деталями — 1:1 из Figma (node 2210:75540, высота 1401).
@@ -74,14 +74,15 @@ export default function Details() {
           пустоши.
         </p>
         {/* Двойное подчёркивание (Figma nodes 2284:39987 / 2284:39990). */}
-        <Reveal variant="line" start="top 90%" className="absolute left-[417px] top-[286px] h-[40px] w-[146px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/details-underline1.svg`} />
-        </Reveal>
-        <Reveal variant="line" delay={0.1} start="top 90%" className="absolute left-[487px] top-[306px] h-[24px] w-[89px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/details-underline2.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/details-underline1.svg`}
+          className="absolute left-[417px] top-[286px] h-[40px] w-[146px]"
+        />
+        <DrawIn
+          src={`${A}/details-underline2.svg`}
+          delay={0.1}
+          className="absolute left-[487px] top-[306px] h-[24px] w-[89px]"
+        />
 
         {CROPS.map(([src, left, top, w, h]) => (
           // eslint-disable-next-line @next/next/no-img-element
@@ -99,10 +100,11 @@ export default function Details() {
             translate фонового rect: левый-верх SVG = точка секции
             (361, 1009.82). viewBox расширен на поля (-4/-26 719×271), чтобы
             <img> не срезал верхнюю и нижнюю дуги, поэтому смещаем на поля. */}
-        <Reveal variant="line" start="top 88%" className="absolute left-[357px] top-[984px] h-[271px] w-[719px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/details-ellipse.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/details-ellipse.svg`}
+          fit="contain"
+          className="absolute left-[357px] top-[984px] h-[271px] w-[719px]"
+        />
         {/* Мысль (Figma node 2412:4317 → x386 / y1064, w668, по центру). */}
         <p className="absolute left-1/2 top-[1064px] w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
           Каждая деталь должна была работать на историю, не мешая считывать автомобиль в маленьком
@@ -137,16 +139,9 @@ export default function Details() {
               </div>
               {/* Двойной штрих (Vector 2835:53394) — секция (529, 223.414) →
                   блок (489, 151.414), 161.08×27.56. */}
-              <Reveal
-                variant="line"
-                start="top 90%"
-                className="absolute left-[489px] top-[151.414px] h-[27.56px] w-[161.08px]"
-              >
-                <div className="absolute inset-[-10.885%_-1.862%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/details-underline-1280.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[489px] top-[151.414px] h-[27.56px] w-[161.08px]">
+                <DrawIn src={`${A}/details-underline-1280.svg`} className="absolute inset-[-10.885%_-1.862%]" />
+              </div>
             </div>
 
             {/* Блок 2 — коллаж из 5 кропов (Frame 2827:45400, 1206×673). */}
@@ -172,16 +167,9 @@ export default function Details() {
               </p>
               {/* Обводка-эллипс (Vector 234257391, 2835:53395) — внутри блока
                   (250.89, 13.49), 700.665×224.109. */}
-              <Reveal
-                variant="line"
-                start="top 88%"
-                className="absolute left-[250.89px] top-[13.49px] h-[224.109px] w-[700.665px]"
-              >
-                <div className="absolute inset-[-1.34%_-0.43%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/details-ellipse-1280.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[250.89px] top-[13.49px] h-[224.109px] w-[700.665px]">
+                <DrawIn src={`${A}/details-ellipse-1280.svg`} className="absolute inset-[-1.34%_-0.43%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>

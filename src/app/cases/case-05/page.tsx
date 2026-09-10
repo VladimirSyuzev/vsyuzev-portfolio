@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import Research from "./sections/Research";
 import Idea from "./sections/Idea";
 import Concept from "./sections/Concept";
@@ -87,10 +87,12 @@ export default function Case05Page() {
               <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Авто.ру и Т-Банк</p>
             </div>
 
-            <Reveal variant="line" delay={0.25} className="absolute left-[1078px] top-[194px] h-[24px] w-[294px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src="/cases/case-05/underline.svg" />
-            </Reveal>
+            <DrawIn
+              src="/cases/case-05/underline.svg"
+              delay={0.25}
+              play="mount"
+              className="absolute left-[1078px] top-[194px] h-[24px] w-[294px]"
+            />
           </div>
         </div>
 
@@ -152,16 +154,9 @@ export default function Case05Page() {
                 </div>
               </div>
               {/* Подчёркивание-доодл (Vector 234257363, 988/158, 258×7). */}
-              <Reveal
-                variant="line"
-                delay={0.25}
-                className="absolute left-[988px] top-[158px] h-[7px] w-[258px]"
-              >
-                <div className="absolute inset-[-42.86%_-1.16%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${CASE}/oproekte-underline-1280.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[988px] top-[158px] h-[7px] w-[258px]">
+                <DrawIn src={`${CASE}/oproekte-underline-1280.svg`} className="absolute inset-[-42.86%_-1.16%]" />
+              </div>
             </div>
           </FullBleedScale>
         </div>
@@ -218,16 +213,9 @@ export default function Case05Page() {
                       {/* Декор-линия под мета (Vector 234257363, node 2885:14358) —
                           внутри колонки «Позиция» (0, 45), 249×7, тянется под обе
                           колонки. */}
-                      <Reveal
-                        variant="line"
-                        delay={0.25}
-                        className="absolute left-0 top-[45px] h-[7px] w-[249px]"
-                      >
-                        <div className="absolute inset-[-42.86%_-1.2%]">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img alt="" className="block size-full max-w-none" src={`${CASE}/oproekte-underline-834.svg`} />
-                        </div>
-                      </Reveal>
+                      <div className="absolute left-0 top-[45px] h-[7px] w-[249px]">
+                        <DrawIn src={`${CASE}/oproekte-underline-834.svg`} className="absolute inset-[-42.86%_-1.2%]" />
+                      </div>
                     </div>
                     <div className="flex flex-col items-start gap-[4px]">
                       <p className="font-medium uppercase">Клиент</p>

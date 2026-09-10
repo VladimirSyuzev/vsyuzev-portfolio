@@ -1,6 +1,7 @@
 "use client";
 
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import { useCanvasWide, useMinWidth } from "@/lib/breakpoint";
 
 // 07 Итог.
@@ -40,13 +41,11 @@ export default function Summary() {
             <p className="opacity-70 lg:w-[425px] lg:shrink-0">{PARA_1}</p>
             <p className="opacity-70 lg:w-[500px] lg:shrink-0">{PARA_2}</p>
             {/* 1280: дудл-шеврон »» между абзацами (Figma doodles @ x437 y267) */}
-            <Reveal
-              variant="doodle"
+            <DrawIn
+              src={`${R}/screen-doodle-834.svg`}
+              fit="contain"
               className="pointer-events-none hidden lg:absolute lg:left-[397px] lg:top-[-5px] lg:block lg:h-[125px] lg:w-[158px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img aria-hidden alt="" className="block size-full" src={`${R}/screen-doodle-834.svg`} />
-            </Reveal>
+            />
           </div>
         </div>
 
@@ -61,23 +60,19 @@ export default function Summary() {
 
         {/* Доодл-«искра» (Vector 234257349–351). 834: Figma 2559:10665 @ (666,381)
             rot 17.8 (CCW) → CSS −18°. 1280: Frame 2147231819 @ (947,449), rot ≈ 0. */}
-        <Reveal
-          variant="doodle"
-          className="pointer-events-none absolute left-[666px] top-[381px] flex h-[167px] w-[189px] items-center justify-center lg:left-[947px] lg:top-[449px] lg:h-[125px] lg:w-[158px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img aria-hidden alt="" className="w-[158px] max-w-none -rotate-[18deg] lg:rotate-0" src={`${R}/summary-doodle-834.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${R}/summary-doodle-834.svg`}
+          fit="contain"
+          className="pointer-events-none absolute left-[666px] top-[381px] h-[125px] w-[158px] -rotate-[18deg] lg:left-[947px] lg:top-[449px] lg:rotate-0"
+        />
 
         {/* 1280: вторая «искра» слева-внизу (Frame 2147231820 @ x97 y848,
             AABB 186×163, rot −15.45). Отдельный SVG — своя геометрия. */}
-        <Reveal
-          variant="doodle"
+        <DrawIn
+          src={`${R}/summary-doodle-bl.svg`}
+          fit="contain"
           className="pointer-events-none hidden lg:absolute lg:left-[97px] lg:top-[848px] lg:block lg:h-[163px] lg:w-[186px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img aria-hidden alt="" className="block size-full" src={`${R}/summary-doodle-bl.svg`} />
-        </Reveal>
+        />
       </section>
     );
   }
@@ -164,21 +159,17 @@ export default function Summary() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="block size-full max-w-none" src={`${A}/chevron.png`} />
         </Reveal>
-        <Reveal
-          variant="doodle"
+        <DrawIn
+          src={`${A}/summary-doodle-1.svg`}
+          fit="contain"
           className="pointer-events-none absolute bottom-[4%] left-[2%] hidden h-[96px] w-[110px] xl:left-[193.29px] xl:top-[972.12px] xl:block xl:h-[162.57px] xl:w-[185.58px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/summary-doodle-1.svg`} />
-        </Reveal>
-        <Reveal
-          variant="doodle"
+        />
+        <DrawIn
+          src={`${A}/summary-doodle-2.svg`}
+          fit="contain"
           delay={0.1}
           className="pointer-events-none absolute right-[4%] top-[52%] hidden h-[70px] w-[88px] xl:left-[1025.94px] xl:right-auto xl:top-[555.02px] xl:block xl:h-[125.02px] xl:w-[158.02px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/summary-doodle-2.svg`} />
-        </Reveal>
+        />
       </div>
     </section>
   );

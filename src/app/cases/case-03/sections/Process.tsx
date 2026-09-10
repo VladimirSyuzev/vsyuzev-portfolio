@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import { useBreakpoint } from "@/lib/breakpoint";
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
@@ -384,10 +385,12 @@ export default function Process() {
         </div>
 
         {/* Стрелка-доодл «→» у конца трека (Figma node 2446:62566 → 1243 / 872, 99×63). */}
-        <Reveal variant="doodle" delay={0.1} className="absolute left-[1243px] top-[872px] z-10 h-[63px] w-[99px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/process-arrow.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/process-arrow.svg`}
+          fit="contain"
+          delay={0.1}
+          className="absolute left-[1243px] top-[872px] z-10 h-[63px] w-[99px]"
+        />
 
         {/* — Дизайн-система — (пользователь выровнял заголовок и текст по левому краю) */}
         <div className="absolute left-[46px] top-[1092px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
@@ -403,14 +406,10 @@ export default function Process() {
         {dsystemCard}
 
         {/* Обводка-эллипс вокруг фразы (Figma node 2387:22373). */}
-        <Reveal
-          variant="line"
-          start="top 88%"
+        <DrawIn
+          src={`${A}/process-ellipse.svg`}
           className="absolute left-[414px] top-[1759px] h-[156px] w-[637px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse.svg`} />
-        </Reveal>
+        />
 
         <p className="absolute left-1/2 top-[1812px] w-[669px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
           Разные функции продукта.
@@ -499,16 +498,9 @@ export default function Process() {
             {/* Послесловие (2712:14255, y 2176 — gap вокруг хайлайта увеличен
                 до 64) + обводка-доодл (Vector 234257391, фикс-бокс центр,
                 top 2139, 349×146). */}
-            <Reveal
-              variant="line"
-              start="top 88%"
-              className="absolute left-1/2 top-[2139px] h-[146px] w-[349px] -translate-x-1/2"
-            >
-              <div className="absolute inset-[-2.05%_-0.86%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse-375.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-1/2 top-[2139px] h-[146px] w-[349px] -translate-x-1/2">
+              <DrawIn src={`${A}/process-ellipse-375.svg`} className="absolute inset-[-2.05%_-0.86%]" />
+            </div>
             <p className="absolute left-[20px] top-[2176px] w-[335px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
               Разные функции продукта.
               <br />
@@ -567,12 +559,12 @@ export default function Process() {
 
             {/* Стрелка-доодл «→» в конце трека (Figma 2695:19166, 713, 591.89,
                 93.24×58.33, обводка 8px). */}
-            <Reveal variant="doodle" delay={0.1} className="absolute left-[713px] top-[592px] z-10 h-[58.33px] w-[93.24px]">
-              <div className="absolute inset-[-6.86%_-0.86%_0_-4.29%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/process-arrow-834.svg`} />
-              </div>
-            </Reveal>
+            <DrawIn
+              src={`${A}/process-arrow-834.svg`}
+              fit="contain"
+              delay={0.1}
+              className="absolute left-[713px] top-[592px] z-10 h-[58.33px] w-[93.24px]"
+            />
 
             {/* 06 Дизайн-система — заголовок (28, 796), текст (28, 843), 383. */}
             <div className="absolute left-[28px] top-[796px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
@@ -590,10 +582,10 @@ export default function Process() {
 
             {/* Послесловие (2711:13955, 28/1502) + обводка-доодл
                 (Vector 234257391, 2711:13954, 144/1454.89, 533×146). */}
-            <Reveal variant="line" start="top 88%" className="absolute left-[144px] top-[1455px] h-[152px] w-[539px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse-834.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/process-ellipse-834.svg`}
+              className="absolute left-[144px] top-[1455px] h-[152px] w-[539px]"
+            />
             <p className="absolute left-[28px] top-[1502px] w-[778px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
               Разные функции продукта.
               <br />
@@ -643,10 +635,12 @@ export default function Process() {
             {/* Стрелка-доодл «→» в конце трека (Figma bbox 1135, 743.8).
                 Контейнер = размер viewBox (99×63), чтобы обводка рендерилась
                 ровно 6px (SVG не масштабируется внутри контейнера). */}
-            <Reveal variant="doodle" delay={0.1} className="absolute left-[1132px] top-[743px] z-10 h-[63px] w-[99px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/process-arrow.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/process-arrow.svg`}
+              fit="contain"
+              delay={0.1}
+              className="absolute left-[1132px] top-[743px] z-10 h-[63px] w-[99px]"
+            />
 
             {/* 06 Дизайн-система — заголовок (40, 947), текст (40, 994). */}
             <div className="absolute left-[40px] top-[947px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
@@ -664,10 +658,10 @@ export default function Process() {
 
             {/* Послесловие (2707:41645, 40/1572) + обводка-доодл
                 (Vector 234257391, 2711:13953, 331.32/1582.45, 614.94×168.49). */}
-            <Reveal variant="line" start="top 88%" className="absolute left-[331px] top-[1582px] h-[174px] w-[621px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/process-ellipse-1280.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/process-ellipse-1280.svg`}
+              className="absolute left-[331px] top-[1582px] h-[174px] w-[621px]"
+            />
             <p className="absolute left-[40px] top-[1636px] w-[1200px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
               Разные функции продукта.
               <br />

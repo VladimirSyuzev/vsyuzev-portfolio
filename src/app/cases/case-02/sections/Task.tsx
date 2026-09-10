@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 
 // 01 Задача — на десктопе (≥1200) абсолют 1:1 из Figma (node 2009:12098,
@@ -144,10 +144,13 @@ export default function Task() {
               arrow-right.svg) и в Figma просто повёрнута на 90°; поэтому
               картинку держим в родном размере и крутим сами, а не тянем
               size-full — иначе пропорции/размер плывут. */}
-          <Reveal variant="doodle" className="flex w-[58px] shrink-0 items-center justify-center">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block w-[93px] max-w-none rotate-90" src={`${A}/reflow/task-arrow-375.svg`} />
-          </Reveal>
+          <div className="flex w-[58px] shrink-0 items-center justify-center">
+            <DrawIn
+              src={`${A}/reflow/task-arrow-375.svg`}
+              fit="contain"
+              className="h-[59.3px] w-[93px] rotate-90"
+            />
+          </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             alt="Иконка Identity and Access Management в новом визуальном языке"
@@ -162,15 +165,12 @@ export default function Task() {
         <TaskIcons />
 
         {/* Обводка-эллипс (рукописная) — только на десктопе. */}
-        <Reveal
-          variant="line"
-          start="top 92%"
+        <DrawIn
+          src={`${A}/task-ellipse.svg`}
+          fit="contain"
           className="hidden xl:absolute xl:block"
           style={{ left: 341, top: 1148, width: 760, height: 248 }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full" src={`${A}/task-ellipse.svg`} />
-        </Reveal>
+        />
 
         {/* 375: рукописная обводка облегает цитату — как в макете Figma
             (Vector 234257386, ≈104% ширины цитаты). Держим большой верхний
@@ -181,14 +181,10 @@ export default function Task() {
             <p className="text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
               Мы создавали библиотеку одновременно с правилами, по которым она должна была работать
             </p>
-            <Reveal
-              variant="line"
-              start="top 92%"
+            <DrawIn
+              src={`${A}/reflow/task-ellipse-375.svg`}
               className="pointer-events-none absolute left-1/2 top-1/2 h-[116%] w-[112%] max-w-none -translate-x-1/2 -translate-y-1/2"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img aria-hidden alt="" className="block size-full max-w-none object-fill" src={`${A}/reflow/task-ellipse-375.svg`} />
-            </Reveal>
+            />
           </div>
         </div>
 
@@ -197,14 +193,11 @@ export default function Task() {
           <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 lg:max-w-[594px] lg:text-[32px] lg:tracking-[0.96px] xl:absolute xl:left-1/2 xl:top-[1205.63px] xl:w-[589px] xl:-translate-x-1/2 xl:text-[32px]">
             Мы создавали библиотеку одновременно с правилами, по которым она должна была работать
           </p>
-          <Reveal
-            variant="line"
-            start="top 92%"
-            className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 sm:block xl:hidden"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block w-[560px] max-w-none rotate-[16.63deg] lg:w-[649px]" src={`${A}/reflow/task-ellipse-1280.svg`} />
-          </Reveal>
+          <DrawIn
+            src={`${A}/reflow/task-ellipse-1280.svg`}
+            fit="contain"
+            className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[280px] w-[560px] -translate-x-1/2 -translate-y-1/2 rotate-[16.63deg] sm:block lg:h-[324.7px] lg:w-[649px] xl:hidden"
+          />
         </div>
       </div>
     </section>

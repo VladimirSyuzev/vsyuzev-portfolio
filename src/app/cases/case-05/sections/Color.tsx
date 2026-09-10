@@ -20,6 +20,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 const A = "/cases/case-05/sections";
@@ -343,28 +344,21 @@ export default function Color() {
                 обводки Vector 234257326/327) — секция (611, 296.074),
                 158×125. Позиция инлайном: JIT не всегда успевает собрать
                 новые arbitrary-классы left/top при HMR. */}
-            <Reveal
-              variant="doodle"
+            <DrawIn
+              src={`${A}/chevron-1280.svg`}
+              fit="contain"
               className="z-10"
               style={{ position: "absolute", left: 611, top: 296.074, width: 158, height: 125 }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/chevron-1280.svg`} />
-            </Reveal>
+            />
 
             {/* Рукописный овал вокруг Auto Red (Vector 234257393, 2835:53396) —
                 секция (23.836, 471.902), 157.07×69.55. */}
-            <Reveal
-              variant="line"
-              start="top 85%"
+            <div
               className="z-10"
               style={{ position: "absolute", left: 23.836, top: 471.902, width: 157.07, height: 69.55 }}
             >
-              <div className="absolute" style={{ inset: "-4.313% -1.91%" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/color-circle-1280.svg`} />
-              </div>
-            </Reveal>
+              <DrawIn src={`${A}/color-circle-1280.svg`} className="absolute" style={{ inset: "-4.313% -1.91%" }} />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -405,17 +399,12 @@ export default function Color() {
 
             {/* Рукописный овал вокруг Auto Red (Vector 234257393, 2835:53399) —
                 секция (15.836, 362.957), 157.069×69.55. */}
-            <Reveal
-              variant="line"
-              start="top 85%"
+            <div
               className="z-10"
               style={{ position: "absolute", left: 15.836, top: 362.957, width: 157.069, height: 69.55 }}
             >
-              <div className="absolute" style={{ inset: "-4.313% -1.91%" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/color-circle-834.svg`} />
-              </div>
-            </Reveal>
+              <DrawIn src={`${A}/color-circle-834.svg`} className="absolute" style={{ inset: "-4.313% -1.91%" }} />
+            </div>
           </div>
         </FullBleedScale>
       </div>

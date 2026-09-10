@@ -5,7 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
 import Dot from "@/components/Dot";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import SlideProgress from "@/components/SlideProgress";
 
 // «01 Проблема» — в Figma это ОДИН раздел из двух слайдов ("слайд 1 из 2" —
@@ -242,13 +242,10 @@ function ProblemFlow() {
           834: под описанием доски 2 (x411, чуть левее её левого края), bbox
           352×54 (артефакт волнистого штриха — реально плоская), центр ~y719
           при высоте секции 800 → bottom ~68; слабый подъём слева-направо. */}
-      <Reveal
-        variant="line"
-        className="pointer-events-none absolute bottom-[38px] left-[26px] h-[17px] w-[300px] max-w-[calc(100%-40px)] sm:bottom-[48px] sm:left-[411px] sm:h-[22px] sm:w-[352px] sm:max-w-none lg:bottom-[36px] lg:left-[615px] lg:h-[22px] lg:w-[390px]"
-      >
-        <img aria-hidden alt="" className="block size-full sm:hidden" src={`${R}/problem-line-375.svg`} />
-        <img aria-hidden alt="" className="hidden size-full sm:block" src={`${R}/problem-line-834.svg`} />
-      </Reveal>
+      <div className="pointer-events-none absolute bottom-[38px] left-[26px] h-[17px] w-[300px] max-w-[calc(100%-40px)] sm:bottom-[48px] sm:left-[411px] sm:h-[22px] sm:w-[352px] sm:max-w-none lg:bottom-[36px] lg:left-[615px] lg:h-[22px] lg:w-[390px]">
+        <DrawIn src={`${R}/problem-line-375.svg`} className="size-full sm:hidden" />
+        <DrawIn src={`${R}/problem-line-834.svg`} className="hidden size-full sm:block" />
+      </div>
     </section>
   );
 }
@@ -308,12 +305,11 @@ function ScreenFlow() {
 
       {/* ДУДЛ »» — только ≥640 (макет 2547:15535). Инстанс у ЛЕВОГО края
           (x −16, обрезается), y 700 (~62% высоты). Указывает на мокап. */}
-      <Reveal
-        variant="doodle"
+      <DrawIn
+        src={`${R}/screen-doodle-834.svg`}
+        fit="contain"
         className="pointer-events-none hidden sm:absolute sm:left-[-16px] sm:top-[700px] sm:block sm:h-[125px] sm:w-[158px] lg:left-0 lg:top-[688px]"
-      >
-        <img aria-hidden alt="" className="block size-full" src={`${R}/screen-doodle-834.svg`} />
-      </Reveal>
+      />
     </section>
   );
 }

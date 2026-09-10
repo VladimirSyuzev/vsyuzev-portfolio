@@ -1,4 +1,4 @@
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 03 Визуальная система — 1:1 из актуальной Figma (node 2022:14714,
@@ -30,10 +30,11 @@ export default function VisualSystem() {
         </p>
 
         {/* Доодл «//» (Figma node 2412:4318 → 1236 / 181, 158×125). */}
-        <Reveal variant="doodle" className="absolute left-[1236px] top-[181px] z-10 h-[125px] w-[158px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/principles1-doodle.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/principles1-doodle.svg`}
+          fit="contain"
+          className="absolute left-[1236px] top-[181px] z-10 h-[125px] w-[158px]"
+        />
       </div>
 
       {/* Фото конференции — ≥1440 пропорционально во всю ширину экрана.
@@ -47,14 +48,10 @@ export default function VisualSystem() {
 
       {/* ≥1440 — итоговая мысль в обводке-эллипсе, центрированная 1440-сетка. */}
       <div className="relative mx-auto hidden h-[440px] w-[1440px] xl:block">
-        <Reveal
-          variant="line"
-          start="top 86%"
+        <DrawIn
+          src={`${A}/vislang-ellipse.svg`}
           className="absolute left-[380px] top-[136px] h-[222px] w-[681px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/vislang-ellipse.svg`} />
-        </Reveal>
+        />
 
         <p className="absolute left-[387px] top-[191px] w-[669px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
           Одна иллюстрация стала основой для масштабируемой визуальной системы
@@ -109,16 +106,12 @@ export default function VisualSystem() {
             {/* Эллипс-обводка (Vector 234257387) — (18.15, 608.8), фикс-бокс
                 332.124×168.725, картинка inset -1.78%/-0.9% (preserveAspectRatio
                 none — тянется). */}
-            <Reveal
-              variant="line"
-              start="top 86%"
-              className="absolute left-[18.15px] top-[608.8px] h-[168.725px] w-[332.124px]"
-            >
-              <div className="absolute inset-[-1.78%_-0.9%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/vislang-ellipse-375.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[18.15px] top-[608.8px] h-[168.725px] w-[332.124px]">
+              <DrawIn
+                src={`${A}/vislang-ellipse-375.svg`}
+                className="absolute inset-[-1.78%_-0.9%]"
+              />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -152,10 +145,11 @@ export default function VisualSystem() {
               </p>
             </div>
             {/* Доодл «//» (2695:19059) — (689, 61.89), 158×125. */}
-            <Reveal variant="doodle" className="absolute left-[689px] top-[62px] z-10 h-[125px] w-[158px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/vislang-doodle-834.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/vislang-doodle-834.svg`}
+              fit="contain"
+              className="absolute left-[689px] top-[62px] z-10 h-[125px] w-[158px]"
+            />
 
             {/* Фото конференции (0, 327), окно 834×450, рендер (-63, 0, 960×535). */}
             <div className="absolute left-0 top-[327px] h-[450px] w-[834px] overflow-clip">
@@ -175,10 +169,10 @@ export default function VisualSystem() {
               для масштабируемой визуальной системы
             </p>
             {/* Эллипс-обводка (Vector 234257391) — (181, 871), 463×191 (viewBox). */}
-            <Reveal variant="line" start="top 86%" className="absolute left-[181px] top-[871px] h-[191px] w-[463px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/vislang-ellipse-834.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/vislang-ellipse-834.svg`}
+              className="absolute left-[181px] top-[871px] h-[191px] w-[463px]"
+            />
           </div>
         </FullBleedScale>
       </div>
@@ -208,10 +202,11 @@ export default function VisualSystem() {
               принципы работы с формой, материалами, цветом, светом и уровнем детализации.
             </p>
             {/* Доодл «//» (2695:18263) — (40+1085=1125, 189-11.68=177), 158×125. */}
-            <Reveal variant="doodle" className="absolute left-[1125px] top-[177px] z-10 h-[125px] w-[158px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/vislang-doodle-1280.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/vislang-doodle-1280.svg`}
+              fit="contain"
+              className="absolute left-[1125px] top-[177px] z-10 h-[125px] w-[158px]"
+            />
 
             {/* Фото конференции (0, 361), рендер (-110, 0, 1500×704). */}
             <div className="absolute left-0 top-[361px] h-[704px] w-[1280px] overflow-clip">
@@ -227,10 +222,10 @@ export default function VisualSystem() {
                 эллипсе. Реальный рендер вектора 2695:18262 — 535×226 (bbox в
                 get_metadata раздут до 572×415, игнорируем), центрируем на
                 центре текстового блока → (373, 1150). */}
-            <Reveal variant="line" start="top 86%" className="absolute left-[373px] top-[1150px] h-[226px] w-[535px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/vislang-ellipse-1280.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/vislang-ellipse-1280.svg`}
+              className="absolute left-[373px] top-[1150px] h-[226px] w-[535px]"
+            />
             <p className="absolute left-[395px] top-[1193px] w-[490px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
               Одна иллюстрация стала основой для масштабируемой визуальной системы
             </p>

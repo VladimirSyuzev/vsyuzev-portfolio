@@ -1,4 +1,4 @@
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 
 // 03 Визуальный язык — тёмный full-bleed блок (#121212 на всю ширину).
 // На десктопе (≥1200) внутренний контент — абсолют 1:1 из Figma (node
@@ -40,15 +40,12 @@ export default function VisualLanguage() {
           />
 
           {/* Обводка-эллипс (рукописная) — только на десктопе. */}
-          <Reveal
-            variant="line"
-            start="top 92%"
+          <DrawIn
+            src={`${A}/visual-ellipse.svg`}
+            fit="contain"
             className="hidden xl:absolute xl:block"
             style={{ left: 321, top: 1059, width: 799, height: 152 }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full" src={`${A}/visual-ellipse.svg`} />
-          </Reveal>
+          />
 
           {/* 375: цитата без ручного переноса (авто-wrap), обводка тянется в %
               от фактической высоты (см. Task.tsx — тот же приём). */}
@@ -57,14 +54,10 @@ export default function VisualLanguage() {
               <p className="max-w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
                 Новый стиль строился не из линий, а из цельной формы
               </p>
-              <Reveal
-                variant="line"
-                start="top 92%"
+              <DrawIn
+                src={`${A}/reflow/visual-ellipse-375.svg`}
                 className="pointer-events-none absolute left-1/2 top-1/2 h-[214%] w-[111%] max-w-none -translate-x-1/2 -translate-y-1/2 -rotate-[1.37deg]"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img aria-hidden alt="" className="block size-full max-w-none object-fill" src={`${A}/reflow/visual-ellipse-375.svg`} />
-              </Reveal>
+              />
             </div>
           </div>
 
@@ -74,14 +67,11 @@ export default function VisualLanguage() {
               Новый стиль строился{" "}<br />
               не из линий, а из цельной формы
             </p>
-            <Reveal
-              variant="line"
-              start="top 92%"
-              className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 sm:block xl:hidden"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img aria-hidden alt="" className="block w-[660px] max-w-none -rotate-[1.37deg] lg:w-[787px]" src={`${A}/reflow/visual-ellipse-1280.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/reflow/visual-ellipse-1280.svg`}
+              fit="contain"
+              className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[114.3px] w-[660px] -translate-x-1/2 -translate-y-1/2 -rotate-[1.37deg] sm:block lg:h-[136.3px] lg:w-[787px] xl:hidden"
+            />
           </div>
         </div>
       </div>

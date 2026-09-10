@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
 import { useDrag } from "@/lib/useDrag";
@@ -181,13 +181,11 @@ export default function Process() {
         </div>
 
         {/* Стрелка-доодл «→» у конца трека — только на десктопе. */}
-        <Reveal
-          variant="doodle"
+        <DrawIn
+          src={`${A}/process-arrow.svg`}
+          fit="contain"
           className="hidden xl:absolute xl:left-[1241px] xl:top-[878px] xl:z-10 xl:block xl:h-[63px] xl:w-[99px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/process-arrow.svg`} />
-        </Reveal>
+        />
       </div>
 
       {/* Линейка-риска — в {track}, но с обратным translateX: стоит на месте,

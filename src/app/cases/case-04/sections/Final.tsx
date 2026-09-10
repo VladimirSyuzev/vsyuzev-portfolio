@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 06 Финальный результат — 1:1 из Figma (node 2034:15810, высота 1265).
@@ -28,10 +29,11 @@ export default function Final() {
       </p>
 
       {/* Доодл-стрелка (Figma node 2284:40011 → x906 / y169, 167×137). */}
-      <Reveal variant="doodle" className="absolute left-[906px] top-[169px] z-10 h-[137px] w-[167px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/final-arrow.svg`} />
-      </Reveal>
+      <DrawIn
+        src={`${A}/final-arrow.svg`}
+        fit="contain"
+        className="absolute left-[906px] top-[169px] z-10 h-[137px] w-[167px]"
+      />
 
       {/* Финальный билборд (Figma frame 2206:44755 → x48 / y319, 1346×535). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -55,15 +57,12 @@ export default function Final() {
           высоте — из-за этого линия налезала на последнюю строку. Якорь по
           translate фонового rect экспорта: левый-верх SVG = точка секции
           (849, 1105.37); viewBox расширен на поля -5, поэтому −5/−5. */}
-      <Reveal
-        variant="line"
-        start="top 92%"
+      <DrawIn
+        src={`${A}/final-underline.svg`}
+        fit="contain"
         className="absolute"
         style={{ left: 844, top: 1100, width: 532, height: 63 }}
-      >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full" src={`${A}/final-underline.svg`} />
-      </Reveal>
+      />
       </div>
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node 2742:18018,
@@ -110,28 +109,15 @@ export default function Final() {
             </div>
 
             {/* Доодл-«стрелка» (Vector, 667.36/154.2, 93.786×72.845). */}
-            <Reveal
-              variant="doodle"
-              className="absolute left-[667.36px] top-[154.2px] z-10 h-[72.845px] w-[93.786px]"
-            >
-              <div className="absolute inset-[-4.12%_-3.2%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/final-arrow-1280.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[667.36px] top-[154.2px] z-10 h-[72.845px] w-[93.786px]">
+              <DrawIn src={`${A}/final-arrow-1280.svg`} fit="contain" className="absolute inset-[-4.12%_-3.2%]" />
+            </div>
 
             {/* Подчёркивание под мыслью (Vector 234257394, 649/1016.29,
                 478.434×28.047, inset -10.7%/-0.63%). */}
-            <Reveal
-              variant="line"
-              start="top 92%"
-              className="absolute left-[649px] top-[1016.29px] z-10 h-[28.047px] w-[478.434px]"
-            >
-              <div className="absolute inset-[-10.7%_-0.63%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/final-underline-1280.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[649px] top-[1016.29px] z-10 h-[28.047px] w-[478.434px]">
+              <DrawIn src={`${A}/final-underline-1280.svg`} className="absolute inset-[-10.7%_-0.63%]" />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -173,16 +159,9 @@ export default function Final() {
             {/* Мысль в обводке-эллипсе (Frame 2818:36026, py-64, center) —
                 Vector 234257391 (2835:53381, центр, top-29.2, 513×183). */}
             <div className="relative flex w-[777px] shrink-0 items-center justify-center py-[64px]">
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-1/2 top-[29.2px] h-[183px] w-[513px] -translate-x-1/2"
-              >
-                <div className="absolute inset-[-1.64%_-0.58%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/final-ellipse-834.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-1/2 top-[29.2px] h-[183px] w-[513px] -translate-x-1/2">
+                <DrawIn src={`${A}/final-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
+              </div>
               <p className="relative w-[461px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
                 Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
               </p>
@@ -235,16 +214,9 @@ export default function Final() {
               <p className="w-[335px] font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70 [word-break:break-word]">
                 Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
               </p>
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="relative mt-[9px] h-[12.31px] w-[335.747px] self-start"
-              >
-                <div className="absolute inset-[-24.36%_-0.89%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/final-underline-375.svg`} />
-                </div>
-              </Reveal>
+              <div className="relative mt-[9px] h-[12.31px] w-[335.747px] self-start">
+                <DrawIn src={`${A}/final-underline-375.svg`} className="absolute inset-[-24.36%_-0.89%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>

@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 07 Итог — 1:1 из актуальной Figma (node 2022:15038, высота 1539).
@@ -99,10 +100,11 @@ export default function Summary() {
             </div>
 
             {/* Доодл-«шеврон вниз» (2695:19239, 423/76 абс), 158×125. */}
-            <Reveal variant="doodle" className="absolute left-[423px] top-[76px] z-10 h-[125px] w-[158px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/summary-chevron-834.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/summary-chevron-834.svg`}
+              fit="contain"
+              className="absolute left-[423px] top-[76px] z-10 h-[125px] w-[158px]"
+            />
 
             {/* Текст: колонка 1 (28, 214) 383, колонка 2 (423, 214) 383.
                 В 1-й — ручной <br> после «стоковых изображений ». */}
@@ -143,10 +145,11 @@ export default function Summary() {
             </div>
 
             {/* Доодл-«шеврон вниз» (2711:13962, 742/139.8), 158×125. */}
-            <Reveal variant="doodle" className="absolute left-[742px] top-[140px] z-10 h-[125px] w-[158px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/summary-chevron-1280.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/summary-chevron-1280.svg`}
+              fit="contain"
+              className="absolute left-[742px] top-[140px] z-10 h-[125px] w-[158px]"
+            />
 
             {/* Текст: колонка 1 (40, 297) 594, колонка 2 (646, 297) 585. */}
             <p className="absolute left-[40px] top-[297px] w-[594px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">

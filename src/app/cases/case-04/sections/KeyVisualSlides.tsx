@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import SlideProgress from "@/components/SlideProgress";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -106,10 +107,10 @@ function Slide2() {
         во что-то реальное
       </p>
       {/* Подчёркивание (Figma node 2399:35412 → x192 / y736, 275×29). */}
-      <Reveal variant="line" start="top 92%" className="absolute left-[192px] top-[736px] h-[29px] w-[275px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/crops-underline.svg`} />
-      </Reveal>
+      <DrawIn
+        src={`${A}/crops-underline.svg`}
+        className="absolute left-[192px] top-[736px] h-[29px] w-[275px]"
+      />
     </>
   );
 }
@@ -150,15 +151,9 @@ function KeyVisual1280() {
         />
       </div>
       {/* Доодл-«глаз» (Vector, 1040.69/71.52, 149.174×92.405). */}
-      <Reveal
-        variant="doodle"
-        className="absolute left-[1040.69px] top-[71.52px] z-10 h-[92.405px] w-[149.174px]"
-      >
-        <div className="absolute inset-[-3.25%_-2.01%]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/kv-eye-1280.svg`} />
-        </div>
-      </Reveal>
+      <div className="absolute left-[1040.69px] top-[71.52px] z-10 h-[92.405px] w-[149.174px]">
+        <DrawIn src={`${A}/kv-eye-1280.svg`} fit="contain" className="absolute inset-[-3.25%_-2.01%]" />
+      </div>
     </div>
   );
 }
@@ -256,16 +251,9 @@ function Crops1280() {
           <br />
           во что-то реальное
         </p>
-        <Reveal
-          variant="line"
-          start="top 92%"
-          className="pointer-events-none absolute left-[95px] top-[calc(100%+8px)] h-[29.64px] w-[329.56px]"
-        >
-          <div className="absolute inset-[0_-0.91%]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src={`${A}/crops-underline-1280.svg`} />
-          </div>
-        </Reveal>
+        <div className="pointer-events-none absolute left-[95px] top-[calc(100%+8px)] h-[29.64px] w-[329.56px]">
+          <DrawIn src={`${A}/crops-underline-1280.svg`} className="absolute inset-[0_-0.91%]" />
+        </div>
       </div>
     </div>
   );
@@ -298,15 +286,9 @@ function KeyVisual834() {
         />
       </div>
       {/* Доодл-«глаз» (Vector, 648.95/27.13, 119.337×73.924). */}
-      <Reveal
-        variant="doodle"
-        className="absolute left-[648.95px] top-[27.13px] z-10 h-[73.924px] w-[119.337px]"
-      >
-        <div className="absolute inset-[-4.06%_-2.51%]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/kv-eye-834.svg`} />
-        </div>
-      </Reveal>
+      <div className="absolute left-[648.95px] top-[27.13px] z-10 h-[73.924px] w-[119.337px]">
+        <DrawIn src={`${A}/kv-eye-834.svg`} fit="contain" className="absolute inset-[-4.06%_-2.51%]" />
+      </div>
     </div>
   );
 }
@@ -342,16 +324,9 @@ function Crops834() {
 
       {/* Цитата (2750:4723 → center, w-506, py-64) + обводка-эллипс
           (2835:53378, 454×197). Блок на y891. */}
-      <Reveal
-        variant="line"
-        start="top 92%"
-        className="absolute left-1/2 top-[913.91px] h-[197px] w-[454px] -translate-x-1/2"
-      >
-        <div className="absolute inset-[-1.52%_-0.66%]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/crops-ellipse-834.svg`} />
-        </div>
-      </Reveal>
+      <div className="absolute left-1/2 top-[913.91px] h-[197px] w-[454px] -translate-x-1/2">
+        <DrawIn src={`${A}/crops-ellipse-834.svg`} className="absolute inset-[-1.52%_-0.66%]" />
+      </div>
       <p className="absolute left-1/2 top-[955px] w-[506px] -translate-x-1/2 whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
         Crypto становится понятным, когда превращается{" "}
         <br />
@@ -429,16 +404,9 @@ function Crops375() {
           <br />
           во что-то реальное
         </p>
-        <Reveal
-          variant="line"
-          start="top 92%"
-          className="absolute left-[0.12px] top-[171.55px] h-[12.036px] w-[329.443px]"
-        >
-          <div className="absolute inset-[-24.92%_-0.91%]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src={`${A}/crops-underline-375.svg`} />
-          </div>
-        </Reveal>
+        <div className="absolute left-[0.12px] top-[171.55px] h-[12.036px] w-[329.443px]">
+          <DrawIn src={`${A}/crops-underline-375.svg`} className="absolute inset-[-24.92%_-0.91%]" />
+        </div>
       </div>
     </div>
   );

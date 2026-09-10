@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import Dot from "@/components/Dot";
 import FullBleedScale from "@/components/FullBleedScale";
 
@@ -80,14 +81,15 @@ export default function Research() {
         копировании каждой детали
       </p>
       {/* Двойное подчёркивание (Figma nodes 2284:40129 / 2284:40174). */}
-      <Reveal variant="line" start="top 92%" className="absolute left-[296px] top-[1120px] h-[35px] w-[663px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/research-underline1.svg`} />
-      </Reveal>
-      <Reveal variant="line" delay={0.1} start="top 92%" className="absolute left-[425px] top-[1134px] h-[49px] w-[578px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src={`${A}/research-underline2.svg`} />
-      </Reveal>
+      <DrawIn
+        src={`${A}/research-underline1.svg`}
+        className="absolute left-[296px] top-[1120px] h-[35px] w-[663px]"
+      />
+      <DrawIn
+        src={`${A}/research-underline2.svg`}
+        delay={0.1}
+        className="absolute left-[425px] top-[1134px] h-[49px] w-[578px]"
+      />
       </div>
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41033,
@@ -183,27 +185,12 @@ export default function Research() {
               {/* Двойное подчёркивание 1:1 из Figma (Frame 2884:14356 (257,115.07):
                   Vector 234257378 (0.489,0) 663×35; Vector 234257379 (109.114,10.52)
                   576.809×35.031). Наклон уже в путях — без CSS-rotate. */}
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-[257.489px] top-[115.07px] h-[35px] w-[663px]"
-              >
-                <div className="absolute inset-[-8.571%_-0.452%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/research-underline-1-1280.svg`} />
-                </div>
-              </Reveal>
-              <Reveal
-                variant="line"
-                delay={0.1}
-                start="top 92%"
-                className="absolute left-[366.114px] top-[125.59px] h-[35.031px] w-[576.809px]"
-              >
-                <div className="absolute inset-[-8.564%_-0.52%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/research-underline-2-1280.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[257.489px] top-[115.07px] h-[35px] w-[663px]">
+                <DrawIn src={`${A}/research-underline-1-1280.svg`} className="absolute inset-[-8.571%_-0.452%]" />
+              </div>
+              <div className="absolute left-[366.114px] top-[125.59px] h-[35.031px] w-[576.809px]">
+                <DrawIn src={`${A}/research-underline-2-1280.svg`} delay={0.1} className="absolute inset-[-8.564%_-0.52%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>
@@ -299,16 +286,9 @@ export default function Research() {
                 автомобиля строится{" "}
                 <br />на нескольких ключевых признаках, а не на точном копировании каждой детали
               </p>
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-[110px] top-[162.84px] h-[27.962px] w-[471px]"
-              >
-                <div className="absolute inset-[-10.73%_-0.64%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/research-underline-834.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[110px] top-[162.84px] h-[27.962px] w-[471px]">
+                <DrawIn src={`${A}/research-underline-834.svg`} className="absolute inset-[-10.73%_-0.64%]" />
+              </div>
             </div>
 
             {/* Доодл-«лупа» (node 2829:52809, 572/1063, 158×125). */}
@@ -402,16 +382,9 @@ export default function Research() {
                 на нескольких ключевых признаках,{" "}
                 <br />а не на точном копировании каждой детали
               </p>
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-[13px] top-[324.47px] h-[28px] w-[322px]"
-              >
-                <div className="absolute inset-[-10.72%_-0.93%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/research-underline-375.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[13px] top-[324.47px] h-[28px] w-[322px]">
+                <DrawIn src={`${A}/research-underline-375.svg`} className="absolute inset-[-10.72%_-0.93%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>

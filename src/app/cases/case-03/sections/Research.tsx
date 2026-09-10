@@ -1,4 +1,4 @@
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 02 Исследование — тёмный текст на #fafafa. Мудборд 3D-референсов с
@@ -246,10 +246,11 @@ export default function Research() {
                 рисунок (viewBox 150.4×93.8, замер 148×94) имеет соотношение
                 ~1.6 → контейнер строим по нему (157×98), иначе SVG
                 (preserveAspectRatio none) растягивает по вертикали. Наклон 0. */}
-            <Reveal variant="doodle" className="absolute left-[624px] top-[66px] h-[98px] w-[157px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/research-eye-834.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/research-eye-834.svg`}
+              fit="contain"
+              className="absolute left-[624px] top-[66px] h-[98px] w-[157px]"
+            />
           </div>
         </FullBleedScale>
       </div>
@@ -280,10 +281,11 @@ export default function Research() {
             </div>
 
             {/* Доодл-«глаз» (Group 2695:18237, 1047.51, 19.8), 156.94×110.48. */}
-            <Reveal variant="doodle" className="absolute left-[1048px] top-[20px] h-[110px] w-[157px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/research-eye.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/research-eye.svg`}
+              fit="contain"
+              className="absolute left-[1048px] top-[20px] h-[110px] w-[157px]"
+            />
 
             {/* Мудборд-коллаж — frame 2707:41603 (40, 119.8), 1200×599.11. */}
             <div className="absolute left-[40px] top-[120px] h-[600px] w-[1200px]">

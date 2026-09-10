@@ -3,6 +3,7 @@
 import { useCanvasWide } from "@/lib/breakpoint";
 import Dot from "@/components/Dot";
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 
 // 05 Руководство для команды.
 // ≥1440 (node 1961:32233) — абсолют 1:1: hover раскрывает диаграммы, эллипс/
@@ -136,19 +137,21 @@ function GuideFlow() {
             Гайд превратил создание иконок
             <br className="sm:hidden" /> из набора отдельных решений в единый производственный процесс
           </p>
-          <Reveal
-            variant="line"
-            start="top 82%"
-            className="pointer-events-none absolute left-1/2 top-1/2 flex h-[392px] w-[400px] -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[320px] sm:w-[778px]"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="w-[300px] max-w-none rotate-[32.67deg] sm:hidden" src={`${R}/guide-ellipse-375.svg`} />
+          <div className="pointer-events-none absolute left-1/2 top-1/2 flex h-[392px] w-[400px] -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[320px] sm:w-[778px]">
+            <DrawIn
+              src={`${R}/guide-ellipse-375.svg`}
+              fit="contain"
+              className="h-[272.6px] w-[300px] rotate-[32.67deg] sm:hidden"
+            />
             {/* 834 — у пути ~16° собственного наклона (CCW), а rotation −14.32
                 в Figma его гасит → на макете эллипс почти горизонтальный.
                 Компенсируем: rotate +14° (CW). */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="hidden w-[744px] max-w-none rotate-[14deg] sm:block" src={`${R}/guide-ellipse-834.svg`} />
-          </Reveal>
+            <DrawIn
+              src={`${R}/guide-ellipse-834.svg`}
+              fit="contain"
+              className="hidden h-[295.2px] w-[744px] rotate-[14deg] sm:block"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -240,14 +243,11 @@ export default function TeamGuide() {
 
         {/* Обводка-эллипс вокруг итоговой мысли. */}
         <div className="relative mx-auto w-full max-w-[709px] xl:absolute xl:left-1/2 xl:top-[1227.22px] xl:w-[709px] xl:-translate-x-1/2">
-          <Reveal
-            variant="line"
-            start="top 92%"
+          <DrawIn
+            src="/cases/case-01/sections/guide-summary-ellipse.svg"
+            fit="contain"
             className="pointer-events-none absolute left-1/2 top-1/2 h-[150%] w-[112%] -translate-x-1/2 -translate-y-1/2 xl:h-[248px] xl:w-[760px]"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full" src="/cases/case-01/sections/guide-summary-ellipse.svg" />
-          </Reveal>
+          />
           <p className="relative text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70 sm:text-[28px] xl:text-[32px]">
             Гайд превратил создание иконок из набора отдельных решений в единый производственный процесс
           </p>

@@ -1,4 +1,4 @@
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 02 Концепция — 1:1 из актуальной Figma (node 2034:15738, высота 1539).
@@ -119,14 +119,10 @@ export default function Concept() {
           <br />
           она даёт человеку
         </p>
-        <Reveal
-          variant="line"
-          start="top 92%"
+        <DrawIn
+          src={`${A}/concept-underline.svg`}
           className="absolute left-[132px] top-[1415px] h-[17px] w-[351px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/concept-underline.svg`} />
-        </Reveal>
+        />
       </div>
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
@@ -195,16 +191,9 @@ export default function Concept() {
 
             {/* Блок 3 — хайлайт в обводке-эллипсе (py-64, center). */}
             <div className="relative flex w-[1200px] shrink-0 items-center justify-center py-[64px]">
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-1/2 top-[25px] h-[218.922px] w-[504.596px] -translate-x-1/2"
-              >
-                <div className="absolute inset-[-1.37%_-0.59%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/concept-ellipse-1280.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-1/2 top-[25px] h-[218.922px] w-[504.596px] -translate-x-1/2">
+                <DrawIn src={`${A}/concept-ellipse-1280.svg`} className="absolute inset-[-1.37%_-0.59%]" />
+              </div>
               <p className="relative w-[406px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80">
                 Вместо технологии мы показываем результат, который она даёт человеку
               </p>
@@ -286,16 +275,9 @@ export default function Concept() {
 
             {/* Блок 3 — хайлайт в обводке-эллипсе (py-44, center). */}
             <div className="relative flex w-full shrink-0 items-center justify-center py-[44px]">
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-1/2 top-[14.9px] h-[171px] w-[505px] -translate-x-1/2"
-              >
-                <div className="absolute inset-[-1.75%_-0.59%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/concept-ellipse-834.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-1/2 top-[14.9px] h-[171px] w-[505px] -translate-x-1/2">
+                <DrawIn src={`${A}/concept-ellipse-834.svg`} className="absolute inset-[-1.75%_-0.59%]" />
+              </div>
               <p className="relative w-[406px] whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80">
                 Вместо технологии{" "}
                 <br />
@@ -395,16 +377,9 @@ export default function Concept() {
 
             {/* Блок 3 — хайлайт в обводке-эллипсе (py-64, center). */}
             <div className="relative flex w-full shrink-0 items-center justify-center py-[64px]">
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-1/2 top-[21.91px] h-[171px] w-[319px] -translate-x-1/2"
-              >
-                <div className="absolute inset-[-1.75%_-0.94%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/concept-ellipse-375.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-1/2 top-[21.91px] h-[171px] w-[319px] -translate-x-1/2">
+                <DrawIn src={`${A}/concept-ellipse-375.svg`} className="absolute inset-[-1.75%_-0.94%]" />
+              </div>
               <p className="relative w-[311px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-black opacity-80">
                 Вместо технологии мы показываем результат, который она даёт человеку
               </p>

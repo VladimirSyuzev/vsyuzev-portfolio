@@ -9,7 +9,7 @@ import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion, waveStagger } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
 import Dot from "@/components/Dot";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 
 const A = "/cases/case-01/sections/audit-assets";
 const R = "/cases/case-01/sections/reflow";
@@ -106,17 +106,19 @@ function AuditFlow() {
               Полная карта библиотеки показала, что уже есть, чего
               <br className="sm:hidden" /> не хватает и что нужно сделать в первую очередь
             </p>
-            {/* появление — «прорисовка» слева направо (Reveal line-wipe) */}
-            <Reveal
-              variant="line"
-              start="top 78%"
-              className="pointer-events-none absolute left-1/2 top-1/2 flex h-[235px] w-[363px] -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[239px] sm:w-[643px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img aria-hidden alt="" className="w-[350px] max-w-none -rotate-[4.59deg] sm:hidden" src={`${R}/audit-ellipse-375.svg`} />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img aria-hidden alt="" className="hidden w-[636px] max-w-none -rotate-[4.59deg] sm:block" src={`${R}/audit-ellipse-834.svg`} />
-            </Reveal>
+            {/* появление — прочерчивание обводки (DrawIn) */}
+            <div className="pointer-events-none absolute left-1/2 top-1/2 flex h-[235px] w-[363px] -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[239px] sm:w-[643px]">
+              <DrawIn
+                src={`${R}/audit-ellipse-375.svg`}
+                fit="contain"
+                className="h-[211.9px] w-[350px] -rotate-[4.59deg] sm:hidden"
+              />
+              <DrawIn
+                src={`${R}/audit-ellipse-834.svg`}
+                fit="contain"
+                className="hidden h-[195px] w-[636px] -rotate-[4.59deg] sm:block"
+              />
+            </div>
           </div>
         </div>
       </div>

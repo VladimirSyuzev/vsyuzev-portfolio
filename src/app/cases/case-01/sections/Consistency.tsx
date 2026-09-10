@@ -6,7 +6,7 @@ import { gsap, useReducedMotion, waveStagger } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
 import BalanceBoard1 from "./BalanceBoard1";
 import BalanceBoard2 from "./BalanceBoard2";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 
 const R = "/cases/case-01/sections/reflow";
 
@@ -89,15 +89,13 @@ export default function Consistency() {
             {/* линия. 375: consistency-line-375.svg 332×24, bottom 20 / left 4 ·
                 834: consistency-underline.svg 518×31 (Figma w518, наклон ~−2.7°
                 уже в пути), left 30 / bottom 6. */}
-            <Reveal
-              variant="line"
-              className="pointer-events-none absolute bottom-[20px] left-[4px] h-[24px] w-[332px] max-w-[calc(100%-4px)] sm:-bottom-[8px] sm:left-[30px] sm:h-[31px] sm:w-[518px] sm:max-w-none"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img aria-hidden alt="" className="block size-full sm:hidden" src={`${R}/consistency-line-375.svg`} />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img aria-hidden alt="" className="hidden size-full sm:block" src="/cases/case-01/sections/consistency-underline.svg" />
-            </Reveal>
+            <div className="pointer-events-none absolute bottom-[20px] left-[4px] h-[24px] w-[332px] max-w-[calc(100%-4px)] sm:-bottom-[8px] sm:left-[30px] sm:h-[31px] sm:w-[518px] sm:max-w-none">
+              <DrawIn src={`${R}/consistency-line-375.svg`} className="size-full sm:hidden" />
+              <DrawIn
+                src="/cases/case-01/sections/consistency-underline.svg"
+                className="hidden size-full sm:block"
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -144,22 +142,21 @@ export default function Consistency() {
               <br className="hidden xl:inline" />
               до передачи работы клиенту
             </p>
-            <Reveal
-              variant="line"
-              className="pointer-events-none absolute left-[8%] bottom-[-14px] h-[22px] w-[86%] xl:left-[106px] xl:bottom-auto xl:top-[141px] xl:h-[31px] xl:w-[518px]"
-            >
-              <img alt="" className="block size-full" src="/cases/case-01/sections/consistency-underline.svg" />
-            </Reveal>
+            <div className="pointer-events-none absolute left-[8%] bottom-[-14px] h-[22px] w-[86%] xl:left-[106px] xl:bottom-auto xl:top-[141px] xl:h-[31px] xl:w-[518px]">
+              <DrawIn
+                src="/cases/case-01/sections/consistency-underline.svg"
+                className="size-full"
+              />
+            </div>
           </div>
 
           {/* Доодл-«глаз» — на всех ширинах: справа от вводного текста.
               ≥1440: 1:1 из Figma (instance 2359:4040, (1079.255, 134)). */}
-          <Reveal
-            variant="doodle"
-            className="ml-auto flex h-[100px] w-[116px] items-center justify-center xl:absolute xl:left-[1079.255px] xl:top-[134px] xl:ml-0 xl:h-[155.398px] xl:w-[180.731px]"
-          >
-            <img alt="" className="block h-full w-full max-w-none object-contain" src="/cases/case-01/sections/consistency-eye-doodle.svg" />
-          </Reveal>
+          <DrawIn
+            src="/cases/case-01/sections/consistency-eye-doodle.svg"
+            fit="contain"
+            className="ml-auto h-[100px] w-[116px] xl:absolute xl:left-[1079.255px] xl:top-[134px] xl:ml-0 xl:h-[155.398px] xl:w-[180.731px]"
+          />
         </div>
       </div>
     </div>

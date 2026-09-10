@@ -1,4 +1,5 @@
 import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import VariantsCarousel from "@/components/VariantsCarousel";
 import FullBleedScale from "@/components/FullBleedScale";
 import { C3_TEXT } from "../tokens";
@@ -55,10 +56,11 @@ export default function Task() {
         </p>
 
         {/* Доодл-«молния» (Figma node 2384:21368 → 1216 / 394). */}
-        <Reveal variant="doodle" className="absolute left-[1216px] top-[394px] z-10 h-[121px] w-[93px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-flash.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/task-doodle-flash.svg`}
+          fit="contain"
+          className="absolute left-[1216px] top-[394px] z-10 h-[121px] w-[93px]"
+        />
 
         <p className="absolute left-[726px] top-[1140px] w-[564px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
           Система должна была:
@@ -87,14 +89,10 @@ export default function Task() {
         </p>
 
         {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369). */}
-        <Reveal
-          variant="line"
-          start="top 92%"
+        <DrawIn
+          src={`${A}/task-doodle-arrow.svg`}
           className="absolute left-[884px] top-[1556px] h-[35px] w-[394px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-arrow.svg`} />
-        </Reveal>
+        />
       </div>
 
       {/* ≥1440 — лента «варианты» (Figma node 2079:17726 → y595). Прямой
@@ -119,10 +117,11 @@ export default function Task() {
             </div>
 
             {/* Молния (Vector 234257381) — (1077.04, 250.8), 92.57×120.91. */}
-            <Reveal variant="doodle" className="absolute left-[1077px] top-[251px] z-10 h-[121px] w-[93px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-flash.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/task-doodle-flash.svg`}
+              fit="contain"
+              className="absolute left-[1077px] top-[251px] z-10 h-[121px] w-[93px]"
+            />
 
             {/* Вводный абзац (40, 297), 594×51, Aeonik Pro Medium uppercase
                 (перенос после «без текста »). */}
@@ -170,10 +169,10 @@ export default function Task() {
             </p>
 
             {/* Волнистое подчёркивание (Vector 234257367) — (798, 1266+54=1320), 387.57×90.44. */}
-            <Reveal variant="line" start="top 92%" className="absolute left-[798px] top-[1320px] h-[90px] w-[388px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-arrow.svg`} />
-            </Reveal>
+            <DrawIn
+              src={`${A}/task-doodle-arrow.svg`}
+              className="absolute left-[798px] top-[1320px] h-[90px] w-[388px]"
+            />
           </div>
         </FullBleedScale>
       </div>
@@ -230,12 +229,9 @@ export default function Task() {
                 (20.4, 2250.3) → секц. y ≈ 1173 + 54 = 1227, 339.01×23.08,
                 viewBox SVG 345.01×29.08, картинка inset -13%/-0.88%. Выходит
                 на ~10px за правый край текста. */}
-            <Reveal variant="line" start="top 92%" className="absolute left-[20px] top-[1227px] h-[23.08px] w-[339px]">
-              <div className="absolute inset-[-13%_-0.88%]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/task-underline-375.svg`} />
-              </div>
-            </Reveal>
+            <div className="absolute left-[20px] top-[1227px] h-[23.08px] w-[339px]">
+              <DrawIn src={`${A}/task-underline-375.svg`} className="absolute inset-[-13%_-0.88%]" />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -266,19 +262,13 @@ export default function Task() {
             {/* Флэш-доодл (Vector 234257381) — теперь В ХЕДЕРЕ: Figma abs
                 (28+572, 72+135) = (600, 207), bbox 78.82×102.96, контент
                 58.4×91.5 повёрнут на 14.02°. */}
-            <Reveal
-              variant="doodle"
-              className="absolute left-[600px] top-[207px] z-10 flex h-[102.956px] w-[78.822px] items-center justify-center"
-            >
-              <div className="rotate-[14.02deg]">
-                <div className="relative h-[91.539px] w-[58.385px]">
-                  <div className="absolute inset-[-3.28%_-5.14%]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img alt="" className="block size-full max-w-none" src={`${A}/task-flash-834.svg`} />
-                  </div>
-                </div>
-              </div>
-            </Reveal>
+            <div className="absolute left-[600px] top-[207px] z-10 flex h-[102.956px] w-[78.822px] items-center justify-center">
+              <DrawIn
+                src={`${A}/task-flash-834.svg`}
+                fit="contain"
+                className="h-[91.539px] w-[58.385px] rotate-[14.02deg]"
+              />
+            </div>
 
             {/* Витрина «варианты» (2695:18793, y363) — VariantsCarousel на
                 всю ширину канваса 834; те же 4 ассета, что и в 1280/1440. */}
@@ -321,14 +311,10 @@ export default function Task() {
                   в макете: теперь плавная линия). Figma bbox 453.51×19.17,
                   viewBox SVG 459.5×25.17 (ratio ~18.25), наклон ~2.4° в самом
                   SVG. Сидит вплотную под последней строкой (Figma +3px). */}
-              <Reveal
-                variant="line"
-                start="top 92%"
+              <DrawIn
+                src={`${A}/task-underline-834.svg`}
                 className="pointer-events-none absolute left-[calc(50%+11px)] top-[calc(100%+1px)] h-[25.17px] w-[459.5px] -translate-x-1/2"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/task-underline-834.svg`} />
-              </Reveal>
+              />
             </div>
           </div>
         </FullBleedScale>

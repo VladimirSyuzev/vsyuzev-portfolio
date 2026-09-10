@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 
 // 05 сначала 16px — 1:1 из актуальной Figma (node 2009:12761). Заголовок
 // 32px, два абзаца слева, итоговая мысль с подчёркиванием.
@@ -163,13 +163,11 @@ export default function First16px() {
 
           {/* Доодл-«стрелки» (Frame 2147231856) — 1280: (321,334) внутри блока,
               140×139, поворот −0.9°. Десктоп — своя позиция. */}
-          <Reveal
-            variant="doodle"
-            className="pointer-events-none hidden h-[139px] w-[140px] lg:absolute lg:left-[298px] lg:top-[311px] lg:block xl:left-[481px] xl:top-[655px]"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block size-full max-w-none lg:-rotate-[0.9deg] xl:rotate-0" src={`${A}/icon16-doodle.svg`} />
-          </Reveal>
+          <DrawIn
+            src={`${A}/icon16-doodle.svg`}
+            fit="contain"
+            className="pointer-events-none hidden h-[139px] w-[140px] lg:absolute lg:left-[298px] lg:top-[311px] lg:block lg:-rotate-[0.9deg] xl:left-[481px] xl:top-[655px] xl:rotate-0"
+          />
 
           {/* Текст «Маленький размер…» — 1280: (0,500) w440, наложение на иконку. */}
           <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:absolute lg:left-0 lg:top-[500px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:left-[46px] xl:top-[853px] xl:w-[589px] xl:text-[32px]">
@@ -180,34 +178,22 @@ export default function First16px() {
           {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427.
               Наклон +2.26° везде. 375/834 — в потоке под цитатой; 1280 —
               абсолют (27,628) в блоке. */}
-          <Reveal
-            variant="line"
-            start="top 92%"
-            className="pointer-events-none mt-[10px] block w-[312px] max-w-full sm:hidden"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-375.svg`} />
-          </Reveal>
-          <Reveal
-            variant="line"
-            start="top 92%"
-            className="pointer-events-none mt-[10px] hidden w-[427px] max-w-full sm:block lg:absolute lg:left-[27px] lg:top-[628px] lg:mt-0 xl:hidden"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
-          </Reveal>
+          <DrawIn
+            src={`${A}/reflow/icon16-underline-375.svg`}
+            className="pointer-events-none mt-[10px] block h-[26.8px] w-[312px] max-w-full rotate-[2.26deg] sm:hidden"
+          />
+          <DrawIn
+            src={`${A}/reflow/icon16-underline-1280.svg`}
+            className="pointer-events-none mt-[10px] hidden h-[36.9px] w-[427px] max-w-full rotate-[2.26deg] sm:block lg:absolute lg:left-[27px] lg:top-[628px] lg:mt-0 xl:hidden"
+          />
         </div>
 
         {/* Подчёркивание — десктоп (отдельный ассет 518×33). */}
-        <Reveal
-          variant="line"
-          start="top 92%"
+        <DrawIn
+          src={`${A}/icon16-underline.svg`}
           className="hidden xl:absolute xl:block"
           style={{ left: 161, top: 972, width: 518, height: 33 }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full" src={`${A}/icon16-underline.svg`} />
-        </Reveal>
+        />
       </div>
     </div>
   );

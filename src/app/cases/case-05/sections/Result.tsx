@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 import VariantsCarousel from "@/components/VariantsCarousel";
 
@@ -80,18 +80,18 @@ export default function Result() {
         </p>
 
         {/* Доодл-«звёздочка» (Figma node 2284:39991 → x1009 / y270, 158×125). */}
-        <Reveal variant="doodle" className="absolute left-[1009px] top-[270px] z-10 h-[125px] w-[158px]">
+        <div className="absolute left-[1009px] top-[270px] z-10 h-[125px] w-[158px]">
           <div ref={starRef} className="size-full">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src={`${A}/result-star.svg`} />
+            <DrawIn src={`${A}/result-star.svg`} fit="contain" className="size-full" />
           </div>
-        </Reveal>
+        </div>
 
         {/* Обводка-эллипс вокруг мысли (Figma node 2412:4342). */}
-        <Reveal variant="line" start="top 86%" className="absolute left-[385px] top-[873px] h-[254px] w-[670px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/result-ellipse.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/result-ellipse.svg`}
+          fit="contain"
+          className="absolute left-[385px] top-[873px] h-[254px] w-[670px]"
+        />
         {/* Мысль (Figma node 2412:4341 → x386 / y955.7, w668, по центру). */}
         <p className="absolute left-1/2 top-[956px] w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
           Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
@@ -133,16 +133,14 @@ export default function Result() {
 
             {/* Доодл-«звёздочка» (node 2877:14347, 918/164.074, 158×125,
                 обводка 8px). Позиция инлайн-стилем — см. [[feedback-stale-dev-css-hmr]]. */}
-            <Reveal
-              variant="doodle"
+            <div
               className="z-10"
               style={{ position: "absolute", left: 918, top: 164.074, width: 158, height: 125 }}
             >
               <div ref={star1280Ref} className="size-full">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/result-star-1280.svg`} />
+                <DrawIn src={`${A}/result-star-1280.svg`} fit="contain" className="size-full" />
               </div>
-            </Reveal>
+            </div>
 
             {/* Снап-карусель «варианты» (Figma frame 2828:45420, 1949.867
                 шир., y274) — те же CARDS. */}
@@ -152,17 +150,12 @@ export default function Result() {
                 2835:53397) — секция (311, 768.074), 655.774×209.751
                 (опущена вслед за блоком цитаты: у текста стал больше
                 верхний отступ). */}
-            <Reveal
-              variant="line"
-              start="top 86%"
+            <div
               className="z-0"
               style={{ position: "absolute", left: 311, top: 768.074, width: 655.774, height: 209.751 }}
             >
-              <div className="absolute" style={{ inset: "-1.43% -0.457%" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src={`${A}/result-ellipse-1280.svg`} />
-              </div>
-            </Reveal>
+              <DrawIn src={`${A}/result-ellipse-1280.svg`} className="absolute" style={{ inset: "-1.43% -0.457%" }} />
+            </div>
             {/* Мысль (text 2828:45509 → внутри блока 2827:44590 (266, 84) →
                 холст (306, 821), w-668, по центру). */}
             <p
@@ -217,16 +210,9 @@ export default function Result() {
                 Узнаваемый автомобиль получил историю, которую раньше{" "}
                 <br />с ним не связывали
               </p>
-              <Reveal
-                variant="line"
-                start="top 86%"
-                className="absolute left-1/2 top-[29.13px] z-0 h-[183px] w-[513px] -translate-x-1/2"
-              >
-                <div className="absolute inset-[-1.64%_-0.58%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/result-ellipse-834.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-1/2 top-[29.13px] z-0 h-[183px] w-[513px] -translate-x-1/2">
+                <DrawIn src={`${A}/result-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>
@@ -284,16 +270,9 @@ export default function Result() {
                 </p>
                 {/* Обводка-эллипс (Vector 234257399, node 2836:54217) —
                     центрируется ровно по тексту (translate -50/-50). */}
-                <Reveal
-                  variant="line"
-                  start="top 86%"
-                  className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[174.067px] w-[313.598px] -translate-x-1/2 -translate-y-1/2"
-                >
-                  <div className="absolute inset-[-1.72%_-0.96%]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img alt="" className="block size-full max-w-none" src={`${A}/result-ellipse-375.svg`} />
-                  </div>
-                </Reveal>
+                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[174.067px] w-[313.598px] -translate-x-1/2 -translate-y-1/2">
+                  <DrawIn src={`${A}/result-ellipse-375.svg`} className="absolute inset-[-1.72%_-0.96%]" />
+                </div>
               </div>
             </div>
           </div>

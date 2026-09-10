@@ -1,4 +1,4 @@
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 03 Концепция — 1:1 из Figma (node 2210:74460, высота 900). Тёмный
@@ -39,10 +39,11 @@ export default function Concept() {
             экспорте имеет translate(-1249.32, -215), т.е. левый-верх SVG =
             точка секции (1249.32, 215) — НЕ bbox фрейма (1299.5), у SVG
             слева ~50px поля. */}
-        <Reveal variant="doodle" className="absolute left-[1249.5px] top-[215px] z-10 h-[178px] w-[195px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/concept-arrow.svg`} />
-        </Reveal>
+        <DrawIn
+          src={`${A}/concept-arrow.svg`}
+          fit="contain"
+          className="absolute left-[1249.5px] top-[215px] z-10 h-[178px] w-[195px]"
+        />
 
         {/* Фото + скетч (Figma frames 2223:80174 / 2215:79911 → y318, 668×427). */}
         {/* eslint-disable-next-line @next/next/no-img-element */}

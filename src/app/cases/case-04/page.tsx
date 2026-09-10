@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import Task from "./sections/Task";
 import Concept from "./sections/Concept";
 import KeyVisualSlides from "./sections/KeyVisualSlides";
@@ -86,10 +86,12 @@ export default function Case04Page() {
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Stablegate</p>
           </div>
 
-          <Reveal variant="line" delay={0.25} className="absolute left-[1086px] top-[199px] h-[16px] w-[251px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img alt="" className="block size-full max-w-none" src="/cases/case-04/underline.svg" />
-          </Reveal>
+          <DrawIn
+            src="/cases/case-04/underline.svg"
+            delay={0.25}
+            play="mount"
+            className="absolute left-[1086px] top-[199px] h-[16px] w-[251px]"
+          />
         </div>
         </div>
 
@@ -153,16 +155,9 @@ export default function Case04Page() {
                 </div>
               </div>
               {/* Подчёркивание-доодл (Vector 234257363, 1066/158, 180×6.7). */}
-              <Reveal
-                variant="line"
-                delay={0.25}
-                className="absolute left-[1066px] top-[158px] h-[6.699px] w-[180px]"
-              >
-                <div className="absolute inset-[-44.78%_-1.67%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${CASE}/underline-1280.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[1066px] top-[158px] h-[6.699px] w-[180px]">
+                <DrawIn src={`${CASE}/underline-1280.svg`} className="absolute inset-[-44.78%_-1.67%]" />
+              </div>
             </div>
           </FullBleedScale>
         </div>
@@ -231,16 +226,9 @@ export default function Case04Page() {
                   </div>
                   {/* Подчёркивание-доодл (Vector 234257363, 602/45 внутри строки,
                       180×6.7). */}
-                  <Reveal
-                    variant="line"
-                    delay={0.25}
-                    className="absolute left-[602px] top-[45px] h-[6.699px] w-[180px]"
-                  >
-                    <div className="absolute inset-[-44.78%_-1.67%]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img alt="" className="block size-full max-w-none" src={`${CASE}/underline-1280.svg`} />
-                    </div>
-                  </Reveal>
+                  <div className="absolute left-[602px] top-[45px] h-[6.699px] w-[180px]">
+                    <DrawIn src={`${CASE}/underline-1280.svg`} className="absolute inset-[-44.78%_-1.67%]" />
+                  </div>
                 </div>
               </div>
             </div>

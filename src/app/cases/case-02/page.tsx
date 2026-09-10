@@ -2,7 +2,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import Task from "./sections/Task";
 import Research from "./sections/Research";
 import VisualLanguage from "./sections/VisualLanguage";
@@ -128,26 +128,19 @@ export default function Case02Page() {
 
               {/* Декор-подчёркивание под метой — reflow 834/1280 (в макете
                   Figma есть, на 375 нет, на xl — своя абсолютная копия ниже). */}
-              <Reveal
-                variant="line"
-                start="top 92%"
+              <DrawIn
+                src="/cases/case-02/sections/cover-underline.svg"
                 className="pointer-events-none absolute right-0 top-[calc(100%+8px)] hidden h-[16px] w-[340px] max-w-full sm:block xl:hidden"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img alt="" className="block size-full max-w-none" src="/cases/case-02/sections/cover-underline.svg" />
-              </Reveal>
+              />
             </div>
             </div>
 
-            <Reveal
-              variant="line"
+            <DrawIn
+              src="/cases/case-02/sections/cover-underline.svg"
               delay={0.35}
-              start="top bottom"
+              play="mount"
               className="hidden xl:absolute xl:left-[917.94px] xl:top-[200.02px] xl:block xl:h-[22.356px] xl:w-[414.405px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src="/cases/case-02/sections/cover-underline.svg" />
-            </Reveal>
+            />
           </div>
           <div className="hidden xl:block xl:h-[318px]" aria-hidden />
         </div>

@@ -1,13 +1,13 @@
 "use client";
 
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
-import HeroFloating from "@/components/HeroFloating";
+import HeroDraw from "@/components/HeroDraw";
 
 // Hero = два блока:
-//  FLOATING — имя «Vova Syuzev» по центру, вокруг плавают работы (параллакс
-//         по мыши, случайный набор, клик = полноэкран). Секция во всю
-//         высоту вьюпорта — см. HeroFloating.
+//  DRAW — леттеринг «VOVA / SYUZEV» на тёмном фоне #121212, линии
+//         прочерчиваются по очереди при загрузке страницы (не по
+//         скроллу). Секция во всю высоту вьюпорта — см. HeroDraw.
 //  REGAL (node 2499:5398) — строка «DESIGN LEAD & multidisciplinary
 //         designer» с подчёркиванием, на светлом фоне, по сетке 1440.
 // Только после REGAL начинается блок «О себе».
@@ -22,7 +22,9 @@ import HeroFloating from "@/components/HeroFloating";
 // <640 — холст 375×215 (node 2886:29937): текст x20/y64 26px в 3 строки,
 //   подчёркивание x20/y155 (165×6, свой SVG underline-375).
 // Подчёркивание — общий SVG (stroke-width 6) в inset-обёртке, чтобы
-// preserveAspectRatio="none" не сплющивал линию тоньше 6px.
+// preserveAspectRatio="none" не сплющивал линию тоньше 6px. Появляется
+// прочерчиванием обводки (pathLength 0→1) при вскролле — см. DrawIn,
+// единый «почерк» с HeroDraw.
 function Regal() {
 	return (
 		<section className="w-full bg-[#fafafa]">
@@ -41,16 +43,13 @@ function Regal() {
 							{/* подчёркивание на планшете/мобайле — привязано к строке */}
 							<span className="pointer-events-none absolute bottom-[-0.35em] right-0 block h-[0.14em] w-[62%] bg-[#008cff] xl:hidden" />
 						</p>
-						<Reveal
-							variant="line"
-							delay={0.1}
-							className="hidden xl:absolute xl:left-[590px] xl:top-[263px] xl:block xl:h-[13.044px] xl:w-[342.526px]"
-						>
-							<div className="absolute inset-[-23%_-0.88%]">
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
-							</div>
-						</Reveal>
+						<div className="hidden xl:absolute xl:left-[590px] xl:top-[263px] xl:block xl:h-[13.044px] xl:w-[342.526px]">
+							<DrawIn
+								src="/hero/underline.svg"
+								delay={0.1}
+								className="absolute inset-[-23%_-0.88%]"
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -71,16 +70,13 @@ function Regal() {
 								designer
 							</span>
 						</p>
-						<Reveal
-							variant="line"
-							delay={0.1}
-							className="absolute left-[20px] top-[155px] h-[6px] w-[165px]"
-						>
-							<div className="absolute inset-[-50%_-1.82%]">
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img alt="" className="block size-full max-w-none" src="/hero/underline-375.svg" />
-							</div>
-						</Reveal>
+						<div className="absolute left-[20px] top-[155px] h-[6px] w-[165px]">
+							<DrawIn
+								src="/hero/underline-375.svg"
+								delay={0.1}
+								className="absolute inset-[-50%_-1.82%]"
+							/>
+						</div>
 					</div>
 				</FullBleedScale>
 			</div>
@@ -101,16 +97,13 @@ function Regal() {
 								designer
 							</span>
 						</p>
-						<Reveal
-							variant="line"
-							delay={0.1}
-							className="absolute left-[25px] top-[291px] h-[13.044px] w-[342.526px]"
-						>
-							<div className="absolute inset-[-23%_-0.88%]">
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
-							</div>
-						</Reveal>
+						<div className="absolute left-[25px] top-[291px] h-[13.044px] w-[342.526px]">
+							<DrawIn
+								src="/hero/underline.svg"
+								delay={0.1}
+								className="absolute inset-[-23%_-0.88%]"
+							/>
+						</div>
 					</div>
 				</FullBleedScale>
 			</div>
@@ -129,16 +122,13 @@ function Regal() {
 								multidisciplinary designer
 							</span>
 						</p>
-						<Reveal
-							variant="line"
-							delay={0.1}
-							className="absolute left-[584px] top-[263px] h-[13.044px] w-[342.526px]"
-						>
-							<div className="absolute inset-[-23%_-0.88%]">
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img alt="" className="block size-full max-w-none" src="/hero/underline.svg" />
-							</div>
-						</Reveal>
+						<div className="absolute left-[584px] top-[263px] h-[13.044px] w-[342.526px]">
+							<DrawIn
+								src="/hero/underline.svg"
+								delay={0.1}
+								className="absolute inset-[-23%_-0.88%]"
+							/>
+						</div>
 					</div>
 				</FullBleedScale>
 			</div>
@@ -149,7 +139,7 @@ function Regal() {
 export default function Hero() {
 	return (
 		<>
-			<HeroFloating />
+			<HeroDraw />
 			<Regal />
 		</>
 	);

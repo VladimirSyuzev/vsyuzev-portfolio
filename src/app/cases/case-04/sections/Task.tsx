@@ -1,4 +1,4 @@
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // 01 Задача — 1:1 из актуальной Figma (node 2034:15705, высота 900).
@@ -159,16 +159,9 @@ export default function Task() {
             {/* Мысль + обводка-эллипс (Frame 2819:36134, py-64). Vector
                 234257386 (2835:53388) — (15.07, 30.13), 345.492×162.651. */}
             <div className="relative flex w-full shrink-0 items-center justify-center py-[64px]">
-              <Reveal
-                variant="line"
-                start="top 92%"
-                className="absolute left-[15.07px] top-[30.13px] h-[162.651px] w-[345.492px]"
-              >
-                <div className="absolute inset-[-1.84%_-0.87%]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src={`${A}/task-ellipse-375.svg`} />
-                </div>
-              </Reveal>
+              <div className="absolute left-[15.07px] top-[30.13px] h-[162.651px] w-[345.492px]">
+                <DrawIn src={`${A}/task-ellipse-375.svg`} className="absolute inset-[-1.84%_-0.87%]" />
+              </div>
               <p className="relative w-[294px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-80">
                 Сложный crypto-продукт нужно{" "}
                 <br />

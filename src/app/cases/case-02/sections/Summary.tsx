@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import IconWallPulse from "./IconWallPulse";
 
 // 06 Итог — на десктопе (≥1200) абсолют 1:1 из Figma (node 2009:12811,
@@ -38,13 +38,11 @@ export default async function Summary() {
               текст-ряда (Figma y166 vs текст y132); чернила стрелок с отступом
               ~40/30 → визуально под левым абзацем, уходят в левое поле.
               1280: между левой колонкой и правым блоком. */}
-          <Reveal
-            variant="doodle"
+          <DrawIn
+            src={`${A}/summary-doodle.svg`}
+            fit="contain"
             className="pointer-events-none absolute hidden sm:left-[-43px] sm:top-[34px] sm:block sm:h-[125px] sm:w-[158px] lg:left-[264px] lg:top-[-38px] xl:hidden"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img aria-hidden alt="" className="block size-full max-w-none" src={`${A}/summary-doodle.svg`} />
-          </Reveal>
+          />
           <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 sm:w-[383px] sm:shrink-0 lg:mr-[317px] lg:w-[289px] lg:shrink-0 xl:absolute xl:left-[46px] xl:top-[592px] xl:w-[326px]">
             За три недели команда из двух человек разработала 34 иконки в двух размерах
             {" "}<br className="hidden xl:inline" />
@@ -66,13 +64,11 @@ export default async function Summary() {
         </div>
 
         {/* Доодл «»»» — десктоп. */}
-        <Reveal
-          variant="doodle"
+        <DrawIn
+          src={`${A}/summary-doodle.svg`}
+          fit="contain"
           className="hidden xl:absolute xl:left-[343px] xl:top-[560px] xl:block xl:h-[125px] xl:w-[158px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/summary-doodle.svg`} />
-        </Reveal>
+        />
 
         {/* Ковёр иконок — светло-серый #CCC (собственный цвет ассета) на всех
             размерах. Две раскладки: 375 (35 плиток, 5×7, экспорт из Figma
