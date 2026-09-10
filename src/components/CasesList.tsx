@@ -18,7 +18,11 @@ import DrawIn from "@/components/DrawIn";
 
 export default function CasesList() {
   const bp = useBreakpoint();
-  return bp === "desktop" ? <CasesListDesktop /> : <CasesListStacked landscape={bp === "tabletL"} />;
+  return bp === "desktop" ? (
+    <CasesListDesktop />
+  ) : (
+    <CasesListStacked landscape={bp === "tabletL"} mobile={bp === "mobile"} />
+  );
 }
 
 function CasesListDesktop() {
@@ -104,7 +108,7 @@ function CasesListDesktop() {
   );
 }
 
-function CasesListStacked({ landscape }: { landscape: boolean }) {
+function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: boolean }) {
   const scope = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -140,7 +144,7 @@ function CasesListStacked({ landscape }: { landscape: boolean }) {
           <Link
             key={item.slug}
             href={`/cases/${item.slug}`}
-            className="case-card group block border-b border-[rgba(18,18,18,0.7)] pb-[24px]"
+            className="case-card group relative block border-b border-[rgba(18,18,18,0.7)] pb-[96px]"
           >
             {item.slug === "case-01" ? (
               // фикс-композиция 668×536 — масштабируем целиком под ширину
@@ -174,14 +178,15 @@ function CasesListStacked({ landscape }: { landscape: boolean }) {
             <p className="mt-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               {item.description}
             </p>
-            {/* Стрелка «открыть» — по правому краю под описанием. */}
-            <div className="mt-[20px] flex justify-end pr-[8px]">
-              <DrawIn
-                src="/cases/lil-arrow.svg"
-                play="mount"
-                className="pointer-events-none h-[42px] w-[56px]"
-              />
-            </div>
+            {/* Стрелка «открыть» — привязана к нижней линии карточки: 40px
+                от неё и от правого края, одинаково во всех карточках.
+                На 375 обводка тоньше — 5px. */}
+            <DrawIn
+              src="/cases/lil-arrow.svg"
+              play="mount"
+              strokeWidth={mobile ? 5 : undefined}
+              className="pointer-events-none absolute bottom-[40px] right-[40px] h-[42px] w-[56px]"
+            />
           </Link>
         ))}
       </div>
