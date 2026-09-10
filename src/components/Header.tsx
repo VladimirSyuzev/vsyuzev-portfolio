@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { CASES } from "@/lib/cases-data";
+import { setLang, useLang, type Lang } from "@/lib/lang";
+import { T } from "@/lib/i18n";
 
 // Header — 1:1 из Figma по контенту/шрифтам (node 2259:58486), раскладка
 // флюидная (flex на всю ширину страницы), шрифт зафиксирован 14px (не
@@ -29,13 +31,51 @@ import { CASES } from "@/lib/cases-data";
 // раскрывает выпадающий список всех кейсов (номер + заголовок + разделитель)
 // прямо под шапкой, как быстрый переключатель между кейсами.
 const NAV_ITEMS = [
-  { hash: "/#cases", id: "cases", label: "КЕЙСЫ" },
-  { hash: "/#about", id: "about", label: "О СЕБЕ" },
-  { hash: "#contacts", id: "contacts", label: "КОНТАКТЫ" },
+  { hash: "/#cases", id: "cases" as const },
+  { hash: "/#about", id: "about" as const },
+  { hash: "#contacts", id: "contacts" as const },
 ];
+const NAV_LABEL: Record<Lang, Record<"cases" | "about" | "contacts", string>> = {
+  ru: { cases: T.ru.navCases, about: T.ru.navAbout, contacts: T.ru.navContacts },
+  en: { cases: T.en.navCases, about: T.en.navAbout, contacts: T.en.navContacts },
+};
 
 const BORDER_ON = "rgba(50,50,60,0.8)";
 const BORDER_OFF = "rgba(50,50,60,0)";
+
+// Переключатель языка — активное состояние выделено обводкой (той же, что у
+// активного пункта меню).
+function LangToggle({ transparent }: { transparent: boolean }) {
+  const lang = useLang();
+  return (
+    <div className="flex items-center gap-[4px]">
+      {(["ru", "en"] as const).map((l) => {
+        const active = lang === l;
+        return (
+          <button
+            key={l}
+            type="button"
+            aria-pressed={active}
+            aria-label={l === "ru" ? "Русский" : "English"}
+            onClick={() => setLang(l)}
+            className={`rounded-[10px] border px-[9px] py-[8px] text-[13px] font-medium uppercase leading-[1] tracking-[0.26px] transition-[border-color,color,opacity] duration-300 ${
+              transparent ? "text-white" : "text-[#121212]"
+            } ${active ? "opacity-100" : "opacity-40 hover:opacity-75"}`}
+            style={{
+              borderColor: active
+                ? transparent
+                  ? "rgba(255,255,255,0.8)"
+                  : BORDER_ON
+                : "transparent",
+            }}
+          >
+            {l}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export default function Header() {
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -45,6 +85,10 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false); // мобильное бургер-меню
   const [menuCasesOpen, setMenuCasesOpen] = useState(false); // под-аккордеон «Кейсы» в бургере
   const pathname = usePathname();
+  const lang = useLang();
+  const isHome = pathname === "/";
+  const label = NAV_LABEL[lang];
+  const caseTitle = (c: (typeof CASES)[number]) => (lang === "en" ? c.titleEn : c.title);
 
   // Прозрачная шапка поверх тёмного Hero — только на главной у самого верха
   // и когда не раскрыта ни одна панель (иначе выпадашку не видно на фоне).
@@ -159,14 +203,18 @@ export default function Header() {
       style={{ transform: hidden ? "translateY(-100%)" : "translateY(0)" }}
     >
       <div className="flex h-[62px] items-center justify-between px-[3.056%]">
-        <Link href="/" className="block h-[18.162px] w-[140px] shrink-0">
+        <Link
+          href="/"
+          className="block w-[140px] shrink-0"
+          style={{ height: lang === "en" ? 23 : 18.162 }}
+        >
           <Image
-            src="/brand/wordmark.svg"
+            src={lang === "en" ? "/brand/wordmark-en.svg" : "/brand/wordmark.svg"}
             alt="Вова Сюзёв"
             width={140}
-            height={18.162}
+            height={lang === "en" ? 23 : 18.162}
             priority
-            className={`transition-[filter] duration-300 ${transparent ? "brightness-0 invert" : ""}`}
+            className={`h-full w-full transition-[filter] duration-300 ${transparent ? "brightness-0 invert" : ""}`}
           />
         </Link>
 
@@ -249,9 +297,17 @@ export default function Header() {
                       : BORDER_OFF,
               }}
             >
-              {item.label}
+              {label[item.id]}
             </Link>
           ))}
+          {isHome && (
+            <div
+              className="ml-[6px] flex items-center border-l pl-[12px]"
+              style={{ borderColor: transparent ? "rgba(255,255,255,0.2)" : "rgba(50,50,60,0.2)" }}
+            >
+              <LangToggle transparent={transparent} />
+            </div>
+          )}
         </nav>
       </div>
 
@@ -272,7 +328,7 @@ export default function Header() {
             onClick={() => setMenuCasesOpen((v) => !v)}
             className="flex items-center justify-between border-b border-[rgba(18,18,18,0.15)] py-[18px] text-left text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]"
           >
-            <span>КЕЙСЫ</span>
+            <span>{label.cases}</span>
             <span
               className="block size-[8px] border-b-2 border-r-2 border-[#121212] transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
               style={{ transform: menuCasesOpen ? "translateY(2px) rotate(-135deg)" : "translateY(-2px) rotate(45deg)" }}
@@ -301,7 +357,7 @@ export default function Header() {
                       {c.index}
                     </span>
                     <span className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80">
-                      {c.title}
+                      {caseTitle(c)}
                     </span>
                   </Link>
                 );
@@ -325,9 +381,15 @@ export default function Header() {
               }}
               className="border-b border-[rgba(18,18,18,0.15)] py-[18px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] last:border-b-0"
             >
-              {item.label}
+              {label[item.id]}
             </Link>
           ))}
+
+          {isHome && (
+            <div className="pt-[18px]">
+              <LangToggle transparent={false} />
+            </div>
+          )}
         </nav>
       </div>
 
@@ -359,7 +421,7 @@ export default function Header() {
                   {c.index}
                 </span>
                 <span className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 transition-opacity group-hover:opacity-100">
-                  {c.title}
+                  {caseTitle(c)}
                 </span>
               </Link>
             );

@@ -5,34 +5,20 @@ import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 import Reveal from "@/components/Reveal";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { T, CLIENTS } from "@/lib/i18n";
 
 // «о себе» — на ≥1200 абсолют 1:1 из Figma (node 2279:32548, фрейм
 // 1440×900). Ниже 1200 внутренняя обёртка становится `contents` и её
 // дети раскладываются потоком (стопка с полями сетки) — см. RESPONSIVE.md.
 // Чипы — один поток flex-wrap: при сужении переносятся все вместе (строки
 // пересобираются), а не тремя независимыми группами.
-const CLIENTS = [
-  "Яндекс Фабрика",
-  "Яндекс Такси",
-  "Яндекс 360",
-  "Яндекс Cloud",
-  "Яндекс Алиса",
-  "Яндекс Самокаты",
-  "Яндекс Еда",
-  "Яндекс Лавка",
-  "Stablegate",
-  "МТС",
-  "Т-Банк",
-  "Звук",
-  "Haier",
-  "УралКалий",
-  "Divan.ru",
-  "Fort Telecom",
-  "Sabotage brewery",
-];
 
 export default function About() {
   const scope = useRef<HTMLDivElement>(null);
+  const lang = useLang();
+  const t = T[lang];
+  const clients = CLIENTS[lang];
 
   useGSAP(
     () => {
@@ -61,19 +47,15 @@ export default function About() {
       {/* ≥1440 (абсолют по сетке 1440) + <640 (поток) */}
       <div className="flex flex-col gap-[24px] px-[var(--grid-margin)] py-[56px] sm:hidden xl:contents">
         <p className="about-reveal font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] xl:absolute xl:left-[46px] xl:top-[134px] xl:whitespace-nowrap xl:text-[32px]">
-          о себе
+          {t.aboutHeading}
         </p>
 
         {/* Био — два абзаца. На десктопе абсолют (top 181 / 238, w668). */}
         <p className="about-reveal text-[14px] leading-[1.2] tracking-[0.28px] text-[#333] opacity-70 xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[668px]">
-          Дизайн-лид, который сочетает управление командой с практической работой в дизайне.
-          Выстраиваю процессы, систематизирую большие объёмы задач и помогаю командам сохранять
-          качество и темп работы.
+          {t.aboutBio[0]}
         </p>
         <p className="about-reveal text-[14px] leading-[1.2] tracking-[0.28px] text-[#333] opacity-70 xl:absolute xl:left-[46px] xl:top-[238px] xl:w-[668px]">
-          Сам создаю Key Visual, иллюстрации, 3D, иконографику и AI-визуалы: от идеи и поиска
-          визуального направления до финального результата. Быстро разбираюсь в сложных задачах,
-          беру ответственность за результат и развиваю визуальные направления вместе с командой.
+          {t.aboutBio[1]}
         </p>
 
         {/* фото — прижато к правому краю сетки (ниже 1200), на десктопе абсолют */}
@@ -84,7 +66,7 @@ export default function About() {
         </div>
 
         <div className="about-reveal flex flex-wrap items-center gap-[6px] xl:absolute xl:left-[46px] xl:top-[592px] xl:w-[722px]">
-          {CLIENTS.map((client) => (
+          {clients.map((client) => (
             <div
               key={client}
               className="flex items-center justify-center rounded-[10px] border border-[rgba(50,50,60,0.8)] px-[12px] py-[10px]"
@@ -120,20 +102,12 @@ export default function About() {
         <FullBleedScale width={834} height={978} mode="grow" className="w-full">
           <div className="relative h-[978px] w-[834px] overflow-clip bg-[#fafafa]">
             <p className="about-reveal absolute left-[28px] top-[44px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-              о себе
+              {t.aboutHeading}
             </p>
 
             <div className="about-reveal absolute left-[28px] top-[91px] flex w-[381px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#333]">
-              <p className="opacity-70">
-                Дизайн-лид, который сочетает управление командой с практической работой в дизайне.
-                Выстраиваю процессы, систематизирую большие объёмы задач и помогаю командам сохранять
-                качество и темп работы.
-              </p>
-              <p className="opacity-70">
-                Сам создаю Key Visual, иллюстрации, 3D, иконографику и AI-визуалы: от идеи и поиска
-                визуального направления до финального результата. Быстро разбираюсь в сложных задачах,
-                беру ответственность за результат и развиваю визуальные направления вместе с командой.
-              </p>
+              <p className="opacity-70">{t.aboutBio[0]}</p>
+              <p className="opacity-70">{t.aboutBio[1]}</p>
             </div>
 
             {/* Фото (Frame 2886:29834, 383×399, overflow-clip). */}
@@ -144,7 +118,7 @@ export default function About() {
 
             {/* Чипы клиентов (Frame 2886:29843, x28 y811, перенос ~3 ряда). */}
             <div className="about-reveal absolute left-[28px] top-[811px] flex w-[795px] flex-wrap content-start items-center gap-[6px]">
-              {CLIENTS.map((client) => (
+              {clients.map((client) => (
                 <div
                   key={client}
                   className="flex items-center justify-center rounded-[10px] border border-[rgba(50,50,60,0.8)] px-[12px] py-[10px]"
@@ -175,20 +149,12 @@ export default function About() {
         <FullBleedScale width={1280} height={900} mode="grow" className="w-full">
           <div className="relative h-[900px] w-[1280px] overflow-clip bg-[#fafafa]">
             <p className="about-reveal absolute left-[40px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-              о себе
+              {t.aboutHeading}
             </p>
 
             <div className="about-reveal absolute left-[40px] top-[181px] flex w-[587px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#333]">
-              <p className="opacity-70">
-                Дизайн-лид, который сочетает управление командой с практической работой в дизайне.
-                Выстраиваю процессы, систематизирую большие объёмы задач и помогаю командам сохранять
-                качество и темп работы.
-              </p>
-              <p className="opacity-70">
-                Сам создаю Key Visual, иллюстрации, 3D, иконографику и AI-визуалы: от идеи и поиска
-                визуального направления до финального результата. Быстро разбираюсь в сложных задачах,
-                беру ответственность за результат и развиваю визуальные направления вместе с командой.
-              </p>
+              <p className="opacity-70">{t.aboutBio[0]}</p>
+              <p className="opacity-70">{t.aboutBio[1]}</p>
             </div>
 
             {/* Фото (Frame 2886:22309, 594×399, overflow-clip). */}
@@ -199,7 +165,7 @@ export default function About() {
 
             {/* Чипы клиентов (Frame 2886:22317, x40 y551, перенос ~4 ряда). */}
             <div className="about-reveal absolute left-[40px] top-[551px] flex w-[560px] flex-wrap content-start items-center gap-[6px]">
-              {CLIENTS.map((client) => (
+              {clients.map((client) => (
                 <div
                   key={client}
                   className="flex items-center justify-center rounded-[10px] border border-[rgba(50,50,60,0.8)] px-[12px] py-[10px]"

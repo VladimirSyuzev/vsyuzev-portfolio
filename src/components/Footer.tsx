@@ -1,3 +1,8 @@
+"use client";
+
+import { useLang } from "@/lib/lang";
+import { T } from "@/lib/i18n";
+
 // Footer — общий компонент, переверстывается под каждый брейкпоинт.
 //  <640  — Figma «Footer 375»  (2672:40144), 375×281.
 //  640…1023 — Figma «Footer 834» (2672:40141), 834×218, pad 22/28/44/28.
@@ -24,6 +29,8 @@ const SOCIALS = (
 );
 
 export default function Footer() {
+  const lang = useLang();
+  const top = T[lang].footerTop;
   return (
     <div id="contacts" className="w-full scroll-mt-16 bg-[#121212]">
       {/* <640 — Figma «Footer 375» (2672:40144) */}
@@ -45,7 +52,7 @@ export default function Footer() {
         <a href="#top" className="absolute right-[20px] top-[22px] flex items-center gap-[6px] opacity-70">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="size-[24px]" src="/footer/caret-up.svg" />
-          <span>НАВЕРХ</span>
+          <span>{top}</span>
         </a>
       </div>
 
@@ -78,7 +85,7 @@ export default function Footer() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="size-[24px]" src="/footer/caret-up.svg" />
-          <span>НАВЕРХ</span>
+          <span>{top}</span>
         </a>
 
         {/* 📍 Perm, Russia — нижний ряд */}
