@@ -76,13 +76,14 @@ export default function HeroFloating() {
   const hintRef = useRef<HTMLParagraphElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  const cardW = useMemo(() => {
+  // все обложки одинаковой ВЫСОТЫ, ширина — по соотношению сторон картинки
+  const cardH = useMemo(() => {
     const u = Math.min(vw, 1000);
-    return Math.round(Math.max(78, Math.min(u * 0.135, 156)));
+    return Math.round(Math.max(120, Math.min(u * 0.19, 232)));
   }, [vw]);
-  const cardH = (i: number) => {
-    const a = Math.min(2, Math.max(0.55, items[i]?.aspect ?? 0.78));
-    return Math.round(cardW / a);
+  const cardW = (i: number) => {
+    const a = Math.min(1.4, Math.max(0.6, items[i]?.aspect ?? 0.78));
+    return Math.round(cardH * a);
   };
 
   useGSAP(
@@ -98,21 +99,34 @@ export default function HeroFloating() {
 
       const vh = window.innerHeight;
       const unit = Math.min(vw, vh);
-      const S = cardW;
-      const rowGap = S * 1.16;
-      const R = unit * 0.46;
+      const R = unit * 0.5;
+      // ряд = развёрнутая окружность: равный шаг = длина дуги на одну карточку
+      const step = (2 * Math.PI * R) / N;
+      // положение карточки вдоль ленты, от центра (сантиметр = «шов» круга, i=0)
+      const s = (i: number) => (i - (N - 1) / 2) * step;
 
-      const rowX = (i: number) => (i - (N - 1) / 2) * rowGap;
-      const rowY = (i: number) => Math.sin(i * 1.7 + 1) * (S * 0.14);
-      const rowRot = (i: number) => ((i * 53) % 15) - 7;
-      const cA = (i: number) => ((-90 + (360 * i) / N) * Math.PI) / 180;
-      const cX = (i: number) => Math.cos(cA(i)) * R;
-      const cY = (i: number) => Math.sin(cA(i)) * R;
-      const cRot = (i: number) => (360 * i) / N;
+      const rowY = (i: number) => Math.sin(i * 1.7 + 1) * (cardH * 0.08);
+      const rowRot = (i: number) => ((i * 53) % 13) - 6;
+
+      // «скатывание» ленты в круг параметром t (0 ряд → 1 круг): лента гнётся
+      // с уменьшающимся радиусом кривизны, карточки не пересекаются.
+      const roll = (i: number, t: number) => {
+        const tt = t * t * (3 - 2 * t); // smoothstep
+        const rho = R * (1 + 26 * Math.pow(1 - tt, 3)); // радиус кривизны: ∞→R
+        const a = s(i) / rho; // угол дуги от шва
+        const x = rho * Math.sin(a);
+        const y = rho * (1 - Math.cos(a)) - R * (R / rho); // центр круга → (0,0)
+        const rot = (a * 180) / Math.PI;
+        return {
+          x,
+          y,
+          rotation: rowRot(i) + (rot - rowRot(i)) * tt,
+        };
+      };
 
       els.forEach((el, i) => {
         gsap.set(el, {
-          x: vw * 0.66 + i * S * 0.5,
+          x: vw * 0.66 + i * cardH * 0.7,
           y: rowY(i) + (i % 2 ? 28 : -20),
           rotation: rowRot(i) + 12,
           scale: 0.9,
@@ -129,7 +143,7 @@ export default function HeroFloating() {
         scrollTrigger: {
           trigger: rootRef.current,
           start: "top top",
-          end: "+=" + Math.round(vh * 4.6),
+          end: "+=" + Math.round(vh * 5),
           scrub: 1,
           pin: stage,
           anticipatePin: 1,
@@ -141,49 +155,59 @@ export default function HeroFloating() {
 
       // 1 — обложки въезжают справа в ряд по центру и выталкивают имя влево
       els.forEach((el, i) => {
+        const r0 = roll(i, 0);
         tl.to(
           el,
           {
-            x: rowX(i),
-            y: rowY(i),
-            rotation: rowRot(i),
+            x: r0.x,
+            y: r0.y + rowY(i),
+            rotation: r0.rotation,
             scale: 1,
             opacity: 1,
             ease: "power2.out",
-            duration: 0.36,
+            duration: 0.3,
           },
-          0.04 + i * (0.14 / N),
+          0.04 + i * (0.09 / N),
         );
       });
-      tl.to(nameEl, { x: () => -window.innerWidth * 1.05, ease: "none", duration: 0.3 }, 0.1);
-      tl.to(nameEl, { opacity: 0, duration: 0.05 }, 0.34);
+      tl.to(nameEl, { x: () => -window.innerWidth * 1.05, ease: "none", duration: 0.26 }, 0.1);
+      tl.to(nameEl, { opacity: 0, duration: 0.05 }, 0.32);
 
-      // 2 — обложки по очереди отрываются от ряда и уходят на окружность
-      //     (крупный stagger → в полёте всегда 1–2 карточки, без свалки)
-      els.forEach((el, i) => {
-        tl.to(
-          el,
-          {
-            x: cX(i),
-            y: cY(i),
-            rotation: cRot(i),
-            ease: "power2.inOut",
-            duration: 0.22,
+      // 2 — лента СКАТЫВАЕТСЯ в круг (общий параметр t), карточки не пересекаются
+      const bend = { t: 0 };
+      tl.to(
+        bend,
+        {
+          t: 1,
+          ease: "power1.inOut",
+          duration: 0.28,
+          onUpdate: () => {
+            els.forEach((el, i) => {
+              const p = roll(i, bend.t);
+              gsap.set(el, {
+                x: p.x,
+                y: p.y + rowY(i) * (1 - bend.t),
+                rotation: p.rotation,
+              });
+            });
           },
-          0.4 + i * (0.24 / N),
-        );
-      });
+        },
+        0.42,
+      );
 
-      // 3 — круг увеличивается и уходит вверх → дуга оказывается ниже центра
+      // 3 — круг увеличивается; центр уходит ВНИЗ, в кадре его ВЕРХНЯЯ дуга
+      //     (∩ примерно по центру экрана)
       tl.to(
         reel,
-        { scale: 1.75, y: -R * 0.72, ease: "power1.inOut", duration: 0.12 },
-        0.72,
+        { scale: 1.6, y: R * 1.2, ease: "power1.inOut", duration: 0.12 },
+        0.7,
       );
-      tl.to(spin, { rotation: 34, ease: "power1.inOut", duration: 0.12 }, 0.72);
+      tl.to(spin, { rotation: 22, ease: "power1.inOut", duration: 0.12 }, 0.7);
 
-      // 4 — дальше скролл вращает круг (страница ещё запинена)
-      tl.to(spin, { rotation: 34 + 150, ease: "none", duration: 0.16 }, 0.84);
+      // 4 — круг продолжает вращаться и сползает ещё ниже: остаётся пологая
+      //     верхняя дуга ниже центра экрана
+      tl.to(reel, { scale: 2.05, y: R * 2.7, ease: "power1.inOut", duration: 0.2 }, 0.82);
+      tl.to(spin, { rotation: 22 + 170, ease: "none", duration: 0.2 }, 0.82);
 
       return () => {
         tl.scrollTrigger?.kill();
@@ -230,12 +254,12 @@ export default function HeroFloating() {
                   type="button"
                   onClick={() => setOpen(it.full)}
                   aria-label="Открыть изображение на весь экран"
-                  className="group absolute left-1/2 top-1/2 overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                  className="group absolute left-1/2 top-1/2 cursor-pointer overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.05] focus-visible:ring-2 focus-visible:ring-white/70"
                   style={{
-                    width: cardW,
-                    height: cardH(i),
-                    marginLeft: -cardW / 2,
-                    marginTop: -cardH(i) / 2,
+                    width: cardW(i),
+                    height: cardH,
+                    marginLeft: -cardW(i) / 2,
+                    marginTop: -cardH / 2,
                     transform: staticTransform(i),
                     opacity: reduced ? 1 : 0,
                   }}

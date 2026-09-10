@@ -72,12 +72,6 @@
     "aspect": 1.5889
   },
   {
-    "name": "13",
-    "full": "/hero-parallax/13.jpg",
-    "tile": "/hero-parallax/thumb/13.webp",
-    "aspect": 1
-  },
-  {
     "name": "14",
     "full": "/hero-parallax/14.png",
     "tile": "/hero-parallax/thumb/14.webp",
@@ -87,12 +81,6 @@
     "name": "15",
     "full": "/hero-parallax/15.jpg",
     "tile": "/hero-parallax/thumb/15.webp",
-    "aspect": 1
-  },
-  {
-    "name": "16",
-    "full": "/hero-parallax/16.png",
-    "tile": "/hero-parallax/thumb/16.webp",
     "aspect": 1
   },
   {
