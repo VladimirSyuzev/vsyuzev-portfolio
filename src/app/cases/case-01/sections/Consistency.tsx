@@ -7,6 +7,8 @@ import { useCanvasWide } from "@/lib/breakpoint";
 import BalanceBoard1 from "./BalanceBoard1";
 import BalanceBoard2 from "./BalanceBoard2";
 import Reveal from "@/components/Reveal";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 
 const R = "/cases/case-01/sections/reflow";
 
@@ -18,6 +20,7 @@ export default function Consistency() {
   const scope = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const wide = useCanvasWide();
+  const t = C1[useLang()];
 
   // «Волна» по каждой иконке обеих Balance Board — диагональный reveal.
   useGSAP(
@@ -53,13 +56,13 @@ export default function Consistency() {
                 834/1280: 32 / lh 110 / ls 0.96 */}
             <div className="flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.8px] sm:text-[32px] sm:tracking-[0.96px]">
               <span className="text-[#008cff]">06</span>
-              <span className="text-white">КОНТРОЛЬ</span>
-              <span className="text-white">КОНСИСТЕНТНОСТИ</span>
+              <span className="text-white">{t.consistencyHeading[0]}</span>
+              <span className="text-white">{t.consistencyHeading[1]}</span>
             </div>
             {/* интро — Aeonik Regular 14/120%/ls0.28/op70. 375: w335, pre-wrap +
                 двойные пробелы · 834: во всю ширину · 1280: w593 (Figma 2535:8971). */}
             <p className="w-[335px] max-w-full whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:w-full sm:whitespace-normal lg:w-[593px]">
-              {"Чтобы новые иконки оставались частью  единой системы, мы использовали несколько инструментов проверки. Главным из них стал Balance Board: общая сетка, в которой существующие и новые иконки можно было сравнить между собой в одном контексте.  Это позволяло быстро оценить их визуальный вес, пропорции, толщину линий, характер скруглений и общий баланс библиотеки."}
+              {t.consistencyIntro}
             </p>
           </div>
 
@@ -80,11 +83,7 @@ export default function Consistency() {
               Линия-скетч Vector 234257394 — у низа блока. */}
           <div className="relative flex flex-col items-start py-[32px]">
             <p className="w-[335px] max-w-full whitespace-pre-wrap font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.6px] text-white opacity-70 sm:w-[578px] sm:whitespace-normal sm:text-[28px] sm:leading-[1.1] sm:tracking-[0.96px]">
-              Balance Board{" "}
-              <br className="sm:hidden" />
-              помогал находить несоответствия{" "}
-              <br className="sm:hidden" />
-              и принимать решения ещё до передачи работы клиенту
+              {t.consistencyQuote}
             </p>
             {/* линия. 375: consistency-line-375.svg 332×24, bottom 20 / left 4 ·
                 834: consistency-underline.svg 518×31 (Figma w518, наклон ~−2.7°
@@ -111,17 +110,12 @@ export default function Consistency() {
           {/* Заголовок стопкой: «06 / КОНТРОЛЬ / КОНСИСТЕНТНОСТИ». */}
           <div className="flex flex-col font-heading text-[26px] font-bold leading-[1.1] tracking-[0.96px] sm:text-[32px] xl:absolute xl:left-[46px] xl:top-[64px] xl:text-[32px]">
             <span className="whitespace-nowrap text-[#008cff]">06</span>
-            <span className="text-white">КОНТРОЛЬ</span>
-            <span className="text-white">КОНСИСТЕНТНОСТИ</span>
+            <span className="text-white">{t.consistencyHeading[0]}</span>
+            <span className="text-white">{t.consistencyHeading[1]}</span>
           </div>
 
           <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:max-w-[668px] xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[668px]">
-            Чтобы новые иконки оставались частью единой системы, мы использовали несколько
-            инструментов проверки. Главным из них стал Balance Board: общая сетка, в которой
-            существующие и новые иконки можно было сравнить между собой в одном контексте.{" "}
-            <br className="hidden xl:inline" />
-            Это позволяло быстро оценить их визуальный вес, пропорции, толщину линий, характер
-            скруглений и общий баланс библиотеки.
+            {t.consistencyIntro}
           </p>
 
           {/* Balance Board — две доски 328×328. */}
@@ -138,11 +132,7 @@ export default function Consistency() {
               подчёркиванием — по левому краю на всех ширинах (по макетам). */}
           <div className="relative w-full sm:max-w-[578px] xl:absolute xl:left-[46px] xl:top-[581.98px] xl:w-[578.354px]">
             <p className="font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 sm:text-[28px] xl:text-[32px]">
-              Balance Board помогал находить несоответствия{" "}
-              <br className="hidden xl:inline" />
-              и принимать решения ещё{" "}
-              <br className="hidden xl:inline" />
-              до передачи работы клиенту
+              {t.consistencyQuote}
             </p>
             <Reveal
               variant="line"

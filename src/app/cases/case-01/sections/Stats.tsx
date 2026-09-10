@@ -5,6 +5,8 @@ import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide, useMinWidth } from "@/lib/breakpoint";
 import StatsIcons from "./StatsIcons";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 
 // С1-02 Stats — фон #fc3f1d + текстура иконок. Цифры по центру блока.
 // Появление — стаггер-ревил колонок снизу вверх.
@@ -18,19 +20,14 @@ import StatsIcons from "./StatsIcons";
 //  834: «3×2», контейнер 528, колонка 160, row-gap 32 / col-gap 24, число Wix Bold 52,
 //       подпись Aeonik Reg 14 / lh 120% / ls 0.28, w160, gap 8. Секция 834×900, pad 180/28.
 //  Подписи — жёсткие переносы (в Figma это не автоперенос).
-const STATS: { value: string; label: [string, string] }[] = [
-  { value: "1.5", label: ["недели на аудит", "библиотеки"] },
-  { value: "226", label: ["иконок", "проверено"] },
-  { value: "65", label: ["готовых", "иконок"] },
-  { value: "161", label: ["иконок нужно", "было создать"] },
-  { value: "194", label: ["варианта", "размера иконок"] },
-  { value: "150+", label: ["иконок создано", "и обновлено"] },
-];
+const VALUES = ["1.5", "226", "65", "161", "194", "150+"];
 
 export default function Stats() {
   const scope = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const wide = useCanvasWide();
+  const lang = useLang();
+  const STATS = VALUES.map((value, i) => ({ value, label: C1[lang].stats[i] }));
   const lg = useMinWidth(1024);
   const sm = useMinWidth(640);
   const texVariant = wide ? "desktop" : lg ? "1280" : sm ? "834" : "375";

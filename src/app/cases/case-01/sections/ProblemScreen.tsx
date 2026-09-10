@@ -7,6 +7,8 @@ import { useCanvasWide } from "@/lib/breakpoint";
 import Dot from "@/components/Dot";
 import Reveal from "@/components/Reveal";
 import SlideProgress from "@/components/SlideProgress";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 
 // «01 Проблема» — в Figma это ОДИН раздел из двух слайдов ("слайд 1 из 2" —
 // Problem.tsx, "слайд 2 из 2" — было Screen.tsx), с общим прогресс-
@@ -31,30 +33,20 @@ import SlideProgress from "@/components/SlideProgress";
 // идут обычным потоком, каждый в сетке (reflow).
 const A = "/cases/case-01/sections/screen-assets";
 
-const BULLETS = [
-  "различные пропорции",
-  "неодинаковую толщину линий",
-  "разные радиусы скруглений",
-  "различия в принципах построения",
-  "разный визуальный вес иконок",
-  "дубли одинаковых иконок",
-  "отсутствие необходимых размеров",
-  "отсутствие outline- или filled-вариантов",
-];
-
 function ProblemContent() {
+  const t = C1[useLang()];
   return (
     <>
       {/* Заголовок — крупный дисплейный (Figma node 1964:41878, 175px,
           leading-none, top 152). */}
       <div className="absolute left-[46px] top-[152px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[175px] font-bold leading-none tracking-[5.25px]">
         <p className="text-[#008cff]">01</p>
-        <p className="text-white">ПРОБЛЕМА</p>
+        <p className="text-white">{t.problemHeading}</p>
       </div>
 
       {/* Вводный абзац (Figma node 2359:4421). */}
       <p className="absolute left-[46px] top-[455.52px] w-[309.664px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        К началу проекта внутри Яндекса одновременно существовали две библиотеки иконок:
+        {t.problemIntro}
       </p>
 
       {/* ICONS SYMBOLS / ICONS REGULAR — подписи-блоки (Figma node 2381:20941). */}
@@ -62,16 +54,16 @@ function ProblemContent() {
         <div className="flex flex-col gap-[6px]">
           <div className="flex flex-col">
             <p>ICONS</p>
-            <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px]">Symbols</p>
+            <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px]">{t.libOldName}</p>
           </div>
-          <p className="opacity-70">более старая библиотека.</p>
+          <p className="opacity-70">{t.libOldDesc}</p>
         </div>
         <div className="mt-[24px] flex flex-col gap-[6px]">
           <div className="flex flex-col">
             <p>ICONS</p>
-            <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px]">Regular</p>
+            <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px]">{t.libNewName}</p>
           </div>
-          <p className="opacity-70">новая библиотека, которая постепенно развивалась вместе с продуктами.</p>
+          <p className="opacity-70">{t.libNewDesc}</p>
         </div>
       </div>
 
@@ -119,25 +111,20 @@ function ProblemContent() {
 }
 
 function ScreenContent() {
+  const t = C1[useLang()];
   return (
     <>
       <div className="absolute left-[46px] top-[181px] flex w-[337.139px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        <p>
-          Новые иконки появлялись под конкретные задачи и ближайшие релизы. Такой подход помогал
-          быстро закрывать потребности отдельных команд, но со временем привёл к техническому долгу.
-        </p>
-        <p className="w-[328px]">
-          На одном экране могли одновременно использоваться иконки из разных библиотек, из-за чего
-          интерфейс терял визуальную целостность.
-        </p>
+        <p>{t.screenPara1}</p>
+        <p className="w-[328px]">{t.screenPara2}</p>
       </div>
 
       <div className="absolute left-[47px] top-[510px] flex w-[327px] flex-col gap-[12px]">
         <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.42px] text-white">
-          МЫ ОБНАРУЖИЛИ:
+          {t.weFound}
         </p>
         <ul className="flex flex-col gap-[6px]">
-          {BULLETS.map((item, i) => (
+          {t.problemBullets.map((item, i) => (
             <li key={item} className="scr-bullet flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
               <Dot seed={11 + i} />
               <span className="opacity-70">{item}</span>
@@ -157,7 +144,7 @@ function ScreenContent() {
       <div className="absolute left-[517px] top-[162px] h-[576px] w-[746px]">
         <img alt="" className="scr-mock absolute inset-0 block size-full max-w-none" src={`${A}/screen-layer-1.svg`} />
         <img
-          alt="Экран приложения с одновременным использованием иконок из Icons Regular и Icons Symbols"
+          alt=""
           className="scr-anno absolute inset-0 block size-full max-w-none"
           src={`${A}/screen-layer-2.svg`}
         />
@@ -171,8 +158,8 @@ function ScreenContent() {
 const P = "/cases/case-01/sections";
 const R = "/cases/case-01/sections/reflow";
 
-function Board({ label, name, desc, union, tmp, bg }: {
-  label: string; name: string; desc: string; union: string; tmp: string; bg: string;
+function Board({ name, desc, union, tmp, bg }: {
+  name: string; desc: string; union: string; tmp: string; bg: string;
 }) {
   return (
     // 375: доска 335, gap доска→подпись 12. 834: доска 328, gap 10.
@@ -193,12 +180,12 @@ function Board({ label, name, desc, union, tmp, bg }: {
         </div>
         <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{desc}</p>
       </div>
-      <p className="sr-only">{label}</p>
     </div>
   );
 }
 
 function ProblemFlow() {
+  const t = C1[useLang()];
   return (
     // секция: 375 pad 64/20 gap 32 · 834 pad 72/28 gap 64 · 1280 pad 72/40
     <section className="relative w-full overflow-clip bg-[#121212] px-[20px] py-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px]">
@@ -208,11 +195,11 @@ function ProblemFlow() {
           {/* «01 ПРОБЛЕМА» — 375: Wix Bold 26 / leading-none / col-gap 12. 834: 100 / gap 24. 1280: 152. */}
           <div className="flex flex-wrap items-baseline gap-x-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none sm:gap-x-[24px] sm:text-[100px] lg:text-[152px] lg:leading-[1.05]">
             <span className="text-[#008cff]">01</span>
-            <span className="text-white">ПРОБЛЕМА</span>
+            <span className="text-white">{t.problemHeading}</span>
           </div>
           {/* интро — 375 w335 · 834 w382 · 1280 w291 */}
           <p className="w-[335px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:w-[382px] lg:w-[291px]">
-            К началу проекта внутри Яндекса одновременно существовали две библиотеки иконок:
+            {t.problemIntro}
           </p>
         </div>
 
@@ -220,17 +207,15 @@ function ProblemFlow() {
             центрируется — Figma align CENTER) */}
         <div className="flex flex-col gap-[12px] sm:flex-row sm:justify-center sm:gap-[12px]">
           <Board
-            label="ICONS SYMBOLS"
-            name="Symbols"
-            desc="более старая библиотека."
+            name={t.libOldName}
+            desc={t.libOldDesc}
             union={`${P}/problem-union.svg`}
             tmp={`${P}/problem-tmp.svg`}
             bg={`${P}/problem-train.svg`}
           />
           <Board
-            label="ICONS REGULAR"
-            name="Regular"
-            desc="новая библиотека, которая постепенно развивалась вместе с продуктами."
+            name={t.libNewName}
+            desc={t.libNewDesc}
             union={`${P}/problem-union2.svg`}
             tmp={`${P}/problem-tmp2.svg`}
             bg={`${P}/problem-railway.svg`}
@@ -257,27 +242,22 @@ function ProblemFlow() {
 const DOT_VARIANTS = [1, 2, 3, 1, 3, 1, 4, 2];
 
 function ScreenFlow() {
+  const t = C1[useLang()];
   return (
     // секция: 375 pad 32/20/64/20 gap 32 · 834 pad 28/28/72/28 gap 64 · 1280 pad 72/40
     <section className="relative w-full overflow-clip bg-[#121212] px-[20px] pb-[64px] pt-[32px] sm:px-[28px] sm:pb-[72px] sm:pt-[28px] lg:px-[40px] lg:pt-[72px]">
       <div className="flex flex-col gap-[32px] sm:gap-[64px]">
         {/* Frame 2147231942 — 2 абзаца. 375: w335, gap 12. 834: w383, gap 6. 1280: w498. */}
         <div className="flex w-[335px] max-w-full flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:w-[383px] sm:gap-[6px] lg:w-[498px]">
-          <p>
-            Новые иконки появлялись под конкретные задачи и ближайшие релизы. Такой подход помогал
-            быстро закрывать потребности отдельных команд, но со временем привёл к техническому долгу.
-          </p>
-          <p>
-            На одном экране могли одновременно использоваться иконки из разных библиотек, из-за чего
-            интерфейс терял визуальную целостность.
-          </p>
+          <p>{t.screenPara1}</p>
+          <p>{t.screenPara2}</p>
         </div>
 
         {/* Frame 2147231908/…474 — мокап телефона. 375: screen-375.svg w335.
             834: screen-834.svg 778×576 (телефон 746 по центру внутри). gap 64. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Экран приложения Яндекс с одновременным использованием иконок из Icons Regular и Icons Symbols"
+          alt=""
           className="block w-[335px] max-w-full sm:hidden"
           src={`${R}/screen-375.svg`}
         />
@@ -293,10 +273,10 @@ function ScreenFlow() {
             375: w335. 834: w327. 1280: одна колонка на всю ширину (Figma 1200). */}
         <div className="flex w-[335px] max-w-full flex-col gap-[12px] sm:w-[327px] lg:w-full">
           <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white">
-            МЫ ОБНАРУЖИЛИ:
+            {t.weFound}
           </p>
           <ul className="flex flex-col gap-[6px]">
-            {BULLETS.map((item, i) => (
+            {t.problemBullets.map((item, i) => (
               <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <img aria-hidden alt="" className="block size-[12px] shrink-0" src={`${R}/dot-${DOT_VARIANTS[i]}.svg`} />
                 <span className="opacity-70">{item}</span>
