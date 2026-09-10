@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/lang";
@@ -180,19 +180,29 @@ export default function First16px() {
             <img aria-hidden alt="" className="block size-full max-w-none lg:-rotate-[0.9deg] xl:rotate-0" src={`${A}/icon16-doodle.svg`} />
           </Reveal>
 
-          {/* Текст «Маленький размер…» + подчёркивание. На 1280 И на ≥1440
-              блок абсолютно позиционирован (0,500 / 46,853), но подчёркивание
-              лежит В ПОТОКЕ под текстом — следует за его нижним краем (число
-              строк цитаты плавает между RU/EN, фикс-координата линии наезжала). */}
-          <div className="contents lg:absolute lg:left-0 lg:top-[500px] lg:block lg:w-[454px] xl:left-[46px] xl:top-[853px] xl:w-[640px]">
-            {/* 1280: (0,500) w440; ≥1440: (46,853) w589. */}
+          {/* Текст «Маленький размер…» + подчёркивание. На 1280 блок стоит
+              на (0,500); на ≥1440 (Figma 2383:21155) — выровнен НИЖНИМ краем
+              по низу иконки (y958): xl:bottom, top плавает по числу строк.
+              375/834/1280 — подчёркивание в потоке; ≥1440 — абсолют по
+              координатам Figma (Vector 234257394). */}
+          <div className="contents lg:absolute lg:left-0 lg:top-[500px] lg:block lg:w-[454px] xl:left-[46px] xl:top-auto xl:bottom-[242px] xl:w-[640px]">
+            {/* 1280: (0,500) w440; ≥1440: (46, низ 958) w589. На ≥1440 цитата
+                с ручными переносами 1:1 из макета (first16QuoteXlLines). */}
             <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:w-[589px]">
-              {t.first16Quote}
+              <span className="xl:hidden">{t.first16Quote}</span>
+              <span className="hidden xl:inline">
+                {t.first16QuoteXlLines.map((line, i, arr) => (
+                  <Fragment key={i}>
+                    {line}
+                    {i < arr.length - 1 && <br />}
+                  </Fragment>
+                ))}
+              </span>
             </p>
 
             {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427;
-                ≥1440: свой ассет 518×33, отступ слева 115 (161−46).
-                Наклон +2.26° на 375/834/1280. Все — в потоке под цитатой. */}
+                ≥1440: свой ассет 518×67 (Figma bbox 517.8×67.26, наклон в путях).
+                Наклон +2.26° на 375/834/1280 (в потоке под цитатой). */}
             <Reveal
               variant="line"
               start="top 92%"
@@ -209,13 +219,15 @@ export default function First16px() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
             </Reveal>
+            {/* ≥1440: Figma bbox (160.85, 944) → относительно блока (низ 958):
+                left 115 (160.85−46), низ на 53px ниже блока (944+67.26−958). */}
             <Reveal
               variant="line"
               start="top 92%"
-              className="pointer-events-none hidden xl:ml-[115px] xl:mt-[13px] xl:block xl:w-[518px]"
+              className="pointer-events-none hidden xl:absolute xl:-bottom-[53px] xl:left-[115px] xl:block xl:h-[67px] xl:w-[518px]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block w-full max-w-none" src={`${A}/icon16-underline.svg`} />
+              <img alt="" className="block size-full max-w-none object-fill" src={`${A}/icon16-underline-1440.svg`} />
             </Reveal>
           </div>
         </div>

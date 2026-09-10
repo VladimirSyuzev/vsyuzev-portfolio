@@ -34,6 +34,8 @@ type Dict = {
   first16Para2: string;
   first16Para2Tail: string;
   first16Quote: string;
+  // Ручные переносы цитаты на фикс-холсте ≥1440 (1:1 из Figma 2383:21155).
+  first16QuoteXlLines: string[];
 
   summaryHeading: string;
   summaryPara1: string;
@@ -99,6 +101,11 @@ const ru: Dict = {
     " Большая версия становилась самостоятельной иллюстрацией, сохраняя характер маленькой.",
   first16Quote:
     "Маленький размер проверял главное: силуэт, композицию и читаемость.",
+  first16QuoteXlLines: [
+    "Маленький размер",
+    "проверял главное: силуэт,",
+    "композицию и читаемость.",
+  ],
 
   summaryHeading: "Итог",
   summaryPara1:
@@ -167,6 +174,12 @@ const en: Dict = {
     " The large version became an illustration in its own right while keeping the character of the small one.",
   first16Quote:
     "The small size tested the essentials: silhouette, composition and legibility.",
+  first16QuoteXlLines: [
+    "The small size tested",
+    "the essentials:",
+    "silhouette, composition",
+    "and legibility.",
+  ],
 
   summaryHeading: "Outcome",
   summaryPara1:
