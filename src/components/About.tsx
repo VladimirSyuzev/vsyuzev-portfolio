@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 
 // «о себе» — на ≥1200 абсолют 1:1 из Figma (node 2279:32548, фрейм
@@ -97,21 +97,8 @@ export default function About() {
         </div>
 
         {/* Доодлы — декоративные, привязаны к десктопным координатам. */}
-        <Reveal
-          variant="doodle"
-          className="hidden xl:absolute xl:left-[562px] xl:top-[674px] xl:block xl:h-[125px] xl:w-[158px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src="/about/doodle-scribble.svg" />
-        </Reveal>
-        <Reveal
-          variant="doodle"
-          delay={0.1}
-          className="hidden xl:absolute xl:left-[1125.68px] xl:top-[44px] xl:block xl:h-[212.282px] xl:w-[268.324px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src="/about/doodles.svg" />
-        </Reveal>
+        <DrawIn src="/about/doodle-scribble.svg" fit="contain" className="hidden xl:absolute xl:left-[562px] xl:top-[674px] xl:block xl:h-[125px] xl:w-[158px]" />
+        <DrawIn src="/about/doodles.svg" fit="contain" delay={0.1} className="hidden xl:absolute xl:left-[1125.68px] xl:top-[44px] xl:block xl:h-[212.282px] xl:w-[268.324px]" />
       </div>
 
       {/* 640–1023 — 1:1 из Figma reflow-фрейма «главная · 834» (node
@@ -157,14 +144,7 @@ export default function About() {
             </div>
 
             {/* Доодл-«смайл» (Frame 2886:29839, x566 y0). Каракулей на 834 нет. */}
-            <Reveal
-              variant="doodle"
-              delay={0.1}
-              className="absolute left-[566px] top-0 h-[212.282px] w-[268.324px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src="/about/doodles.svg" />
-            </Reveal>
+            <DrawIn src="/about/doodles.svg" fit="contain" delay={0.1} className="absolute left-[566px] top-0 h-[212.282px] w-[268.324px]" />
           </div>
         </FullBleedScale>
       </div>
@@ -212,21 +192,8 @@ export default function About() {
             </div>
 
             {/* Доодлы. */}
-            <Reveal
-              variant="doodle"
-              className="absolute left-[469px] top-[654px] h-[125px] w-[158px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src="/about/doodle-scribble.svg" />
-            </Reveal>
-            <Reveal
-              variant="doodle"
-              delay={0.1}
-              className="absolute left-[1012px] top-0 h-[212.282px] w-[268.324px]"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src="/about/doodles.svg" />
-            </Reveal>
+            <DrawIn src="/about/doodle-scribble.svg" fit="contain" className="absolute left-[469px] top-[654px] h-[125px] w-[158px]" />
+            <DrawIn src="/about/doodles.svg" fit="contain" delay={0.1} className="absolute left-[1012px] top-0 h-[212.282px] w-[268.324px]" />
           </div>
         </FullBleedScale>
       </div>

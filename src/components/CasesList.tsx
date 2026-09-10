@@ -8,7 +8,7 @@ import { useBreakpoint } from "@/lib/breakpoint";
 import { CASES } from "@/lib/cases-data";
 import Case01IconGrid from "./Case01IconGrid";
 import ResponsiveScale from "@/components/ResponsiveScale";
-import Reveal from "@/components/Reveal";
+import DrawIn from "@/components/DrawIn";
 
 // «кейсы» — на десктопе (≥1200) hover-раскрывающийся список 1:1 из Figma
 // (node 2286:3887). Ниже 1200 hover нет — отдаём стопку карточек (номер +
@@ -50,10 +50,7 @@ function CasesListDesktop() {
       <p className="absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
         КЕЙСЫ
       </p>
-      <Reveal variant="doodle" className="absolute left-[174px] top-[89px] h-[125px] w-[158px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img alt="" className="block size-full max-w-none" src="/about/doodle-hooks.svg" />
-      </Reveal>
+      <DrawIn src="/about/doodle-hooks.svg" fit="contain" className="absolute left-[174px] top-[89px] h-[125px] w-[158px]" />
 
       <div className="ml-[216px] flex w-[1178px] flex-col items-start">
         {CASES.map((item) => (
