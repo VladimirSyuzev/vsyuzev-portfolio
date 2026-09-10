@@ -4,6 +4,9 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Технический домен *.beget.tech — без SSL-сертификата, поэтому НЕ форсим
+  # на нём HTTPS (иначе сайт недоступен). Форс только на боевом домене.
+  RewriteCond %{HTTP_HOST} !\.beget\.tech$ [NC]
   # на beget SSL терминируется на фронте, реальная схема — в X-Forwarded-Proto
   RewriteCond %{HTTP:X-Forwarded-Proto} =http [OR]
   RewriteCond %{HTTPS} off
