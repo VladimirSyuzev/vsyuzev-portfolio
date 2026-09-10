@@ -219,15 +219,19 @@ export default function First16px() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
             </Reveal>
-            {/* ≥1440: Figma bbox (160.85, 944) → относительно блока (низ 958):
-                left 115 (160.85−46), низ на 53px ниже блока (944+67.26−958). */}
+            {/* ≥1440: Vector 234257394 (Figma node 2959:38314) — path bbox
+                (159, 964.37), 517.8×26.53. Относительно блока текста (низ 958):
+                left 113 (159−46), верх на 6px ниже блока. Обводка 6px выходит
+                за бокс (inset как в экспорте Figma). */}
             <Reveal
               variant="line"
               start="top 92%"
-              className="pointer-events-none hidden xl:absolute xl:-bottom-[53px] xl:left-[115px] xl:block xl:h-[67px] xl:w-[518px]"
+              className="pointer-events-none hidden xl:absolute xl:left-[113px] xl:top-full xl:mt-[6px] xl:block xl:h-[26.53px] xl:w-[517.8px]"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none object-fill" src={`${A}/icon16-underline-1440.svg`} />
+              <div className="absolute inset-[-11.31%_-0.58%]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" className="block size-full max-w-none" src={`${A}/icon16-underline-1440.svg`} />
+              </div>
             </Reveal>
           </div>
         </div>
