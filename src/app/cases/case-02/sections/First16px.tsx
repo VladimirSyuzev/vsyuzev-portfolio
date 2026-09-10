@@ -2,8 +2,7 @@
 
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger, useReducedMotion } from "@/lib/gsap";
-import { useCanvasWide } from "@/lib/breakpoint";
+import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useLang } from "@/lib/lang";
 import { C2 } from "../i18n";
 import Reveal from "@/components/Reveal";
@@ -32,7 +31,8 @@ const SCALE_START = 16 / RENDER_SIZE;
 const OPACITY_START = 1;
 const OPACITY_END = 0.8;
 
-const SECTION_H = 1200;
+// Холст ≥1440 — 1200px (xl:h-[1200px] на pinRef); запас на скраб — ещё
+// SCRUB_PX (итого xl:h-[2200px] на wrapRef).
 const SCRUB_PX = 1000; // прокрутка на анимацию роста (больше = медленнее)
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -46,8 +46,6 @@ export default function First16px() {
   const blueRef = useRef<HTMLImageElement>(null);
   const latch = useRef(0);
   const reduced = useReducedMotion();
-  // Пин/скраб — только на фикс-холсте ≥1440 (см. RESPONSIVE.md).
-  const animate = useCanvasWide() && !reduced;
 
   useGSAP(
     () => {
@@ -60,39 +58,50 @@ export default function First16px() {
         el.style.opacity = `${lerp(OPACITY_START, OPACITY_END, e)}`;
       };
 
-      // Ниже 1440 / reduced-motion — пина нет: иконка в финальном размере.
-      // (Явно сбрасываем: на десктопе при гидратации мог отработать
-      //  render(0), пока useBreakpoint не отдал настоящее значение.)
-      if (!animate || !wrapRef.current || !pinRef.current) {
+      const settle = () => {
         el.style.transform = "scale(1)";
         el.style.opacity = `${OPACITY_END}`;
-        return;
-      }
+      };
 
-      // Десктоп: до первой отрисовки (useLayoutEffect) ужимаем до 16px —
-      // вспышки «большая → маленькая» не будет.
-      render(0);
+      // Планшет/мобайл/reduced-motion — иконка сразу в финальном размере,
+      // никакого пина.
+      settle();
+      if (reduced) return;
 
-      const st = ScrollTrigger.create({
-        trigger: wrapRef.current,
-        start: "top top",
-        end: () => `+=${SCRUB_PX}`,
-        pin: pinRef.current,
-        pinSpacing: true,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          latch.current = Math.max(latch.current, self.progress);
-          render(latch.current);
-        },
-        onRefresh: (self) => {
-          latch.current = Math.max(latch.current, self.progress);
-          render(latch.current);
-        },
+      // Пин + скраб роста иконки — ТОЛЬКО на фикс-холсте ≥1440 (RESPONSIVE.md).
+      // gsap.matchMedia сам создаёт и РЕВЁРТИТ пин (вместе с pin-spacer) на
+      // пересечении 1440 — ручной ScrollTrigger.kill при ресайзе вниз оставлял
+      // 2200px пустоты под блоком и дёргал скролл.
+      const mm = gsap.matchMedia();
+      mm.add("(min-width: 1440px)", () => {
+        if (!wrapRef.current || !pinRef.current) return;
+        // до первой отрисовки ужимаем до 16px — без вспышки «большая → маленькая».
+        render(0);
+        ScrollTrigger.create({
+          trigger: wrapRef.current,
+          start: "top top",
+          end: () => `+=${SCRUB_PX}`,
+          pin: pinRef.current,
+          pinSpacing: true,
+          anticipatePin: 1,
+          onUpdate: (self) => {
+            latch.current = Math.max(latch.current, self.progress);
+            render(latch.current);
+          },
+          onRefresh: (self) => {
+            latch.current = Math.max(latch.current, self.progress);
+            render(latch.current);
+          },
+        });
+        return () => {
+          latch.current = 0;
+          settle();
+        };
       });
 
-      return () => st.kill();
+      return () => mm.revert();
     },
-    { scope: wrapRef, dependencies: [animate] },
+    { scope: wrapRef, dependencies: [reduced] },
   );
 
   const content = (
@@ -171,18 +180,19 @@ export default function First16px() {
             <img aria-hidden alt="" className="block size-full max-w-none lg:-rotate-[0.9deg] xl:rotate-0" src={`${A}/icon16-doodle.svg`} />
           </Reveal>
 
-          {/* Текст «Маленький размер…» + подчёркивание. На 1280 весь блок
-              абсолютно позиционирован (0,500), но подчёркивание следует за
-              НИЗОМ текста (в EN цитата на строку длиннее — фикс-координата
-              линии наезжала на текст). */}
-          <div className="contents lg:absolute lg:left-0 lg:top-[500px] lg:block lg:w-[440px] xl:contents">
-            {/* 1280: (0,500) w440, наложение на иконку. */}
-            <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:absolute xl:left-[46px] xl:top-[853px] xl:w-[589px] xl:text-[32px]">
+          {/* Текст «Маленький размер…» + подчёркивание. На 1280 И на ≥1440
+              блок абсолютно позиционирован (0,500 / 46,853), но подчёркивание
+              лежит В ПОТОКЕ под текстом — следует за его нижним краем (число
+              строк цитаты плавает между RU/EN, фикс-координата линии наезжала). */}
+          <div className="contents lg:absolute lg:left-0 lg:top-[500px] lg:block lg:w-[454px] xl:left-[46px] xl:top-[853px] xl:w-[640px]">
+            {/* 1280: (0,500) w440; ≥1440: (46,853) w589. */}
+            <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:w-[589px]">
               {t.first16Quote}
             </p>
 
-            {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427.
-                Наклон +2.26° везде. 375/834/1280 — в потоке под цитатой. */}
+            {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427;
+                ≥1440: свой ассет 518×33, отступ слева 115 (161−46).
+                Наклон +2.26° на 375/834/1280. Все — в потоке под цитатой. */}
             <Reveal
               variant="line"
               start="top 92%"
@@ -199,36 +209,26 @@ export default function First16px() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
             </Reveal>
+            <Reveal
+              variant="line"
+              start="top 92%"
+              className="pointer-events-none hidden xl:ml-[115px] xl:mt-[13px] xl:block xl:w-[518px]"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt="" className="block w-full max-w-none" src={`${A}/icon16-underline.svg`} />
+            </Reveal>
           </div>
         </div>
-
-        {/* Подчёркивание — десктоп (отдельный ассет 518×33). */}
-        <Reveal
-          variant="line"
-          start="top 92%"
-          className="hidden xl:absolute xl:block"
-          style={{ left: 161, top: 972, width: 518, height: 33 }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full" src={`${A}/icon16-underline.svg`} />
-        </Reveal>
       </div>
     </div>
   );
 
-  // ≥1440 — исходная структура пина 1:1 (жёсткие высоты, без overflow).
-  // Ниже — обычный поток, высоты не задаём.
+  // ≥1440 — жёсткие высоты холста + запас на скраб (SECTION_H + SCRUB_PX).
+  // Ниже — обычный поток, высоты через CSS не задаём (никакого JS-гейта,
+  // чтобы при ресайзе не оставалось «залипших» inline-height).
   return (
-    <div
-      ref={wrapRef}
-      className="relative w-full"
-      style={{ height: animate ? SECTION_H + SCRUB_PX : undefined }}
-    >
-      <div
-        ref={pinRef}
-        className="relative w-full bg-[#fafafa]"
-        style={{ height: animate ? SECTION_H : undefined }}
-      >
+    <div ref={wrapRef} className="relative w-full xl:h-[2200px]">
+      <div ref={pinRef} className="relative w-full bg-[#fafafa] xl:h-[1200px]">
         {content}
       </div>
     </div>

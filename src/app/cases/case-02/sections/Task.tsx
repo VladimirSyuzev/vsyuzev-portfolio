@@ -165,10 +165,11 @@ export default function Task() {
           <img alt="" className="block size-full" src={`${A}/task-ellipse.svg`} />
         </Reveal>
 
-        {/* 375: рукописная обводка облегает цитату — как в макете Figma
-            (Vector 234257386, ≈104% ширины цитаты). Держим большой верхний
-            отступ (pt-64), чтобы обводка не наезжала на голубой ключ выше.
-            Размер в % от фактической высоты <p> (число строк «плавает»). */}
+        {/* 375: рукописная обводка за текстом цитаты (z-0). Фикс-бокс с родным
+            соотношением SVG (353.4×238.923) → `preserveAspectRatio="none"` не
+            растягивает контур, обводка держит ровные 6px при любом числе строк.
+            w-336 (≈105% контейнера 320) укладывается в экран 375. Большой pt-64
+            — чтобы круг не наезжал на голубой ключ выше. */}
         <div className="pt-[64px] pb-[36px] sm:hidden">
           <div className="relative mx-auto w-[320px] max-w-full">
             <p className="relative z-10 text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
@@ -177,7 +178,7 @@ export default function Task() {
             <Reveal
               variant="line"
               start="top 92%"
-              className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[calc(100%+64px)] w-[calc(100%+44px)] max-w-none -translate-x-1/2 -translate-y-1/2"
+              className="pointer-events-none absolute left-1/2 top-1/2 z-0 aspect-[353.4/238.923] w-[336px] max-w-none -translate-x-1/2 -translate-y-1/2"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img aria-hidden alt="" className="block size-full max-w-none object-fill" src={`${A}/reflow/task-ellipse-375.svg`} />
