@@ -62,10 +62,23 @@ export default function HeroFloating() {
     return () => window.removeEventListener("resize", upd);
   }, []);
 
-  const items = useMemo(
-    () => shuffle(POOL, rng(seed)).slice(0, Math.min(COUNT[bp], POOL.length)),
-    [seed, bp],
-  );
+  // случайный набор, затем чередуем горизонтальные / вертикальные обложки
+  const items = useMemo(() => {
+    const picked = shuffle(POOL, rng(seed)).slice(0, Math.min(COUNT[bp], POOL.length));
+    const wide = picked.filter((x) => x.aspect >= 1);
+    const tall = picked.filter((x) => x.aspect < 1);
+    const out: Img[] = [];
+    let wi = 0;
+    let ti = 0;
+    for (let k = 0; k < picked.length; k++) {
+      const wantWide =
+        wi / Math.max(1, wide.length) <= ti / Math.max(1, tall.length);
+      if (wantWide && wi < wide.length) out.push(wide[wi++]);
+      else if (ti < tall.length) out.push(tall[ti++]);
+      else out.push(wide[wi++]);
+    }
+    return out;
+  }, [seed, bp]);
   const N = items.length;
 
   const rootRef = useRef<HTMLDivElement>(null);
@@ -76,14 +89,16 @@ export default function HeroFloating() {
   const hintRef = useRef<HTMLParagraphElement>(null);
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-  // все обложки одинаковой ВЫСОТЫ, ширина — по соотношению сторон картинки
-  const cardH = useMemo(() => {
-    const u = Math.min(vw, 1000);
-    return Math.round(Math.max(120, Math.min(u * 0.19, 232)));
+  // обложки выравнены по «массе»: ширина + высота ≈ одинаковы у всех
+  // (горизонтальные — короче и шире, вертикальные — выше и уже)
+  const span = useMemo(() => {
+    const u = Math.min(vw, 1100);
+    return Math.round(Math.max(224, Math.min(u * 0.28, 380)));
   }, [vw]);
-  const cardW = (i: number) => {
-    const a = Math.min(1.4, Math.max(0.6, items[i]?.aspect ?? 0.78));
-    return Math.round(cardH * a);
+  const dims = (i: number) => {
+    const a = Math.min(1.5, Math.max(0.7, items[i]?.aspect ?? 0.78));
+    const h = span / (1 + a);
+    return { w: Math.round(span - h), h: Math.round(h) };
   };
 
   useGSAP(
@@ -99,13 +114,14 @@ export default function HeroFloating() {
 
       const vh = window.innerHeight;
       const unit = Math.min(vw, vh);
-      const R = unit * 0.5;
+      // радиус финального круга — чуть больше половины экрана (круг слегка
+      // перекрывает верх/низ, как на референсе), дальше НЕ опускается
+      const R = unit * 0.6;
       // ряд = развёрнутая окружность: равный шаг = длина дуги на одну карточку
       const step = (2 * Math.PI * R) / N;
-      // положение карточки вдоль ленты, от центра (сантиметр = «шов» круга, i=0)
       const s = (i: number) => (i - (N - 1) / 2) * step;
 
-      const rowY = (i: number) => Math.sin(i * 1.7 + 1) * (cardH * 0.08);
+      const rowY = (i: number) => Math.sin(i * 1.7 + 1) * (span * 0.04);
       const rowRot = (i: number) => ((i * 53) % 13) - 6;
 
       // «скатывание» ленты в круг параметром t (0 ряд → 1 круг): лента гнётся
@@ -126,7 +142,7 @@ export default function HeroFloating() {
 
       els.forEach((el, i) => {
         gsap.set(el, {
-          x: vw * 0.66 + i * cardH * 0.7,
+          x: vw * 0.66 + i * span * 0.4,
           y: rowY(i) + (i % 2 ? 28 : -20),
           rotation: rowRot(i) + 12,
           scale: 0.9,
@@ -143,7 +159,7 @@ export default function HeroFloating() {
         scrollTrigger: {
           trigger: rootRef.current,
           start: "top top",
-          end: "+=" + Math.round(vh * 5),
+          end: "+=" + Math.round(vh * 4),
           scrub: 1,
           pin: stage,
           anticipatePin: 1,
@@ -195,19 +211,17 @@ export default function HeroFloating() {
         0.42,
       );
 
-      // 3 — круг увеличивается; центр уходит ВНИЗ, в кадре его ВЕРХНЯЯ дуга
-      //     (∩ примерно по центру экрана)
+      // 3 — круг слегка «наезжает» и опускается совсем чуть-чуть — и ВСЁ,
+      //     ниже этого положения не уходит
       tl.to(
         reel,
-        { scale: 1.6, y: R * 1.2, ease: "power1.inOut", duration: 0.12 },
+        { scale: 1.12, y: R * 0.12, ease: "power1.inOut", duration: 0.14 },
         0.7,
       );
-      tl.to(spin, { rotation: 22, ease: "power1.inOut", duration: 0.12 }, 0.7);
+      tl.to(spin, { rotation: 30, ease: "power1.inOut", duration: 0.14 }, 0.7);
 
-      // 4 — круг продолжает вращаться и сползает ещё ниже: остаётся пологая
-      //     верхняя дуга ниже центра экрана
-      tl.to(reel, { scale: 2.05, y: R * 2.7, ease: "power1.inOut", duration: 0.2 }, 0.82);
-      tl.to(spin, { rotation: 22 + 170, ease: "none", duration: 0.2 }, 0.82);
+      // 4 — дальше скролл только ВРАЩАЕТ круг на месте (страница ещё запинена)
+      tl.to(spin, { rotation: 30 + 200, ease: "none", duration: 0.16 }, 0.84);
 
       return () => {
         tl.scrollTrigger?.kill();
@@ -234,7 +248,7 @@ export default function HeroFloating() {
   // статичная раскладка (reduced / до гидратации)
   const staticTransform = (i: number) => {
     if (!reduced) return "translate(0px, 0px)";
-    const R = Math.min(vw, 900) * 0.42;
+    const R = Math.min(vw, 900) * 0.5;
     const a = ((-90 + (360 * i) / N) * Math.PI) / 180;
     return `translate(${(Math.cos(a) * R).toFixed(1)}px, ${(Math.sin(a) * R).toFixed(1)}px) rotate(${((360 * i) / N).toFixed(1)}deg)`;
   };
@@ -256,10 +270,10 @@ export default function HeroFloating() {
                   aria-label="Открыть изображение на весь экран"
                   className="group absolute left-1/2 top-1/2 cursor-pointer overflow-hidden rounded-[20px] shadow-[0_28px_70px_-20px_rgba(0,0,0,0.7)] outline-none transition-[scale] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] hover:scale-[1.05] focus-visible:ring-2 focus-visible:ring-white/70"
                   style={{
-                    width: cardW(i),
-                    height: cardH,
-                    marginLeft: -cardW(i) / 2,
-                    marginTop: -cardH / 2,
+                    width: dims(i).w,
+                    height: dims(i).h,
+                    marginLeft: -dims(i).w / 2,
+                    marginTop: -dims(i).h / 2,
                     transform: staticTransform(i),
                     opacity: reduced ? 1 : 0,
                   }}
