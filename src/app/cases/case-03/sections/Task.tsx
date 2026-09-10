@@ -1,5 +1,6 @@
 "use client";
 
+import { Fragment } from "react";
 import Reveal from "@/components/Reveal";
 import { useLang } from "@/lib/lang";
 import { C3 } from "../i18n";
@@ -39,6 +40,12 @@ function Req({ head, sub, icon = "task-check.svg" }: { head: string; sub: string
 export default function Task() {
   const t = C3[useLang()];
   const REQS = t.taskBullets;
+  const quoteXl = t.taskQuoteXlLines.map((line, i, arr) => (
+    <Fragment key={i}>
+      {line}
+      {i < arr.length - 1 && <br />}
+    </Fragment>
+  ));
   return (
     <section className="relative w-full overflow-clip bg-[#fafafa]">
       {/* ≥1440 — 1:1 из Figma-канваса 1440. */}
@@ -77,19 +84,23 @@ export default function Task() {
           <img alt="" className="block size-full" src={`${A}/task-coin.jpg`} />
         </Reveal>
 
-        <p className="absolute left-[726px] top-[1369px] w-[624px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-          {t.taskQuote}
-        </p>
-
-        {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369). */}
-        <Reveal
-          variant="line"
-          start="top 92%"
-          className="absolute left-[884px] top-[1556px] h-[35px] w-[394px]"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-arrow.svg`} />
-        </Reveal>
+        {/* Цитата (Figma 2384:21356, 726/1369, w589 h175 — 5 строк, перенос
+            после «ещё») + подчёркивание. Линия привязана к НИЗУ блока текста
+            (Figma bbox 883.81/1506 → left 158, верх на 38px выше низа текста;
+            асс. task-underline-1440.svg — точный экспорт Vector 234257367). */}
+        <div className="absolute left-[726px] top-[1369px] w-[589px]">
+          <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
+            {quoteXl}
+          </p>
+          <Reveal
+            variant="line"
+            start="top 92%"
+            className="pointer-events-none absolute left-[158px] top-full -mt-[12px] h-[65.7px] w-[390px]"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt="" className="block size-full max-w-none" src={`${A}/task-underline-1440.svg`} />
+          </Reveal>
+        </div>
       </div>
 
       {/* ≥1440 — лента «варианты» (Figma node 2079:17726 → y595). Прямой
@@ -154,16 +165,21 @@ export default function Task() {
               <img alt="" className="block size-full" src={`${A}/task-coin.jpg`} />
             </Reveal>
 
-            {/* Цитата (646, 1112+54=1166), 594×175. */}
-            <p className={`absolute left-[646px] top-[1166px] w-[594px] text-[#121212] ${C3_TEXT.quote}`}>
-              {t.taskQuote}
-            </p>
-
-            {/* Волнистое подчёркивание (Vector 234257367) — (798, 1266+54=1320), 387.57×90.44. */}
-            <Reveal variant="line" start="top 92%" className="absolute left-[798px] top-[1320px] h-[90px] w-[388px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt="" className="block size-full max-w-none" src={`${A}/task-doodle-arrow.svg`} />
-            </Reveal>
+            {/* Цитата (Figma 2695:18198, abs 646/1112.5, 594×175 — 5 строк,
+                перенос после «ещё»; +54 под бар карусели → top 1166) +
+                подчёркивание, привязанное к НИЗУ текста (Figma bbox abs
+                797.81/1265.8 → left 152, верх на 22px выше низа текста). */}
+            <div className="absolute left-[646px] top-[1166px] w-[594px]">
+              <p className={`text-[#121212] ${C3_TEXT.quote}`}>{quoteXl}</p>
+              <Reveal
+                variant="line"
+                start="top 92%"
+                className="pointer-events-none absolute left-[152px] top-full -mt-[12px] h-[65.7px] w-[390px]"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt="" className="block size-full max-w-none" src={`${A}/task-underline-1440.svg`} />
+              </Reveal>
+            </div>
           </div>
         </FullBleedScale>
       </div>

@@ -26,6 +26,13 @@ export default function Case03Page() {
   const lang = useLang();
   const t = C3[lang];
   const title = lang === "en" ? CASES[2].titleEn : CASES[2].title;
+  // Обложка: перенос после «3D-иллюстраций» / «3D ILLUSTRATIONS» — 1:1 из
+  // Figma (текст 2481:4395 содержит line-separator). Рендерится в <p> с
+  // whitespace-pre-wrap.
+  const coverTitle =
+    lang === "en"
+      ? title.replace(/^(3D ILLUSTRATIONS) /, "$1\n")
+      : title.replace(/^(3D-иллюстраций) /, "$1\n");
   return (
     <div className="flex w-full flex-col items-center overflow-x-clip">
       <Header />
@@ -69,7 +76,7 @@ export default function Case03Page() {
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
               <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                {title}
+                {coverTitle}
               </p>
               <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white" style={{ opacity: 0.56 }}>
                 003
@@ -121,7 +128,7 @@ export default function Case03Page() {
                     003
                   </p>
                   <p className="w-[1278px] whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                    {title}
+                    {coverTitle}
                   </p>
                 </div>
               </div>
@@ -181,7 +188,7 @@ export default function Case03Page() {
                     003
                   </p>
                   <p className="w-[1278px] whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                    {title}
+                    {coverTitle}
                   </p>
                 </div>
               </div>
@@ -297,15 +304,19 @@ export default function Case03Page() {
                   <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientAlt}</p>
                 </div>
 
-                {/* Декор-подчёркивание под метой — reflow 1280 (в макете
-                    Figma есть; xl использует свою абсолютную копию выше). */}
+                {/* Декор-подчёркивание под метой — reflow 1280 (Figma
+                    Vector 234257362, node 2771:4700): bbox 200×8.63, на 10px
+                    ниже меты, правый край на 17px правее меты (левый — на
+                    18px левее). Ассет — точный экспорт из Figma. */}
                 <Reveal
                   variant="line"
                   start="top 92%"
-                  className="pointer-events-none absolute right-0 top-[calc(100%+8px)] h-[16px] w-[224px]"
+                  className="pointer-events-none absolute -right-[17px] top-[calc(100%+10px)] h-[8.63px] w-[200px]"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img alt="" className="block size-full max-w-none" src="/cases/case-03/sections/cover-underline.svg" />
+                  <div className="absolute inset-[-34.76%_-1.5%]">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img alt="" className="block size-full max-w-none" src="/cases/case-03/sections/oproekte-underline-1280.svg" />
+                  </div>
                 </Reveal>
               </div>
             </div>

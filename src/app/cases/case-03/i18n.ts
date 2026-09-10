@@ -14,6 +14,10 @@ type Dict = {
   taskSystemMust: string;
   taskBullets: [string, string][];
   taskQuote: string;
+  // Цитата с ручными переносами для фикс-холстов ≥1024 (1440/1280) — 1:1
+  // с Figma (RU: 5 строк; EN: 4 строки). Рендерится строками через <br>
+  // (не \n — его съедает типограф, приклеивая «ещё» неразрывным пробелом).
+  taskQuoteXlLines: string[];
 
   researchHeading: string;
   researchPara1: string;
@@ -68,6 +72,13 @@ const ru: Dict = {
   ],
   taskQuote:
     "Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как пользователь прочитает текст",
+  taskQuoteXlLines: [
+    "Каждая иллюстрация",
+    "должна была объяснять",
+    "функцию продукта ещё",
+    "до того, как пользователь",
+    "прочитает текст",
+  ],
 
   researchHeading: "Исследование",
   researchPara1:
@@ -144,6 +155,12 @@ const en: Dict = {
   ],
   taskQuote:
     "Every illustration had to explain a product feature before the user even read the text",
+  taskQuoteXlLines: [
+    "Every illustration had",
+    "to explain a product feature",
+    "before the user even read",
+    "the text",
+  ],
 
   researchHeading: "Research",
   researchPara1:

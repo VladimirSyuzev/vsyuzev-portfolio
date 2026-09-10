@@ -40,7 +40,8 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 export default function First16px() {
-  const t = C2[useLang()];
+  const lang = useLang();
+  const t = C2[lang];
   const wrapRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const blueRef = useRef<HTMLImageElement>(null);
@@ -180,17 +181,27 @@ export default function First16px() {
             <img aria-hidden alt="" className="block size-full max-w-none lg:-rotate-[0.9deg] xl:rotate-0" src={`${A}/icon16-doodle.svg`} />
           </Reveal>
 
-          {/* Текст «Маленький размер…» + подчёркивание. На 1280 блок стоит
-              на (0,500); на ≥1440 (Figma 2383:21155) — выровнен НИЖНИМ краем
-              по низу иконки (y958): xl:bottom, top плавает по числу строк.
-              375/834/1280 — подчёркивание в потоке; ≥1440 — абсолют по
-              координатам Figma (Vector 234257394). */}
-          <div className="contents lg:absolute lg:left-0 lg:top-[500px] lg:block lg:w-[454px] xl:left-[46px] xl:top-auto xl:bottom-[242px] xl:w-[640px]">
-            {/* 1280: (0,500) w440; ≥1440: (46, низ 958) w589. На ≥1440 цитата
-                с ручными переносами 1:1 из макета (first16QuoteXlLines). */}
-            <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:w-[589px]">
-              <span className="xl:hidden">{t.first16Quote}</span>
-              <span className="hidden xl:inline">
+          {/* Текст «Маленький размер…» + подчёркивание.
+              RU: 1280 — блок на (0,500) (как было, НЕ трогаем); ≥1440 —
+              выровнен низом по низу иконки (y958).
+              EN: 1280 И ≥1440 — выровнен НИЖНИМ краем по низу иконки, цитата
+              с ручными переносами (4 строки, 1:1 с макетом). */}
+          <div
+            className={`contents lg:absolute lg:left-0 lg:block xl:left-[46px] xl:top-auto xl:bottom-[242px] xl:w-[640px] ${
+              lang === "en" ? "lg:bottom-0 lg:!w-[492px]" : "lg:top-[500px] lg:!w-[454px]"
+            }`}
+          >
+            {/* 1280: RU w440 (натур. перенос); EN w470 под 4 ручные строки.
+                ≥1440: w589. Ручные переносы (first16QuoteXlLines):
+                RU — только ≥1440; EN — начиная с 1280. `!w` — перебиваем
+                sm:w-449 (у обоих одинаковый спец-вес, sm объявлен позже). */}
+            <p
+              className={`mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:mt-0 lg:text-[32px] xl:w-[589px] ${
+                lang === "en" ? "lg:!w-[492px]" : "lg:!w-[440px]"
+              }`}
+            >
+              <span className={lang === "en" ? "lg:hidden" : "xl:hidden"}>{t.first16Quote}</span>
+              <span className={`hidden ${lang === "en" ? "lg:inline" : "xl:inline"}`}>
                 {t.first16QuoteXlLines.map((line, i, arr) => (
                   <Fragment key={i}>
                     {line}
@@ -211,10 +222,12 @@ export default function First16px() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-375.svg`} />
             </Reveal>
+            {/* 834 — в потоке под цитатой; 1280 — абсолют под НИЗОМ цитаты
+                (чтобы блок EN мог выравниваться низом по иконке). */}
             <Reveal
               variant="line"
               start="top 92%"
-              className="pointer-events-none mt-[10px] hidden w-[427px] max-w-full sm:block lg:ml-[27px] xl:hidden"
+              className="pointer-events-none mt-[10px] hidden w-[427px] max-w-full sm:block lg:absolute lg:left-[27px] lg:top-full xl:hidden"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img aria-hidden alt="" className="block w-full max-w-none rotate-[2.26deg]" src={`${A}/reflow/icon16-underline-1280.svg`} />
