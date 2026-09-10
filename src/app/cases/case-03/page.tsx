@@ -195,10 +195,7 @@ export default function Case03Page() {
               О ПРОЕКТЕ
             </p>
             <p className="absolute left-[46px] top-[148px] w-[670px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Для Stablegate я разработал систему 3D key visuals, которая помогает наглядно объяснять
-              ключевые функции финтех-продукта. Проект охватил весь цикл работы: от поиска визуальных
-              метафор и построения дизайн-системы до создания готовых иллюстраций для сайта,
-              презентаций, email-рассылок и социальных сетей.
+              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
             </p>
 
             <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
@@ -225,14 +222,8 @@ export default function Case03Page() {
             <div className="flex flex-col gap-[12px] text-[#121212]">
               <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px]">О ПРОЕКТЕ</p>
               <p className="whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
-                Для Stablegate я разработал систему{" "}
-                <br />
-                3D key visuals, которая помогает наглядно объяснять ключевые функции
-                финтех-продукта. Проект охватил весь цикл работы: от поиска визуальных метафор и
-                построения дизайн-системы до создания готовых иллюстраций{" "}
-                <br />
-                для сайта, презентаций, email-рассылок и социальных сетей.
-              </p>
+              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
+            </p>
             </div>
             <div className="flex items-center gap-[24px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-black">
               <div className="flex w-[102px] flex-col items-start gap-[4px]">
@@ -255,12 +246,8 @@ export default function Case03Page() {
             </p>
             <div className="flex items-start justify-between">
               <p className="w-[382px] max-w-[62%] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Для Stablegate я разработал систему 3D key visuals, которая помогает наглядно
-                объяснять ключевые функции финтех-продукта. Проект охватил весь цикл работы: от
-                поиска визуальных метафор и построения дизайн-системы до создания готовых
-                иллюстраций для сайта, презентаций, email-рассылок{" "}
-                <br />и социальных сетей.
-              </p>
+              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
+            </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">
                 <div className="flex flex-col items-start gap-[4px]">
                   <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">Позиция</p>
@@ -293,12 +280,8 @@ export default function Case03Page() {
             </p>
             <div className="flex items-start justify-between gap-[40px]">
               <p className="w-[594px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                Для Stablegate я разработал систему 3D key visuals, которая помогает наглядно
-                объяснять ключевые функции финтех-продукта. Проект охватил весь цикл работы:{" "}
-                <br />
-                от поиска визуальных метафор и построения дизайн-системы до создания готовых
-                иллюстраций для сайта, презентаций, email-рассылок и социальных сетей.
-              </p>
+              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
+            </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">
                 <div className="flex flex-col items-start gap-[4px]">
                   <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>

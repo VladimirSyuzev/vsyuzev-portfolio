@@ -107,9 +107,7 @@ export default function Case02Page() {
             </p>
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px] xl:contents">
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[382px] sm:shrink-0 lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
-              В начале 2026 года Yandex Cloud обновлял визуальный язык продукта. За три недели нашей
-              команде нужно было разработать 34 иконки в двух размерах, параллельно формируя принципы
-              нового стиля.
+              В начале 2026 года Yandex Cloud обновлял визуальный язык продукта. За три недели команда разработала 34 иконки в двух размерах: 16×16 px для интерфейса, 640×640 px для иллюстраций на сайте, параллельно формируя сам стиль. Успели точно в срок, это было ключевым условием клиента.
             </p>
 
             <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] sm:flex-nowrap sm:gap-x-[40px] xl:contents">

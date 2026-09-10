@@ -158,9 +158,8 @@ export default function Case01Page() {
             </p>
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px]">
               <p className="w-[335px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[384px] lg:w-[498px]">
-                Аудит библиотеки из 226 иконок и выстраивание процесса, который позволил масштабировать
-                систему без потери консистентности.
-              </p>
+              Аудит библиотеки из 226 иконок Яндекса: расхождение между Icons Regular и Icons Symbols мешало единому стилю интерфейса. По итогам собрали план устранения технического долга и внутренний гайд, который помог команде работать быстро и консистентно.
+            </p>
               <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:flex-nowrap sm:gap-x-[40px]">
                 {[
                   ["ПОЗИЦИЯ", "Lead designer"],
@@ -192,9 +191,8 @@ export default function Case01Page() {
             О ПРОЕКТЕ
           </p>
           <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
-            Аудит библиотеки из 226 иконок и выстраивание процесса, который позволил масштабировать
-            систему без потери консистентности.
-          </p>
+              Аудит библиотеки из 226 иконок Яндекса: расхождение между Icons Regular и Icons Symbols мешало единому стилю интерфейса. По итогам собрали план устранения технического долга и внутренний гайд, который помог команде работать быстро и консистентно.
+            </p>
           <div className="xl:absolute xl:left-[896px] xl:top-[149px] xl:flex xl:gap-[70px]">
             <div className="flex w-[102px] flex-col gap-[4px]">
               <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>

@@ -67,15 +67,8 @@ export default function Case04Page() {
             О ПРОЕКТЕ
           </p>
           <p className="absolute left-[46px] top-[149px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-            Для Stablegate я разработал рекламную концепцию и серию key visuals для
-            outdoor-коммуникации. Задачей было сделать сложный crypto-продукт понятным через знакомые
-            жизненные сценарии и показать, как цифровые активы могут использоваться для реальных
-            покупок.
-          </p>
-          <p className="absolute left-[46px] top-[224px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-            В проект вошли концепция, арт-дирекшн, генерация изображений, композиция, типографика и
-            адаптация под разные outdoor-форматы.
-          </p>
+                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
+                    </p>
 
           <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
             <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
@@ -132,14 +125,7 @@ export default function Case04Page() {
                 <div className="flex w-full items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[593px] flex-col items-start gap-[6px]">
                     <p className="opacity-70">
-                      Для Stablegate я разработал рекламную концепцию и серию key visuals для
-                      outdoor-коммуникации. Задачей было сделать сложный crypto-продукт понятным
-                      через знакомые жизненные сценарии и показать, как цифровые активы могут
-                      использоваться для реальных покупок.
-                    </p>
-                    <p className="opacity-70">
-                      В проект вошли концепция, арт-дирекшн, генерация изображений, композиция,
-                      типографика и адаптация под разные outdoor-форматы.
+                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap">
@@ -201,17 +187,7 @@ export default function Case04Page() {
                 <div className="relative flex w-[777px] items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[384px] flex-col items-start gap-[6px]">
                     <p className="whitespace-pre-wrap opacity-70">
-                      Для Stablegate я разработал рекламную концепцию{" "}
-                      <br />
-                      и серию key visuals для outdoor-коммуникации.{" "}
-                      <br />
-                      Задачей было сделать сложный crypto-продукт понятным через знакомые жизненные
-                      сценарии{" "}
-                      <br />и показать, как цифровые активы могут использоваться для реальных покупок.
-                    </p>
-                    <p className="opacity-70">
-                      В проект вошли концепция, арт-дирекшн, генерация изображений, композиция,
-                      типографика и адаптация под разные outdoor-форматы.
+                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap">
@@ -273,15 +249,8 @@ export default function Case04Page() {
                 </p>
                 <div className="flex flex-col items-start gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px]">
                   <p className="w-[335px] opacity-70">
-                    Для Stablegate я разработал рекламную концепцию и серию key visuals для
-                    outdoor-коммуникации. Задачей было сделать сложный crypto-продукт понятным через
-                    знакомые жизненные сценарии и показать, как цифровые активы могут использоваться
-                    для реальных покупок.
-                  </p>
-                  <p className="w-[335px] opacity-70">
-                    В проект вошли концепция, арт-дирекшн, генерация изображений, композиция,
-                    типографика и адаптация под разные outdoor-форматы.
-                  </p>
+                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
+                    </p>
                 </div>
               </div>
               <div className="flex w-[164px] items-center gap-[24px] text-[14px] leading-[1.2] tracking-[0.28px]">
