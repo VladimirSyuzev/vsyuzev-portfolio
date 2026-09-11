@@ -6,6 +6,7 @@ import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
 import TrackArrows from "@/components/TrackArrows";
 import { useScrollTrack } from "@/lib/useScrollTrack";
+import { useCanvasWide } from "@/lib/breakpoint";
 
 // 04 Процесс — тёмный full-bleed блок. На десктопе (≥1200) текст — абсолют
 // 1:1 из Figma (node 2009:12647, высота 987), трек этапов — окно во всю
@@ -56,6 +57,11 @@ export default function Process() {
   // на месте через onScroll (translateX = scrollLeft), см. ниже.
   const rulerRef = useRef<HTMLDivElement>(null);
   const { trackRef, bind, dragging, canPrev, canNext, scrollByStep } = useScrollTrack();
+  // matchMedia(min-width:1440px) — тот же порог, что у CSS xl:, в отличие
+  // от trackWidth (ResizeObserver.clientWidth): при вертикальном
+  // скроллбаре clientWidth ровно на 1440px вьюпорта уже 1425 (<1440) —
+  // JS думает «не десктоп», а CSS xl: уже сработал → стрелки съезжали.
+  const wide = useCanvasWide();
 
   const track = (
     <div
@@ -179,7 +185,7 @@ export default function Process() {
             // трека (80/81). <1440: обёртка сама — верх трека, top =
             // paddingTop(80). ≥1440: xl:contents — координаты от sectionRef,
             // трек там на y580 + тот же paddingTop(80).
-            top: trackWidth >= 1440 ? 580 + 80 : 80,
+            top: wide ? 580 + 80 : 80,
             height: 125,
           }}
         />

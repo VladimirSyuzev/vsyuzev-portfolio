@@ -6,6 +6,7 @@ import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
 import TrackArrows from "@/components/TrackArrows";
 import { useScrollTrack } from "@/lib/useScrollTrack";
+import { useCanvasWide } from "@/lib/breakpoint";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
 // node 1971:64076). Тёмный фон блока растянут на весь экран (как Footer);
@@ -90,6 +91,12 @@ export default function Pipeline() {
   // на месте через onScroll (translateX = -scrollLeft), см. ниже.
   const rulerRef = useRef<HTMLDivElement>(null);
   const { trackRef, bind, dragging, canPrev, canNext, scrollByStep } = useScrollTrack();
+  // matchMedia(min-width:1440px) — тот же порог, что у CSS xl:, в отличие
+  // от padding.width (ResizeObserver.clientWidth): при вертикальном
+  // скроллбаре clientWidth ровно на 1440px вьюпорта уже 1425 (<1440), из-за
+  // чего JS-ветка «не десктоп» срабатывала на самой границе, а CSS xl: —
+  // уже да → стрелки уезжали на 278px выше карточек.
+  const wide = useCanvasWide();
 
   return (
     <div ref={sectionRef} className="relative w-full overflow-clip bg-[#121212] xl:h-[900px]">
@@ -210,13 +217,16 @@ export default function Pipeline() {
           canNext={canNext}
           className="absolute left-0 right-0"
           style={{
-            // Центр по РЯДУ карточек (h125), не по всей высоте паддинга.
-            // <1440: обёртка сама и есть верх трека — top = padding.top
-            // (вертикальный отступ до карточек). ≥1440: обёртка — display:
-            // contents (см. xl:contents на ../), координаты — от sectionRef,
-            // трек там сидит на y278 + тот же padding.top(=40) сверху.
-            top: padding.width >= 1440 ? 278 + padding.top : padding.top,
-            height: 125,
+            // Центр по ВСЕЙ «змейке» карточек/линейке (h399 — содержимое
+            // трека, offset карточек 0/137/274 + h125), а не по верхнему
+            // ряду: иначе стрелки уезжали выше фактического центра на
+            // величину сдвига (137px). <1440: обёртка сама и есть верх
+            // трека — top = padding.top (вертикальный отступ до карточек).
+            // ≥1440: обёртка — display:contents (см. xl:contents на ../),
+            // координаты — от sectionRef, трек там сидит на y278 + тот же
+            // padding.top(=40) сверху.
+            top: wide ? 278 + padding.top : padding.top,
+            height: 399,
           }}
         />
       </div>
