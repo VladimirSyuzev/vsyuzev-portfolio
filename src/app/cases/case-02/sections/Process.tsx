@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import DrawIn from "@/components/DrawIn";
 import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
-import { useDrag } from "@/lib/useDrag";
+import TrackArrows from "@/components/TrackArrows";
+import { useScrollTrack } from "@/lib/useScrollTrack";
 
 // 04 Процесс — тёмный full-bleed блок. На десктопе (≥1200) текст — абсолют
 // 1:1 из Figma (node 2009:12647, высота 987), трек этапов — окно во всю
@@ -49,70 +50,35 @@ export default function Process() {
     return () => ro.disconnect();
   }, []);
 
-  // Перетаскивание вбок вместо колеса — БЕЗ нативного скролла (не
-  // overflow-x-auto/scrollLeft), точно так же, как в VariantsCarousel:
-  // индекс карточки + transform: translateX(), трек «catch»-ится в
-  // overflow-hidden. Раньше был нативный scrollLeft, которым мы рулили
-  // руками через JS — на реальных touch-устройствах это на практике
-  // конфликтовало с системными жестами/инерцией браузера и обратная
-  // прокрутка не проходила, хотя вся арифметика (проверено симуляцией)
-  // была верна в обе стороны. Без native-scroll конфликтовать нечему.
-  //
-  // На отпускании — РОВНО один шаг ±1 карточка (или 0, если палец прошёл
-  // мало): dx <= -70 || vx <= -0.4 → шаг, порог тот же, что в «Вариантах».
-  const [index, setIndex] = useState(0);
-  const idxRef = useRef(0);
-  const [dragDX, setDragDX] = useState(0);
-  useEffect(() => {
-    idxRef.current = index;
-  }, [index]);
-
-  const { dragging, bind } = useDrag({
-    onMove: (dx) => {
-      const cur = idxRef.current;
-      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === STEPS.length - 1);
-      setDragDX(atEdge ? dx * 0.32 : dx);
-    },
-    onEnd: (dx, vx) => {
-      setDragDX(0);
-      let step = 0;
-      if (dx <= -70 || vx <= -0.4) step = 1;
-      else if (dx >= 70 || vx >= 0.4) step = -1;
-      setIndex((cur) => Math.max(0, Math.min(STEPS.length - 1, cur + step)));
-    },
-  });
-
-  const offset = left - index * PITCH + (dragging ? dragDX : 0);
+  // Трек — нативный scrollLeft (см. useScrollTrack): драг/тач листает
+  // свободно (не по одной карточке за раз), десктоп — ещё и колесо/трекпад
+  // горизонтально, плюс стрелки ‹ › (TrackArrows). Линейка-риска держится
+  // на месте через onScroll (translateX = scrollLeft), см. ниже.
+  const rulerRef = useRef<HTMLDivElement>(null);
+  const { trackRef, bind, dragging, canPrev, canNext, scrollByStep } = useScrollTrack();
 
   const track = (
     <div
+      ref={trackRef}
       {...bind}
-      className={`relative w-full touch-pan-y select-none overflow-hidden ${
+      onScroll={(e) => {
+        if (rulerRef.current)
+          rulerRef.current.style.transform = `translateX(${e.currentTarget.scrollLeft}px)`;
+      }}
+      className={`no-scrollbar relative w-full touch-pan-y select-none overflow-x-auto ${
         dragging ? "cursor-grabbing" : "cursor-grab"
       } lg:relative lg:z-[1] xl:absolute xl:left-0 xl:top-[580px] xl:h-[286px]`}
-      style={{ paddingTop: 80, paddingBottom: 81 }}
+      style={{ paddingLeft: left, paddingRight: left, paddingTop: 80, paddingBottom: 81 }}
     >
-      <div
-        className="relative h-[125px] w-[2368px] will-change-transform"
-        style={{
-          transform: `translateX(${offset}px)`,
-          transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
-        }}
-      >
+      <div className="relative h-[125px] w-[2368px]">
         {/* Линейка-риска (Group 2136141446/48). В макете это ОТДЕЛЬНЫЙ слой
             секции, не внутри трека: карточки листаются — линейка стоит. Здесь
-            она первый ребёнок трека, но в ОБРАТНОМ translateX (гасит скролл
-            трека) → визуально неподвижна, при этом в том же backdrop-контексте,
-            что и карточки, поэтому их frost её размывает, а карточки поверх.
-            Ширина/шаг из макета: 375 → 8 линий (в край экрана), 834 → 14 (от
-            поля 28), ≥1024 → 20. */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            transform: `translateX(${index * PITCH - (dragging ? dragDX : 0)}px)`,
-            transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
-          }}
-        >
+            она первый ребёнок трека, синхронизирована со scrollLeft через
+            onScroll (translateX = scrollLeft) → визуально неподвижна, при
+            этом в том же backdrop-контексте, что и карточки, поэтому их
+            frost её размывает, а карточки поверх. Ширина/шаг из макета:
+            375 → 8 линий (в край экрана), 834 → 14 (от поля 28), ≥1024 → 20. */}
+        <div ref={rulerRef} className="pointer-events-none absolute inset-0 will-change-transform">
           {/* Точные экспорты из Figma (Group 2136141446/47/48): path
               opacity 0.2, вертикальный градиент white 0→50%→0, БЕЗ доп.
               CSS-прозрачности (было opacity-60 → 0.12, поэтому линий почти
@@ -148,9 +114,6 @@ export default function Process() {
           </div>
         ))}
       </div>
-      {/* Затухание краёв до цвета секции на >1440 (замена mask — она ломала
-          frost карточек). */}
-      <EdgeFade width={trackWidth} />
     </div>
   );
 
@@ -191,9 +154,36 @@ export default function Process() {
         />
       </div>
 
-      {/* Линейка-риска — в {track}, но с обратным translateX: стоит на месте,
-          карточки листаются поверх (как в макете — отдельный слой секции). */}
-      <div className="relative xl:contents">{track}</div>
+      {/* Линейка-риска — в {track}, синхронизирована с его scrollLeft: стоит
+          на месте, карточки листаются поверх (как в макете — отдельный слой
+          секции). EdgeFade/TrackArrows — СНАРУЖИ скролл-контейнера трека
+          (иначе уезжали бы вместе с лентой), но внутри той же
+          xl:contents-обёртки — на xl это даёт им ту же систему координат
+          (относительно sectionRef), что и самому треку. */}
+      <div className="relative xl:contents">
+        {track}
+        {/* Затухание краёв до цвета секции на >1440 (замена mask — она
+            ломала frost карточек). */}
+        <EdgeFade
+          width={trackWidth}
+          className="absolute inset-0 xl:left-0 xl:top-[580px] xl:h-[286px]"
+        />
+        <TrackArrows
+          onPrev={() => scrollByStep(-1)}
+          onNext={() => scrollByStep(1)}
+          canPrev={canPrev}
+          canNext={canNext}
+          className="absolute left-0 right-0"
+          style={{
+            // Центр по РЯДУ карточек (h125), не по всей высоте паддинга
+            // трека (80/81). <1440: обёртка сама — верх трека, top =
+            // paddingTop(80). ≥1440: xl:contents — координаты от sectionRef,
+            // трек там на y580 + тот же paddingTop(80).
+            top: trackWidth >= 1440 ? 580 + 80 : 80,
+            height: 125,
+          }}
+        />
+      </div>
 
       <div className="pb-[72px] xl:hidden" aria-hidden />
     </div>

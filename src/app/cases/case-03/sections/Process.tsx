@@ -9,7 +9,8 @@ import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
-import { useDrag } from "@/lib/useDrag";
+import TrackArrows from "@/components/TrackArrows";
+import { useScrollTrack } from "@/lib/useScrollTrack";
 
 // 05 Процесс — 1:1 из актуальной Figma (node 2022:14827, высота 2980).
 // В новой версии Figma «Процесс», «Дизайн-система» и сет 3D-иконок слиты
@@ -101,7 +102,6 @@ const ICONSET_834: [string, string, number, number][] = [
 
 export default function Process() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
   const rulerRef = useRef<HTMLDivElement>(null);
   const dsysRef = useRef<HTMLDivElement>(null);
   const [padding, setPadding] = useState({ left: 46, right: 1440 / 2 - 164, width: 1440 });
@@ -184,31 +184,10 @@ export default function Process() {
     return () => ro.disconnect();
   }, []);
 
-  // Перетаскивание вбок вместо колеса (см. useDrag).
-  const startSL = useRef(0);
-  const inertia = useRef(0);
-  const { dragging, bind } = useDrag({
-    onStart: () => {
-      cancelAnimationFrame(inertia.current);
-      startSL.current = trackRef.current?.scrollLeft ?? 0;
-    },
-    onMove: (dx) => {
-      if (trackRef.current) trackRef.current.scrollLeft = startSL.current - dx;
-    },
-    onEnd: (_dx, vx) => {
-      const el = trackRef.current;
-      if (!el) return;
-      let v = -vx * 16;
-      const step = () => {
-        if (Math.abs(v) < 0.5) return;
-        el.scrollLeft += v;
-        v *= 0.92;
-        inertia.current = requestAnimationFrame(step);
-      };
-      inertia.current = requestAnimationFrame(step);
-    },
-  });
-  useEffect(() => () => cancelAnimationFrame(inertia.current), []);
+  // Трек — нативный scrollLeft (см. useScrollTrack): драг/тач листает
+  // свободно (не по одной карточке за раз), десктоп — ещё и колесо/трекпад
+  // горизонтально, плюс стрелки ‹ › (TrackArrows).
+  const { trackRef, bind, dragging, canPrev, canNext, scrollByStep } = useScrollTrack();
 
   const track = (
     <div
@@ -428,8 +407,18 @@ export default function Process() {
       {/* Затухание краёв трека до цвета секции на >1440. Трек — нативный
           скролл-контейнер, поэтому EdgeFade кладётся снаружи и позиционируется
           по координатам трека (xl:top-582 xl:h-286). Замена mask — она в
-          Chrome ломала frost карточек. */}
+          Chrome ломала frost карточек. TrackArrows — та же логика: снаружи
+          скролл-контейнера, иначе уезжали бы вместе с лентой. */}
       <EdgeFade width={padding.width} className="absolute left-0 right-0" style={{ top: 582, height: 286 }} />
+      {/* Центр по РЯДУ карточек (h125): трек на y582 + свой paddingTop(80). */}
+      <TrackArrows
+        onPrev={() => scrollByStep(-1)}
+        onNext={() => scrollByStep(1)}
+        canPrev={canPrev}
+        canNext={canNext}
+        className="absolute left-0 right-0"
+        style={{ top: 582 + 80, height: 125 }}
+      />
       </>
       ) : mob ? (
       /* <640 — 1:1 из Figma reflow-фрейма «case-03 · 375» (node 2695:19938,
@@ -457,7 +446,19 @@ export default function Process() {
 
             {/* Трек «процесс» — фрейм линейки (0, 296). paddingTop:80 внутри
                 track → карточки на y ≈ 376 (Figma 296 + 80.06). */}
-            <div className="absolute left-0 top-[296px] w-[375px]">{track}</div>
+            <div className="absolute left-0 top-[296px] w-[375px]">
+              {track}
+              {/* Центр по РЯДУ карточек (h125): верх обёртки = верх трека,
+                  трек сдвигает карточки вниз своим paddingTop(80). */}
+              <TrackArrows
+                onPrev={() => scrollByStep(-1)}
+                onNext={() => scrollByStep(1)}
+                canPrev={canPrev}
+                canNext={canNext}
+                className="absolute left-0 right-0"
+                style={{ top: 80, height: 125 }}
+              />
+            </div>
 
             {/* 06 Дизайн-система — заголовок (20, 614), текст (20, 655), 335. */}
             <div className="absolute left-[20px] top-[614px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
@@ -555,7 +556,19 @@ export default function Process() {
             {/* Трек «процесс» — фрейм линейки (28, 352). top-352 = верх
                 Figma-фрейма 2715:14448; paddingTop:80 внутри track → карточки
                 на y ≈ 432. */}
-            <div className="absolute left-0 top-[352px] w-[834px]">{track}</div>
+            <div className="absolute left-0 top-[352px] w-[834px]">
+              {track}
+              {/* Центр по РЯДУ карточек (h125): верх обёртки = верх трека,
+                  трек сдвигает карточки вниз своим paddingTop(80). */}
+              <TrackArrows
+                onPrev={() => scrollByStep(-1)}
+                onNext={() => scrollByStep(1)}
+                canPrev={canPrev}
+                canNext={canNext}
+                className="absolute left-0 right-0"
+                style={{ top: 80, height: 125 }}
+              />
+            </div>
 
             {/* Стрелка-доодл «→» в конце трека (Figma 2695:19166, 713, 591.89,
                 93.24×58.33, обводка 8px). */}
@@ -630,7 +643,19 @@ export default function Process() {
                 канваса 1280, карточки с x=40 (paddingLeft), лишние уходят за
                 край. top-469 компенсирует paddingTop:80 внутри track (→ y549);
                 469 = верх Figma-фрейма линейки Frame 2147232048. */}
-            <div className="absolute left-0 top-[469px] w-[1280px]">{track}</div>
+            <div className="absolute left-0 top-[469px] w-[1280px]">
+              {track}
+              {/* Центр по РЯДУ карточек (h125): верх обёртки = верх трека,
+                  трек сдвигает карточки вниз своим paddingTop(80). */}
+              <TrackArrows
+                onPrev={() => scrollByStep(-1)}
+                onNext={() => scrollByStep(1)}
+                canPrev={canPrev}
+                canNext={canNext}
+                className="absolute left-0 right-0"
+                style={{ top: 80, height: 125 }}
+              />
+            </div>
 
             {/* Стрелка-доодл «→» в конце трека (Figma bbox 1135, 743.8).
                 Контейнер = размер viewBox (99×63), чтобы обводка рендерилась

@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import DrawIn from "@/components/DrawIn";
 import GlassBubble from "@/components/GlassBubble";
 import EdgeFade from "@/components/EdgeFade";
-import { useDrag } from "@/lib/useDrag";
+import TrackArrows from "@/components/TrackArrows";
+import { useScrollTrack } from "@/lib/useScrollTrack";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
 // node 1971:64076). Тёмный фон блока растянут на весь экран (как Footer);
@@ -83,40 +84,12 @@ export default function Pipeline() {
     return () => ro.disconnect();
   }, []);
 
-  // Перетаскивание вбок вместо колеса (см. useDrag) — БЕЗ нативного скролла
-  // (не overflow-x-auto/scrollLeft), точно так же, как в VariantsCarousel:
-  // индекс карточки + transform: translateX(), трек «catch»-ится в
-  // overflow-hidden. Раньше был нативный scrollLeft, которым мы рулили
-  // руками через JS — на реальных touch-устройствах это на практике
-  // конфликтовало с системными жестами/инерцией браузера и обратная
-  // прокрутка не проходила, хотя вся арифметика (проверено симуляцией)
-  // была верна в обе стороны. Без native-scroll конфликтовать нечему.
-  //
-  // На отпускании — РОВНО один шаг ±1 карточка (или 0, если палец прошёл
-  // мало): dx <= -70 || vx <= -0.4 → шаг, порог тот же, что в «Вариантах».
-  const [index, setIndex] = useState(0);
-  const idxRef = useRef(0);
-  const [dragDX, setDragDX] = useState(0);
-  useEffect(() => {
-    idxRef.current = index;
-  }, [index]);
-
-  const { dragging, bind } = useDrag({
-    onMove: (dx) => {
-      const cur = idxRef.current;
-      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === STEPS.length - 1);
-      setDragDX(atEdge ? dx * 0.32 : dx);
-    },
-    onEnd: (dx, vx) => {
-      setDragDX(0);
-      let step = 0;
-      if (dx <= -70 || vx <= -0.4) step = 1;
-      else if (dx >= 70 || vx >= 0.4) step = -1;
-      setIndex((cur) => Math.max(0, Math.min(STEPS.length - 1, cur + step)));
-    },
-  });
-
-  const offset = padding.left - index * PITCH + (dragging ? dragDX : 0);
+  // Трек — нативный scrollLeft (см. useScrollTrack): драг/тач листает
+  // свободно (не по одной карточке), десктоп — ещё и колесо/трекпад
+  // горизонтально, плюс стрелки ‹ › (TrackArrows). Линейка-риска держится
+  // на месте через onScroll (translateX = -scrollLeft), см. ниже.
+  const rulerRef = useRef<HTMLDivElement>(null);
+  const { trackRef, bind, dragging, canPrev, canNext, scrollByStep } = useScrollTrack();
 
   return (
     <div ref={sectionRef} className="relative w-full overflow-clip bg-[#121212] xl:h-[900px]">
@@ -160,35 +133,36 @@ export default function Pipeline() {
 
       {/* Видимое окно трека — на всю ширину экрана, нативный overflow-x-auto
           со скрытым скроллбаром; на десктопе абсолют на y278, ниже — поток.
-          Обёртка relative — чтобы <1440 положить полосы-фон ровно за карточки. */}
+          Обёртка relative — чтобы <1440 положить полосы-фон ровно за карточки.
+          EdgeFade/TrackArrows — СНАРУЖИ скролл-контейнера (иначе уезжали бы
+          вместе с лентой), но внутри той же xl:contents-обёртки — на xl это
+          даёт им ту же систему координат (относительно sectionRef), что и
+          самому треку. */}
       <div className="relative w-full xl:contents">
         <div
+          ref={trackRef}
           {...bind}
-          className={`relative w-full touch-pan-y select-none overflow-x-clip overflow-y-visible pb-[72px] sm:pb-[210px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
+          onScroll={(e) => {
+            if (rulerRef.current)
+              rulerRef.current.style.transform = `translateX(${e.currentTarget.scrollLeft}px)`;
+          }}
+          className={`no-scrollbar relative w-full touch-pan-y select-none overflow-x-auto overflow-y-visible pb-[72px] sm:pb-[210px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
             dragging ? "cursor-grabbing" : "cursor-grab"
           }`}
-          style={{ paddingTop: padding.top }}
+          style={{ paddingTop: padding.top, paddingLeft: padding.left, paddingRight: padding.left }}
         >
-          <div
-            className="relative h-[399px] w-[4068px] will-change-transform"
-            style={{
-              transform: `translateX(${offset}px)`,
-              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
-            }}
-          >
+          <div className="relative h-[399px] w-[4068px]">
           {/* Линейка-риска (Group 2136141446/47) — первый ребёнок трека, но
               в ОБРАТНОМ translateX (гасит скролл трека): визуально стоит на
               месте, карточки листаются поверх (в макете это отдельный слой
               внутри фрейма трека, шириной с экран). Тот же backdrop-контекст
               → frost карточек её размывает. Точные экспорты из Figma: path
               opacity 0.2, БЕЗ доп. CSS-прозрачности. 375 → 8 линий (h420),
-              834 → 14 (h673), ≥1024 → 20 (h673). */}
+              834 → 14 (h673), ≥1024 → 20 (h673). Синхронизация с нативным
+              scrollLeft — через onScroll ниже, а не transform от index. */}
           <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              transform: `translateX(${index * PITCH - (dragging ? dragDX : 0)}px)`,
-              transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
-            }}
+            ref={rulerRef}
+            className="pointer-events-none absolute inset-0 will-change-transform"
           >
             {/* top из макета: линейка торчит над и под «змейкой» карточек.
                 375 — Frame 2147232047: трек на y10.8 внутри 420-фрейма → -11.
@@ -222,10 +196,29 @@ export default function Pipeline() {
             );
           })}
           </div>
-          {/* Затухание краёв до цвета секции на >1440 (замена mask —
-              она ломала frost карточек). */}
-          <EdgeFade width={padding.width} />
         </div>
+        {/* Затухание краёв до цвета секции на >1440 (замена mask —
+            она ломала frost карточек). */}
+        <EdgeFade
+          width={padding.width}
+          className="absolute inset-0 xl:left-0 xl:top-[278px] xl:h-[479px]"
+        />
+        <TrackArrows
+          onPrev={() => scrollByStep(-1)}
+          onNext={() => scrollByStep(1)}
+          canPrev={canPrev}
+          canNext={canNext}
+          className="absolute left-0 right-0"
+          style={{
+            // Центр по РЯДУ карточек (h125), не по всей высоте паддинга.
+            // <1440: обёртка сама и есть верх трека — top = padding.top
+            // (вертикальный отступ до карточек). ≥1440: обёртка — display:
+            // contents (см. xl:contents на ../), координаты — от sectionRef,
+            // трек там сидит на y278 + тот же padding.top(=40) сверху.
+            top: padding.width >= 1440 ? 278 + padding.top : padding.top,
+            height: 125,
+          }}
+        />
       </div>
     </div>
   );
