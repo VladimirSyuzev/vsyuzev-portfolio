@@ -10,12 +10,12 @@ const SOCIALS = (
       Telegram,
     </a>
     <a
-      href="https://www.instagram.com/vovasyuzev.png?igsi=aTduZnp0Y3F2endz&utm_source=qr"
+      href="https://www.linkedin.com/in/syuzev-vladimir"
       target="_blank"
       rel="noreferrer"
       className="opacity-70 hover:opacity-100"
     >
-      Instagram,
+      LinkedIn,
     </a>
     <a href="mailto:syuzev.ontour@gmail.com" className="opacity-70 hover:opacity-100">
       E-mail
