@@ -13,10 +13,10 @@ import { C3_TEXT } from "../tokens";
 const A = "/cases/case-03/sections";
 
 const CARDS = [
-  { src: `${A}/variant1.jpg`, w: 1419, h: 798, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
-  { src: `${A}/variant2.jpg`, w: 639, h: 798, alt: "Пост: Move digital assets with confidence" },
-  { src: `${A}/variant3.jpg`, w: 798, h: 798, alt: "Пост: Payments without delays" },
-  { src: `${A}/variant4.jpg`, w: 1197, h: 798, alt: "Пост: Real-time transactions" },
+  { src: `${A}/variant1.webp`, w: 1419, h: 798, alt: "Слайд презентации: Transparent pricing 0,5–2%" },
+  { src: `${A}/variant2.webp`, w: 639, h: 798, alt: "Пост: Move digital assets with confidence" },
+  { src: `${A}/variant3.webp`, w: 798, h: 798, alt: "Пост: Payments without delays" },
+  { src: `${A}/variant4.webp`, w: 1197, h: 798, alt: "Пост: Real-time transactions" },
 ];
 
 const REQS: [string, string][] = [
