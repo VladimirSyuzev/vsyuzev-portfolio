@@ -8,26 +8,26 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion, waveStagger } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 import Dot from "@/components/Dot";
 import DrawIn from "@/components/DrawIn";
 
 const A = "/cases/case-01/sections/audit-assets";
 const R = "/cases/case-01/sections/reflow";
 
+// Точки-скетчи для буллетов аудита (порядок 1:1 из Figma, текст — из
+// словаря C1[lang].auditBullets).
+const AUDIT_DOTS = [1, 3, 2, 1, 2, 4];
+
 // --- Reflow <1440. 375 — Figma 2559:11097 (одна колонка из 6, точки-скетчи).
 // 834 — Figma 2539:9073 (две колонки по 3, gap 12; заголовок 100px ls 0;
 // таблица 778×152; цитата Wix Reg 28 + эллипс Vector 234257386 rot 4.59). ---
-const AUDIT_BULLETS: { text: string; dot: number }[] = [
-  { text: "определили существующие иконки", dot: 1 },
-  { text: "нашли дубли", dot: 3 },
-  { text: "выявили отсутствующие размеры", dot: 2 },
-  { text: "определили недостающие outline- и filled-версии", dot: 1 },
-  { text: "обнаружили полностью отсутствующие иконки", dot: 2 },
-  { text: "расставили приоритеты производства", dot: 4 },
-];
-
 function AuditFlow() {
-  const cols = [AUDIT_BULLETS.slice(0, 3), AUDIT_BULLETS.slice(3)];
+  const lang = useLang();
+  const t = C1[lang];
+  const auditBullets = t.auditBullets.map((text, i) => ({ text, dot: AUDIT_DOTS[i] }));
+  const cols = [auditBullets.slice(0, 3), auditBullets.slice(3)];
   return (
     // Секция — 375 pad 64/20 gap 32 · 834 pad 72/28 gap 64 · 1280 pad 72/40
     <section className="relative w-full overflow-clip bg-[#fafafa] px-[20px] py-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px]">
@@ -38,15 +38,26 @@ function AuditFlow() {
           {/* 03 / АУДИТ / БИБЛИОТЕКИ — стопкой. 375: Wix Bold 26 / leading-none · 834: 100 / ls 0 · 1280: 152 */}
           <div className="flex flex-col whitespace-nowrap font-heading text-[26px] font-bold leading-none sm:text-[100px] lg:text-[152px] lg:leading-[1.05]">
             <span className="text-[#008cff]">03</span>
-            <span className="text-[#121212]">АУДИТ</span>
-            <span className="text-[#121212]">БИБЛИОТЕКИ</span>
+            <span className="text-[#121212]">{t.auditHeading[0]}</span>
+            <span className="text-[#121212]">{t.auditHeading[1]}</span>
           </div>
           {/* интро — Aeonik Pro Medium 14 / 120% / ls 0.28, opacity 100.
-              375: 3 жёстких строки w335 · 834: w383 · 1280: w593 (Figma 2533:8978) */}
+              375: 3 жёстких строки w335 (RU) · 834: w383 · 1280: w593
+              (Figma 2533:8978). EN — natural wrap, без ручных переносов. */}
           <p className="w-[335px] max-w-full font-body text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212] sm:w-[383px] lg:w-[593px]">
-            Работу начали с полной ревизии.
-            <br className="sm:hidden" /> Мы объединили обе библиотеки, распределили иконки по категориям
-            <br className="sm:hidden" /> и проанализировали каждую позицию.
+            {lang === "ru" ? (
+              <>
+                Работу начали с полной ревизии.
+                <br className="sm:hidden" /> Мы объединили обе библиотеки, распределили иконки по категориям
+                <br className="sm:hidden" /> и проанализировали каждую позицию.
+              </>
+            ) : (
+              <>
+                We started with a full review.
+                <br className="sm:hidden" /> We merged both libraries, sorted the icons into categories
+                <br className="sm:hidden" /> and analysed every entry.
+              </>
+            )}
           </p>
         </div>
 
@@ -57,7 +68,7 @@ function AuditFlow() {
                 375/834: стопкой gap 12 · 1280: в ряд, gap 119 (Figma H) */}
             <div className="flex flex-col gap-[12px] lg:flex-row lg:items-start lg:gap-[119px]">
               <p className="w-[190px] font-body text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[186px] lg:w-[184px] lg:shrink-0">
-                В РЕЗУЛЬТАТЕ АУДИТА была собрана таблица:
+                {t.auditResultLabel}
               </p>
               {/* 375: одна колонка из 6 · 834: две колонки по 3 (row gap 12, w383).
                   Строка flex gap 8; точка 12×12 (скетч-SVG). */}
@@ -103,8 +114,14 @@ function AuditFlow() {
               Эллипс Vector 234257386 — absolute, rotate −4.59. */}
           <div className="relative flex flex-col items-center justify-center py-[32px] sm:py-[64px]">
             <p className="relative z-10 w-[335px] max-w-full text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.6px] text-[#121212] opacity-70 sm:w-[589px] sm:text-[28px] sm:leading-[1.1] sm:tracking-[0.96px]">
-              Полная карта библиотеки показала, что уже есть, чего
-              <br className="sm:hidden" /> не хватает и что нужно сделать в первую очередь
+              {lang === "ru" ? (
+                <>
+                  Полная карта библиотеки показала, что уже есть, чего
+                  <br className="sm:hidden" /> не хватает и что нужно сделать в первую очередь
+                </>
+              ) : (
+                t.auditQuote
+              )}
             </p>
             {/* появление — прочерчивание обводки (DrawIn) */}
             <div className="pointer-events-none absolute left-1/2 top-1/2 flex h-[235px] w-[363px] -translate-x-1/2 -translate-y-1/2 items-center justify-center sm:h-[239px] sm:w-[643px]">
@@ -125,17 +142,6 @@ function AuditFlow() {
     </section>
   );
 }
-
-const FOUND_LEFT = [
-  "определили существующие иконки",
-  "нашли дубли",
-  "выявили отсутствующие размеры",
-];
-const FOUND_RIGHT = [
-  "определили недостающие outline- и filled-версии",
-  "обнаружили полностью отсутствующие иконки",
-  "расставили приоритеты производства",
-];
 
 const COLUMNS = ["Symbols", "Regular", "Outline", "Filled", "32", "24", "20", "16", "12"];
 const QUANTITIES = ["256", "65", "65", "4", "28", "61", "37", "58", "47"];
@@ -221,6 +227,10 @@ export default function AuditLibrary() {
   const scope = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const wide = useCanvasWide();
+  const lang = useLang();
+  const t = C1[lang];
+  const foundLeft = t.auditBullets.slice(0, 3);
+  const foundRight = t.auditBullets.slice(3);
 
   useGSAP(
     () => {
@@ -258,21 +268,20 @@ export default function AuditLibrary() {
             стопкой на всех ширинах (по макетам адаптива). */}
         <div className="flex flex-col font-heading text-[clamp(2.25rem,11vw,175px)] font-bold uppercase leading-none tracking-[0.02em] xl:absolute xl:left-[46px] xl:top-[55px] xl:w-[439px] xl:tracking-[5.25px]">
           <span className="whitespace-nowrap text-[#008cff]">03</span>
-          <span className="whitespace-nowrap text-[#121212]">АУДИТ</span>
-          <span className="whitespace-nowrap text-[#121212]">БИБЛИОТЕКИ</span>
+          <span className="whitespace-nowrap text-[#121212]">{t.auditHeading[0]}</span>
+          <span className="whitespace-nowrap text-[#121212]">{t.auditHeading[1]}</span>
         </div>
 
         <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] sm:max-w-[629px] xl:absolute xl:left-[46px] xl:top-[612px] xl:w-[629px]">
-          Работу начали с полной ревизии. Мы объединили обе библиотеки, распределили иконки по
-          категориям и проанализировали каждую позицию.
+          {t.auditIntro}
         </p>
 
         <p className="audit-intro whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[866px] xl:w-[200px]">
-          {"В РЕЗУЛЬТАТЕ АУДИТА\nбыла СОБРАНА ТАБЛИЦА:"}
+          {t.auditResultLabel}
         </p>
         <div className="flex flex-col gap-[12px] sm:flex-row sm:flex-wrap sm:gap-[12px] xl:absolute xl:left-[556px] xl:top-[866px] xl:w-[838px] xl:flex-nowrap">
           <ul className="audit-intro flex flex-col gap-[6px] sm:max-w-[328px] xl:w-[328px]">
-            {FOUND_LEFT.map((item, i) => (
+            {foundLeft.map((item, i) => (
               <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <Dot seed={31 + i} />
                 <span className="opacity-70">{item}</span>
@@ -280,7 +289,7 @@ export default function AuditLibrary() {
             ))}
           </ul>
           <ul className="audit-intro flex flex-col gap-[6px] sm:max-w-[442px] xl:w-[442.667px]">
-            {FOUND_RIGHT.map((item, i) => (
+            {foundRight.map((item, i) => (
               <li key={item} className="flex items-center gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <Dot seed={47 + i} />
                 <span className="opacity-70">{item}</span>
@@ -351,8 +360,7 @@ export default function AuditLibrary() {
             className="pointer-events-none absolute left-1/2 top-1/2 h-[152%] w-[120%] -translate-x-1/2 -translate-y-1/2 xl:h-[180%] xl:w-[114.4%]"
           />
           <p className="audit-intro relative text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70 sm:text-[28px] xl:text-[32px]">
-            Полная карта библиотеки показала, что уже есть, чего не хватает и что нужно сделать в
-            первую очередь
+            {t.auditQuote}
           </p>
         </div>
       </div>

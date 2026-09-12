@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 import DrawIn from "@/components/DrawIn";
 
 // 02 Задача — 1:1 из Figma (node 1961:29100). Витрина категорий — "зум энд
@@ -36,6 +38,8 @@ function lerp(a: number, b: number, t: number) {
 }
 
 export default function Task() {
+  const lang = useLang();
+  const t = C1[lang];
   const wrapRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const windowRef = useRef<HTMLDivElement>(null);
@@ -89,10 +93,10 @@ export default function Task() {
     <>
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">02</p>
-        <p className="text-[#121212]">ЗАДАЧА</p>
+        <p className="text-[#121212]">{t.taskHeading}</p>
       </div>
       <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-        Главной задачей было превратить две разрозненные библиотеки в единую масштабируемую систему
+        {t.taskIntro}
       </p>
 
       <div ref={windowRef} className="absolute left-[46px] top-[318px] overflow-hidden" style={{ width: WINDOW_START.w, height: WINDOW_START.h }}>
@@ -127,16 +131,28 @@ export default function Task() {
                 834/1280: Wix Bold 32 / ls 0.96 / col-gap 12. */}
             <div className="flex flex-wrap items-baseline gap-x-[10px] whitespace-nowrap font-heading text-[26px] font-bold leading-[1.1] tracking-[0.8px] sm:gap-x-[12px] sm:text-[32px] sm:tracking-[0.96px]">
               <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">Задача</span>
+              <span className="text-[#121212]">{t.taskHeading}</span>
             </div>
             {/* интро. 375: Inter Medium 14 / 130% / ls 0.2, w335.
                 834: Aeonik Medium 14 / 120% / ls 0.28, w382. 1280: w498 (Figma 2533:8975).
-                Точки разрыва одинаковы (после «превратить» и «библиотеки»). */}
+                RU: переносы после «превратить» и «библиотеки». EN — те же
+                переносы (3 строки), чтобы длина строки совпадала с RU. */}
             <p className="w-[335px] max-w-full font-inter text-[14px] font-medium leading-[1.3] tracking-[0.2px] text-[#121212] sm:w-[382px] sm:font-body sm:leading-[1.2] sm:tracking-[0.28px] lg:w-[498px]">
-              Главной задачей было превратить{" "}
-              <br />
-              две разрозненные библиотеки{" "}
-              <br />в единую масштабируемую систему
+              {lang === "ru" ? (
+                <>
+                  Главной задачей было превратить{" "}
+                  <br />
+                  две разрозненные библиотеки{" "}
+                  <br />в единую масштабируемую систему
+                </>
+              ) : (
+                <>
+                  The main goal was to turn{" "}
+                  <br />
+                  two disjointed libraries{" "}
+                  <br />into a single scalable system
+                </>
+              )}
             </p>
           </div>
 

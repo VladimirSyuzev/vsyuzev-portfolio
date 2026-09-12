@@ -7,6 +7,8 @@ import EdgeFade from "@/components/EdgeFade";
 import TrackArrows from "@/components/TrackArrows";
 import { useScrollTrack } from "@/lib/useScrollTrack";
 import { useCanvasWide } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 
 // 04 Построение процесса — 1:1 из Figma (node 1961:32083, трек "Процесс"
 // node 1971:64076). Тёмный фон блока растянут на весь экран (как Footer);
@@ -25,31 +27,42 @@ import { useCanvasWide } from "@/lib/breakpoint";
 // границах трека (в начале/конце) колесо тоже отдаётся странице, чтобы не
 // превращать трек в ловушку для скролла.
 const CATEGORY_STYLE = {
-  design: { border: "#008cff", text: "#008cff", label: "ДИЗАЙН" },
-  artDirector: { border: "#1dbb71", text: "#1dbb71", label: "ДИЗАЙН-ЛИД" },
-  client: { border: "#805bff", text: "#805bff", label: "ЯНДЕКС" },
+  design: { border: "#008cff", text: "#008cff" },
+  artDirector: { border: "#1dbb71", text: "#1dbb71" },
+  client: { border: "#805bff", text: "#805bff" },
 } as const;
 
-type Step = { number: string; title: string; text: string; category: keyof typeof CATEGORY_STYLE; offset?: number };
+type Category = keyof typeof CATEGORY_STYLE;
+type StepMeta = { number: string; category: Category; offset?: number };
 
-const STEPS: Step[] = [
-  { number: "01", title: "Подбор метафоры", text: "Исследуем смысл и контекст, ищем подходящие визуальные метафоры", category: "design" },
-  { number: "02", title: "Разработка эскизов", text: "Создаём несколько быстрых эскизов для поиска формы", category: "design" },
-  { number: "03", title: "Проверка дизайн-лидом", text: "Дизайн-лид оценивает идею, форму и соответствие стилистике", category: "artDirector", offset: 137 },
-  { number: "04", title: "Согласование с клиентом", text: "Выбранные эскизы презентуются команде Яндекса и получаем обратную связь", category: "client", offset: 274 },
-  { number: "05", title: "Отрисовка версии 24×24", text: "Отрисовываем основную версию 24×24 по всем правилам", category: "design" },
-  { number: "06", title: "Проверка дизайн-лидом", text: "Проверяем геометрию, вес, баланс и читаемость", category: "artDirector", offset: 137 },
-  { number: "07", title: "Согласование с клиентом", text: "Отправляем клиенту и получаем финальное подтверждение", category: "client", offset: 274 },
-  { number: "08", title: "Построение остальных размеров", text: "Адаптируем иконку под все необходимые размеры: 32, 20, 16, 12 px", category: "design" },
-  { number: "09", title: "Проверка дизайн-лидом", text: "Проверяем все размеры на баланс, консистентность и читаемость", category: "artDirector", offset: 137 },
-  { number: "10", title: "Согласование с клиентом", text: "Выбранные эскизы презентуются команде Яндекса и получаем обратную связь", category: "client", offset: 274 },
-  { number: "11", title: "Сборка компонентов", text: "Собираем иконки в компоненты по структуре библиотеки", category: "design" },
-  { number: "12", title: "Передача библиотеки клиенту", text: "Передаем готовые компоненты в общую библиотеку Яндекса", category: "client", offset: 274 },
+// Категория + офсет-«змейка» — 1:1 из Figma, язык-независимые; текст
+// (title/text) и подпись категории (label) — из словаря C1[lang].steps.
+const STEP_META: StepMeta[] = [
+  { number: "01", category: "design" },
+  { number: "02", category: "design" },
+  { number: "03", category: "artDirector", offset: 137 },
+  { number: "04", category: "client", offset: 274 },
+  { number: "05", category: "design" },
+  { number: "06", category: "artDirector", offset: 137 },
+  { number: "07", category: "client", offset: 274 },
+  { number: "08", category: "design" },
+  { number: "09", category: "artDirector", offset: 137 },
+  { number: "10", category: "client", offset: 274 },
+  { number: "11", category: "design" },
+  { number: "12", category: "client", offset: 274 },
 ];
 
 const PITCH = 340; // шаг между карточками (совпадает с x в Figma: 0,340,680…3740)
 
 export default function Pipeline() {
+  const lang = useLang();
+  const t = C1[lang];
+  const CATEGORY_LABEL: Record<Category, string> = {
+    design: t.catDesign,
+    artDirector: t.catLead,
+    client: t.catClient,
+  };
+  const STEPS = STEP_META.map((meta, i) => ({ ...meta, ...t.steps[i] }));
   const sectionRef = useRef<HTMLDivElement>(null);
   // Отступы трека считаются в JS, а не через vw в CSS: 100vw включает
   // ширину системного скроллбара, а mx-auto-центрирование 1440-сетки —
@@ -108,14 +121,12 @@ export default function Pipeline() {
         <div className="flex flex-col gap-[24px] sm:gap-[12px]">
           <div className="flex flex-col font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.8px] sm:flex-row sm:items-baseline sm:gap-x-[12px] sm:whitespace-nowrap sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[181px]">
             <p className="whitespace-nowrap text-[#008cff]">04</p>
-            <p className="w-[289px] text-white sm:w-auto">ПОСТРОЕНИЕ ПРОЦЕССА</p>
+            <p className="w-[289px] text-white sm:w-auto">{t.pipelineHeading}</p>
           </div>
 
           {/* Интро — только <1440. 834: w383 · 1280: w593. */}
           <p className="font-inter text-[14px] font-normal leading-[1.3] tracking-[0.2px] text-white opacity-70 sm:w-[383px] sm:font-body sm:leading-[1.2] sm:tracking-[0.28px] lg:w-[593px] xl:hidden">
-            После того как основные принципы стали понятны, мы превратили их в рабочий процесс и
-            зафиксировали внутренние правила: работу с метафорами, последовательность этапов и критерии
-            перехода между ними.
+            {t.pipelineIntro}
           </p>
         </div>
 
@@ -196,7 +207,7 @@ export default function Pipeline() {
                   <p className="text-[11px] font-medium uppercase leading-[1.2] tracking-[0.66px] text-white">{step.title}</p>
                   <p className="text-[11px] leading-[1.2] tracking-[0.66px] text-white">{step.text}</p>
                   <p className="text-[9px] font-medium tracking-[0.27px]" style={{ color: style.text }}>
-                    {style.label}
+                    {CATEGORY_LABEL[step.category]}
                   </p>
                 </GlassBubble>
               </div>

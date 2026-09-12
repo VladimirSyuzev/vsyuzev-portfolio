@@ -1,8 +1,12 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
 import DrawIn from "@/components/DrawIn";
+import { useLang } from "@/lib/lang";
+import { C1 } from "./i18n";
 import SnapScrollController from "./sections/SnapScrollController";
 import Stats from "./sections/Stats";
 import ProblemScreen from "./sections/ProblemScreen";
@@ -41,6 +45,8 @@ const ICONS = [
 // аудита, «Примитивы» и диаграмма «Руководства» — уже настоящий SVG.
 // См. FIGMA-BRIEF.md.
 export default function Case01Page() {
+  const lang = useLang();
+  const t = C1[lang];
   return (
     <div className="flex w-full flex-col items-center">
       <SnapScrollController />
@@ -93,7 +99,7 @@ export default function Case01Page() {
           <HeroScrim color="#212121" />
           <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
             <p className="absolute bottom-[137px] left-[46px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-              От аудита <br />к единому стилю
+              {lang === "en" ? <>From audit <br />to a unified style</> : <>От аудита <br />к единому стилю</>}
             </p>
             <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
               001
@@ -144,7 +150,7 @@ export default function Case01Page() {
                 001
               </p>
               <p className="w-[335px] whitespace-pre-wrap font-heading text-[26px] font-bold uppercase leading-[1.15] tracking-[0.6px] text-white sm:w-max sm:text-[52px] sm:tracking-[1.04px]">
-                ОТ АУДИТА <br />К ЕДИНОМУ СТИЛЮ
+                {lang === "en" ? <>FROM AUDIT <br />TO A UNIFIED STYLE</> : <>ОТ АУДИТА <br />К ЕДИНОМУ СТИЛЮ</>}
               </p>
             </div>
           </div>
@@ -154,17 +160,17 @@ export default function Case01Page() {
               834: заголовок 32; абзац (w384) + мета в ряд. 1280: абзац w498. */}
           <div className="flex flex-col gap-[12px] px-[20px] py-[64px] sm:px-[28px] lg:px-[40px] lg:py-[56px]">
             <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.8px] text-[#121212] sm:text-[32px] sm:tracking-[0.96px]">
-              О ПРОЕКТЕ
+              {t.aboutHeading}
             </p>
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px]">
               <p className="w-[335px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[384px] lg:w-[498px]">
-              Аудит библиотеки из 226 иконок Яндекса: расхождение между Icons Regular и Icons Symbols мешало единому стилю интерфейса. По итогам собрали план устранения технического долга и внутренний гайд, который помог команде работать быстро и консистентно.
+              {t.aboutIntro}
             </p>
               <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:flex-nowrap sm:gap-x-[40px]">
                 {[
-                  ["ПОЗИЦИЯ", "Lead designer"],
-                  ["КОМАНДА", "2 дизайнера"],
-                  ["КЛИЕНТ", "Яндекс"],
+                  [t.metaRole, t.metaRoleValue],
+                  [t.metaTeam, t.metaTeamValue],
+                  [t.metaClient, t.metaClientValue],
                 ].map(([k, v]) => (
                   <div key={k} className="flex flex-col gap-[4px]">
                     <p className="font-medium uppercase">{k}</p>
@@ -186,23 +192,23 @@ export default function Case01Page() {
         {/* Белая часть под hero — только десктоп (абсолют 1440). */}
         <div className="hidden w-full max-w-[1440px] xl:relative xl:mx-auto xl:block xl:flex-1">
           <p className="font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212] xl:absolute xl:left-[46px] xl:top-[102px] xl:whitespace-nowrap">
-            О ПРОЕКТЕ
+            {t.aboutHeading}
           </p>
           <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
-              Аудит библиотеки из 226 иконок Яндекса: расхождение между Icons Regular и Icons Symbols мешало единому стилю интерфейса. По итогам собрали план устранения технического долга и внутренний гайд, который помог команде работать быстро и консистентно.
+              {t.aboutIntro}
             </p>
           <div className="xl:absolute xl:left-[896px] xl:top-[149px] xl:flex xl:gap-[70px]">
             <div className="flex w-[102px] flex-col gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Lead designer</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
             </div>
             <div className="flex w-[98px] flex-col gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Команда</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">2 дизайнера</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaTeam}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaTeamValue}</p>
             </div>
             <div className="flex w-[98px] flex-col gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
             </div>
           </div>
           <DrawIn

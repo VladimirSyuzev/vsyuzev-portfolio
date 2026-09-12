@@ -2,6 +2,8 @@
 
 import DrawIn from "@/components/DrawIn";
 import { useCanvasWide, useMinWidth } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 
 // 07 Итог.
 // ≥1440 (node 1961:32637) — абсолют 1:1, доодлы на местах.
@@ -12,16 +14,14 @@ import { useCanvasWide, useMinWidth } from "@/lib/breakpoint";
 const A = "/cases/case-01/sections";
 const R = "/cases/case-01/sections/reflow";
 
-const PARA_1 =
-  "После завершения аудита клиент получил структурированную библиотеку без дублей, понимание недостающих элементов и прозрачный процесс дальнейшего производства. По итогам проекта было создано и обновлено более 100 иконок для разных продуктовых направлений, включая финансы, медицину, социальные сервисы и голосового AI-ассистента.";
-const PARA_2 =
-  "Как лид-дизайнер, я выстроил и контролировал процесс работы над проектом: проверял каждую иконку на промежуточных этапах и следил за консистентностью всей библиотеки. Также я разработал производственный гайд — от поиска метафоры до сборки компонентов. Он стал основой дальнейшей работы команды и помог поддерживать единое качество на протяжении всего проекта.";
-const PHONES_ALT =
-  "Итоговая система иконок в интерфейсе голосового ассистента Алиса на трёх экранах";
-
 export default function Summary() {
   const wide = useCanvasWide();
   const sm = useMinWidth(640);
+  const lang = useLang();
+  const t = C1[lang];
+  const PARA_1 = t.summaryPara1;
+  const PARA_2 = t.summaryPara2;
+  const PHONES_ALT = t.summaryPhonesAlt;
 
   // 834 — фикс-высота 1080, композиция телефонов упирается в низ секции.
   if (!wide && sm) {
@@ -32,7 +32,7 @@ export default function Summary() {
           {/* «07 ИТОГ» — 834: Wix Bold 108 / ls 2px · 1280: 166 / ls 3px, gap 24 */}
           <div className="flex items-start gap-[24px] whitespace-nowrap font-heading text-[108px] font-bold uppercase leading-[1.05] tracking-[2px] lg:text-[166px] lg:leading-none lg:tracking-[3px]">
             <span className="text-[#008cff]">07</span>
-            <span className="text-[#121212]">Итог</span>
+            <span className="text-[#121212]">{t.summaryHeading}</span>
           </div>
           {/* 2 абзаца — Aeonik Reg 14 / 120% / ls 0.28 / op 70.
               834: во всю ширину стопкой gap 12 · 1280: в ряд (w425 + w500, gap 181) */}
@@ -87,23 +87,12 @@ export default function Summary() {
             {/* h — flex row · gap 10 · Wix Bold 26 / ls 1 (375) */}
             <div className="flex items-start gap-[10px] whitespace-nowrap font-heading text-[26px] font-bold uppercase tracking-[1px]">
               <span className="leading-[1.05] text-[#008cff]">07</span>
-              <span className="leading-[1.1] text-[#121212]">Итог</span>
+              <span className="leading-[1.1] text-[#121212]">{t.summaryHeading}</span>
             </div>
             {/* Frame 2147231954 — 2 абзаца, vertical gap 12, w335 */}
             <div className="flex flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-              <p className="w-[335px] max-w-full opacity-70">
-                После завершения аудита клиент получил структурированную библиотеку без дублей,
-                понимание недостающих элементов и прозрачный процесс дальнейшего производства. По
-                итогам проекта было создано и обновлено более 100 иконок для разных продуктовых
-                направлений, включая финансы, медицину, социальные сервисы и голосового AI-ассистента.
-              </p>
-              <p className="w-[335px] max-w-full opacity-70">
-                Как лид-дизайнер, я выстроил и контролировал процесс работы над проектом: проверял
-                каждую иконку на промежуточных этапах и следил за консистентностью всей библиотеки.
-                Также я разработал производственный гайд — от поиска метафоры до сборки компонентов.
-                Он стал основой дальнейшей работы команды и помог поддерживать единое качество на
-                протяжении всего проекта.
-              </p>
+              <p className="w-[335px] max-w-full opacity-70">{PARA_1}</p>
+              <p className="w-[335px] max-w-full opacity-70">{PARA_2}</p>
             </div>
           </div>
 
@@ -111,7 +100,7 @@ export default function Summary() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`${R}/summary-phones-375.png`}
-            alt="Итоговая система иконок в интерфейсе голосового ассистента Алиса на трёх экранах"
+            alt={PHONES_ALT}
             className="block w-[335px] max-w-full"
           />
         </div>
@@ -124,21 +113,15 @@ export default function Summary() {
       <div className="relative flex flex-col gap-[28px] px-[var(--grid-margin)] py-[72px] xl:contents">
         <div className="flex items-baseline gap-x-[14px] whitespace-nowrap font-heading text-[clamp(2.5rem,12vw,175px)] font-bold uppercase leading-[1.05] tracking-[0.02em] xl:absolute xl:left-[47.5px] xl:top-[143px] xl:gap-[24px] xl:tracking-[5.25px] xl:!text-[175px]">
           <p className="text-[#008cff]">07</p>
-          <p className="text-[#121212]">ИТОГ</p>
+          <p className="text-[#121212]">{t.summaryHeading}</p>
         </div>
 
         <div className="flex flex-col gap-[24px] sm:flex-row sm:flex-wrap sm:gap-[40px] xl:contents">
           <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:max-w-[498px] xl:absolute xl:left-[46px] xl:top-[368px] xl:w-[498px]">
-            После завершения аудита клиент получил структурированную библиотеку без дублей, понимание
-            недостающих элементов и прозрачный процесс дальнейшего производства. По итогам проекта было
-            создано и обновлено более 100 иконок для разных продуктовых направлений, включая финансы,
-            медицину, социальные сервисы и голосового AI-ассистента.
+            {PARA_1}
           </p>
           <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:max-w-[498px] xl:absolute xl:left-[726px] xl:top-[368px] xl:w-[498px]">
-            Как лид-дизайнер, я выстроил и контролировал процесс работы над проектом: проверял каждую
-            иконку на промежуточных этапах и следил за консистентностью всей библиотеки. Также я
-            разработал производственный гайд — от поиска метафоры до сборки компонентов. Он стал основой
-            дальнейшей работы команды и помог поддерживать единое качество на протяжении всего проекта.
+            {PARA_2}
           </p>
         </div>
 
@@ -146,7 +129,7 @@ export default function Summary() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`${A}/summary.jpg`}
-          alt="Итоговая система иконок в интерфейсе голосового ассистента Алиса на трёх экранах"
+          alt={PHONES_ALT}
           className="mx-auto w-full max-w-[714px] xl:absolute xl:left-[363px] xl:top-[645px] xl:mx-0"
         />
 

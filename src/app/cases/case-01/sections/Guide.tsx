@@ -9,15 +9,20 @@
 // в горизонтально-прокручиваемом окне — чтобы прочитать мелкие детали.
 import { useState } from "react";
 import { useCanvasWide, useMinWidth } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C1 } from "../i18n";
 
 const R = "/cases/case-01/sections/reflow";
-const ALT =
-  "Страницы внутреннего гайда: пиксельная сетка компонента, примеры ресайза иконок и три состояния «Плохо / Хорошо / Круто»";
 
 export default function Guide() {
   const wide = useCanvasWide();
   const sm = useMinWidth(640);
   const [open, setOpen] = useState(false);
+  const lang = useLang();
+  const t = C1[lang];
+  const ALT = t.guidePagesCaption;
+  const collapseLabel = lang === "ru" ? "Свернуть страницы гайда" : "Collapse guide pages";
+  const expandLabel = lang === "ru" ? "Раскрыть страницы гайда 1:1" : "Expand guide pages to full size";
 
   // 834 — карточка целиком из макета (Гайд_1.svg 1008×719, аспект 1.402).
   // 834: pad 72/28, ширина 778. 1280: pad 72/40, ширина 1008 по центру
@@ -38,7 +43,7 @@ export default function Guide() {
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
-          aria-label={open ? "Свернуть страницы гайда" : "Раскрыть страницы гайда 1:1"}
+          aria-label={open ? collapseLabel : expandLabel}
           className={`group relative block w-full ${open ? "cursor-zoom-out" : "cursor-zoom-in"}`}
         >
           <div className={`no-scrollbar w-full ${open ? "overflow-x-auto" : "overflow-hidden"}`}>
@@ -55,7 +60,7 @@ export default function Guide() {
           </div>
           {!open && (
             <span className="pointer-events-none absolute bottom-[10px] right-[10px] rounded-full bg-[#121212]/80 px-[10px] py-[4px] text-[11px] font-medium uppercase tracking-[0.22px] text-white">
-              нажмите, чтобы раскрыть
+              {t.tapToExpand}
             </span>
           )}
         </button>
