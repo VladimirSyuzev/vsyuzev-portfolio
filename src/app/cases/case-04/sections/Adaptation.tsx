@@ -60,15 +60,20 @@ export default function Adaptation() {
             чтобы коммуникация оставалась читаемой в любом формате.
           </p>
 
-          {/* Обводка-эллипс (Figma node 2401:35701 → x290 / y1377, 884×130). */}
-          <DrawIn
-            src={`${A}/adapt-ellipse.svg`}
-            className="absolute left-[290px] top-[1377px] h-[130px] w-[884px]"
-          />
-          {/* Мысль (Figma node 2401:35699 → x338 / y1407, w765, по центру). */}
-          <p className="absolute left-1/2 top-[1407px] w-[765px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-            Один Key Visual адаптируется под разные носители без потери идеи
-          </p>
+          {/* Мысль (Figma node 2401:35699) + обводка-эллипс (2401:35701) —
+              общая центрированная обёртка (раньше были независимыми
+              элементами с фикс-координатами), эллипс в % от блока текста
+              (184.7%/115.56%) — масштабируется вместе с текстом при другом
+              числе строк (перевод на английский). */}
+          <div className="absolute left-1/2 top-[1442px] w-[765px] -translate-x-1/2 -translate-y-1/2">
+            <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+              Один Key Visual адаптируется под разные носители без потери идеи
+            </p>
+            <DrawIn
+              src={`${A}/adapt-ellipse.svg`}
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[184.7%] w-[115.56%] -translate-x-1/2 -translate-y-1/2"
+            />
+          </div>
         </div>
 
         {/* Снап-карусель форматов (Figma frame 2440:59724 → y654). */}
@@ -113,19 +118,23 @@ export default function Adaptation() {
               <br />в любом формате.
             </p>
 
-            {/* Мысль (355, 1267, w-570, center) + обводка-эллипс (Vector 234257386,
-                390/1248.477, 500×207). Ручные <br> после «адаптируется »,
-                «под разные носители ». */}
-            <div className="absolute left-[390px] top-[1248.477px] h-[207px] w-[500px]">
-              <DrawIn src={`${A}/adapt-ellipse-1280.svg`} className="absolute inset-[-1.41%_-0.59%]" />
+            {/* Мысль (355, 1267, w-570, center) + обводка-эллипс (Vector
+                234257386) — общая центрированная обёртка, эллипс в % от
+                блока текста (147%/87.72%) — масштабируется вместе с текстом
+                при другом числе строк (перевод на английский). Ручные <br>
+                после «адаптируется », «под разные носители ». */}
+            <div className="absolute left-[640px] top-[1337px] w-[570px] -translate-x-1/2 -translate-y-1/2">
+              <p className="whitespace-pre-wrap text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+                Один Key Visual адаптируется{" "}
+                <br />
+                под разные носители{" "}
+                <br />
+                без потери идеи
+              </p>
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[147%] w-[87.72%] -translate-x-1/2 -translate-y-1/2">
+                <DrawIn src={`${A}/adapt-ellipse-1280.svg`} className="absolute inset-[-1.41%_-0.59%]" />
+              </div>
             </div>
-            <p className="absolute left-[355px] top-[1267px] w-[570px] whitespace-pre-wrap text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-              Один Key Visual адаптируется{" "}
-              <br />
-              под разные носители{" "}
-              <br />
-              без потери идеи
-            </p>
           </div>
         </FullBleedScale>
       </div>
@@ -169,17 +178,22 @@ export default function Adaptation() {
               любом формате.
             </p>
 
-            {/* Мысль (center, w-378, y990) + обводка-эллипс (Vector 234257386,
-                центр, y961.199, 419×182). Блок Frame 2147232100 сдвинут вниз
-                (y926) — текст 2 стал узкой колонкой в 5 строк. */}
-            <div className="absolute left-1/2 top-[961.199px] h-[182px] w-[419px] -translate-x-1/2">
-              <DrawIn src={`${A}/adapt-ellipse-834.svg`} className="absolute inset-[-1.65%_-0.72%]" />
+            {/* Мысль (center, w-378) + обводка-эллипс (Vector 234257386) —
+                общая центрированная обёртка, эллипс в % от блока текста
+                (147.76%/110.85%) — масштабируется вместе с текстом при
+                другом числе строк (перевод на английский). Блок Frame
+                2147232100 сдвинут вниз (y926) — текст 2 стал узкой колонкой
+                в 5 строк. */}
+            <div className="absolute left-1/2 top-[1052px] w-[378px] -translate-x-1/2 -translate-y-1/2">
+              <p className="whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+                Один Key Visual адаптируется{" "}
+                <br />
+                под разные носители без потери идеи
+              </p>
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[147.76%] w-[110.85%] -translate-x-1/2 -translate-y-1/2">
+                <DrawIn src={`${A}/adapt-ellipse-834.svg`} className="absolute inset-[-1.65%_-0.72%]" />
+              </div>
             </div>
-            <p className="absolute left-1/2 top-[990px] w-[378px] -translate-x-1/2 whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-              Один Key Visual адаптируется{" "}
-              <br />
-              под разные носители без потери идеи
-            </p>
           </div>
         </FullBleedScale>
       </div>
@@ -225,15 +239,19 @@ export default function Adaptation() {
 
             {/* Мысль (20/672, w-335, влево). Текст ставится сразу на свою
                 координату (без «воздушного» py-64) — иначе невидимая зона hit-area
-                перекрывает бар карусели. Vector 234257394 (2835:53383) —
-                тонкое подчёркивание. */}
-            <p className="absolute left-[20px] top-[672px] w-[335px] whitespace-pre-wrap font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white opacity-70">
-              Один Key Visual адаптируется{" "}
-              <br />
-              под разные носители без потери идеи
-            </p>
-            <div className="absolute left-[19.531px] top-[776.863px] h-[17.209px] w-[335.94px]">
-              <DrawIn src={`${A}/adapt-underline-375.svg`} className="absolute inset-[-17.43%_-0.89%]" />
+                перекрывает бар карусели. Подчёркивание (Vector 234257394,
+                2835:53383) привязано к НИЗУ текста (top-[calc(100%+4px)],
+                не фикс-px 776.86) — не оторвётся при другом числе строк
+                (перевод на английский). */}
+            <div className="absolute left-[20px] top-[672px] w-[335px]">
+              <p className="whitespace-pre-wrap font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white opacity-70">
+                Один Key Visual адаптируется{" "}
+                <br />
+                под разные носители без потери идеи
+              </p>
+              <div className="absolute left-0 top-[calc(100%+4px)] h-[17.209px] w-[335.94px]">
+                <DrawIn src={`${A}/adapt-underline-375.svg`} className="absolute inset-[-17.43%_-0.89%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>

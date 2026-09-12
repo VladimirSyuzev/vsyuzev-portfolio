@@ -100,17 +100,21 @@ function Slide2() {
         </div>
       ))}
 
-      {/* Крупная мысль (Figma node 2399:35410 → x46 / y592, w485). */}
-      <p className="absolute left-[46px] top-[592px] w-[485px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-        Crypto становится понятным, когда превращается
-        <br />
-        во что-то реальное
-      </p>
-      {/* Подчёркивание (Figma node 2399:35412 → x192 / y736, 275×29). */}
-      <DrawIn
-        src={`${A}/crops-underline.svg`}
-        className="absolute left-[192px] top-[736px] h-[29px] w-[275px]"
-      />
+      {/* Крупная мысль (Figma node 2399:35410 → x46 / y592, w485) +
+          подчёркивание (2399:35412) — общая обёртка, линия привязана к НИЗУ
+          текста (top-[calc(100%+3px)], не фикс-px 736) — не оторвётся при
+          другом числе строк (перевод на английский). */}
+      <div className="absolute left-[46px] top-[592px] w-[485px]">
+        <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+          Crypto становится понятным, когда превращается
+          <br />
+          во что-то реальное
+        </p>
+        <DrawIn
+          src={`${A}/crops-underline.svg`}
+          className="absolute left-[146px] top-[calc(100%+3px)] h-[29px] w-[275px]"
+        />
+      </div>
     </>
   );
 }
@@ -323,15 +327,20 @@ function Crops834() {
       />
 
       {/* Цитата (2750:4723 → center, w-506, py-64) + обводка-эллипс
-          (2835:53378, 454×197). Блок на y891. */}
-      <div className="absolute left-1/2 top-[913.91px] h-[197px] w-[454px] -translate-x-1/2">
-        <DrawIn src={`${A}/crops-ellipse-834.svg`} className="absolute inset-[-1.52%_-0.66%]" />
+          (2835:53378) — общая центрированная обёртка (раньше были
+          независимыми элементами с фикс-координатами), эллипс в % от блока
+          текста (159.9%/89.7%) — масштабируется вместе с текстом при другом
+          числе строк (перевод на английский). */}
+      <div className="absolute left-1/2 top-[1017px] w-[506px] -translate-x-1/2 -translate-y-1/2">
+        <p className="whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+          Crypto становится понятным, когда превращается{" "}
+          <br />
+          во что-то реальное
+        </p>
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[159.9%] w-[89.7%] -translate-x-1/2 -translate-y-1/2">
+          <DrawIn src={`${A}/crops-ellipse-834.svg`} className="absolute inset-[-1.52%_-0.66%]" />
+        </div>
       </div>
-      <p className="absolute left-1/2 top-[955px] w-[506px] -translate-x-1/2 whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-        Crypto становится понятным, когда превращается{" "}
-        <br />
-        во что-то реальное
-      </p>
     </div>
   );
 }
@@ -395,17 +404,21 @@ function Crops375() {
         />
       </div>
       {/* Цитата (2760:4723, center, w-335, py-64) + тонкое подчёркивание
-          (2835:53385, 329.443×12.036, y171.55). */}
+          (2835:53385) — общая обёртка, линия привязана к НИЗУ текста
+          (top-[calc(100%+6px)], не фикс-px 171.55) — не оторвётся при другом
+          числе строк (перевод на английский). */}
       <div className="relative flex w-full shrink-0 flex-col items-center justify-center py-[64px]">
-        <p className="w-[335px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white opacity-70">
-          Crypto становится понятным,{" "}
-          <br />
-          когда превращается{" "}
-          <br />
-          во что-то реальное
-        </p>
-        <div className="absolute left-[0.12px] top-[171.55px] h-[12.036px] w-[329.443px]">
-          <DrawIn src={`${A}/crops-underline-375.svg`} className="absolute inset-[-24.92%_-0.91%]" />
+        <div className="relative w-[335px]">
+          <p className="whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white opacity-70">
+            Crypto становится понятным,{" "}
+            <br />
+            когда превращается{" "}
+            <br />
+            во что-то реальное
+          </p>
+          <div className="absolute left-0 top-[calc(100%+6px)] h-[12.036px] w-[329.443px]">
+            <DrawIn src={`${A}/crops-underline-375.svg`} className="absolute inset-[-24.92%_-0.91%]" />
+          </div>
         </div>
       </div>
     </div>

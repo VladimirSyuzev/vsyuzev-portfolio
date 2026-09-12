@@ -51,15 +51,20 @@ export default function Series() {
             className="absolute left-[641px] top-[764px] z-10 h-[125px] w-[158px]"
           />
 
-        {/* Обводка-эллипс вокруг мысли (Figma node 2401:35698). */}
-        <DrawIn
-          src={`${A}/series-ellipse.svg`}
-          className="absolute left-[238px] top-[951px] h-[172px] w-[965px]"
-        />
-        {/* Мысль (Figma node 2401:35697 → x216 / y1003, w1008, по центру). */}
-        <p className="absolute left-1/2 top-[1003px] w-[900px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Один принцип позволил рассказывать разные истории в рамках одной кампании
-        </p>
+        {/* Мысль (Figma node 2401:35697) + обводка-эллипс (2401:35698) —
+            общая центрированная обёртка (раньше были независимыми
+            элементами с фикс-координатами), эллипс в % от блока текста
+            (244.3%/107.2%) — масштабируется вместе с текстом при другом
+            числе строк (перевод на английский). */}
+        <div className="absolute left-1/2 top-[1038px] w-[900px] -translate-x-1/2 -translate-y-1/2">
+          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+            Один принцип позволил рассказывать разные истории в рамках одной кампании
+          </p>
+          <DrawIn
+            src={`${A}/series-ellipse.svg`}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[244.3%] w-[107.2%] -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
       </div>
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
@@ -109,14 +114,18 @@ export default function Series() {
             className="absolute left-[561px] top-[751.524px] z-10 h-[125px] w-[158px]"
           />
 
-            {/* Мысль (327, 940.524, w-626, center) + обводка-эллипс
-                (Vector 234257399, 293.39/921.977, 693.378×140.448). */}
-            <div className="absolute left-[293.39px] top-[921.977px] h-[140.448px] w-[693.378px]">
-              <DrawIn src={`${A}/series-ellipse-1280.svg`} className="absolute inset-[-2.14%_-0.43%]" />
+            {/* Мысль (327, 940.524, w-626, center) + обводка-эллипс (Vector
+                234257399) — общая центрированная обёртка, эллипс в % от
+                блока текста (133%/110.76%) — масштабируется вместе с
+                текстом при другом числе строк (перевод на английский). */}
+            <div className="absolute left-[640px] top-[993px] w-[626px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+                Один принцип позволил рассказывать разные истории в рамках одной кампании
+              </p>
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[133%] w-[110.76%] -translate-x-1/2 -translate-y-1/2">
+                <DrawIn src={`${A}/series-ellipse-1280.svg`} className="absolute inset-[-2.14%_-0.43%]" />
+              </div>
             </div>
-            <p className="absolute left-[327px] top-[940.524px] w-[626px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-              Один принцип позволил рассказывать разные истории в рамках одной кампании
-            </p>
           </div>
         </FullBleedScale>
       </div>
@@ -168,14 +177,18 @@ export default function Series() {
             className="absolute left-[338px] top-[1371.706px] z-10 h-[125px] w-[158px]"
           />
 
-            {/* Мысль (148, 1560.706, w-538, center) + обводка-эллипс
-                (Vector 234257399, 102.383/1541.496, 628.487×138.922). */}
-            <div className="absolute left-[102.383px] top-[1541.496px] h-[138.922px] w-[628.487px]">
-              <DrawIn src={`${A}/series-ellipse-834.svg`} className="absolute inset-[-2.16%_-0.48%]" />
+            {/* Мысль (148, 1560.706, w-538, center) + обводка-эллипс (Vector
+                234257399) — общая центрированная обёртка, эллипс в % от
+                блока текста (150.4%/116.8%) — масштабируется вместе с
+                текстом при другом числе строк (перевод на английский). */}
+            <div className="absolute left-[417px] top-[1607px] w-[538px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
+                Один принцип позволил рассказывать разные истории в рамках одной кампании
+              </p>
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[150.4%] w-[116.8%] -translate-x-1/2 -translate-y-1/2">
+                <DrawIn src={`${A}/series-ellipse-834.svg`} className="absolute inset-[-2.16%_-0.48%]" />
+              </div>
             </div>
-            <p className="absolute left-[148px] top-[1560.706px] w-[538px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
-              Один принцип позволил рассказывать разные истории в рамках одной кампании
-            </p>
           </div>
         </FullBleedScale>
       </div>
@@ -228,15 +241,19 @@ export default function Series() {
             className="h-[125px] w-[158px] shrink-0 self-center"
           />
 
-            {/* Мысль (w-303, center, pb-64) + обводка-эллипс (Vector 234257399,
-                21.07/961.31, 334.645×185.75). */}
+            {/* Мысль (w-303, center, pb-64) + обводка-эллипс (Vector
+                234257399) — общая обёртка, эллипс в % от блока текста
+                (146.9%/110.44%) — масштабируется вместе с текстом при
+                другом числе строк (перевод на английский). */}
             <div className="relative flex w-full shrink-0 flex-col items-center justify-center pb-[64px]">
-              <div className="absolute left-1/2 top-[-25.95px] h-[185.75px] w-[334.645px] -translate-x-1/2">
-                <DrawIn src={`${A}/series-ellipse-375.svg`} className="absolute inset-[-1.62%_-0.9%]" />
+              <div className="relative w-[303px]">
+                <p className="text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
+                  Один принцип позволил рассказывать разные истории в рамках одной кампании
+                </p>
+                <div className="pointer-events-none absolute left-1/2 top-1/2 h-[146.9%] w-[110.44%] -translate-x-1/2 -translate-y-1/2">
+                  <DrawIn src={`${A}/series-ellipse-375.svg`} className="absolute inset-[-1.62%_-0.9%]" />
+                </div>
               </div>
-              <p className="relative w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
-                Один принцип позволил рассказывать разные истории в рамках одной кампании
-              </p>
             </div>
           </div>
         </FullBleedScale>

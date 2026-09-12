@@ -48,21 +48,22 @@ export default function Final() {
             fit="contain"
             className="absolute left-[46px] top-[993px] z-10 h-[125px] w-[158px]"
           />
-      {/* Мысль (Figma node 2401:35703 → x726 / y1003, w633). */}
-      <p className="absolute left-[726px] top-[1003px] w-[633px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-        Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
-      </p>
-      {/* Декоративная линия-подчёркивание под мыслью (Figma node 2439:54105).
-          Наклонная линия 522×53; bbox фрейма (853.85/1088) занижен по
-          высоте — из-за этого линия налезала на последнюю строку. Якорь по
-          translate фонового rect экспорта: левый-верх SVG = точка секции
-          (849, 1105.37); viewBox расширен на поля -5, поэтому −5/−5. */}
-      <DrawIn
-        src={`${A}/final-underline.svg`}
-        fit="contain"
-        className="absolute"
-        style={{ left: 844, top: 1100, width: 532, height: 63 }}
-      />
+      {/* Мысль (Figma node 2401:35703 → x726 / y1003, w633) + декоративная
+          линия-подчёркивание (2439:54105) — общая обёртка, линия привязана
+          к НИЗУ текста (top-[calc(100%-9px)], не фикс-px 1100) — не
+          оторвётся при другом числе строк (перевод на английский); гэп
+          отрицательный (линия слегка налезает на текст) — так и в Figma. */}
+      <div className="absolute left-[726px] top-[1003px] w-[633px]">
+        <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
+        </p>
+        <DrawIn
+          src={`${A}/final-underline.svg`}
+          fit="contain"
+          className="absolute"
+          style={{ left: 118, top: "calc(100% - 9px)", width: 532, height: 63 }}
+        />
+      </div>
       </div>
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node 2742:18018,
@@ -104,20 +105,22 @@ export default function Final() {
             fit="contain"
             className="h-[125px] w-[158px] shrink-0"
           />
-              <p className="w-[591px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-                Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
-              </p>
+              {/* Подчёркивание — привязано к НИЗУ текста (top-[calc(100%+4px)],
+                  не фикс-px 1016.29) — не оторвётся при другом числе строк
+                  (перевод на английский). */}
+              <div className="relative w-[591px]">
+                <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+                  Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
+                </p>
+                <div className="pointer-events-none absolute left-0 top-[calc(100%+4px)] z-10 h-[28.047px] w-[478.434px]">
+                  <DrawIn src={`${A}/final-underline-1280.svg`} className="absolute inset-[-10.7%_-0.63%]" />
+                </div>
+              </div>
             </div>
 
             {/* Доодл-«стрелка» (Vector, 667.36/154.2, 93.786×72.845). */}
             <div className="absolute left-[667.36px] top-[154.2px] z-10 h-[72.845px] w-[93.786px]">
               <DrawIn src={`${A}/final-arrow-1280.svg`} fit="contain" className="absolute inset-[-4.12%_-3.2%]" />
-            </div>
-
-            {/* Подчёркивание под мыслью (Vector 234257394, 649/1016.29,
-                478.434×28.047, inset -10.7%/-0.63%). */}
-            <div className="absolute left-[649px] top-[1016.29px] z-10 h-[28.047px] w-[478.434px]">
-              <DrawIn src={`${A}/final-underline-1280.svg`} className="absolute inset-[-10.7%_-0.63%]" />
             </div>
           </div>
         </FullBleedScale>
@@ -158,14 +161,18 @@ export default function Final() {
             />
 
             {/* Мысль в обводке-эллипсе (Frame 2818:36026, py-64, center) —
-                Vector 234257391 (2835:53381, центр, top-29.2, 513×183). */}
+                общая обёртка, эллипс в % от блока текста (148.6%/111.28%) —
+                масштабируется вместе с текстом при другом числе строк
+                (перевод на английский). */}
             <div className="relative flex w-[777px] shrink-0 items-center justify-center py-[64px]">
-              <div className="absolute left-1/2 top-[29.2px] h-[183px] w-[513px] -translate-x-1/2">
-                <DrawIn src={`${A}/final-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
+              <div className="relative w-[461px]">
+                <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
+                  Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
+                </p>
+                <div className="pointer-events-none absolute left-1/2 top-1/2 h-[148.6%] w-[111.28%] -translate-x-1/2 -translate-y-1/2">
+                  <DrawIn src={`${A}/final-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
+                </div>
               </div>
-              <p className="relative w-[461px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
-                Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
-              </p>
             </div>
           </div>
         </FullBleedScale>

@@ -156,19 +156,24 @@ export default function Task() {
               src={`${A}/task-composite-375.jpg`}
             />
 
-            {/* Мысль + обводка-эллипс (Frame 2819:36134, py-64). Vector
-                234257386 (2835:53388) — (15.07, 30.13), 345.492×162.651. */}
+            {/* Мысль + обводка-эллипс (Frame 2819:36134, py-64). Общая
+                обёртка (раньше эллипс был независимым элементом с
+                фикс-координатами) — эллипс в % от блока текста (168.1%/
+                117.5%) — масштабируется вместе с текстом при другом числе
+                строк (перевод на английский). */}
             <div className="relative flex w-full shrink-0 items-center justify-center py-[64px]">
-              <div className="absolute left-[15.07px] top-[30.13px] h-[162.651px] w-[345.492px]">
-                <DrawIn src={`${A}/task-ellipse-375.svg`} className="absolute inset-[-1.84%_-0.87%]" />
+              <div className="relative w-[294px]">
+                <p className="whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-80">
+                  Сложный crypto-продукт нужно{" "}
+                  <br />
+                  было объяснить{" "}
+                  <br />
+                  за несколько секунд
+                </p>
+                <div className="pointer-events-none absolute left-1/2 top-1/2 h-[168.1%] w-[117.5%] -translate-x-1/2 -translate-y-1/2">
+                  <DrawIn src={`${A}/task-ellipse-375.svg`} className="absolute inset-[-1.84%_-0.87%]" />
+                </div>
               </div>
-              <p className="relative w-[294px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-80">
-                Сложный crypto-продукт нужно{" "}
-                <br />
-                было объяснить{" "}
-                <br />
-                за несколько секунд
-              </p>
             </div>
           </div>
         </FullBleedScale>
