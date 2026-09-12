@@ -186,7 +186,7 @@ export default function Task() {
               </p>
               <DrawIn
                 src={`${A}/task-doodle-arrow.svg`}
-                className="absolute left-[152px] top-[calc(100%+11px)] h-[90px] w-[388px]"
+                className="absolute left-[152px] top-[calc(100%-19px)] h-[90px] w-[388px]"
               />
             </div>
           </div>

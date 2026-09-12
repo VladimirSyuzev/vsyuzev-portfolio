@@ -304,7 +304,7 @@ export default function Case03Page() {
                     Figma есть; xl использует свою абсолютную копию выше). */}
                 <DrawIn
                   src="/cases/case-03/sections/cover-underline.svg"
-                  className="pointer-events-none absolute right-0 top-[calc(100%+8px)] h-[16px] w-[224px]"
+                  className="pointer-events-none absolute right-[-40px] top-[calc(100%+8px)] h-[16px] w-[224px]"
                 />
               </div>
             </div>
