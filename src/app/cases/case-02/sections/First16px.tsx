@@ -169,8 +169,11 @@ export default function First16px() {
             className="pointer-events-none hidden h-[139px] w-[140px] lg:absolute lg:left-[298px] lg:top-[311px] lg:block lg:-rotate-[0.9deg] xl:left-[481px] xl:top-[655px] xl:rotate-0"
           />
 
-          {/* Текст «Маленький размер…» — 1280: (0,500) w440, наложение на иконку. */}
-          <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:absolute lg:left-0 lg:top-[500px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:left-[46px] xl:top-[853px] xl:w-[589px] xl:text-[32px]">
+          {/* Текст «Маленький размер…» — 1280: (0,500) w440, наложение на иконку.
+              ≥1440: выровнен НИЖНИМ краем по низу иконки (y958 = icon top318+
+              size640) — xl:bottom-[242px] (1200−958) вместо фикс xl:top, иначе
+              при другом числе строк (перевод) текст оторвался бы от иконки. */}
+          <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:absolute lg:left-0 lg:top-[500px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:left-[46px] xl:top-auto xl:bottom-[242px] xl:w-[589px] xl:text-[32px]">
             Маленький размер{" "}<br className="hidden xl:inline" />
             проверял главное: силуэт, композицию и читаемость.
           </p>

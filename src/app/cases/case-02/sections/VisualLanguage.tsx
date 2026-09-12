@@ -39,14 +39,6 @@ export default function VisualLanguage() {
             src={`${A}/visual-photo.jpg`}
           />
 
-          {/* Обводка-эллипс (рукописная) — только на десктопе. */}
-          <DrawIn
-            src={`${A}/visual-ellipse.svg`}
-            fit="contain"
-            className="hidden xl:absolute xl:block"
-            style={{ left: 321, top: 1059, width: 799, height: 152 }}
-          />
-
           {/* 375: цитата без ручного переноса (авто-wrap), обводка тянется в %
               от фактической высоты (см. Task.tsx — тот же приём). */}
           <div className="py-[32px] sm:hidden">
@@ -61,12 +53,23 @@ export default function VisualLanguage() {
             </div>
           </div>
 
-          {/* 834/1280: перенос после «строился», обводка −1.37° шире (660/787). */}
+          {/* 834/1280: перенос после «строился», обводка −1.37° шире (660/787).
+              ≥1440: эллипс — в общей центрированной обёртке с текстом (раньше
+              был отдельным элементом с фикс-координатами независимо от
+              текста), размер в % от блока цитаты — масштабируется вместе с
+              текстом при другом числе строк (перевод на английский). */}
           <div className="relative hidden justify-center py-[44px] sm:flex lg:py-[64px] xl:contents">
-            <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70 lg:max-w-[672px] lg:text-[32px] lg:tracking-[0.96px] xl:absolute xl:left-1/2 xl:top-[1098.1px] xl:w-[667px] xl:-translate-x-1/2 xl:text-[32px]">
-              Новый стиль строился{" "}<br />
-              не из линий, а из цельной формы
-            </p>
+            <div className="xl:absolute xl:left-1/2 xl:top-[1133px] xl:w-[667px] xl:-translate-x-1/2 xl:-translate-y-1/2">
+              <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70 lg:max-w-[672px] lg:text-[32px] lg:tracking-[0.96px] xl:w-[667px] xl:text-[32px]">
+                Новый стиль строился{" "}<br />
+                не из линий, а из цельной формы
+              </p>
+              <DrawIn
+                src={`${A}/visual-ellipse.svg`}
+                fit="contain"
+                className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[216%] xl:w-[119.8%]"
+              />
+            </div>
             <DrawIn
               src={`${A}/reflow/visual-ellipse-1280.svg`}
               fit="contain"

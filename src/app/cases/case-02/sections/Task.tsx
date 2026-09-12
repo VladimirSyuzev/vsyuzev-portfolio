@@ -164,14 +164,6 @@ export default function Task() {
             голубой, потом стрелка. */}
         <TaskIcons />
 
-        {/* Обводка-эллипс (рукописная) — только на десктопе. */}
-        <DrawIn
-          src={`${A}/task-ellipse.svg`}
-          fit="contain"
-          className="hidden xl:absolute xl:block"
-          style={{ left: 341, top: 1148, width: 760, height: 248 }}
-        />
-
         {/* 375: рукописная обводка облегает цитату — как в макете Figma
             (Vector 234257386, ≈104% ширины цитаты). Держим большой верхний
             отступ (pt-64), чтобы обводка не наезжала на голубой ключ выше.
@@ -188,11 +180,23 @@ export default function Task() {
           </div>
         </div>
 
-        {/* 834: +16.63° (bbox ≈581); 1280: та же обводка шире (649). */}
+        {/* 834: +16.63° (bbox ≈581); 1280: та же обводка шире (649).
+            ≥1440: эллипс — в общей центрированной обёртке с текстом (раньше
+            был отдельным элементом с фикс-координатами независимо от
+            текста), размер в % от блока цитаты — при другом числе строк
+            (перевод на английский) масштабируется вместе с текстом вместо
+            жёсткого фикс-размера. */}
         <div className="relative hidden justify-center py-[44px] sm:flex lg:py-[64px] xl:contents">
-          <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 lg:max-w-[594px] lg:text-[32px] lg:tracking-[0.96px] xl:absolute xl:left-1/2 xl:top-[1205.63px] xl:w-[589px] xl:-translate-x-1/2 xl:text-[32px]">
-            Мы создавали библиотеку одновременно с правилами, по которым она должна была работать
-          </p>
+          <div className="xl:absolute xl:left-1/2 xl:top-[1276px] xl:w-[589px] xl:-translate-x-1/2 xl:-translate-y-1/2">
+            <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 lg:max-w-[594px] lg:text-[32px] lg:tracking-[0.96px] xl:w-[589px] xl:text-[32px]">
+              Мы создавали библиотеку одновременно с правилами, по которым она должна была работать
+            </p>
+            <DrawIn
+              src={`${A}/task-ellipse.svg`}
+              fit="contain"
+              className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[176%] xl:w-[129%]"
+            />
+          </div>
           <DrawIn
             src={`${A}/reflow/task-ellipse-1280.svg`}
             fit="contain"
