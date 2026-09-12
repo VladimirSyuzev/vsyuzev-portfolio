@@ -6,15 +6,30 @@ import { useSyncExternalStore } from "react";
 // через useSyncExternalStore (без провайдера). SSR / первый клиентский рендер
 // всегда "ru" — реальное значение приезжает первым же ре-рендером на клиенте
 // (тот же приём, что useBreakpoint / useReducedMotion в проекте).
+//
+// Если пользователь ещё ни разу не переключал язык вручную (в localStorage
+// пусто) — язык на первый визит определяется по языку браузера
+// (navigator.language/.languages), а не жёстко "ru". Как только человек
+// сам нажал RU/EN — выбор сохраняется и дальше всегда в приоритете.
 export type Lang = "ru" | "en";
 
 const KEY = "vs-lang";
 const listeners = new Set<() => void>();
 
+function detectBrowserLang(): Lang {
+  try {
+    const langs = navigator.languages?.length ? navigator.languages : [navigator.language];
+    return langs.some((l) => l.toLowerCase().startsWith("ru")) ? "ru" : "en";
+  } catch {
+    return "ru";
+  }
+}
+
 function read(): Lang {
   try {
     const v = localStorage.getItem(KEY);
-    return v === "en" ? "en" : "ru";
+    if (v === "en" || v === "ru") return v;
+    return detectBrowserLang();
   } catch {
     return "ru";
   }
