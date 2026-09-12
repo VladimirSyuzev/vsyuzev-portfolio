@@ -341,11 +341,14 @@ export default function AuditLibrary() {
           </div>
         </div>
 
-        {/* Обводка-эллипс вокруг итоговой мысли — на всех ширинах. */}
+        {/* Обводка-эллипс вокруг итоговой мысли — на всех ширинах. Размер —
+            в % от блока текста (не фикс-px), центр — top-1/2/-translate-y-1/2:
+            эллипс масштабируется и остаётся отцентрован на цитате при любом
+            числе строк (перевод на английский меняет перенос). */}
         <div className="relative mx-auto w-full max-w-[589px] xl:absolute xl:left-1/2 xl:top-[1420.63px] xl:w-[589px] xl:-translate-x-1/2">
           <DrawIn
             src={`${A}/ellipse-doodle.svg`}
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[152%] w-[120%] -translate-x-1/2 -translate-y-1/2 xl:h-[253px] xl:w-[674px]"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[152%] w-[120%] -translate-x-1/2 -translate-y-1/2 xl:h-[180%] xl:w-[114.4%]"
           />
           <p className="audit-intro relative text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70 sm:text-[28px] xl:text-[32px]">
             Полная карта библиотеки показала, что уже есть, чего не хватает и что нужно сделать в

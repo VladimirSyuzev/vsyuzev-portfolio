@@ -133,7 +133,10 @@ export default function Consistency() {
           </div>
 
           {/* Крупная фраза (Wix Madefor Display Regular) с рукописным
-              подчёркиванием — по левому краю на всех ширинах (по макетам). */}
+              подчёркиванием — по левому краю на всех ширинах (по макетам).
+              Линия привязана к НИЗУ блока текста (xl:top-full, не
+              фиксированный px) — иначе при другом числе строк (перевод на
+              английский) она уезжала бы мимо последней строки. */}
           <div className="relative w-full sm:max-w-[578px] xl:absolute xl:left-[46px] xl:top-[581.98px] xl:w-[578.354px]">
             <p className="font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 sm:text-[28px] xl:text-[32px]">
               Balance Board помогал находить несоответствия{" "}
@@ -142,7 +145,7 @@ export default function Consistency() {
               <br className="hidden xl:inline" />
               до передачи работы клиенту
             </p>
-            <div className="pointer-events-none absolute left-[8%] bottom-[-14px] h-[22px] w-[86%] xl:left-[106px] xl:bottom-auto xl:top-[141px] xl:h-[31px] xl:w-[518px]">
+            <div className="pointer-events-none absolute left-[8%] bottom-[-14px] h-[22px] w-[86%] xl:left-[106px] xl:bottom-auto xl:top-full xl:h-[31px] xl:w-[518px]">
               <DrawIn
                 src="/cases/case-01/sections/consistency-underline.svg"
                 className="size-full"
