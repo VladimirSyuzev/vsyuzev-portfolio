@@ -64,7 +64,10 @@ export default function VisualLanguage() {
               1:1, но масштабируется вместе с текстом при другом числе строк. */}
           <div className="relative hidden justify-center py-[44px] sm:flex lg:py-[64px] xl:contents">
             <div className="relative xl:absolute xl:left-1/2 xl:top-[1133px] xl:w-[667px] xl:-translate-x-1/2 xl:-translate-y-1/2">
-              <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70 lg:max-w-[672px] lg:text-[32px] lg:tracking-[0.96px] xl:w-[667px] xl:text-[32px]">
+              {/* z-10 — текст ВСЕГДА поверх обводки (обводка рисуется ниже
+                  в DOM → без z-index красилась бы поверх текста и на
+                  длинном EN-тексте могла перечёркивать буквы). */}
+              <p className="relative z-10 max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70 lg:max-w-[672px] lg:text-[32px] lg:tracking-[0.96px] xl:w-[667px] xl:text-[32px]">
                 {lang === "ru" ? (
                   <>
                     Новый стиль строился{" "}<br />
@@ -80,12 +83,12 @@ export default function VisualLanguage() {
               <DrawIn
                 src={`${A}/visual-ellipse.svg`}
                 fit="contain"
-                className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[216%] xl:w-[119.8%]"
+                className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[216%] xl:w-[119.8%]"
               />
               <DrawIn
                 src={`${A}/reflow/visual-ellipse-1280.svg`}
                 fit="contain"
-                className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[186%] w-[116%] -translate-x-1/2 -translate-y-1/2 -rotate-[1.37deg] sm:block lg:h-[194%] lg:w-[121%] xl:hidden"
+                className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[186%] w-[116%] -translate-x-1/2 -translate-y-1/2 -rotate-[1.37deg] sm:block lg:h-[194%] lg:w-[121%] xl:hidden"
               />
             </div>
           </div>
