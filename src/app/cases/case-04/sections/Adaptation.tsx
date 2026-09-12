@@ -70,12 +70,12 @@ export default function Adaptation() {
               (184.7%/115.56%) — масштабируется вместе с текстом при другом
               числе строк (перевод на английский). */}
           <div className="absolute left-1/2 top-[1442px] w-[765px] -translate-x-1/2 -translate-y-1/2">
-            <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+            <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
               {t.adaptQuote}
             </p>
             <DrawIn
               src={`${A}/adapt-ellipse.svg`}
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[184.7%] w-[115.56%] -translate-x-1/2 -translate-y-1/2"
+              className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[184.7%] w-[115.56%] -translate-x-1/2 -translate-y-1/2"
             />
           </div>
         </div>
@@ -124,10 +124,10 @@ export default function Adaptation() {
                 при другом числе строк (перевод на английский). Ручные <br>
                 после «адаптируется », «под разные носители ». */}
             <div className="absolute left-[640px] top-[1337px] w-[570px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+              <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
                 {t.adaptQuote}
               </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[147%] w-[87.72%] -translate-x-1/2 -translate-y-1/2">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[147%] w-[87.72%] -translate-x-1/2 -translate-y-1/2">
                 <DrawIn src={`${A}/adapt-ellipse-1280.svg`} className="absolute inset-[-1.41%_-0.59%]" />
               </div>
             </div>
@@ -176,10 +176,10 @@ export default function Adaptation() {
                 2147232100 сдвинут вниз (y926) — текст 2 стал узкой колонкой
                 в 5 строк. */}
             <div className="absolute left-1/2 top-[1052px] w-[378px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+              <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
                 {t.adaptQuote}
               </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[147.76%] w-[110.85%] -translate-x-1/2 -translate-y-1/2">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[200%] w-[135%] -translate-x-1/2 -translate-y-1/2">
                 <DrawIn src={`${A}/adapt-ellipse-834.svg`} className="absolute inset-[-1.65%_-0.72%]" />
               </div>
             </div>

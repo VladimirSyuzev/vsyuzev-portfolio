@@ -120,10 +120,13 @@ export default function Concept() {
             uppercase) слева снизу, с рукописным подчёркиванием. 1:1 из Figma
             (текст 2399:35409 → (46, 1265), w406; underline 2399:35413 → (132,
             1415)). Подчёркивание привязано к НИЗУ текста (top-[calc(100%+9px)],
-            не фикс-px 1415) — на EN текст естественно оборачивается в 5 строк
-            вместо 4 у RU, фикс-позиция налезала на «A PERSON». */}
-        <div className="absolute left-[46px] top-[1265px] w-[406px]">
-          <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-70">
+            не фикс-px 1415) — раньше EN-текст оборачивался естественно (5
+            строк), фикс-позиция налезала на «A PERSON». Теперь EN — ручные
+            переносы в 4 строки (как в RU), но «WE SHOW THE OUTCOME» шире
+            406px (~426px) — блоку нужна ширина 430px на EN, иначе браузер
+            всё равно переносит эту строку сам. */}
+        <div className={`absolute left-[46px] top-[1265px] ${lang === "en" ? "w-[430px]" : "w-[406px]"}`}>
+          <p className="whitespace-nowrap font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-70">
             {lang === "ru" ? (
               <>
                 Вместо технологии
@@ -214,10 +217,10 @@ export default function Concept() {
 
             {/* Блок 3 — хайлайт в обводке-эллипсе (py-64, center). */}
             <div className="relative flex w-[1200px] shrink-0 items-center justify-center py-[64px]">
-              <div className="absolute left-1/2 top-[25px] h-[218.922px] w-[504.596px] -translate-x-1/2">
+              <div className="absolute left-1/2 top-[25px] z-0 h-[218.922px] w-[504.596px] -translate-x-1/2">
                 <DrawIn src={`${A}/concept-ellipse-1280.svg`} className="absolute inset-[-1.37%_-0.59%]" />
               </div>
-              <p className="relative w-[406px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80">
+              <p className={`relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80 ${lang === "en" ? "w-[430px] whitespace-nowrap" : "w-[406px]"}`}>
                 {lang === "ru" ? (
                   t.conceptQuote
                 ) : (
@@ -302,10 +305,10 @@ export default function Concept() {
 
             {/* Блок 3 — хайлайт в обводке-эллипсе (py-44, center). */}
             <div className="relative flex w-full shrink-0 items-center justify-center py-[44px]">
-              <div className="absolute left-1/2 top-[14.9px] h-[171px] w-[505px] -translate-x-1/2">
+              <div className="absolute left-1/2 top-[14.9px] z-0 h-[171px] w-[505px] -translate-x-1/2">
                 <DrawIn src={`${A}/concept-ellipse-834.svg`} className="absolute inset-[-1.75%_-0.59%]" />
               </div>
-              <p className="relative w-[406px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80">
+              <p className="relative z-10 w-[406px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80">
                 {t.conceptQuote}
               </p>
             </div>
@@ -392,10 +395,10 @@ export default function Concept() {
 
             {/* Блок 3 — хайлайт в обводке-эллипсе (py-64, center). */}
             <div className="relative flex w-full shrink-0 items-center justify-center py-[64px]">
-              <div className="absolute left-1/2 top-[21.91px] h-[171px] w-[319px] -translate-x-1/2">
+              <div className="absolute left-1/2 top-[21.91px] z-0 h-[171px] w-[319px] -translate-x-1/2">
                 <DrawIn src={`${A}/concept-ellipse-375.svg`} className="absolute inset-[-1.75%_-0.94%]" />
               </div>
-              <p className="relative w-[311px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-black opacity-80">
+              <p className="relative z-10 w-[311px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-black opacity-80">
                 {t.conceptQuote}
               </p>
             </div>

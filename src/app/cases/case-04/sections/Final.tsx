@@ -161,10 +161,10 @@ export default function Final() {
                 (перевод на английский). */}
             <div className="relative flex w-[777px] shrink-0 items-center justify-center py-[64px]">
               <div className="relative w-[461px]">
-                <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
+                <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
                   {t.finalQuote}
                 </p>
-                <div className="pointer-events-none absolute left-1/2 top-1/2 h-[148.6%] w-[111.28%] -translate-x-1/2 -translate-y-1/2">
+                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[148.6%] w-[111.28%] -translate-x-1/2 -translate-y-1/2">
                   <DrawIn src={`${A}/final-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
                 </div>
               </div>

@@ -55,12 +55,12 @@ export default function Series() {
             (244.3%/107.2%) — масштабируется вместе с текстом при другом
             числе строк (перевод на английский). */}
         <div className="absolute left-1/2 top-[1038px] w-[900px] -translate-x-1/2 -translate-y-1/2">
-          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
             {t.seriesQuote}
           </p>
           <DrawIn
             src={`${A}/series-ellipse.svg`}
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[244.3%] w-[107.2%] -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[244.3%] w-[107.2%] -translate-x-1/2 -translate-y-1/2"
           />
         </div>
       </div>
@@ -113,10 +113,10 @@ export default function Series() {
                 блока текста (133%/110.76%) — масштабируется вместе с
                 текстом при другом числе строк (перевод на английский). */}
             <div className="absolute left-[640px] top-[993px] w-[626px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+              <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
                 {t.seriesQuote}
               </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[133%] w-[110.76%] -translate-x-1/2 -translate-y-1/2">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[133%] w-[110.76%] -translate-x-1/2 -translate-y-1/2">
                 <DrawIn src={`${A}/series-ellipse-1280.svg`} className="absolute inset-[-2.14%_-0.43%]" />
               </div>
             </div>
@@ -172,10 +172,10 @@ export default function Series() {
                 блока текста (150.4%/116.8%) — масштабируется вместе с
                 текстом при другом числе строк (перевод на английский). */}
             <div className="absolute left-[417px] top-[1607px] w-[538px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
+              <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
                 {t.seriesQuote}
               </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[150.4%] w-[116.8%] -translate-x-1/2 -translate-y-1/2">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[150.4%] w-[116.8%] -translate-x-1/2 -translate-y-1/2">
                 <DrawIn src={`${A}/series-ellipse-834.svg`} className="absolute inset-[-2.16%_-0.48%]" />
               </div>
             </div>
@@ -233,10 +233,10 @@ export default function Series() {
                 другом числе строк (перевод на английский). */}
             <div className="relative flex w-full shrink-0 flex-col items-center justify-center pb-[64px]">
               <div className="relative w-[303px]">
-                <p className="text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
+                <p className="relative z-10 text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
                   {t.seriesQuote}
                 </p>
-                <div className="pointer-events-none absolute left-1/2 top-1/2 h-[146.9%] w-[110.44%] -translate-x-1/2 -translate-y-1/2">
+                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[146.9%] w-[110.44%] -translate-x-1/2 -translate-y-1/2">
                   <DrawIn src={`${A}/series-ellipse-375.svg`} className="absolute inset-[-1.62%_-0.9%]" />
                 </div>
               </div>

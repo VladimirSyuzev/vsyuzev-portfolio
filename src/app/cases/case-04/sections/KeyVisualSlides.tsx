@@ -329,10 +329,10 @@ function Crops834() {
           текста (159.9%/89.7%) — масштабируется вместе с текстом при другом
           числе строк (перевод на английский). */}
       <div className="absolute left-1/2 top-[1017px] w-[506px] -translate-x-1/2 -translate-y-1/2">
-        <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+        <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
           {t.kvQuote}
         </p>
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[159.9%] w-[89.7%] -translate-x-1/2 -translate-y-1/2">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[159.9%] w-[89.7%] -translate-x-1/2 -translate-y-1/2">
           <DrawIn src={`${A}/crops-ellipse-834.svg`} className="absolute inset-[-1.52%_-0.66%]" />
         </div>
       </div>
