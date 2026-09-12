@@ -87,14 +87,28 @@ export default function Summary() {
             <div className="absolute left-[28px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-[1.1]">
               <span className="text-[#008cff]">07</span>
               <span className="text-[#121212]">{t.summaryHeading}</span>
+              {/* EN: «OUTCOME» длиннее «ИТОГ» — доодл не влезает в фикс-
+                  позицию (423,76) из RU-макета, заезжает на буквы. Кладём
+                  его прямо в строку заголовка, сразу после текста, с
+                  отступом 32px (вместо общего gap-12 у «07»/заголовка). */}
+              {lang === "en" && (
+                <DrawIn
+                  src={`${A}/summary-chevron-834.svg`}
+                  fit="contain"
+                  className="ml-[32px] h-[125px] w-[158px] shrink-0"
+                />
+              )}
             </div>
 
-            {/* Доодл-«шеврон вниз» (2695:19239, 423/76 абс), 158×125. */}
-            <DrawIn
-              src={`${A}/summary-chevron-834.svg`}
-              fit="contain"
-              className="absolute left-[423px] top-[76px] z-10 h-[125px] w-[158px]"
-            />
+            {/* Доодл-«шеврон вниз» (2695:19239, 423/76 абс), 158×125. Только
+                RU — на EN он переехал в строку заголовка (см. выше). */}
+            {lang === "ru" && (
+              <DrawIn
+                src={`${A}/summary-chevron-834.svg`}
+                fit="contain"
+                className="absolute left-[423px] top-[76px] z-10 h-[125px] w-[158px]"
+              />
+            )}
 
             {/* Текст: колонка 1 (28, 214) 383, колонка 2 (423, 214) 383.
                 В 1-й — ручной <br> после «стоковых изображений ». */}
