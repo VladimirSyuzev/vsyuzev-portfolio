@@ -264,7 +264,7 @@ export default function Research() {
               <p className="relative z-10 w-[608px] font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80 [word-break:break-word]">
                 {t.researchQuote}
               </p>
-              <div className="absolute left-[110px] top-[calc(100%+9px)] z-0 h-[27.962px] w-[471px]">
+              <div className="absolute left-[110px] top-[calc(100%-23px)] z-0 h-[27.962px] w-[471px]">
                 <DrawIn src={`${A}/research-underline-834.svg`} className="absolute inset-[-10.73%_-0.64%]" />
               </div>
             </div>
