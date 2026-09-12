@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "@/lib/lang";
+import { C3 } from "../i18n";
 
 // C3-02 «Секция сайта» — 1:1 из Figma (node 2022:14474). Плотный мокап
 // секции сайта Stablegate (белая карточка + 4 карточки-фичи с 3D) —
@@ -9,11 +11,10 @@ import { useState } from "react";
 // <640 (node 2695:19371) — по умолчанию вписан по ширине (375), по
 // нажатию РАСКРЫВАЕТСЯ до ~2.8× в горизонтально-прокручиваемом окне,
 // чтобы прочитать мелкий текст мини-лендинга (как «Гайд» в кейсе 1).
-const ALT =
-  "Секция сайта Stablegate: Financial infrastructure built for modern businesses";
-
 export default function SiteFeatures() {
   const [open, setOpen] = useState(false);
+  const t = C3[useLang()];
+  const ALT = t.siteFeaturesAlt;
 
   return (
     <div className="relative w-full overflow-clip bg-[#fafafa] xl:h-[940px] xl:w-[1440px]">
@@ -28,7 +29,7 @@ export default function SiteFeatures() {
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
-          aria-label={open ? "Свернуть секцию сайта" : "Раскрыть секцию сайта для просмотра"}
+          aria-label={open ? t.collapseSiteLabel : t.expandSiteLabel}
           className={`group relative block w-full ${open ? "cursor-zoom-out" : "cursor-zoom-in"}`}
         >
           <div
@@ -49,7 +50,7 @@ export default function SiteFeatures() {
           </div>
           {!open && (
             <span className="pointer-events-none absolute bottom-[10px] right-[10px] rounded-full bg-[#121212]/80 px-[10px] py-[4px] text-[11px] font-medium uppercase tracking-[0.22px] text-white">
-              нажмите, чтобы раскрыть
+              {t.tapToExpand}
             </span>
           )}
         </button>

@@ -1,5 +1,7 @@
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C3 } from "../i18n";
 
 // 02 Исследование — тёмный текст на #fafafa. Мудборд 3D-референсов с
 // подписями MATERIAL / FORM / COMPOSITION / RESULT + доодл-«глаз».
@@ -116,6 +118,8 @@ function CardWindow({ c }: { c: Card }) {
 }
 
 export default function Research() {
+  const lang = useLang();
+  const t = C3[lang];
   return (
     <div className="relative w-full overflow-clip bg-[#fafafa] xl:h-[1029px] xl:w-[1440px]">
       {/* ≥1440 — 1:1 из Figma-канваса 1440: живой текст поверх запечённого
@@ -123,26 +127,18 @@ export default function Research() {
       <div className="hidden xl:contents">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Мудборд 3D-референсов: материалы, форма, композиция, итог"
+          alt={t.moodboardAlt}
           className="absolute inset-0 block size-full"
           src={`${A}/research.jpg`}
         />
         <div className="absolute left-0 top-0 h-[320px] w-[560px] bg-[#fafafa]" />
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">02</p>
-          <p className="text-[#121212]">Исследование</p>
+          <p className="text-[#121212]">{t.researchHeading}</p>
         </div>
         <div className="absolute left-[46px] top-[181px] flex w-[499px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          <p>
-            Работа началась с изучения продукта и поиска визуальных метафор. Вместе с маркетологом
-            мы определили ключевые функции и преимущества Stablegate, а затем искали для них
-            понятные образы.
-          </p>
-          <p>
-            От привычной банковской символики сознательно отказались в пользу более современных и
-            технологичных решений. После этого я собрал референсы, сделал серию быстрых скетчей и
-            определил принципы будущей системы.
-          </p>
+          <p>{t.researchIntro1}</p>
+          <p>{t.researchIntro2}</p>
         </div>
         <div className="absolute left-[46px] top-[861px] h-[20px] w-[920px] bg-[#fafafa]" />
         {LABELS_1440.map(([text, x]) => (
@@ -164,36 +160,48 @@ export default function Research() {
           <div className="relative w-[375px] overflow-clip bg-[#fafafa]" style={{ height: 2198 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Мудборд 3D-референсов: материалы, форма, композиция, итог"
+              alt={t.moodboardAlt}
               className="absolute left-[20px] top-[330px] w-[335px] max-w-none"
               src={`${A}/research-375.jpg`}
             />
-            <p className="sr-only">Категории мудборда: Material, Form, Composition, Result.</p>
+            <p className="sr-only">{t.moodboardCaptionsSr}</p>
 
             {/* Заголовок «02 ИССЛЕДОВАНИЕ» (20, 64), Wix Bold 26, gap 12. */}
             <div className="absolute left-[20px] top-[64px] flex items-center gap-[12px] whitespace-nowrap bg-[#fafafa] font-heading text-[26px] font-bold uppercase leading-none tracking-[0.78px]">
               <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">Исследование</span>
+              <span className="text-[#121212]">{t.researchHeading}</span>
             </div>
 
             {/* Два абзаца (20, 105), 335, gap 6, Aeonik Regular 14 opacity-70. */}
             <div className="absolute left-[20px] top-[105px] flex w-[335px] flex-col gap-[6px] whitespace-pre-wrap bg-[#fafafa] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
               <p className="opacity-70">
-                Работа началась с изучения продукта и поиска визуальных метафор. Вместе с
-                маркетологом{" "}
-                <br />
-                мы определили ключевые функции{" "}
-                <br />и преимущества Stablegate, а затем искали{" "}
-                <br />
-                для них понятные образы.
+                {lang === "ru" ? (
+                  <>
+                    Работа началась с изучения продукта и поиска визуальных метафор. Вместе с
+                    маркетологом{" "}
+                    <br />
+                    мы определили ключевые функции{" "}
+                    <br />и преимущества Stablegate, а затем искали{" "}
+                    <br />
+                    для них понятные образы.
+                  </>
+                ) : (
+                  t.researchIntro1
+                )}
               </p>
               <p className="opacity-70">
-                От привычной банковской символики сознательно отказались в пользу более
-                современных и технологичных решений.{" "}
-                <br />
-                После этого я собрал референсы, сделал{" "}
-                <br />
-                серию быстрых скетчей и определил принципы будущей системы.
+                {lang === "ru" ? (
+                  <>
+                    От привычной банковской символики сознательно отказались в пользу более
+                    современных и технологичных решений.{" "}
+                    <br />
+                    После этого я собрал референсы, сделал{" "}
+                    <br />
+                    серию быстрых скетчей и определил принципы будущей системы.
+                  </>
+                ) : (
+                  t.researchIntro2
+                )}
               </p>
             </div>
           </div>
@@ -214,31 +222,33 @@ export default function Research() {
                 текста, так что визуально ничего не закрыто. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Мудборд 3D-референсов: материалы, форма, композиция, итог"
+              alt={t.moodboardAlt}
               className="absolute left-[28px] top-[207px] w-[778px] max-w-none"
               src={`${A}/research-834.jpg`}
             />
-            <p className="sr-only">Категории мудборда: Material, Form, Composition, Result.</p>
+            <p className="sr-only">{t.moodboardCaptionsSr}</p>
 
             {/* Заголовок «02 ИССЛЕДОВАНИЕ» (28, 56), Wix Bold 32, gap 12. */}
             <div className="absolute left-[28px] top-[56px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
               <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">Исследование</span>
+              <span className="text-[#121212]">{t.researchHeading}</span>
             </div>
 
             {/* Два абзаца (28, 115), 383, gap 6, Aeonik Regular 14 opacity-70.
                 Во 2-м — два ручных <br> (после «современных » и «скетчей »). */}
             <div className="absolute left-[28px] top-[115px] flex w-[383px] flex-col gap-[6px] bg-[#fafafa] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-              <p className="opacity-70">
-                Работа началась с изучения продукта и поиска визуальных метафор. Вместе с
-                маркетологом мы определили ключевые функции и преимущества Stablegate, а затем
-                искали для них понятные образы.
-              </p>
+              <p className="opacity-70">{t.researchIntro1}</p>
               <p className="whitespace-pre-wrap opacity-70">
-                От привычной банковской символики сознательно отказались в пользу более современных{" "}
-                <br />
-                и технологичных решений. После этого я собрал референсы, сделал серию быстрых
-                скетчей <br />и определил принципы будущей системы.
+                {lang === "ru" ? (
+                  <>
+                    От привычной банковской символики сознательно отказались в пользу более современных{" "}
+                    <br />
+                    и технологичных решений. После этого я собрал референсы, сделал серию быстрых
+                    скетчей <br />и определил принципы будущей системы.
+                  </>
+                ) : (
+                  t.researchIntro2
+                )}
               </p>
             </div>
 
@@ -263,21 +273,23 @@ export default function Research() {
             {/* Заголовок «02 ИССЛЕДОВАНИЕ» (40, 72), 32px Bold. */}
             <div className="absolute left-[40px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
               <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">Исследование</span>
+              <span className="text-[#121212]">{t.researchHeading}</span>
             </div>
             {/* Два абзаца (40, 119.32), 594 / 592, 14px opacity 70, gap 6. */}
             <div className="absolute left-[40px] top-[119px] flex w-[594px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
               <p className="opacity-70">
-                Работа началась с изучения продукта и поиска визуальных метафор.
-                <br />
-                Вместе с маркетологом мы определили ключевые функции и преимущества Stablegate, а
-                затем искали для них понятные образы.
+                {lang === "ru" ? (
+                  <>
+                    Работа началась с изучения продукта и поиска визуальных метафор.
+                    <br />
+                    Вместе с маркетологом мы определили ключевые функции и преимущества Stablegate, а
+                    затем искали для них понятные образы.
+                  </>
+                ) : (
+                  t.researchIntro1
+                )}
               </p>
-              <p className="w-[592px] opacity-70">
-                От привычной банковской символики сознательно отказались в пользу более современных
-                и технологичных решений. После этого я собрал референсы, сделал серию быстрых
-                скетчей и определил принципы будущей системы.
-              </p>
+              <p className="w-[592px] opacity-70">{t.researchIntro2}</p>
             </div>
 
             {/* Доодл-«глаз» (Group 2695:18237, 1047.51, 19.8), 156.94×110.48. */}

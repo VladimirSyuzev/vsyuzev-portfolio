@@ -1,8 +1,12 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
 import DrawIn from "@/components/DrawIn";
+import { useLang } from "@/lib/lang";
+import { C3 } from "./i18n";
 import SiteFeatures from "./sections/SiteFeatures";
 import Task from "./sections/Task";
 import Research from "./sections/Research";
@@ -18,6 +22,8 @@ import Summary from "./sections/Summary";
 // (мокапы, фото, 3D-сеты) — пропорционально на всю ширину экрана.
 // Обложка/«О проекте» — весь первый экран (min-h-screen, FullBleedScale).
 export default function Case03Page() {
+  const lang = useLang();
+  const t = C3[lang];
   return (
     <div className="flex w-full flex-col items-center overflow-x-clip">
       <Header />
@@ -40,7 +46,7 @@ export default function Case03Page() {
               <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
                 <div className="absolute left-[461px] top-[-92px] h-[678px] w-[1020px]">
                   <img
-                    alt="Сайт Stablegate на экране ноутбука"
+                    alt={t.coverAlt}
                     className="absolute inset-0 size-full object-cover"
                     src="/cases/case-03/sections/cover-mockup.jpg"
                   />
@@ -61,8 +67,8 @@ export default function Case03Page() {
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
               <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                3D-иллюстраций <br />
-                для финтех-продукта
+                {t.coverLine1} <br />
+                {t.coverLine2}
               </p>
               <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white" style={{ opacity: 0.56 }}>
                 003
@@ -114,8 +120,8 @@ export default function Case03Page() {
                     003
                   </p>
                   <p className="w-[1278px] whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                    3D-иллюстраций <br />
-                    для финтех-продукта
+                    {t.coverLine1} <br />
+                    {t.coverLine2}
                   </p>
                 </div>
               </div>
@@ -123,11 +129,13 @@ export default function Case03Page() {
           </div>
 
           {/* <640 — 1:1 из Figma «case-03 · 375» (node 2711:13965, 375×356).
-              Композит с blend-modes → единый бейк. */}
+              Композит с blend-modes → единый бейк (заголовок запечён в
+              картинку пикселями — на EN текст остаётся русским, отдельного
+              EN-экспорта этого бейка нет). */}
           <div className="w-full sm:hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Сайт Stablegate на экране ноутбука · 3D-иллюстраций для финтех-продукта"
+              alt={`${t.coverAlt} · ${t.coverLine1} ${t.coverLine2}`}
               className="block w-full"
               src="/cases/case-03/sections/hero375.jpg"
             />
@@ -175,8 +183,8 @@ export default function Case03Page() {
                     003
                   </p>
                   <p className="w-[1278px] whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                    3D-иллюстраций <br />
-                    для финтех-продукта
+                    {t.coverLine1} <br />
+                    {t.coverLine2}
                   </p>
                 </div>
               </div>
@@ -192,19 +200,19 @@ export default function Case03Page() {
           {/* ≥1440 */}
           <div className="hidden xl:contents">
             <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
+              {t.aboutHeading}
             </p>
             <p className="absolute left-[46px] top-[148px] w-[670px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
+              {t.aboutIntro}
             </p>
 
             <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">3D Artist</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
             </div>
             <div className="absolute left-[1236px] top-[149px] flex w-[98px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Stablegate</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientStablegate}</p>
             </div>
 
             <DrawIn
@@ -220,19 +228,19 @@ export default function Case03Page() {
               ряд (gap 24). Клиент «Stablegate». Без декор-линии. */}
           <div className="flex flex-col gap-[32px] px-[20px] py-[64px] sm:hidden">
             <div className="flex flex-col gap-[12px] text-[#121212]">
-              <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px]">О ПРОЕКТЕ</p>
+              <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px]">{t.aboutHeading}</p>
               <p className="whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
-              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
+              {t.aboutIntro}
             </p>
             </div>
             <div className="flex items-center gap-[24px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-black">
               <div className="flex w-[102px] flex-col items-start gap-[4px]">
-                <p className="font-medium uppercase">Позиция</p>
-                <p className="opacity-70">3D Artist</p>
+                <p className="font-medium uppercase">{t.metaRole}</p>
+                <p className="opacity-70">{t.metaRoleValue}</p>
               </div>
               <div className="flex w-[98px] flex-col items-start gap-[4px]">
-                <p className="font-medium uppercase">Клиент</p>
-                <p className="opacity-70">Stablegate</p>
+                <p className="font-medium uppercase">{t.metaClient}</p>
+                <p className="opacity-70">{t.metaClientStablegate}</p>
               </div>
             </div>
           </div>
@@ -242,20 +250,20 @@ export default function Case03Page() {
               строка «left» — абзац 382 + мета (x613). Клиент «Яндекс». */}
           <div className="hidden flex-col gap-[12px] px-[28px] py-[72px] sm:flex lg:hidden">
             <p className="whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
+              {t.aboutHeading}
             </p>
             <div className="flex items-start justify-between">
               <p className="w-[382px] max-w-[62%] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
+              {t.aboutIntro}
             </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">Позиция</p>
-                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">3D Artist</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">{t.metaRole}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
                 </div>
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">Клиент</p>
-                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">Яндекс</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">{t.metaClient}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">{t.metaClientYandex}</p>
                 </div>
 
                 {/* Декор-подчёркивание (Vector 234257362) — по замеру Figma
@@ -276,20 +284,20 @@ export default function Case03Page() {
               не «Stablegate»). */}
           <div className="hidden flex-col gap-[12px] px-[40px] py-[64px] lg:flex xl:hidden">
             <p className="whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
+              {t.aboutHeading}
             </p>
             <div className="flex items-start justify-between gap-[40px]">
               <p className="w-[594px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Для Stablegate разработана система 3D key visuals: 3D выбрали вместо плоских иллюстраций, потому что так лучше вписывается в дизайн сайта. Сегодня в библиотеке 12 иллюстраций, готовый набор сокращает подготовку новых материалов вдвое — команда берёт готовую иллюстрацию вместо поиска на стоках или генерации с нуля.
+              {t.aboutIntro}
             </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">3D Artist</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
                 </div>
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Яндекс</p>
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientYandex}</p>
                 </div>
 
                 {/* Декор-подчёркивание под метой — reflow 1280 (в макете
