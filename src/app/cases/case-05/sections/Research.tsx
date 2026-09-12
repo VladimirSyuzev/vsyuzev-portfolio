@@ -75,21 +75,25 @@ export default function Research() {
             className="absolute left-[897px] top-[866px] z-10 h-[125px] w-[158px]"
           />
 
-      {/* Крупная мысль (Figma node 2411:4290 → x46 / y1003, w888). */}
-      <p className="absolute left-[46px] top-[1003px] w-[888px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-        Узнаваемость автомобиля строится на нескольких ключевых признаках, а не на точном
-        копировании каждой детали
-      </p>
-      {/* Двойное подчёркивание (Figma nodes 2284:40129 / 2284:40174). */}
-      <DrawIn
-        src={`${A}/research-underline1.svg`}
-        className="absolute left-[296px] top-[1120px] h-[35px] w-[663px]"
-      />
-      <DrawIn
-        src={`${A}/research-underline2.svg`}
-        delay={0.1}
-        className="absolute left-[425px] top-[1134px] h-[49px] w-[578px]"
-      />
+      {/* Крупная мысль (Figma node 2411:4290 → x46 / y1003, w888) + двойное
+          подчёркивание (2284:40129 / 2284:40174) — общая обёртка, обе линии
+          привязаны к НИЗУ текста (top-[calc(100%+Npx)], не фикс-px) — не
+          оторвутся при другом числе строк (перевод на английский). */}
+      <div className="absolute left-[46px] top-[1003px] w-[888px]">
+        <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          Узнаваемость автомобиля строится на нескольких ключевых признаках, а не на точном
+          копировании каждой детали
+        </p>
+        <DrawIn
+          src={`${A}/research-underline1.svg`}
+          className="absolute left-[250px] top-[calc(100%+11px)] h-[35px] w-[663px]"
+        />
+        <DrawIn
+          src={`${A}/research-underline2.svg`}
+          delay={0.1}
+          className="absolute left-[379px] top-[calc(100%+9px)] h-[49px] w-[578px]"
+        />
+      </div>
       </div>
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41033,
@@ -175,7 +179,10 @@ export default function Research() {
           />
 
             {/* Крупная мысль (Frame 2147232144, w-full, pb-64) + двойное
-                подчёркивание (Vector 234257378 / 234257379). */}
+                подчёркивание (Vector 234257378 / 234257379) — обе линии
+                привязаны к НИЗУ текста (top-[calc(100%+Npx)], не фикс-px) —
+                не оторвутся при другом числе строк (перевод на английский).
+                Наклон уже в путях — без CSS-rotate. */}
             <div className="relative flex w-full shrink-0 flex-col items-start justify-center gap-[10px] pb-[64px]">
               <p className="w-[888px] whitespace-pre-wrap font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80 [word-break:break-word]">
                 Узнаваемость автомобиля строится{" "}
@@ -183,13 +190,10 @@ export default function Research() {
                 на нескольких ключевых признаках,{" "}
                 <br />а не на точном копировании каждой детали
               </p>
-              {/* Двойное подчёркивание 1:1 из Figma (Frame 2884:14356 (257,115.07):
-                  Vector 234257378 (0.489,0) 663×35; Vector 234257379 (109.114,10.52)
-                  576.809×35.031). Наклон уже в путях — без CSS-rotate. */}
-              <div className="absolute left-[257.489px] top-[115.07px] h-[35px] w-[663px]">
+              <div className="absolute left-[257.489px] top-[calc(100%+9px)] h-[35px] w-[663px]">
                 <DrawIn src={`${A}/research-underline-1-1280.svg`} className="absolute inset-[-8.571%_-0.452%]" />
               </div>
-              <div className="absolute left-[366.114px] top-[125.59px] h-[35.031px] w-[576.809px]">
+              <div className="absolute left-[366.114px] top-[calc(100%+20px)] h-[35.031px] w-[576.809px]">
                 <DrawIn src={`${A}/research-underline-2-1280.svg`} delay={0.1} className="absolute inset-[-8.564%_-0.52%]" />
               </div>
             </div>
@@ -287,7 +291,7 @@ export default function Research() {
                 автомобиля строится{" "}
                 <br />на нескольких ключевых признаках, а не на точном копировании каждой детали
               </p>
-              <div className="absolute left-[110px] top-[162.84px] h-[27.962px] w-[471px]">
+              <div className="absolute left-[110px] top-[calc(100%+9px)] h-[27.962px] w-[471px]">
                 <DrawIn src={`${A}/research-underline-834.svg`} className="absolute inset-[-10.73%_-0.64%]" />
               </div>
             </div>
@@ -384,7 +388,7 @@ export default function Research() {
                 на нескольких ключевых признаках,{" "}
                 <br />а не на точном копировании каждой детали
               </p>
-              <div className="absolute left-[13px] top-[324.47px] h-[28px] w-[322px]">
+              <div className="absolute left-[13px] top-[calc(100%+15px)] h-[28px] w-[322px]">
                 <DrawIn src={`${A}/research-underline-375.svg`} className="absolute inset-[-10.72%_-0.93%]" />
               </div>
             </div>

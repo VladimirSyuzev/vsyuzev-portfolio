@@ -95,21 +95,22 @@ export default function Details() {
           />
         ))}
 
-        {/* Обводка-эллипс вокруг мысли (Figma node 2412:4338). Реальная
-            геометрия — из `export` (номинальный box 707×231), якорь по
-            translate фонового rect: левый-верх SVG = точка секции
-            (361, 1009.82). viewBox расширен на поля (-4/-26 719×271), чтобы
-            <img> не срезал верхнюю и нижнюю дуги, поэтому смещаем на поля. */}
-        <DrawIn
-          src={`${A}/details-ellipse.svg`}
-          fit="contain"
-          className="absolute left-[357px] top-[984px] h-[271px] w-[719px]"
-        />
-        {/* Мысль (Figma node 2412:4317 → x386 / y1064, w668, по центру). */}
-        <p className="absolute left-1/2 top-[1064px] w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Каждая деталь должна была работать на историю, не мешая считывать автомобиль в маленьком
-          формате
-        </p>
+        {/* Мысль (Figma node 2412:4317) + обводка-эллипс (2412:4338) — общая
+            центрированная обёртка (раньше были независимыми элементами с
+            фикс-координатами), эллипс в % от блока текста (192.5%/107.64%)
+            — масштабируется вместе с текстом при другом числе строк
+            (перевод на английский). */}
+        <div className="absolute left-1/2 top-[1134px] w-[668px] -translate-x-1/2 -translate-y-1/2">
+          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+            Каждая деталь должна была работать на историю, не мешая считывать автомобиль в маленьком
+            формате
+          </p>
+          <DrawIn
+            src={`${A}/details-ellipse.svg`}
+            fit="contain"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[192.5%] w-[107.64%] -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
       </div>
       </div>
 
@@ -158,17 +159,21 @@ export default function Details() {
               ))}
             </div>
 
-            {/* Блок 3 — мысль w-668 по центру в обводке-эллипсе
-                (Frame 2828:45401, 1200×268). */}
+            {/* Блок 3 — мысль w-668 по центру в обводке-эллипсе (Frame
+                2828:45401, 1200×268). Эллипс — общая обёртка с текстом
+                (раньше был независимым элементом с фикс-координатами внутри
+                блока), размер в % от блока текста (159.18%/104.89%) —
+                масштабируется вместе с текстом при другом числе строк
+                (перевод на английский). */}
             <div className="relative flex h-[268px] w-[1200px] shrink-0 flex-col items-center justify-center gap-[10px] px-[266px] py-[64px]">
-              <p className="min-w-full whitespace-pre-wrap text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 [word-break:break-word]">
-                Каждая деталь должна была работать на историю, не мешая считывать автомобиль{" "}
-                <br />в маленьком формате
-              </p>
-              {/* Обводка-эллипс (Vector 234257391, 2835:53395) — внутри блока
-                  (250.89, 13.49), 700.665×224.109. */}
-              <div className="absolute left-[250.89px] top-[13.49px] h-[224.109px] w-[700.665px]">
-                <DrawIn src={`${A}/details-ellipse-1280.svg`} className="absolute inset-[-1.34%_-0.43%]" />
+              <div className="relative w-full">
+                <p className="min-w-full whitespace-pre-wrap text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 [word-break:break-word]">
+                  Каждая деталь должна была работать на историю, не мешая считывать автомобиль{" "}
+                  <br />в маленьком формате
+                </p>
+                <div className="pointer-events-none absolute left-1/2 top-1/2 h-[159.18%] w-[104.89%] -translate-x-1/2 -translate-y-1/2">
+                  <DrawIn src={`${A}/details-ellipse-1280.svg`} className="absolute inset-[-1.34%_-0.43%]" />
+                </div>
               </div>
             </div>
           </div>

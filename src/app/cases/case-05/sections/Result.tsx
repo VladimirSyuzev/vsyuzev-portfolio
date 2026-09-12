@@ -86,16 +86,21 @@ export default function Result() {
           </div>
         </div>
 
-        {/* Обводка-эллипс вокруг мысли (Figma node 2412:4342). */}
-        <DrawIn
-          src={`${A}/result-ellipse.svg`}
-          fit="contain"
-          className="absolute left-[385px] top-[873px] h-[254px] w-[670px]"
-        />
-        {/* Мысль (Figma node 2412:4341 → x386 / y955.7, w668, по центру). */}
-        <p className="absolute left-1/2 top-[956px] w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
-        </p>
+        {/* Мысль (Figma node 2412:4341) + обводка-эллипс (2412:4342) — общая
+            центрированная обёртка (раньше были независимыми элементами с
+            фикс-координатами), эллипс в % от блока текста (240.5%/100.3%) —
+            масштабируется вместе с текстом при другом числе строк (перевод
+            на английский). */}
+        <div className="absolute left-1/2 top-[1009px] w-[668px] -translate-x-1/2 -translate-y-1/2">
+          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+            Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
+          </p>
+          <DrawIn
+            src={`${A}/result-ellipse.svg`}
+            fit="contain"
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[240.5%] w-[100.3%] -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
       </div>
 
       {/* Снап-карусель «варианты» (Figma frame 2440:56862 → y386). */}
@@ -146,24 +151,25 @@ export default function Result() {
                 шир., y274) — те же CARDS. */}
             <VariantsCarousel cards={CARDS} top={274} tone="light" onIndexChange={onIndexChange} />
 
-            {/* Обводка-эллипс вокруг мысли (Vector 234257391, node
-                2835:53397) — секция (311, 768.074), 655.774×209.751
-                (опущена вслед за блоком цитаты: у текста стал больше
-                верхний отступ). */}
+            {/* Мысль (text 2828:45509) + обводка-эллипс (Vector 234257391,
+                node 2835:53397) — общая центрированная обёртка (раньше были
+                независимыми элементами с фикс-координатами), эллипс в % от
+                блока текста (198.64%/98.17%) — масштабируется вместе с
+                текстом при другом числе строк (перевод на английский). */}
             <div
-              className="z-0"
-              style={{ position: "absolute", left: 311, top: 768.074, width: 655.774, height: 209.751 }}
+              className="absolute left-1/2 w-[668px]"
+              style={{ top: 874, transform: "translate(-50%, -50%)" }}
             >
-              <DrawIn src={`${A}/result-ellipse-1280.svg`} className="absolute" style={{ inset: "-1.43% -0.457%" }} />
+              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+                Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
+              </p>
+              <div
+                className="pointer-events-none absolute left-1/2 top-1/2 z-0"
+                style={{ width: "98.17%", height: "198.64%", transform: "translate(-50%, -50%)" }}
+              >
+                <DrawIn src={`${A}/result-ellipse-1280.svg`} className="absolute" style={{ inset: "-1.43% -0.457%" }} />
+              </div>
             </div>
-            {/* Мысль (text 2828:45509 → внутри блока 2827:44590 (266, 84) →
-                холст (306, 821), w-668, по центру). */}
-            <p
-              className="absolute left-1/2 w-[668px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70"
-              style={{ top: 821 }}
-            >
-              Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
-            </p>
           </div>
         </FullBleedScale>
       </div>
@@ -201,17 +207,22 @@ export default function Result() {
             <VariantsCarousel cards={CARDS} top={240} tone="light" onIndexChange={onIndexChange} />
 
             {/* Блок цитаты (Frame 2828:49093, 28/703, 777×252, flex center
-                py-64) + обводка-эллипс (Vector 234257391, node 2835:53398). */}
+                py-64) + обводка-эллипс (Vector 234257391, node 2835:53398) —
+                общая обёртка, эллипс в % от блока текста (148.59%/111.28%)
+                — масштабируется вместе с текстом при другом числе строк
+                (перевод на английский). */}
             <div
               className="absolute flex w-[777px] items-center justify-center gap-[10px] py-[64px]"
               style={{ left: 28, top: 703 }}
             >
-              <p className="w-[461px] whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
-                Узнаваемый автомобиль получил историю, которую раньше{" "}
-                <br />с ним не связывали
-              </p>
-              <div className="absolute left-1/2 top-[29.13px] z-0 h-[183px] w-[513px] -translate-x-1/2">
-                <DrawIn src={`${A}/result-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
+              <div className="relative w-[461px]">
+                <p className="whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
+                  Узнаваемый автомобиль получил историю, которую раньше{" "}
+                  <br />с ним не связывали
+                </p>
+                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[148.59%] w-[111.28%] -translate-x-1/2 -translate-y-1/2">
+                  <DrawIn src={`${A}/result-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
+                </div>
               </div>
             </div>
           </div>
