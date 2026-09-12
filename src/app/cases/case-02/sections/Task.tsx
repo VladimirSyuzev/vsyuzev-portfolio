@@ -211,7 +211,7 @@ export default function Task() {
             <DrawIn
               src={`${A}/task-ellipse.svg`}
               fit="contain"
-              className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[176%] xl:w-[129%]"
+              className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[222%] xl:w-[136%]"
             />
           </div>
           <DrawIn
