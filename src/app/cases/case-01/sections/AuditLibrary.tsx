@@ -273,7 +273,14 @@ export default function AuditLibrary() {
         </div>
 
         <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] sm:max-w-[629px] xl:absolute xl:left-[46px] xl:top-[612px] xl:w-[629px]">
-          {t.auditIntro}
+          {lang === "ru" ? (
+            t.auditIntro
+          ) : (
+            <>
+              We started with a full review. We merged both libraries,
+              <br className="hidden xl:inline" /> sorted the icons into categories and analysed every entry.
+            </>
+          )}
         </p>
 
         <p className="audit-intro whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[866px] xl:w-[200px]">

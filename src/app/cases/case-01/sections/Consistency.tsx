@@ -181,7 +181,9 @@ export default function Consistency() {
                 </>
               ) : (
                 <>
-                  The Balance Board helped catch mismatches{" "}
+                  The Balance Board{" "}
+                  <br className="hidden xl:inline" />
+                  helped catch mismatches{" "}
                   <br className="hidden xl:inline" />
                   and make decisions before{" "}
                   <br className="hidden xl:inline" />
