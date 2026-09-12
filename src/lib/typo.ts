@@ -23,6 +23,15 @@ const SHORT_WORDS = [
   "я", "ты", "мы", "вы", "он",
   "их", "им", "её", "ей", "ее",
   "они", "она", "оно", "его", "ему", "нее", "неё", "чем", "мне", "нас", "вас",
+  // --- английский: артикли / предлоги / союзы ---
+  "a", "an", "the",
+  "in", "on", "at", "by", "to", "of", "up", "as", "or", "if", "so", "no",
+  "nor", "yet", "per", "via", "off", "out", "and", "but", "for", "from",
+  "with",
+  // английский: короткие местоимения и формы глагола be
+  "i", "we", "he", "she", "it", "me", "us", "my", "you", "him", "her",
+  "his", "its", "our", "they", "them", "your", "their",
+  "am", "is", "be", "are", "was", "were",
 ];
 
 const SHORT_ALT = SHORT_WORDS.join("|");
