@@ -384,17 +384,21 @@ export default function Process() {
 
         {dsystemCard}
 
-        {/* Обводка-эллипс вокруг фразы (Figma node 2387:22373). */}
-        <DrawIn
-          src={`${A}/process-ellipse.svg`}
-          className="absolute left-[414px] top-[1759px] h-[156px] w-[637px]"
-        />
-
-        <p className="absolute left-1/2 top-[1812px] w-[669px] -translate-x-1/2 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Разные функции продукта.
-          <br />
-          Один визуальный язык
-        </p>
+        {/* Обводка-эллипс вокруг фразы (Figma node 2387:22373) — общая
+            центрированная обёртка с текстом, эллипс в % от блока текста
+            (221.6%/95.2%) — масштабируется вместе с текстом при другом
+            числе строк (перевод на английский). */}
+        <div className="absolute left-1/2 top-[1847px] w-[669px] -translate-x-1/2 -translate-y-1/2">
+          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+            Разные функции продукта.
+            <br />
+            Один визуальный язык
+          </p>
+          <DrawIn
+            src={`${A}/process-ellipse.svg`}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[221.6%] w-[95.2%] -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
 
         <Reveal variant="fade" className="absolute left-[220px] top-[2099px]">
           {iconset}
@@ -497,16 +501,20 @@ export default function Process() {
             </div>
 
             {/* Послесловие (2712:14255, y 2176 — gap вокруг хайлайта увеличен
-                до 64) + обводка-доодл (Vector 234257391, фикс-бокс центр,
-                top 2139, 349×146). */}
-            <div className="absolute left-1/2 top-[2139px] h-[146px] w-[349px] -translate-x-1/2">
-              <DrawIn src={`${A}/process-ellipse-375.svg`} className="absolute inset-[-2.05%_-0.86%]" />
+                до 64) + обводка-доодл (Vector 234257391) — общая
+                центрированная обёртка, эллипс в % от блока текста
+                (201.1%/104.2%) — масштабируется вместе с текстом при другом
+                числе строк (перевод на английский). */}
+            <div className="absolute left-1/2 top-[2212px] w-[335px] -translate-x-1/2 -translate-y-1/2">
+              <p className="whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
+                Разные функции продукта.
+                <br />
+                Один визуальный язык
+              </p>
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[201.1%] w-[104.2%] -translate-x-1/2 -translate-y-1/2">
+                <DrawIn src={`${A}/process-ellipse-375.svg`} className="absolute inset-[-2.05%_-0.86%]" />
+              </div>
             </div>
-            <p className="absolute left-[20px] top-[2176px] w-[335px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
-              Разные функции продукта.
-              <br />
-              Один визуальный язык
-            </p>
 
             {/* Сет 12 иконок (2712:14256, 0/2344, 375×489.7), иконка 105.077. */}
             <Reveal variant="fade" className="absolute left-0 top-[2344px]">
@@ -593,17 +601,21 @@ export default function Process() {
             {/* Белая карточка 4 объектов (2695:19147, 28/975, 778×399). */}
             <div className="absolute left-[28px] top-[975px] h-[399px] w-[778px]">{dsystemCard834}</div>
 
-            {/* Послесловие (2711:13955, 28/1502) + обводка-доодл
-                (Vector 234257391, 2711:13954, 144/1454.89, 533×146). */}
-            <DrawIn
-              src={`${A}/process-ellipse-834.svg`}
-              className="absolute left-[144px] top-[1455px] h-[152px] w-[539px]"
-            />
-            <p className="absolute left-[28px] top-[1502px] w-[778px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-              Разные функции продукта.
-              <br />
-              Один визуальный язык
-            </p>
+            {/* Послесловие (2711:13955, 28/1502) + обводка-доодл (Vector
+                234257391, 2711:13954) — общая центрированная обёртка, эллипс
+                в % от блока текста (246.8%/69.3%) — масштабируется вместе с
+                текстом при другом числе строк (перевод на английский). */}
+            <div className="absolute left-[417px] top-[1533px] w-[778px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+                Разные функции продукта.
+                <br />
+                Один визуальный язык
+              </p>
+              <DrawIn
+                src={`${A}/process-ellipse-834.svg`}
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[246.8%] w-[69.3%] -translate-x-1/2 -translate-y-1/2"
+              />
+            </div>
 
             {/* Сет 12 иконок (2695:19207, 28/1692, 778×1016). */}
             <Reveal variant="fade" className="absolute left-[28px] top-[1692px]">
@@ -681,17 +693,21 @@ export default function Process() {
             {/* Белая карточка 4 объектов (2387:22353, 40/1109, 1200×399). */}
             <div className="absolute left-[40px] top-[1109px] h-[399px] w-[1200px]">{dsystemCard}</div>
 
-            {/* Послесловие (2707:41645, 40/1572) + обводка-доодл
-                (Vector 234257391, 2711:13953, 331.32/1582.45, 614.94×168.49). */}
-            <DrawIn
-              src={`${A}/process-ellipse-1280.svg`}
-              className="absolute left-[331px] top-[1582px] h-[174px] w-[621px]"
-            />
-            <p className="absolute left-[40px] top-[1636px] w-[1200px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-              Разные функции продукта.
-              <br />
-              Один визуальный язык
-            </p>
+            {/* Послесловие (2707:41645, 40/1572) + обводка-доодл (Vector
+                234257391, 2711:13953) — общая центрированная обёртка, эллипс
+                в % от блока текста (247.2%/51.75%) — масштабируется вместе
+                с текстом при другом числе строк (перевод на английский). */}
+            <div className="absolute left-[640px] top-[1671px] w-[1200px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+                Разные функции продукта.
+                <br />
+                Один визуальный язык
+              </p>
+              <DrawIn
+                src={`${A}/process-ellipse-1280.svg`}
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[247.2%] w-[51.75%] -translate-x-1/2 -translate-y-1/2"
+              />
+            </div>
 
             {/* Сет 12 иконок (2695:18411, 40/1834, 1200×756). Внутренний
                 отступ Figma-фрейма 100 → окно 1000 на left 40+100=140. */}

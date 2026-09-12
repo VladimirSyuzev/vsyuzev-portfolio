@@ -46,16 +46,21 @@ export default function VisualSystem() {
         src={`${A}/vislang-photo.jpg`}
       />
 
-      {/* ≥1440 — итоговая мысль в обводке-эллипсе, центрированная 1440-сетка. */}
+      {/* ≥1440 — итоговая мысль в обводке-эллипсе, центрированная 1440-сетка.
+          Эллипс и текст — в общей центрированной обёртке (раньше были
+          независимыми элементами с фикс-координатами), размер эллипса в %
+          от блока текста — масштабируется вместе с текстом при другом числе
+          строк (перевод на английский). */}
       <div className="relative mx-auto hidden h-[440px] w-[1440px] xl:block">
-        <DrawIn
-          src={`${A}/vislang-ellipse.svg`}
-          className="absolute left-[380px] top-[136px] h-[222px] w-[681px]"
-        />
-
-        <p className="absolute left-[387px] top-[191px] w-[669px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Одна иллюстрация стала основой для масштабируемой визуальной системы
-        </p>
+        <div className="absolute left-1/2 top-[244px] w-[669px] -translate-x-1/2 -translate-y-1/2">
+          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+            Одна иллюстрация стала основой для масштабируемой визуальной системы
+          </p>
+          <DrawIn
+            src={`${A}/vislang-ellipse.svg`}
+            className="pointer-events-none absolute left-1/2 top-1/2 h-[210%] w-[101.8%] -translate-x-1/2 -translate-y-1/2"
+          />
+        </div>
       </div>
 
       {/* <640 — 1:1 из Figma reflow-фрейма «case-03 · 375» (node 2695:19842,
@@ -97,20 +102,23 @@ export default function VisualSystem() {
               src={`${A}/vislang-photo-375.png`}
             />
             {/* Послесловие (20, 650), 335, Wix Regular 22 center opacity-70,
-                ручной <br> после «стала основой ». */}
-            <p className="absolute left-[20px] top-[650px] w-[335px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
-              Одна иллюстрация стала основой{" "}
-              <br />
-              для масштабируемой визуальной системы
-            </p>
-            {/* Эллипс-обводка (Vector 234257387) — (18.15, 608.8), фикс-бокс
-                332.124×168.725, картинка inset -1.78%/-0.9% (preserveAspectRatio
-                none — тянется). */}
-            <div className="absolute left-[18.15px] top-[608.8px] h-[168.725px] w-[332.124px]">
-              <DrawIn
-                src={`${A}/vislang-ellipse-375.svg`}
-                className="absolute inset-[-1.78%_-0.9%]"
-              />
+                ручной <br> после «стала основой ». Эллипс-обводка (Vector
+                234257387) — общая центрированная обёртка, бокс в % от блока
+                текста (174.3%/99.1%) — масштабируется вместе с текстом при
+                другом числе строк (перевод на английский); внутри — тот же
+                inset-трюк на картинке (preserveAspectRatio none). */}
+            <div className="absolute left-[187px] top-[698px] w-[335px] -translate-x-1/2 -translate-y-1/2">
+              <p className="whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
+                Одна иллюстрация стала основой{" "}
+                <br />
+                для масштабируемой визуальной системы
+              </p>
+              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[174.3%] w-[99.1%] -translate-x-1/2 -translate-y-1/2">
+                <DrawIn
+                  src={`${A}/vislang-ellipse-375.svg`}
+                  className="absolute inset-[-1.78%_-0.9%]"
+                />
+              </div>
             </div>
           </div>
         </FullBleedScale>
@@ -162,17 +170,21 @@ export default function VisualSystem() {
             </div>
 
             {/* Послесловие (2710:13858, y841): текст (202, 905, 430), Wix
-                Regular 28 center opacity-70, в обводке-эллипсе. */}
-            <p className="absolute left-[202px] top-[905px] w-[430px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-              Одна иллюстрация стала основой{" "}
-              <br />
-              для масштабируемой визуальной системы
-            </p>
-            {/* Эллипс-обводка (Vector 234257391) — (181, 871), 463×191 (viewBox). */}
-            <DrawIn
-              src={`${A}/vislang-ellipse-834.svg`}
-              className="absolute left-[181px] top-[871px] h-[191px] w-[463px]"
-            />
+                Regular 28 center opacity-70, в обводке-эллипсе (Vector
+                234257391, 463×191 viewBox) — общая центрированная обёртка,
+                эллипс в % от блока текста (155.1%/107.7%) — масштабируется
+                вместе с текстом при другом числе строк (перевод). */}
+            <div className="absolute left-[417px] top-[967px] w-[430px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+                Одна иллюстрация стала основой{" "}
+                <br />
+                для масштабируемой визуальной системы
+              </p>
+              <DrawIn
+                src={`${A}/vislang-ellipse-834.svg`}
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[155.1%] w-[107.7%] -translate-x-1/2 -translate-y-1/2"
+              />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -218,17 +230,21 @@ export default function VisualSystem() {
               />
             </div>
 
-            {/* Послесловие (2707:41637): текст (395, 1193, 490×140) в обводке-
-                эллипсе. Реальный рендер вектора 2695:18262 — 535×226 (bbox в
-                get_metadata раздут до 572×415, игнорируем), центрируем на
-                центре текстового блока → (373, 1150). */}
-            <DrawIn
-              src={`${A}/vislang-ellipse-1280.svg`}
-              className="absolute left-[373px] top-[1150px] h-[226px] w-[535px]"
-            />
-            <p className="absolute left-[395px] top-[1193px] w-[490px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-              Одна иллюстрация стала основой для масштабируемой визуальной системы
-            </p>
+            {/* Послесловие: текст (395, 1193, 490) в обводке-эллипсе — общая
+                центрированная обёртка (раньше были независимыми элементами
+                с фикс-координатами), эллипс в % от блока текста (160.5%/
+                109.2%) — масштабируется вместе с текстом при другом числе
+                строк (перевод). Реальный рендер вектора 2695:18262 — 535×226
+                (bbox в get_metadata раздут до 572×415, игнорируем). */}
+            <div className="absolute left-[640px] top-[1263px] w-[490px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+                Одна иллюстрация стала основой для масштабируемой визуальной системы
+              </p>
+              <DrawIn
+                src={`${A}/vislang-ellipse-1280.svg`}
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[160.5%] w-[109.2%] -translate-x-1/2 -translate-y-1/2"
+              />
+            </div>
           </div>
         </FullBleedScale>
       </div>

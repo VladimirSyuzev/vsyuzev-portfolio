@@ -171,14 +171,17 @@ function Slide1() {
             ))}
 
             {/* Послесловие (20, 1748), 336, Wix Regular 22 leading-1.15 —
-                в Figma БЕЗ прозрачности и по левому краю. */}
-            <p className="absolute left-[20px] top-[1748px] w-[336px] font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white [word-break:break-word]">
-              Материалы добавляли характер, сохраняя простоту и ясность формы
-            </p>
-            {/* Подчёркивание-доодл (Vector 234257382) — (65.996, 1844.27),
-                283.762×16.591, картинка inset -18.08%/-1.06%. */}
-            <div className="absolute left-[65.996px] top-[1844.27px] h-[16.591px] w-[283.762px]">
-              <DrawIn src={`${A}/pr1-underline-375.svg`} className="absolute inset-[-18.08%_-1.06%]" />
+                в Figma БЕЗ прозрачности и по левому краю. Подчёркивание-доодл
+                (Vector 234257382) — привязано к НИЗУ текста
+                (top-[calc(100%-5px)], не фикс-px 1844.27) — не оторвётся при
+                другом числе строк (перевод на английский). */}
+            <div className="absolute left-[20px] top-[1748px] w-[336px]">
+              <p className="font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white [word-break:break-word]">
+                Материалы добавляли характер, сохраняя простоту и ясность формы
+              </p>
+              <div className="absolute left-[46px] top-[calc(100%-5px)] h-[16.591px] w-[283.762px]">
+                <DrawIn src={`${A}/pr1-underline-375.svg`} className="absolute inset-[-18.08%_-1.06%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>
@@ -230,14 +233,19 @@ function Slide1() {
             ))}
 
             {/* Цитата (159, 1231), 516, WHITE opacity-70 + обводка-доодл
-                (Vector 234257386, 134.58, 1195.5, 567×169.4, наклон -1.37°). */}
-            <DrawIn
-              src={`${A}/pr1-ellipse-834.svg`}
-              className="absolute left-[135px] top-[1196px] h-[169.371px] w-[567px] rotate-[-1.37deg]"
-            />
-            <p className="absolute left-[159px] top-[1231px] w-[516px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-              Материалы добавляли характер, сохраняя простоту и ясность формы
-            </p>
+                (Vector 234257386, наклон -1.37°) — общая центрированная
+                обёртка, эллипс в % от блока текста (198%/110.6%) —
+                масштабируется вместе с текстом при другом числе строк
+                (перевод на английский). */}
+            <div className="absolute left-[417px] top-[1277px] w-[516px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+                Материалы добавляли характер, сохраняя простоту и ясность формы
+              </p>
+              <DrawIn
+                src={`${A}/pr1-ellipse-834.svg`}
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[198%] w-[110.6%] -translate-x-1/2 -translate-y-1/2 rotate-[-1.37deg]"
+              />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -283,14 +291,19 @@ function Slide1() {
             ))}
 
             {/* Цитата (341, 1616), 598, WHITE opacity-70 + обводка-доодл
-                (Vector 234257386, 309, 1570, 662×198, наклон -1.37°). */}
-            <DrawIn
-              src={`${A}/pr1-1280-ellipse.svg`}
-              className="absolute left-[309px] top-[1570px] h-[198px] w-[662px] rotate-[-1.37deg]"
-            />
-            <p className="absolute left-[341px] top-[1616px] w-[598px] text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-              Материалы добавляли характер, сохраняя простоту и ясность формы
-            </p>
+                (Vector 234257386, наклон -1.37°) — общая центрированная
+                обёртка, эллипс в % от блока текста (202.4%/111.5%) —
+                масштабируется вместе с текстом при другом числе строк
+                (перевод на английский). */}
+            <div className="absolute left-[640px] top-[1669px] w-[598px] -translate-x-1/2 -translate-y-1/2">
+              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+                Материалы добавляли характер, сохраняя простоту и ясность формы
+              </p>
+              <DrawIn
+                src={`${A}/pr1-1280-ellipse.svg`}
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[202.4%] w-[111.5%] -translate-x-1/2 -translate-y-1/2 rotate-[-1.37deg]"
+              />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -320,14 +333,18 @@ function Slide2Content() {
           className="absolute left-[818px] top-[185px] size-[524px] max-w-none"
           src={`${A}/pr2-lock.png`}
         />
-        {/* Цитата (764, 728), 599×105. */}
-        <p className="absolute left-[764px] top-[728px] w-[599px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Материалы добавляли характер, сохраняя простоту и ясность формы
-        </p>
-        {/* Подчёркивание (Vector 234257382, node 2880:14353) — 1:1 из Figma:
-            (908, 838.908), 356.45×14.943; наклон уже в пути (без CSS-rotate). */}
-        <div className="absolute left-[908px] top-[838.908px] h-[14.943px] w-[356.45px]">
-          <DrawIn src={`${A}/pr2-underline.svg`} className="absolute inset-[-20.08%_-0.84%]" />
+        {/* Цитата (764, 728), 599×105 + подчёркивание — общая обёртка, линия
+            привязана к НИЗУ текста (top-[calc(100%+5px)], не фикс-px 838.9) —
+            при другом числе строк (перевод) не оторвётся от текста.
+            Подчёркивание Vector 234257382 (node 2880:14353) — 356.45×14.943;
+            наклон уже в пути (без CSS-rotate). */}
+        <div className="absolute left-[764px] top-[728px] w-[599px]">
+          <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+            Материалы добавляли характер, сохраняя простоту и ясность формы
+          </p>
+          <div className="pointer-events-none absolute left-[144px] top-[calc(100%+5px)] h-[14.943px] w-[356.45px]">
+            <DrawIn src={`${A}/pr2-underline.svg`} className="absolute inset-[-20.08%_-0.84%]" />
+          </div>
         </div>
       </div>
 

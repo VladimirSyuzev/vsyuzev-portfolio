@@ -83,16 +83,19 @@ export default function Task() {
           <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
         </Reveal>
 
-        <p className="absolute left-[726px] top-[1369px] w-[624px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-          Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как пользователь
-          прочитает текст
-        </p>
-
-        {/* Подчёркивание-доодл под итоговой мыслью (Figma node 2384:21369). */}
-        <DrawIn
-          src={`${A}/task-doodle-arrow.svg`}
-          className="absolute left-[884px] top-[1556px] h-[35px] w-[394px]"
-        />
+        {/* Цитата + подчёркивание — общая обёртка, линия привязана к НИЗУ
+            текста (top-[calc(100%+11px)], не фикс-px) — иначе при другом
+            числе строк (перевод) она оторвалась бы от последней строки. */}
+        <div className="absolute left-[726px] top-[1369px] w-[624px]">
+          <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
+            Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как пользователь
+            прочитает текст
+          </p>
+          <DrawIn
+            src={`${A}/task-doodle-arrow.svg`}
+            className="absolute left-[158px] top-[calc(100%+11px)] h-[35px] w-[394px]"
+          />
+        </div>
       </div>
 
       {/* ≥1440 — лента «варианты» (Figma node 2079:17726 → y595). Прямой
@@ -162,17 +165,21 @@ export default function Task() {
               <img alt="Стек 3D-монет Stablegate" className="block size-full" src={`${A}/task-coin.jpg`} />
             </Reveal>
 
-            {/* Цитата (646, 1112+54=1166), 594×175. */}
-            <p className={`absolute left-[646px] top-[1166px] w-[594px] text-[#121212] ${C3_TEXT.quote}`}>
-              Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как
-              пользователь прочитает текст
-            </p>
-
-            {/* Волнистое подчёркивание (Vector 234257367) — (798, 1266+54=1320), 387.57×90.44. */}
-            <DrawIn
-              src={`${A}/task-doodle-arrow.svg`}
-              className="absolute left-[798px] top-[1320px] h-[90px] w-[388px]"
-            />
+            {/* Цитата (646, 1112+54=1166), 594×175 (авторская оценка — реально
+                рендерится в 6 строк, не 5, см. ниже). Подчёркивание привязано
+                к НИЗУ текста (top-[calc(100%+11px)], не фикс-px 1320) — при
+                фикс-позиции оно наезжало на «...ПРОЧИТАЕТ ТЕКСТ» (браузерный
+                перенос шире, чем предполагал автор макета). */}
+            <div className="absolute left-[646px] top-[1166px] w-[594px]">
+              <p className={`text-[#121212] ${C3_TEXT.quote}`}>
+                Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как
+                пользователь прочитает текст
+              </p>
+              <DrawIn
+                src={`${A}/task-doodle-arrow.svg`}
+                className="absolute left-[152px] top-[calc(100%+11px)] h-[90px] w-[388px]"
+              />
+            </div>
           </div>
         </FullBleedScale>
       </div>
@@ -220,17 +227,21 @@ export default function Task() {
 
             {/* Цитата (Frame 2147232030, 20, 1022 + 54 = 1076), w-329, Wix
                 Regular 22 UPPERCASE opacity-70. БЕЗ ручного переноса —
-                естественная вёрстка в 6 строк (макет обновлён). */}
-            <p className="absolute left-[20px] top-[1076px] w-[329px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70">
-              Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как
-              пользователь прочитает текст
-            </p>
-            {/* Подчёркивание-хайлайт (Vector 234257367, 2835:53360) — Figma abs
-                (20.4, 2250.3) → секц. y ≈ 1173 + 54 = 1227, 339.01×23.08,
-                viewBox SVG 345.01×29.08, картинка inset -13%/-0.88%. Выходит
-                на ~10px за правый край текста. */}
-            <div className="absolute left-[20px] top-[1227px] h-[23.08px] w-[339px]">
-              <DrawIn src={`${A}/task-underline-375.svg`} className="absolute inset-[-13%_-0.88%]" />
+                естественная вёрстка в 6 строк (макет обновлён). Обёртка с
+                подчёркиванием — линия привязана к НИЗУ текста
+                (top-[calc(100%+6px)], не фикс-px 1227), чтобы не отрываться
+                при другом числе строк (перевод на английский). */}
+            <div className="absolute left-[20px] top-[1076px] w-[329px]">
+              <p className="font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70">
+                Каждая иллюстрация должна была объяснять функцию продукта ещё до того, как
+                пользователь прочитает текст
+              </p>
+              {/* Подчёркивание-хайлайт (Vector 234257367, 2835:53360) — 339.01×23.08,
+                  viewBox SVG 345.01×29.08, картинка inset -13%/-0.88%. Выходит
+                  на ~10px за правый край текста. */}
+              <div className="absolute left-0 top-[calc(100%+6px)] h-[23.08px] w-[339px]">
+                <DrawIn src={`${A}/task-underline-375.svg`} className="absolute inset-[-13%_-0.88%]" />
+              </div>
             </div>
           </div>
         </FullBleedScale>
