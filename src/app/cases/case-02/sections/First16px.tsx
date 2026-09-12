@@ -124,14 +124,19 @@ export default function First16px() {
           </div>
 
           {/* 1280 (Figma 2622:4702): абзацы по 594; п.1 — перенос после «px.»;
-              п.2 без хвоста «Большая версия…» (он есть на 375/834/1440). */}
-          <div className="flex flex-col gap-[6px] sm:max-w-[381px] lg:w-[594px] lg:max-w-full xl:contents">
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[496px]">
+              п.2 без хвоста «Большая версия…» (он есть на 375/834/1440).
+              ≥1440 (Figma 2622:4702): раньше оба абзаца были на независимых
+              фикс xl:top (181 / 221, gap 40) — при другом числе строк в 1-м
+              абзаце (перевод) зазор между абзацами плавал (см. тот же баг
+              в About.tsx). Теперь — общий flex-col, единая точка xl:top-181,
+              xl:gap-[40px] (тот же зазор, но растёт вместе с текстом). */}
+          <div className="flex flex-col gap-[6px] sm:max-w-[381px] lg:w-[594px] lg:max-w-full xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[505px] xl:gap-[40px]">
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 xl:w-[496px]">
               {t.first16Para1Lead}{" "}
               <br className="hidden lg:inline xl:hidden" />
               {t.first16Para1Tail}
             </p>
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 xl:absolute xl:left-[46px] xl:top-[221px] xl:w-[505px]">
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80">
               {t.first16Para2}
               <span className="lg:hidden xl:inline">
                 {" "}{t.first16Para2Extra}

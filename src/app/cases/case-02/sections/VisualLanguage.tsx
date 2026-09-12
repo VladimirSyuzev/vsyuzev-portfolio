@@ -55,13 +55,15 @@ export default function VisualLanguage() {
             </div>
           </div>
 
-          {/* 834/1280: перенос после «строился», обводка −1.37° шире (660/787).
-              ≥1440: эллипс — в общей центрированной обёртке с текстом (раньше
-              был отдельным элементом с фикс-координатами независимо от
-              текста), размер в % от блока цитаты — масштабируется вместе с
-              текстом при другом числе строк (перевод на английский). */}
+          {/* 834/1280: перенос после «строился», обводка −1.37°. Раньше была
+              фикс-px (660×114.3 / 787×136.3) — подогнана под RU (2 строки);
+              на более длинном EN-тексте (3 строки) обводка была тесна
+              тексту. Теперь — внутри той же обёртки, что и текст, размер в
+              % от факт. высоты/ширины блока цитаты (см. xl-версию ниже и
+              Task.tsx — тот же приём): подстроена под текущий RU-рендер
+              1:1, но масштабируется вместе с текстом при другом числе строк. */}
           <div className="relative hidden justify-center py-[44px] sm:flex lg:py-[64px] xl:contents">
-            <div className="xl:absolute xl:left-1/2 xl:top-[1133px] xl:w-[667px] xl:-translate-x-1/2 xl:-translate-y-1/2">
+            <div className="relative xl:absolute xl:left-1/2 xl:top-[1133px] xl:w-[667px] xl:-translate-x-1/2 xl:-translate-y-1/2">
               <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70 lg:max-w-[672px] lg:text-[32px] lg:tracking-[0.96px] xl:w-[667px] xl:text-[32px]">
                 {lang === "ru" ? (
                   <>
@@ -80,12 +82,12 @@ export default function VisualLanguage() {
                 fit="contain"
                 className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[216%] xl:w-[119.8%]"
               />
+              <DrawIn
+                src={`${A}/reflow/visual-ellipse-1280.svg`}
+                fit="contain"
+                className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[186%] w-[116%] -translate-x-1/2 -translate-y-1/2 -rotate-[1.37deg] sm:block lg:h-[194%] lg:w-[121%] xl:hidden"
+              />
             </div>
-            <DrawIn
-              src={`${A}/reflow/visual-ellipse-1280.svg`}
-              fit="contain"
-              className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[114.3px] w-[660px] -translate-x-1/2 -translate-y-1/2 -rotate-[1.37deg] sm:block lg:h-[136.3px] lg:w-[787px] xl:hidden"
-            />
           </div>
         </div>
       </div>

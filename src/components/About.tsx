@@ -50,13 +50,21 @@ export default function About() {
           {t.aboutHeading}
         </p>
 
-        {/* Био — два абзаца. На десктопе абсолют (top 181 / 238, w668). */}
-        <p className="about-reveal text-[14px] leading-[1.2] tracking-[0.28px] text-[#333] opacity-70 xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[668px]">
-          {t.aboutBio[0]}
-        </p>
-        <p className="about-reveal text-[14px] leading-[1.2] tracking-[0.28px] text-[#333] opacity-70 xl:absolute xl:left-[46px] xl:top-[238px] xl:w-[668px]">
-          {t.aboutBio[1]}
-        </p>
+        {/* Био — два абзаца. В Figma заголовок+био в авто-лэйауте: gap 12
+            заголовок→текст (134→181, уже совпадает — заголовок всегда одна
+            строка), gap 6 между абзацами. Раньше 2-й абзац был на фикс
+            xl:top-[238px] независимо от факт. высоты 1-го — при другом
+            числе строк (перевод) отступ между абзацами плавал. Теперь оба
+            абзаца — общий flex-col gap-6 от единой точки top-181, растут
+            вместе. */}
+        <div className="flex flex-col gap-[24px] xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[668px] xl:gap-[6px]">
+          <p className="about-reveal text-[14px] leading-[1.2] tracking-[0.28px] text-[#333] opacity-70">
+            {t.aboutBio[0]}
+          </p>
+          <p className="about-reveal text-[14px] leading-[1.2] tracking-[0.28px] text-[#333] opacity-70">
+            {t.aboutBio[1]}
+          </p>
+        </div>
 
         {/* фото — прижато к правому краю сетки (ниже 1200), на десктопе абсолют */}
         <div className="about-reveal aspect-[498/399] w-full overflow-clip sm:ml-auto sm:w-[58%] lg:w-[46%] xl:absolute xl:left-[896px] xl:top-[318px] xl:!ml-0 xl:aspect-auto xl:!h-[399px] xl:!w-[498px]">
