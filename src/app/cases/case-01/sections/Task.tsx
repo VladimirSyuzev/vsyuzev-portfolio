@@ -96,7 +96,14 @@ export default function Task() {
         <p className="text-[#121212]">{t.taskHeading}</p>
       </div>
       <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-        {t.taskIntro}
+        {lang === "ru" ? (
+          t.taskIntro
+        ) : (
+          <>
+            The main goal was to turn two disjointed
+            <br />libraries into a single scalable system
+          </>
+        )}
       </p>
 
       <div ref={windowRef} className="absolute left-[46px] top-[318px] overflow-hidden" style={{ width: WINDOW_START.w, height: WINDOW_START.h }}>
