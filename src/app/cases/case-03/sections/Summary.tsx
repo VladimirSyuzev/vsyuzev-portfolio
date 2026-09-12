@@ -138,12 +138,16 @@ export default function Summary() {
               <span className="text-[#121212]">{t.summaryHeading}</span>
             </div>
 
-            {/* Доодл-«шеврон вниз» (2711:13962, 742/139.8), 158×125. */}
-            <DrawIn
-              src={`${A}/summary-chevron-1280.svg`}
-              fit="contain"
-              className="absolute left-[742px] top-[140px] z-10 h-[125px] w-[158px]"
-            />
+            {/* Доодл-«шеврон вниз» (2711:13962, 742/139.8), 158×125. На EN
+                скрыт — заголовок «OUTCOME» длиннее «ИТОГ» и доодл ложится
+                прямо на буквы. */}
+            {lang === "ru" && (
+              <DrawIn
+                src={`${A}/summary-chevron-1280.svg`}
+                fit="contain"
+                className="absolute left-[742px] top-[140px] z-10 h-[125px] w-[158px]"
+              />
+            )}
 
             {/* Текст: колонка 1 (40, 297) 594, колонка 2 (646, 297) 585. */}
             <p className="absolute left-[40px] top-[297px] w-[594px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
