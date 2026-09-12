@@ -202,7 +202,7 @@ export default function VisualSystem() {
               </p>
               <DrawIn
                 src={`${A}/vislang-ellipse-834.svg`}
-                className={`pointer-events-none absolute left-1/2 top-1/2 z-0 h-[155.1%] w-[107.7%] -translate-x-1/2 ${lang === "en" ? "-translate-y-[calc(50%+24px)]" : "-translate-y-1/2"}`}
+                className={`pointer-events-none absolute left-1/2 top-1/2 z-0 h-[155.1%] w-[107.7%] -translate-x-1/2 ${lang === "en" ? "-translate-y-[calc(50%+12px)]" : "-translate-y-1/2"}`}
               />
             </div>
           </div>
@@ -259,7 +259,7 @@ export default function VisualSystem() {
               </p>
               <DrawIn
                 src={`${A}/vislang-ellipse-1280.svg`}
-                className={`pointer-events-none absolute left-1/2 top-1/2 z-0 h-[160.5%] w-[109.2%] -translate-x-1/2 ${lang === "en" ? "-translate-y-[calc(50%+24px)]" : "-translate-y-1/2"}`}
+                className={`pointer-events-none absolute left-1/2 top-1/2 z-0 h-[160.5%] w-[109.2%] -translate-x-1/2 ${lang === "en" ? "-translate-y-[calc(50%+12px)]" : "-translate-y-1/2"}`}
               />
             </div>
           </div>
