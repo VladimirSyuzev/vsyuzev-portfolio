@@ -127,7 +127,7 @@ export default function Adaptation() {
               <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
                 {t.adaptQuote}
               </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[147%] w-[87.72%] -translate-x-1/2 -translate-y-1/2">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[160%] w-[115%] -translate-x-1/2 -translate-y-1/2">
                 <DrawIn src={`${A}/adapt-ellipse-1280.svg`} className="absolute inset-[-1.41%_-0.59%]" />
               </div>
             </div>
@@ -179,7 +179,7 @@ export default function Adaptation() {
               <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
                 {t.adaptQuote}
               </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[200%] w-[135%] -translate-x-1/2 -translate-y-1/2">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[165%] w-[120%] -translate-x-1/2 -translate-y-1/2">
                 <DrawIn src={`${A}/adapt-ellipse-834.svg`} className="absolute inset-[-1.65%_-0.72%]" />
               </div>
             </div>
