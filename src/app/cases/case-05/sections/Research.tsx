@@ -176,10 +176,10 @@ export default function Research() {
               <p className="relative z-10 w-[888px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80 [word-break:break-word]">
                 {t.researchQuote}
               </p>
-              <div className="absolute left-[257.489px] top-[calc(100%-23px)] z-0 h-[35px] w-[663px]">
+              <div className="absolute left-[257.489px] top-[calc(100%-47px)] z-0 h-[35px] w-[663px]">
                 <DrawIn src={`${A}/research-underline-1-1280.svg`} className="absolute inset-[-8.571%_-0.452%]" />
               </div>
-              <div className="absolute left-[366.114px] top-[calc(100%-12px)] z-0 h-[35.031px] w-[576.809px]">
+              <div className="absolute left-[366.114px] top-[calc(100%-36px)] z-0 h-[35.031px] w-[576.809px]">
                 <DrawIn src={`${A}/research-underline-2-1280.svg`} delay={0.1} className="absolute inset-[-8.564%_-0.52%]" />
               </div>
             </div>
@@ -264,7 +264,7 @@ export default function Research() {
               <p className="relative z-10 w-[608px] font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80 [word-break:break-word]">
                 {t.researchQuote}
               </p>
-              <div className="absolute left-[110px] top-[calc(100%-23px)] z-0 h-[27.962px] w-[471px]">
+              <div className="absolute left-[110px] top-[calc(100%-47px)] z-0 h-[27.962px] w-[471px]">
                 <DrawIn src={`${A}/research-underline-834.svg`} className="absolute inset-[-10.73%_-0.64%]" />
               </div>
             </div>
@@ -346,7 +346,7 @@ export default function Research() {
               <p className="relative z-10 w-[294px] font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-80 [word-break:break-word]">
                 {t.researchQuote}
               </p>
-              <div className="absolute left-[13px] top-[calc(100%+15px)] z-0 h-[28px] w-[322px]">
+              <div className="absolute left-[13px] top-[calc(100%+3px)] z-0 h-[28px] w-[322px]">
                 <DrawIn src={`${A}/research-underline-375.svg`} className="absolute inset-[-10.72%_-0.93%]" />
               </div>
             </div>
