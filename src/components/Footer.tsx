@@ -3,6 +3,11 @@
 //  640…1023 — Figma «Footer 834» (2672:40141), 834×218, pad 22/28/44/28.
 //  1024…1439 — Figma «Footer 1280» (2672:40140), 1280×213.
 //  ≥1440 — фикс-раскладка холста 1440 (2259:58624).
+"use client";
+
+import { useLang } from "@/lib/lang";
+import { T } from "@/lib/i18n";
+
 // Всё Aeonik Regular 14 / 120% / ls 0.28 / opacity 70. Обновление макета:
 // строка «Perm, Russia» убрана на всех размерах, вместо неё под номером
 // телефона — «CV» (скачивание резюме, см. ниже). На ≥1440 «CALL ME:» +
@@ -33,6 +38,8 @@ const CV_HREF = "/cv/Syuzev_Vladimir_CV.pdf";
 const CV_FILENAME = "Syuzev_Vladimir_CV.pdf";
 
 export default function Footer() {
+  const lang = useLang();
+  const top = T[lang].footerTop;
   return (
     <div id="contacts" className="w-full scroll-mt-16 bg-[#121212]">
       {/* <640 — Figma «Footer 375» (2672:40144) */}
@@ -52,7 +59,7 @@ export default function Footer() {
         <a href="#top" className="absolute right-[20px] top-[22px] flex items-center gap-[6px] opacity-70">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="size-[24px]" src="/footer/caret-up.svg" />
-          <span>НАВЕРХ</span>
+          <span>{top}</span>
         </a>
       </div>
 
@@ -94,7 +101,7 @@ export default function Footer() {
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" className="size-[24px]" src="/footer/caret-up.svg" />
-          <span>НАВЕРХ</span>
+          <span>{top}</span>
         </a>
 
         {/* 2026 // Vova Syuzev — нижний ряд слева */}

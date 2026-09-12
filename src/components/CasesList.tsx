@@ -9,6 +9,8 @@ import { CASES } from "@/lib/cases-data";
 import Case01IconGrid from "./Case01IconGrid";
 import ResponsiveScale from "@/components/ResponsiveScale";
 import DrawIn from "@/components/DrawIn";
+import { useLang } from "@/lib/lang";
+import { T } from "@/lib/i18n";
 
 // «кейсы» — на десктопе (≥1200) hover-раскрывающийся список 1:1 из Figma
 // (node 2286:3887). Ниже 1200 hover нет — отдаём стопку карточек (номер +
@@ -27,6 +29,7 @@ export default function CasesList() {
 
 function CasesListDesktop() {
   const scope = useRef<HTMLDivElement>(null);
+  const lang = useLang();
 
   useGSAP(
     () => {
@@ -52,7 +55,7 @@ function CasesListDesktop() {
       className="relative mx-auto w-full max-w-[1440px] scroll-mt-16 bg-[#fafafa] pt-[318px] pb-[123px]"
     >
       <p className="absolute left-[46px] top-[134px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-        КЕЙСЫ
+        {T[lang].casesHeading}
       </p>
       <DrawIn src="/about/doodle-hooks.svg" fit="contain" className="absolute left-[174px] top-[89px] h-[125px] w-[158px]" />
 
@@ -69,10 +72,10 @@ function CasesListDesktop() {
                   {item.index}
                 </p>
                 <p className="case-wave-cell mt-[12px] w-[321px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-                  {item.title}
+                  {lang === "en" ? item.titleEn : item.title}
                 </p>
                 <p className="mt-[12px] w-[454px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-0 transition-opacity duration-300 group-hover:opacity-70 group-focus-visible:opacity-70">
-                  {item.description}
+                  {lang === "en" ? item.descriptionEn : item.description}
                 </p>
                 {/* Стрелка «открыть» — отступ 40px от правого и нижнего края
                     левой панели (510×537). Появляется вместе с раскрытием. */}
@@ -110,6 +113,7 @@ function CasesListDesktop() {
 
 function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: boolean }) {
   const scope = useRef<HTMLDivElement>(null);
+  const lang = useLang();
 
   useGSAP(
     () => {
@@ -134,7 +138,7 @@ function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: b
       className="w-full scroll-mt-16 bg-[#fafafa] px-[var(--grid-margin)] pt-[88px] pb-[72px]"
     >
       <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212] sm:text-[32px]">
-        КЕЙСЫ
+        {T[lang].casesHeading}
       </p>
 
       <div
@@ -173,10 +177,10 @@ function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: b
               {item.index}
             </p>
             <p className="mt-[8px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-              {item.title}
+              {lang === "en" ? item.titleEn : item.title}
             </p>
             <p className="mt-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {item.description}
+              {lang === "en" ? item.descriptionEn : item.description}
             </p>
             {/* Стрелка «открыть» — привязана к нижней линии карточки: 40px
                 от неё и от правого края, одинаково во всех карточках.
