@@ -5,6 +5,8 @@ import { gsap, useReducedMotion } from "@/lib/gsap";
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
 import VariantsCarousel from "@/components/VariantsCarousel";
+import { useLang } from "@/lib/lang";
+import { C5 } from "../i18n";
 
 // 06 Финальный результат — 1:1 из актуальной Figma (node 2210:78310,
 // высота 1265). Заголовок «06 / ФИНАЛЬНЫЙ РЕЗУЛЬТАТ» и два абзаца слева,
@@ -21,11 +23,11 @@ import VariantsCarousel from "@/components/VariantsCarousel";
 // 1949.87), мысль w-668 в обводке (блок цитаты — доп. отступ сверху 20).
 const A = "/cases/case-05/sections";
 
-const CARDS = [
-  { src: `${A}/result-var-1.png`, w: 1265, h: 798, alt: "Готовая карта Mad Max DeLorean" },
-  { src: `${A}/result-var-2.png`, w: 1270, h: 798, alt: "Карта в интерьере проекта" },
-  { src: `${A}/result-var-3.png`, w: 1271, h: 798, alt: "Карта среди других карт коллекции" },
-  { src: `${A}/result-var-4.png`, w: 1267, h: 798, alt: "Фрагмент финальной иллюстрации" },
+const CARDS_META = [
+  { src: `${A}/result-var-1.png`, w: 1265, h: 798 },
+  { src: `${A}/result-var-2.png`, w: 1270, h: 798 },
+  { src: `${A}/result-var-3.png`, w: 1271, h: 798 },
+  { src: `${A}/result-var-4.png`, w: 1267, h: 798 },
 ];
 
 export default function Result() {
@@ -34,6 +36,9 @@ export default function Result() {
   const starFirst = useRef(true);
   const reduced = useReducedMotion();
   const [, setIdx] = useState(0);
+  const lang = useLang();
+  const t = C5[lang];
+  const CARDS = CARDS_META.map((c, i) => ({ ...c, alt: t.cardAlt[i] }));
 
   // Пульс звёздочки при каждом переключении карточки (обе ветки —
   // видима только одна, анимация скрытой безвредна).
@@ -67,16 +72,14 @@ export default function Result() {
       <div className="relative mx-auto h-full w-[1440px]">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">06</p>
-          <p className="text-[#121212]">Финальный результат</p>
+          <p className="text-[#121212]">{t.resultHeading}</p>
         </div>
 
         <p className="absolute left-[46px] top-[181px] w-[496px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          Вместо очередной интерпретации машины времени появился новый образ культового автомобиля.
+          {t.resultPara1}
         </p>
         <p className="absolute left-[46px] top-[221px] w-[496px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          DeLorean сохранил узнаваемый силуэт, но оказался в другой реальности — мире, где главной
-          ценностью становится не возможность путешествовать во времени, а способность выжить и
-          продолжать движение вперёд.
+          {t.resultPara2}
         </p>
 
         {/* Доодл-«звёздочка» (Figma node 2284:39991 → x1009 / y270, 158×125). */}
@@ -92,13 +95,23 @@ export default function Result() {
             масштабируется вместе с текстом при другом числе строк (перевод
             на английский). */}
         <div className="absolute left-1/2 top-[1009px] w-[668px] -translate-x-1/2 -translate-y-1/2">
-          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-            Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
+          <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+            {lang === "en" ? (
+              <>
+                A recognizable car gained
+                <br />
+                a story that had never been
+                <br />
+                tied to it before
+              </>
+            ) : (
+              t.resultQuote
+            )}
           </p>
           <DrawIn
             src={`${A}/result-ellipse.svg`}
             fit="contain"
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[240.5%] w-[100.3%] -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[240.5%] w-[100.3%] -translate-x-1/2 -translate-y-1/2"
           />
         </div>
       </div>
@@ -117,23 +130,15 @@ export default function Result() {
               style={{ left: 40, top: 72 }}
             >
               <span className="text-[#008cff]">06</span>
-              <span className="text-[#121212]">Финальный результат</span>
+              <span className="text-[#121212]">{t.resultHeading}</span>
             </div>
 
             <div
               className="absolute flex w-[593px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]"
               style={{ left: 40, top: 119 }}
             >
-              <p className="whitespace-pre-wrap opacity-70">
-                Вместо очередной интерпретации машины времени появился новый образ{" "}
-                <br />культового автомобиля.
-              </p>
-              <p className="whitespace-pre-wrap opacity-70">
-                DeLorean сохранил узнаваемый силуэт, но оказался в другой реальности — мире,{" "}
-                <br />
-                где главной ценностью становится не возможность путешествовать во времени,{" "}
-                <br />а способность выжить и продолжать движение вперёд.
-              </p>
+              <p className="opacity-70">{t.resultPara1}</p>
+              <p className="opacity-70">{t.resultPara2}</p>
             </div>
 
             {/* Доодл-«звёздочка» (node 2877:14347, 918/164.074, 158×125,
@@ -160,8 +165,18 @@ export default function Result() {
               className="absolute left-1/2 w-[668px]"
               style={{ top: 874, transform: "translate(-50%, -50%)" }}
             >
-              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-                Узнаваемый автомобиль получил историю, которую раньше с ним не связывали
+              <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+                {lang === "en" ? (
+                  <>
+                    A recognizable car gained
+                    <br />
+                    a story that had never been
+                    <br />
+                    tied to it before
+                  </>
+                ) : (
+                  t.resultQuote
+                )}
               </p>
               <div
                 className="pointer-events-none absolute left-1/2 top-1/2 z-0"
@@ -184,22 +199,15 @@ export default function Result() {
               style={{ left: 28, top: 72 }}
             >
               <span className="text-[#008cff]">06</span>
-              <span className="text-[#121212]">Финальный результат</span>
+              <span className="text-[#121212]">{t.resultHeading}</span>
             </div>
 
             <div
               className="absolute flex w-[777px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]"
               style={{ left: 28, top: 119 }}
             >
-              <p className="opacity-70">
-                Вместо очередной интерпретации машины времени появился новый образ культового
-                автомобиля.
-              </p>
-              <p className="opacity-70">
-                DeLorean сохранил узнаваемый силуэт, но оказался в другой реальности — мире, где
-                главной ценностью становится не возможность путешествовать во времени, а способность
-                выжить и продолжать движение вперёд.
-              </p>
+              <p className="opacity-70">{t.resultPara1}</p>
+              <p className="opacity-70">{t.resultPara2}</p>
             </div>
 
             {/* Снап-карусель «варианты» (Figma frame 2835:53272, 1949.868
@@ -216,9 +224,8 @@ export default function Result() {
               style={{ left: 28, top: 703 }}
             >
               <div className="relative w-[461px]">
-                <p className="whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
-                  Узнаваемый автомобиль получил историю, которую раньше{" "}
-                  <br />с ним не связывали
+                <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
+                  {t.resultQuote}
                 </p>
                 <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[148.59%] w-[111.28%] -translate-x-1/2 -translate-y-1/2">
                   <DrawIn src={`${A}/result-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
@@ -240,20 +247,11 @@ export default function Result() {
             <div className="absolute left-[20px] top-[64px] flex w-[335px] flex-col items-start gap-[16px] [word-break:break-word]">
               <div className="flex flex-col font-heading text-[26px] font-bold uppercase">
                 <span className="leading-none text-[#008cff]">06</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">Финальный результат</span>
+                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.resultHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="opacity-70">
-                  Вместо очередной интерпретации машины времени появился новый образ культового
-                  автомобиля.
-                </p>
-                <p className="whitespace-pre-wrap opacity-70">
-                  DeLorean сохранил узнаваемый силуэт,{" "}
-                  <br />
-                  но оказался в другой реальности — мире, где главной ценностью становится не
-                  возможность путешествовать во времени, а способность выжить и продолжать движение
-                  вперёд.
-                </p>
+                <p className="opacity-70">{t.resultPara1}</p>
+                <p className="opacity-70">{t.resultPara2}</p>
               </div>
             </div>
 
@@ -275,9 +273,8 @@ export default function Result() {
                 top-627 = низ бара карусели (338 + 204 трек + ~53 бар) + зазор 32. */}
             <div className="absolute left-1/2 top-[627px] -translate-x-1/2 pb-[32px] pt-[48px]">
               <div className="relative flex items-center justify-center">
-                <p className="relative z-10 w-[287px] whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 [word-break:break-word]">
-                  Узнаваемый автомобиль получил историю, которую раньше{" "}
-                  <br />с ним не связывали
+                <p className="relative z-10 w-[287px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 [word-break:break-word]">
+                  {t.resultQuote}
                 </p>
                 {/* Обводка-эллипс (Vector 234257399, node 2836:54217) —
                     центрируется ровно по тексту (translate -50/-50). */}

@@ -1,6 +1,10 @@
+"use client";
+
 import DrawIn from "@/components/DrawIn";
 import Dot from "@/components/Dot";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C5 } from "../i18n";
 
 // 01 Исследование — 1:1 из Figma (node 2210:74416, высота 1264).
 // Заголовок «01 ИССЛЕДОВАНИЕ» (32px), два вводных абзаца, список из пяти
@@ -12,36 +16,28 @@ import FullBleedScale from "@/components/FullBleedScale";
 // слева + фото/скетч справа.
 const A = "/cases/case-05/sections";
 
-const BULLETS = [
-  "характерную форму передней части;",
-  "прямоугольные фары",
-  "двери типа Gullwing",
-  "геометрию бокового остекления",
-  "общий силуэт кузова",
-];
-
 export default function Research() {
+  const t = C5[useLang()];
+  const BULLETS = t.bullets;
   return (
     <>
       <div className="relative hidden h-[1264px] w-[1440px] overflow-clip bg-[#fafafa] xl:block">
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">01</p>
-        <p className="text-[#121212]">Исследование</p>
+        <p className="text-[#121212]">{t.researchHeading}</p>
       </div>
 
       <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Мне достался DeLorean — автомобиль, ставший частью массовой культуры благодаря фильму
-        «Назад в будущее».
+        {t.researchIntro1}
       </p>
       <p className="absolute left-[46px] top-[227px] w-[476px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Я начал с изучения фотографий, чтобы понять, какие элементы делают автомобиль узнаваемым
-        даже при сильной авторской интерпретации.
+        {t.researchIntro2}
       </p>
 
       {/* Список признаков (Figma frame 2210:79855 → x46 / y455). */}
       <div className="absolute left-[46px] top-[457px] flex w-[328px] flex-col gap-[12px]">
         <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          В результате выделил несколько ключевых особенностей:
+          {t.bulletsLabel}
         </p>
         <ul className="flex flex-col gap-[6px]">
           {BULLETS.map((item, i) => (
@@ -57,13 +53,13 @@ export default function Research() {
           две фотографии; 2215:79895 → x556 / y455, 838×399 — одна). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Фотографии DeLorean DMC-12 с открытыми дверями Gullwing"
+        alt={t.researchTopAlt}
         className="absolute left-[556px] top-[181px] h-[262px] w-[838px] object-cover"
         src={`${A}/research-top.jpg`}
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Референсный рисунок DeLorean DMC-12 в три четверти"
+        alt={t.researchSketchAlt}
         className="absolute left-[556px] top-[455px] h-[399px] w-[838px] object-cover"
         src={`${A}/research-bottom.jpg`}
       />
@@ -80,18 +76,17 @@ export default function Research() {
           привязаны к НИЗУ текста (top-[calc(100%+Npx)], не фикс-px) — не
           оторвутся при другом числе строк (перевод на английский). */}
       <div className="absolute left-[46px] top-[1003px] w-[888px]">
-        <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Узнаваемость автомобиля строится на нескольких ключевых признаках, а не на точном
-          копировании каждой детали
+        <p className="relative z-10 font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
+          {t.researchQuote}
         </p>
         <DrawIn
           src={`${A}/research-underline1.svg`}
-          className="absolute left-[250px] top-[calc(100%+11px)] h-[35px] w-[663px]"
+          className="absolute left-[250px] top-[calc(100%+11px)] z-0 h-[35px] w-[663px]"
         />
         <DrawIn
           src={`${A}/research-underline2.svg`}
           delay={0.1}
-          className="absolute left-[379px] top-[calc(100%+9px)] h-[49px] w-[578px]"
+          className="absolute left-[379px] top-[calc(100%+9px)] z-0 h-[49px] w-[578px]"
         />
       </div>
       </div>
@@ -107,29 +102,23 @@ export default function Research() {
               <div className="absolute left-0 top-0 flex w-[291px] flex-col items-start gap-[12px] [word-break:break-word]">
                 <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                   <span className="text-[#008cff]">01</span>
-                  <span className="text-[#121212]">Исследование</span>
+                  <span className="text-[#121212]">{t.researchHeading}</span>
                 </div>
                 <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#333]">
-                  <p className="w-[291px] opacity-70">
-                    Мне достался DeLorean — автомобиль, ставший частью массовой культуры благодаря
-                    фильму «Назад в будущее».
-                  </p>
-                  <p className="w-[291px] opacity-70">
-                    Я начал с изучения фотографий, чтобы понять, какие элементы делают автомобиль
-                    узнаваемым даже при сильной авторской интерпретации.
-                  </p>
+                  <p className="w-[291px] opacity-70">{t.researchIntro1}</p>
+                  <p className="w-[291px] opacity-70">{t.researchIntro2}</p>
                 </div>
               </div>
               <div className="absolute left-[303px] top-[47px] flex w-[897px] items-center gap-[12px]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="DeLorean DMC-12 с открытыми дверями Gullwing на мощёной улице"
+                  alt={t.researchPhoto1Alt}
                   className="block h-[281px] w-[594px] shrink-0 max-w-none object-cover"
                   src={`${A}/research-photo-1-1280.jpg`}
                 />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Чёрный DeLorean DMC-12 с поднятыми дверями"
+                  alt={t.researchPhoto2Alt}
                   className="block h-[281px] w-[291px] shrink-0 max-w-none object-cover"
                   src={`${A}/research-photo-2-1280.jpg`}
                 />
@@ -141,7 +130,7 @@ export default function Research() {
             <div className="relative h-[428.759px] w-[1204px] shrink-0">
               <div className="absolute left-0 top-0 flex w-[328px] flex-col items-start gap-[12px]">
                 <p className="w-[327px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#333] opacity-70 [word-break:break-word]">
-                  В результате выделил несколько ключевых особенностей:
+                  {t.bulletsLabel}
                 </p>
                 <ul className="flex w-[327px] flex-col gap-[6px]">
                   {BULLETS.map((item, i) => (
@@ -162,7 +151,7 @@ export default function Research() {
               <div className="absolute left-[303px] top-[0.62px] h-[428px] w-[896px] overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Референсный рисунок DeLorean DMC-12 в три четверти"
+                  alt={t.researchSketchAlt}
                   className="absolute left-[-1px] top-[12px] block h-[396px] w-[897px] max-w-none object-cover"
                   src={`${A}/research-sketch-1280.jpg`}
                 />
@@ -184,16 +173,13 @@ export default function Research() {
                 не оторвутся при другом числе строк (перевод на английский).
                 Наклон уже в путях — без CSS-rotate. */}
             <div className="relative flex w-full shrink-0 flex-col items-start justify-center gap-[10px] pb-[64px]">
-              <p className="w-[888px] whitespace-pre-wrap font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80 [word-break:break-word]">
-                Узнаваемость автомобиля строится{" "}
-                <br />
-                на нескольких ключевых признаках,{" "}
-                <br />а не на точном копировании каждой детали
+              <p className="relative z-10 w-[888px] font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80 [word-break:break-word]">
+                {t.researchQuote}
               </p>
-              <div className="absolute left-[257.489px] top-[calc(100%+9px)] h-[35px] w-[663px]">
+              <div className="absolute left-[257.489px] top-[calc(100%-23px)] z-0 h-[35px] w-[663px]">
                 <DrawIn src={`${A}/research-underline-1-1280.svg`} className="absolute inset-[-8.571%_-0.452%]" />
               </div>
-              <div className="absolute left-[366.114px] top-[calc(100%+20px)] h-[35.031px] w-[576.809px]">
+              <div className="absolute left-[366.114px] top-[calc(100%-12px)] z-0 h-[35.031px] w-[576.809px]">
                 <DrawIn src={`${A}/research-underline-2-1280.svg`} delay={0.1} className="absolute inset-[-8.564%_-0.52%]" />
               </div>
             </div>
@@ -210,21 +196,11 @@ export default function Research() {
             <div className="flex shrink-0 flex-col items-start gap-[12px] [word-break:break-word]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">01</span>
-                <span className="text-[#121212]">Исследование</span>
+                <span className="text-[#121212]">{t.researchHeading}</span>
               </div>
-              <div className="flex w-[382px] flex-col gap-[6px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="opacity-70">
-                  Мне достался DeLorean — автомобиль, ставший{" "}
-                  <br />
-                  частью массовой культуры благодаря фильму{" "}
-                  <br />«Назад в будущее».
-                </p>
-                <p className="opacity-70">
-                  Я начал с изучения фотографий, чтобы понять,{" "}
-                  <br />
-                  какие элементы делают автомобиль узнаваемым{" "}
-                  <br />даже при сильной авторской интерпретации.
-                </p>
+              <div className="flex w-[382px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
+                <p className="opacity-70">{t.researchIntro1}</p>
+                <p className="opacity-70">{t.researchIntro2}</p>
               </div>
             </div>
 
@@ -236,14 +212,14 @@ export default function Research() {
                   <div className="h-[197px] w-full overflow-clip">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      alt="DeLorean DMC-12 с открытыми дверями Gullwing на мощёной улице"
+                      alt={t.researchPhoto1Alt}
                       className="block h-[197px] w-full object-cover"
                       src={`${A}/research-photo-1-834.jpg`}
                     />
                   </div>
                   <div className="flex w-[328px] flex-col items-start gap-[12px]">
                     <p className="w-[327px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#333] opacity-70 [word-break:break-word]">
-                      В результате выделил несколько ключевых особенностей:
+                      {t.bulletsLabel}
                     </p>
                     <ul className="flex w-[327px] flex-col gap-[6px]">
                       {BULLETS.map((item, i) => (
@@ -261,7 +237,7 @@ export default function Research() {
                 <div className="h-[372.328px] w-[385.578px] shrink-0 overflow-clip">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    alt="Чёрный DeLorean DMC-12 с поднятыми дверями"
+                    alt={t.researchPhoto2Alt}
                     className="block size-full object-cover"
                     src={`${A}/research-photo-2-834.jpg`}
                   />
@@ -273,7 +249,7 @@ export default function Research() {
               <div className="relative h-[371.634px] w-full overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Референсный рисунок DeLorean DMC-12 в три четверти"
+                  alt={t.researchSketchAlt}
                   className="absolute left-[-0.87px] top-[10.42px] block h-[344.04px] w-[778.434px] max-w-none object-cover"
                   src={`${A}/research-sketch-834.jpg`}
                 />
@@ -285,13 +261,10 @@ export default function Research() {
             {/* Блок 3 — мысль w-608 (Frame 2829:52815, 778×219, pb-64) +
                 одинарное подчёркивание (Vector 2835:53404). */}
             <div className="relative flex w-full shrink-0 flex-col items-start justify-center gap-[10px] pb-[64px]">
-              <p className="w-[608px] whitespace-pre-wrap font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80 [word-break:break-word]">
-                Узнаваемость{" "}
-                <br />
-                автомобиля строится{" "}
-                <br />на нескольких ключевых признаках, а не на точном копировании каждой детали
+              <p className="relative z-10 w-[608px] font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80 [word-break:break-word]">
+                {t.researchQuote}
               </p>
-              <div className="absolute left-[110px] top-[calc(100%+9px)] h-[27.962px] w-[471px]">
+              <div className="absolute left-[110px] top-[calc(100%+9px)] z-0 h-[27.962px] w-[471px]">
                 <DrawIn src={`${A}/research-underline-834.svg`} className="absolute inset-[-10.73%_-0.64%]" />
               </div>
             </div>
@@ -315,21 +288,11 @@ export default function Research() {
             <div className="flex w-[335px] shrink-0 flex-col items-start gap-[12px] [word-break:break-word]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
                 <span className="text-[#008cff]">01</span>
-                <span className="text-[#121212]">Исследование</span>
+                <span className="text-[#121212]">{t.researchHeading}</span>
               </div>
-              <div className="flex flex-col gap-[6px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="w-[335px] opacity-70">
-                  Мне достался DeLorean — автомобиль, ставший{" "}
-                  <br />
-                  частью массовой культуры благодаря фильму{" "}
-                  <br />«Назад в будущее».
-                </p>
-                <p className="w-[335px] opacity-70">
-                  Я начал с изучения фотографий, чтобы понять,{" "}
-                  <br />
-                  какие элементы делают автомобиль узнаваемым даже при сильной авторской
-                  интерпретации.
-                </p>
+              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
+                <p className="w-[335px] opacity-70">{t.researchIntro1}</p>
+                <p className="w-[335px] opacity-70">{t.researchIntro2}</p>
               </div>
             </div>
 
@@ -338,21 +301,21 @@ export default function Research() {
               <div className="h-[213.42px] w-[335px] overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="DeLorean DMC-12 с открытыми дверями Gullwing на мощёной улице"
+                  alt={t.researchPhoto1Alt}
                   className="block size-full object-cover"
                   src={`${A}/research-photo-1-375.jpg`}
                 />
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Чёрный DeLorean DMC-12 с поднятыми дверями"
+                alt={t.researchPhoto2Alt}
                 className="block size-[335px] shrink-0 object-cover"
                 src={`${A}/research-photo-2-375.jpg`}
               />
               <div className="h-[160.022px] w-[335px] overflow-clip">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Референсный рисунок DeLorean DMC-12 в три четверти"
+                  alt={t.researchSketchAlt}
                   className="block size-full object-cover"
                   src={`${A}/research-sketch-375.jpg`}
                 />
@@ -362,7 +325,7 @@ export default function Research() {
             {/* Блок 3 — список признаков (Frame 2835:53501, w-328, gap 12). */}
             <div className="flex w-[328px] shrink-0 flex-col items-start gap-[12px]">
               <p className="w-[327px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 [word-break:break-word]">
-                В результате выделил несколько ключевых особенностей:
+                {t.bulletsLabel}
               </p>
               <ul className="flex w-full flex-col gap-[6px]">
                 {BULLETS.map((item, i) => (
@@ -380,15 +343,10 @@ export default function Research() {
             {/* Блок 4 — мысль w-294 (Frame 2828:49169, pt-32 pb-64) +
                 одинарное подчёркивание (Vector 2835:53526, 13/324.47, 322×28). */}
             <div className="relative flex w-full shrink-0 items-center gap-[10px] pb-[64px] pt-[32px]">
-              <p className="w-[294px] whitespace-pre-wrap font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-80 [word-break:break-word]">
-                Узнаваемость{" "}
-                <br />
-                автомобиля строится{" "}
-                <br />
-                на нескольких ключевых признаках,{" "}
-                <br />а не на точном копировании каждой детали
+              <p className="relative z-10 w-[294px] font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-80 [word-break:break-word]">
+                {t.researchQuote}
               </p>
-              <div className="absolute left-[13px] top-[calc(100%+15px)] h-[28px] w-[322px]">
+              <div className="absolute left-[13px] top-[calc(100%+15px)] z-0 h-[28px] w-[322px]">
                 <DrawIn src={`${A}/research-underline-375.svg`} className="absolute inset-[-10.72%_-0.93%]" />
               </div>
             </div>

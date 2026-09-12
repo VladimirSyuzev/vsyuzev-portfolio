@@ -1,5 +1,9 @@
+"use client";
+
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C5 } from "../i18n";
 
 // 04 Работа с деталями — 1:1 из Figma (node 2210:75540, высота 1401).
 // Тёмный full-bleed. Заголовок «04 РАБОТА С ДЕТАЛЯМИ» (32px), два абзаца
@@ -54,24 +58,22 @@ const DETAIL_ROWS_375: string[][] = [
 ];
 
 export default function Details() {
+  const lang = useLang();
+  const t = C5[lang];
   return (
     <>
       <div className="hidden w-full overflow-clip bg-[#121212] xl:block">
       <div className="relative mx-auto h-[1401px] w-[1440px]">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">04</p>
-          <p className="text-white">Работа с деталями</p>
+          <p className="text-white">{t.detailsHeading}</p>
         </div>
 
         <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Иллюстрация создавалась для банковской карты, поэтому должна была оставаться читаемой в
-          небольшом формате. Основное внимание я уделил силуэту, крупным формам, контрасту и
-          толщине линий.
+          {t.detailsPara1}
         </p>
         <p className="absolute left-[46px] top-[238px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Детали при этом стали важной частью истории. Потёртые поверхности, канистры, защитные дуги
-          и навесное оборудование создавали ощущение автомобиля, который десятилетиями выживал в
-          пустоши.
+          {t.detailsPara2}
         </p>
         {/* Двойное подчёркивание (Figma nodes 2284:39987 / 2284:39990). */}
         <DrawIn
@@ -88,7 +90,7 @@ export default function Details() {
           // eslint-disable-next-line @next/next/no-img-element
           <img
             key={src}
-            alt="Фрагмент иллюстрации: детали постапокалиптического DeLorean"
+            alt={t.detailsCropAlt}
             className="absolute object-cover"
             style={{ left, top, width: w, height: h }}
             src={`${A}/${src}`}
@@ -101,14 +103,13 @@ export default function Details() {
             — масштабируется вместе с текстом при другом числе строк
             (перевод на английский). */}
         <div className="absolute left-1/2 top-[1134px] w-[668px] -translate-x-1/2 -translate-y-1/2">
-          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-            Каждая деталь должна была работать на историю, не мешая считывать автомобиль в маленьком
-            формате
+          <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+            {t.detailsQuote}
           </p>
           <DrawIn
             src={`${A}/details-ellipse.svg`}
             fit="contain"
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[192.5%] w-[107.64%] -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[192.5%] w-[107.64%] -translate-x-1/2 -translate-y-1/2"
           />
         </div>
       </div>
@@ -124,18 +125,14 @@ export default function Details() {
             <div className="relative h-[155px] w-[1206px] shrink-0">
               <div className="absolute left-0 top-0 flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">04</span>
-                <span className="text-white">Работа с деталями</span>
+                <span className="text-white">{t.detailsHeading}</span>
               </div>
               <div className="absolute left-0 top-[47px] flex w-[588px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <p className="opacity-70">
-                  Иллюстрация создавалась для банковской карты, поэтому должна была оставаться
-                  читаемой в небольшом формате. Основное внимание я уделил силуэту, крупным формам,
-                  контрасту и толщине линий.
+                  {t.detailsPara1}
                 </p>
                 <p className="opacity-70">
-                  Детали при этом стали важной частью истории. Потёртые поверхности, канистры,
-                  защитные дуги и навесное оборудование создавали ощущение автомобиля, который
-                  десятилетиями выживал в пустоши.
+                  {t.detailsPara2}
                 </p>
               </div>
               {/* Двойной штрих (Vector 2835:53394) — секция (529, 223.414) →
@@ -151,7 +148,7 @@ export default function Details() {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={src}
-                  alt="Фрагмент иллюстрации: детали постапокалиптического DeLorean"
+                  alt={t.detailsCropAlt}
                   className="absolute block max-w-none object-cover"
                   style={{ left, top, width: w, height: h }}
                   src={`${A}/${src}`}
@@ -167,11 +164,10 @@ export default function Details() {
                 (перевод на английский). */}
             <div className="relative flex h-[268px] w-[1200px] shrink-0 flex-col items-center justify-center gap-[10px] px-[266px] py-[64px]">
               <div className="relative w-full">
-                <p className="min-w-full whitespace-pre-wrap text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 [word-break:break-word]">
-                  Каждая деталь должна была работать на историю, не мешая считывать автомобиль{" "}
-                  <br />в маленьком формате
+                <p className="relative z-10 min-w-full text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 [word-break:break-word]">
+                  {t.detailsQuote}
                 </p>
-                <div className="pointer-events-none absolute left-1/2 top-1/2 h-[159.18%] w-[104.89%] -translate-x-1/2 -translate-y-1/2">
+                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[159.18%] w-[104.89%] -translate-x-1/2 -translate-y-1/2">
                   <DrawIn src={`${A}/details-ellipse-1280.svg`} className="absolute inset-[-1.34%_-0.43%]" />
                 </div>
               </div>
@@ -190,18 +186,14 @@ export default function Details() {
             <div className="flex shrink-0 flex-col items-start gap-[12px] [word-break:break-word]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">04</span>
-                <span className="text-white">Работа с деталями</span>
+                <span className="text-white">{t.detailsHeading}</span>
               </div>
               <div className="flex w-[778px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <p className="opacity-70">
-                  Иллюстрация создавалась для банковской карты, поэтому должна была оставаться
-                  читаемой в небольшом формате. Основное внимание я уделил силуэту, крупным формам,
-                  контрасту и толщине линий.
+                  {t.detailsPara1}
                 </p>
                 <p className="opacity-70">
-                  Детали при этом стали важной частью истории. Потёртые поверхности, канистры,
-                  защитные дуги и навесное оборудование создавали ощущение автомобиля, который
-                  десятилетиями выживал в пустоши.
+                  {t.detailsPara2}
                 </p>
               </div>
             </div>
@@ -215,7 +207,7 @@ export default function Details() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       key={src}
-                      alt="Фрагмент иллюстрации: детали постапокалиптического DeLorean"
+                      alt={t.detailsCropAlt}
                       className="block h-[344px] shrink-0 max-w-none object-cover"
                       style={{ width: row.length === 1 ? 778 : 383 }}
                       src={`${A}/${src}`}
@@ -236,22 +228,24 @@ export default function Details() {
           <div className="relative flex h-[1042.995px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#121212] px-[20px] py-[64px]">
             {/* Блок 1 — заголовок стопкой + 2 абзаца w-335 (Frame 2836:53712, gap 12). */}
             <div className="flex shrink-0 flex-col items-start gap-[12px] [word-break:break-word]">
-              <div className="flex flex-col whitespace-pre font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
+              <div className="flex flex-col font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
                 <span className="text-[#008cff]">04</span>
-                <span className="text-white">
-                  Работа <br />с деталями
+                <span className="whitespace-pre-wrap text-white">
+                  {lang === "ru" ? (
+                    <>
+                      Работа <br />с деталями
+                    </>
+                  ) : (
+                    t.detailsHeading
+                  )}
                 </span>
               </div>
               <div className="flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
                 <p className="opacity-70">
-                  Иллюстрация создавалась для банковской карты, поэтому должна была оставаться
-                  читаемой в небольшом формате. Основное внимание я уделил силуэту, крупным формам,
-                  контрасту и толщине линий.
+                  {t.detailsPara1}
                 </p>
                 <p className="opacity-70">
-                  Детали при этом стали важной частью истории. Потёртые поверхности, канистры,
-                  защитные дуги и навесное оборудование создавали ощущение автомобиля, который
-                  десятилетиями выживал в пустоши.
+                  {t.detailsPara2}
                 </p>
               </div>
             </div>
@@ -265,7 +259,7 @@ export default function Details() {
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
                       key={src}
-                      alt="Фрагмент иллюстрации: детали постапокалиптического DeLorean"
+                      alt={t.detailsCropAlt}
                       className="block h-[148.123px] shrink-0 max-w-none object-cover"
                       style={{ width: row.length === 1 ? 335 : 164.916 }}
                       src={`${A}/${src}`}

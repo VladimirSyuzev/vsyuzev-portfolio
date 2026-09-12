@@ -1,8 +1,12 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
 import DrawIn from "@/components/DrawIn";
+import { useLang } from "@/lib/lang";
+import { C5 } from "./i18n";
 import Research from "./sections/Research";
 import Idea from "./sections/Idea";
 import Concept from "./sections/Concept";
@@ -25,6 +29,8 @@ import Result from "./sections/Result";
 const CASE = "/cases/case-05/sections";
 
 export default function Case05Page() {
+  const lang = useLang();
+  const t = C5[lang];
   return (
     <div className="flex w-full flex-col items-center overflow-x-clip">
       <Header />
@@ -45,7 +51,7 @@ export default function Case05Page() {
                 />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  alt="Четыре лимитированные карты Т-Банка с иллюстрациями культовых автомобилей"
+                  alt={t.coverAlt}
                   className="absolute inset-0 size-full object-cover"
                   src={`${CASE}/cover-cards.jpg`}
                 />
@@ -56,8 +62,8 @@ export default function Case05Page() {
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
               <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                Карты <br />
-                для пэтролхэдов
+                {t.coverLine1} <br />
+                {t.coverLine2}
               </p>
               <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
                 005
@@ -67,19 +73,19 @@ export default function Case05Page() {
 
           <div className="relative mx-auto w-[1440px]" style={{ height: 320 }}>
             <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-              О ПРОЕКТЕ
+              {t.aboutHeading}
             </p>
             <p className="absolute left-[46px] top-[149px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                      Для коллаборации Авто.ру и Т-Банка над лимитированными картами позвали четырёх иллюстраторов: каждый переосмыслил культовый автомобиль в своём стиле, чтобы объединить аудитории обоих брендов. Мне достался DeLorean, и команда клиента сразу выбрала постапокалиптическую версию вместо привычного образа машины времени.
+                      {t.aboutIntro}
                     </p>
 
             <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Иллюстратор</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
             </div>
             <div className="absolute left-[1236px] top-[149px] flex w-[130px] flex-col items-start gap-[4px]">
-              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Авто.ру и Т-Банк</p>
+              <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
             </div>
 
             <DrawIn
@@ -99,7 +105,7 @@ export default function Case05Page() {
             <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Лимитированные карты Т-Банка с иллюстрациями культовых автомобилей на красном фоне"
+                alt={t.heroAlt1280}
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-1280.jpg`}
               />
@@ -111,8 +117,8 @@ export default function Case05Page() {
                 005
               </p>
               <p className="absolute left-[40px] top-[631px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                Карты <br />
-                для пэтролхэдов
+                {t.coverLine1} <br />
+                {t.coverLine2}
               </p>
             </div>
           </FullBleedScale>
@@ -123,22 +129,22 @@ export default function Case05Page() {
             <div className="relative flex h-[249px] w-[1280px] flex-col items-start gap-[24px] bg-[#fafafa] px-[40px] py-[64px]">
               <div className="flex w-[1199px] flex-col items-start gap-[12px] [word-break:break-word]">
                 <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-                  О ПРОЕКТЕ
+                  {t.aboutHeading}
                 </p>
                 <div className="flex w-full items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[592px] flex-col items-start gap-[6px] text-[#121212]">
                     <p className="opacity-70">
-                      Для коллаборации Авто.ру и Т-Банка над лимитированными картами позвали четырёх иллюстраторов: каждый переосмыслил культовый автомобиль в своём стиле, чтобы объединить аудитории обоих брендов. Мне достался DeLorean, и команда клиента сразу выбрала постапокалиптическую версию вместо привычного образа машины времени.
+                      {t.aboutIntro}
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap text-[#121212]">
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Позиция</p>
-                      <p className="opacity-70">Иллюстратор</p>
+                      <p className="font-medium uppercase">{t.metaRole}</p>
+                      <p className="opacity-70">{t.metaRoleValue}</p>
                     </div>
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Клиент</p>
-                      <p className="opacity-70">Авто.ру и Т-Банк</p>
+                      <p className="font-medium uppercase">{t.metaClient}</p>
+                      <p className="opacity-70">{t.metaClientValue}</p>
                     </div>
                   </div>
                 </div>
@@ -160,7 +166,7 @@ export default function Case05Page() {
             <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Четыре лимитированные карты Т-Банка с иллюстрациями культовых автомобилей на красном фоне"
+                alt={t.heroAlt834}
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-834.jpg`}
               />
@@ -169,8 +175,9 @@ export default function Case05Page() {
               <div className="absolute left-[40px] top-[66px] flex w-[760px] flex-col gap-[457px] font-heading font-bold leading-[1.2] text-white">
                 <span className="text-[100px] tracking-[3px] opacity-60">005</span>
                 <span className="whitespace-pre-wrap text-[52px] uppercase tracking-[1.04px]">
-                  Карты{" "}
-                  <br />для пэтролхэдов
+                  {t.coverLine1}{" "}
+                  <br />
+                  {t.coverLine2}
                 </span>
               </div>
             </div>
@@ -183,18 +190,18 @@ export default function Case05Page() {
             <div className="relative flex h-[316px] w-[834px] flex-col items-start bg-[#fafafa] px-[28px] py-[72px]">
               <div className="flex w-[778px] flex-col items-start gap-[12px] [word-break:break-word]">
                 <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#121212]">
-                  О ПРОЕКТЕ
+                  {t.aboutHeading}
                 </p>
                 <div className="flex w-full items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[383px] flex-col items-start gap-[6px] text-[#121212]">
                     <p className="opacity-70">
-                      Для коллаборации Авто.ру и Т-Банка над лимитированными картами позвали четырёх иллюстраторов: каждый переосмыслил культовый автомобиль в своём стиле, чтобы объединить аудитории обоих брендов. Мне достался DeLorean, и команда клиента сразу выбрала постапокалиптическую версию вместо привычного образа машины времени.
+                      {t.aboutIntro}
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap text-[#121212]">
                     <div className="relative flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Позиция</p>
-                      <p className="opacity-70">Иллюстратор</p>
+                      <p className="font-medium uppercase">{t.metaRole}</p>
+                      <p className="opacity-70">{t.metaRoleValue}</p>
                       {/* Декор-линия под мета (Vector 234257363, node 2885:14358) —
                           внутри колонки «Позиция» (0, 45), 249×7, тянется под обе
                           колонки. */}
@@ -203,8 +210,8 @@ export default function Case05Page() {
                       </div>
                     </div>
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Клиент</p>
-                      <p className="opacity-70">Авто.ру и Т-Банк</p>
+                      <p className="font-medium uppercase">{t.metaClient}</p>
+                      <p className="opacity-70">{t.metaClientValue}</p>
                     </div>
                   </div>
                 </div>
@@ -221,7 +228,7 @@ export default function Case05Page() {
             <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Лимитированные карты Т-Банка с иллюстрациями культовых автомобилей на биллборде"
+                alt={t.heroAlt375}
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-375.jpg`}
               />
@@ -229,8 +236,8 @@ export default function Case05Page() {
                 005
               </p>
               <p className="absolute left-[20px] top-[250px] w-[335px] whitespace-pre-wrap font-heading text-[26px] font-bold uppercase leading-[1.15] tracking-[0.16px] text-white">
-                Карты <br />
-                для пэтролхэдов
+                {t.coverLine1} <br />
+                {t.coverLine2}
               </p>
             </div>
           </FullBleedScale>
@@ -241,22 +248,22 @@ export default function Case05Page() {
             <div className="flex h-[432px] w-[375px] flex-col items-start gap-[32px] bg-[#fafafa] px-[20px] py-[64px] [word-break:break-word]">
               <div className="flex w-[335px] flex-col items-start gap-[12px] text-[#121212]">
                 <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-                  О ПРОЕКТЕ
+                  {t.aboutHeading}
                 </p>
                 <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px]">
                   <p className="w-[335px] opacity-70">
-                      Для коллаборации Авто.ру и Т-Банка над лимитированными картами позвали четырёх иллюстраторов: каждый переосмыслил культовый автомобиль в своём стиле, чтобы объединить аудитории обоих брендов. Мне достался DeLorean, и команда клиента сразу выбрала постапокалиптическую версию вместо привычного образа машины времени.
+                      {t.aboutIntro}
                     </p>
                 </div>
               </div>
               <div className="flex items-center gap-[40px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="font-medium uppercase">Позиция</p>
-                  <p className="whitespace-nowrap opacity-70">Иллюстратор</p>
+                  <p className="font-medium uppercase">{t.metaRole}</p>
+                  <p className="whitespace-nowrap opacity-70">{t.metaRoleValue}</p>
                 </div>
                 <div className="flex flex-col items-start gap-[4px]">
-                  <p className="font-medium uppercase">Клиент</p>
-                  <p className="opacity-70">Авто.ру и Т-Банк</p>
+                  <p className="font-medium uppercase">{t.metaClient}</p>
+                  <p className="opacity-70">{t.metaClientValue}</p>
                 </div>
               </div>
             </div>
@@ -290,25 +297,25 @@ export default function Case05Page() {
       <div className="w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt={t.mockupAlt}
           className="hidden w-full xl:block"
           src={`${CASE}/mockup.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt={t.mockupAlt}
           className="hidden w-full lg:block xl:hidden"
           src={`${CASE}/mockup-1280.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt={t.mockupAlt}
           className="hidden w-full sm:block lg:hidden"
           src={`${CASE}/mockup-834.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Карта Mad Max DeLorean в руке на красном фоне"
+          alt={t.mockupAlt}
           className="block w-full sm:hidden"
           src={`${CASE}/mockup-375.jpg`}
         />
