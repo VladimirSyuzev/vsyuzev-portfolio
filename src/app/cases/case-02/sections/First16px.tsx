@@ -67,6 +67,19 @@ export default function First16px() {
       if (!animate || !wrapRef.current || !pinRef.current) {
         el.style.transform = "scale(1)";
         el.style.opacity = `${OPACITY_END}`;
+        // На живом ресайзе с ≥1440 вниз (без перезагрузки страницы) —
+        // подстраховка: явно убиваем ЛЮБОЙ ScrollTrigger, всё ещё
+        // висящий на этой секции. Обычная cleanup-функция из ПРЕДЫДУЩЕГО
+        // вызова (return () => st.kill() ниже) обычно справляется сама,
+        // но в гонке с собственным resize-хэндлером ScrollTrigger
+        // pin-spacer иногда застревал с фикс-высотой (SECTION_H+SCRUB_PX)
+        // — снизу секции появлялся огромный пустой промежуток вместо
+        // мокапа/следующего блока. Идемпотентно: если уже убит — no-op.
+        const stale = ScrollTrigger.getAll().filter((st) => st.trigger === wrapRef.current);
+        if (stale.length) {
+          stale.forEach((st) => st.kill());
+          ScrollTrigger.refresh();
+        }
         return;
       }
 
@@ -172,15 +185,21 @@ export default function First16px() {
             className="pointer-events-none hidden h-[139px] w-[140px] lg:absolute lg:left-[298px] lg:top-[311px] lg:block lg:-rotate-[0.9deg] xl:left-[481px] xl:top-[655px] xl:rotate-0"
           />
 
-          {/* Текст «Маленький размер…» + подчёркивание 834/1280 — общий блок,
-              на lg растёт ВВЕРХ от низа Группы 2 (lg:bottom-0), а не от
-              фикс lg:top-[500px]: при фикс-top и другом числе строк (перевод
-              на английский) текст вылезал за нижнюю границу блока (h640), а
-              подчёркивание на фикс lg:top-[628px] пересекало текст
-              посередине. ≥1440: выровнен НИЖНИМ краем по низу иконки (y958 =
-              icon top318+size640) — xl:bottom-[242px] вместо фикс xl:top,
-              иначе при другом числе строк текст оторвался бы от иконки. */}
-          <div className={`mt-[32px] lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 xl:contents ${lang === "ru" ? "lg:w-[440px]" : "lg:w-[520px]"}`}>
+          {/* Текст «Маленький размер…» + подчёркивание 834/1280 — на lg блок
+              ВЫРАВНИВАЕТСЯ ПО ТЕКСТУ, не по подчёркиванию: обёртка растёт
+              вверх от низа Группы 2 (lg:bottom-0), но подчёркивание внутри
+              неё — lg:absolute lg:top-full, т.е. НЕ входит в высоту обёртки
+              — низ САМОГО ТЕКСТА (а не низ линии под ним) совпадает с низом
+              иконки (y640), линия свободно свисает ниже. Раньше подчёркивание
+              было частью потока внутри обёртки — низ ЛИНИИ совпадал с низом
+              иконки, а текст оказывался выше, чем нужно. При фикс lg:top-
+              [500px] (ещё раньше) текст вылезал за нижнюю границу блока при
+              другом числе строк (перевод на английский), а подчёркивание на
+              фикс lg:top-[628px] пересекало текст посередине. ≥1440:
+              выровнен НИЖНИМ краем по низу иконки (y958 = icon top318+
+              size640) — xl:bottom-[242px] вместо фикс xl:top, иначе при
+              другом числе строк текст оторвался бы от иконки. */}
+          <div className={`relative mt-[32px] lg:absolute lg:bottom-0 lg:left-0 lg:mt-0 xl:contents ${lang === "ru" ? "lg:w-[440px]" : "lg:w-[520px]"}`}>
             <p className={`font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:w-full lg:text-[32px] xl:absolute xl:left-[46px] xl:top-auto xl:bottom-[242px] xl:w-[589px] xl:text-[32px] ${lang === "ru" ? "sm:w-[449px]" : "sm:w-[520px]"}`}>
               {lang === "ru" ? (
                 <>
@@ -199,11 +218,14 @@ export default function First16px() {
               )}
             </p>
 
-            {/* Подчёркивание (Vector 234257394) 834/1280 — w427, наклон +2.26°,
-                в потоке сразу под цитатой (растёт вместе с ней на lg). */}
+            {/* Подчёркивание (Vector 234257394) 834/1280 — w427, наклон +2.26°.
+                834 (sm, без lg:absolute у обёртки) — в потоке сразу под
+                цитатой. 1280 (lg) — lg:absolute lg:top-full: висит ниже
+                текста, не влияя на точку выравнивания обёртки по низу
+                иконки (см. комментарий выше). */}
             <DrawIn
               src={`${A}/reflow/icon16-underline-1280.svg`}
-              className="pointer-events-none mt-[10px] hidden h-[36.9px] w-[427px] max-w-full rotate-[2.26deg] sm:block lg:ml-[27px] xl:hidden"
+              className="pointer-events-none mt-[10px] hidden h-[36.9px] w-[427px] max-w-full rotate-[2.26deg] sm:block lg:absolute lg:left-0 lg:top-full lg:ml-[27px] xl:hidden"
             />
           </div>
 

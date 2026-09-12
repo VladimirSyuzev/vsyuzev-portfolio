@@ -181,19 +181,15 @@ export default function Task() {
             голубой, потом стрелка. */}
         <TaskIcons />
 
-        {/* 375: рукописная обводка облегает цитату — как в макете Figma
-            (Vector 234257386, ≈104% ширины цитаты). Держим большой верхний
-            отступ (pt-64), чтобы обводка не наезжала на голубой ключ выше.
-            Размер в % от фактической высоты <p> (число строк «плавает»). */}
+        {/* 375: без рукописной обводки вокруг цитаты (убрано по просьбе —
+            на маленькой ширине круг перекрывал/теснил текст). Держим
+            большой верхний отступ (pt-64), чтобы блок не наезжал на голубой
+            ключ выше. */}
         <div className="pt-[64px] pb-[36px] sm:hidden">
           <div className="relative mx-auto w-[320px] max-w-full">
             <p className="text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
               {t.taskQuote}
             </p>
-            <DrawIn
-              src={`${A}/reflow/task-ellipse-375.svg`}
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[116%] w-[112%] max-w-none -translate-x-1/2 -translate-y-1/2"
-            />
           </div>
         </div>
 

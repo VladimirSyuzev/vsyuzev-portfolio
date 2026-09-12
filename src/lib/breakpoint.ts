@@ -22,16 +22,31 @@ function current(): Breakpoint {
   return "mobile";
 }
 
+// Общая подписка "что-то могло поменять ширину вьюпорта, перепроверь" —
+// три независимых источника сигнала, а не один matchMedia("change"):
+// в части окружений (эмуляция вьюпорта через CDP — devtools device
+// toolbar, Playwright/автотесты) ни matchMedia("change"), ни обычный
+// window "resize" не долетают синхронно с ресайзом — брейкпоинт залипает
+// на старом значении без перезагрузки страницы. ResizeObserver на
+// <html> реагирует на фактическое изменение layout-размера напрямую
+// (через движок рендеринга, а не событийную систему) и в тех же
+// окружениях срабатывает надёжно — используем его как подстраховку
+// поверх двух остальных, а не вместо.
+function watchViewport(onChange: () => void) {
+  const mqls = QUERIES.map(([, q]) => window.matchMedia(q));
+  mqls.forEach((m) => m.addEventListener("change", onChange));
+  window.addEventListener("resize", onChange);
+  const ro = new ResizeObserver(onChange);
+  ro.observe(document.documentElement);
+  return () => {
+    mqls.forEach((m) => m.removeEventListener("change", onChange));
+    window.removeEventListener("resize", onChange);
+    ro.disconnect();
+  };
+}
+
 export function useBreakpoint(): Breakpoint {
-  return useSyncExternalStore(
-    (onChange) => {
-      const mqls = QUERIES.map(([, q]) => window.matchMedia(q));
-      mqls.forEach((m) => m.addEventListener("change", onChange));
-      return () => mqls.forEach((m) => m.removeEventListener("change", onChange));
-    },
-    current,
-    () => "desktop",
-  );
+  return useSyncExternalStore(watchViewport, current, () => "desktop");
 }
 
 // useMinWidth — matches `(min-width: {px}px)`, СТАРТ false (в отличие от
@@ -45,8 +60,10 @@ export function useMinWidth(px: number) {
     const mq = window.matchMedia(`(min-width: ${px}px)`);
     const on = () => setOk(mq.matches);
     on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
+    // См. watchViewport в useBreakpoint выше — та же тройная подстраховка
+    // (matchMedia change + window resize + ResizeObserver) для живого
+    // ресайза без reload.
+    return watchViewport(on);
   }, [px]);
   return ok;
 }
