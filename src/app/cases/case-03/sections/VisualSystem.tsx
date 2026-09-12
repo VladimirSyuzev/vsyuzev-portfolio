@@ -56,12 +56,12 @@ export default function VisualSystem() {
           строк (перевод на английский). */}
       <div className="relative mx-auto hidden h-[440px] w-[1440px] xl:block">
         <div className="absolute left-1/2 top-[244px] w-[669px] -translate-x-1/2 -translate-y-1/2">
-          <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+          <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
             {t.visualQuote}
           </p>
           <DrawIn
             src={`${A}/vislang-ellipse.svg`}
-            className="pointer-events-none absolute left-1/2 top-1/2 h-[210%] w-[101.8%] -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[210%] w-[101.8%] -translate-x-1/2 -translate-y-1/2"
           />
         </div>
       </div>
@@ -114,7 +114,7 @@ export default function VisualSystem() {
                 другом числе строк (перевод на английский); внутри — тот же
                 inset-трюк на картинке (preserveAspectRatio none). */}
             <div className="absolute left-[187px] top-[698px] w-[335px] -translate-x-1/2 -translate-y-1/2">
-              <p className="whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
+              <p className="relative z-10 whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
                 {lang === "ru" ? (
                   <>
                     Одна иллюстрация стала основой{" "}
@@ -125,7 +125,7 @@ export default function VisualSystem() {
                   t.visualQuote
                 )}
               </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 h-[174.3%] w-[99.1%] -translate-x-1/2 -translate-y-1/2">
+              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[174.3%] w-[99.1%] -translate-x-1/2 -translate-y-1/2">
                 <DrawIn
                   src={`${A}/vislang-ellipse-375.svg`}
                   className="absolute inset-[-1.78%_-0.9%]"
@@ -189,7 +189,7 @@ export default function VisualSystem() {
                 эллипс в % от блока текста (155.1%/107.7%) — масштабируется
                 вместе с текстом при другом числе строк (перевод). */}
             <div className="absolute left-[417px] top-[967px] w-[430px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+              <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
                 {lang === "ru" ? (
                   <>
                     Одна иллюстрация стала основой{" "}
@@ -202,7 +202,7 @@ export default function VisualSystem() {
               </p>
               <DrawIn
                 src={`${A}/vislang-ellipse-834.svg`}
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[155.1%] w-[107.7%] -translate-x-1/2 -translate-y-1/2"
+                className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[155.1%] w-[107.7%] -translate-x-1/2 -translate-y-1/2"
               />
             </div>
           </div>
@@ -254,12 +254,12 @@ export default function VisualSystem() {
                 строк (перевод). Реальный рендер вектора 2695:18262 — 535×226
                 (bbox в get_metadata раздут до 572×415, игнорируем). */}
             <div className="absolute left-[640px] top-[1263px] w-[490px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+              <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
                 {t.visualQuote}
               </p>
               <DrawIn
                 src={`${A}/vislang-ellipse-1280.svg`}
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[160.5%] w-[109.2%] -translate-x-1/2 -translate-y-1/2"
+                className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[160.5%] w-[109.2%] -translate-x-1/2 -translate-y-1/2"
               />
             </div>
           </div>
