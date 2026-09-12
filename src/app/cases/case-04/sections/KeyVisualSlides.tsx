@@ -4,6 +4,8 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C4 } from "../i18n";
 import DrawIn from "@/components/DrawIn";
 import SlideProgress from "@/components/SlideProgress";
 import FullBleedScale from "@/components/FullBleedScale";
@@ -31,16 +33,16 @@ const CIRCLES: [string, number, number, number, number][] = [
 ];
 
 function Slide1() {
+  const t = C4[useLang()];
   return (
     <>
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">03</p>
-        <p className="text-white">KEY VISUAL</p>
+        <p className="text-white">{t.kvHeading}</p>
       </div>
 
       <p className="absolute left-[46px] top-[181px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        Первым сценарием стал дом, как один из самых сильных и понятных образов крупной покупки.
-        Молодая пара стоит перед новым домом: мужчина показывает телефон, женщина держит ключи.
+        {t.kvSlide1Intro}
       </p>
 
       {/* Доодл-«глаз» (Figma node 2284:40104 → 1155 / 188, 157×110). */}
@@ -53,7 +55,7 @@ function Slide1() {
       {/* Метро-билборд (Figma frame 2094:18197 → x46 / y318, 1348×536). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="KEY VISUAL Stablegate на билбордах в метро"
+        alt={t.kvSubwayAlt}
         className="absolute left-[46px] top-[318px] h-[536px] w-[1348px] object-cover"
         src={`${A}/kv1-subway.jpg`}
       />
@@ -62,32 +64,32 @@ function Slide1() {
 }
 
 function Slide2() {
+  const t = C4[useLang()];
   return (
     <>
       {/* Кроп 1 — телефон (Figma frame 2094:18626 → x46 / y44, 328×399). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Крупный план: телефон Stablegate с завершённой покупкой"
+        alt={t.kvCrop1Alt}
         className="absolute left-[46px] top-[44px] h-[399px] w-[328px] object-cover"
         src={`${A}/crops-1.jpg`}
       />
       {/* Кроп 2 — ключи (Figma frame 2094:18627 → x386 / y181, 328×262). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Крупный план: женщина держит ключи от дома"
+        alt={t.kvCrop2Alt}
         className="absolute left-[386px] top-[181px] h-[262px] w-[328px] object-cover"
         src={`${A}/crops-2.jpg`}
       />
 
       <p className="absolute left-[726px] top-[181px] w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        В одном кадре соединяются crypto-актив, Stablegate и результат покупки. Зритель считывает
-        простую последовательность: телефон → покупка → новая жизнь.
+        {t.kvSlide2Intro}
       </p>
 
       {/* Кроп 3 — пара (Figma frame 2094:18628 → x726 / y455, 668×399). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Пара перед новым домом с телефоном Stablegate"
+        alt={t.kvCrop3Alt}
         className="absolute left-[726px] top-[455px] h-[399px] w-[668px] object-cover"
         src={`${A}/crops-3.jpg`}
       />
@@ -106,9 +108,7 @@ function Slide2() {
           другом числе строк (перевод на английский). */}
       <div className="absolute left-[46px] top-[592px] w-[485px]">
         <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Crypto становится понятным, когда превращается
-          <br />
-          во что-то реальное
+          {t.kvQuote}
         </p>
         <DrawIn
           src={`${A}/crops-underline.svg`}
@@ -133,23 +133,23 @@ const CIRCLES_1280: [string, number, number, number, number, string][] = [
 ];
 
 function KeyVisual1280() {
+  const t = C4[useLang()];
   return (
     <div className="relative flex h-[776px] w-[1280px] flex-col items-start gap-[64px] overflow-clip bg-[#121212] px-[40px] py-[72px]">
       <div className="flex w-[594px] flex-col items-start gap-[12px]">
         <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <span className="text-[#008cff]">03</span>
-          <span className="text-white">KEY VISUAL</span>
+          <span className="text-white">{t.kvHeading}</span>
         </div>
         <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Первым сценарием стал дом, как один из самых сильных и понятных образов крупной покупки.
-          Молодая пара стоит перед новым домом: мужчина показывает телефон, женщина держит ключи.
+          {t.kvSlide1Intro}
         </p>
       </div>
       {/* Метро-билборд (2739:17996, bg #212121, 1200×470). */}
       <div className="relative h-[470px] w-[1200px] shrink-0 overflow-clip bg-[#212121]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="KEY VISUAL Stablegate на билбордах в метро"
+          alt={t.kvSubwayAlt}
           className="absolute inset-0 size-full max-w-none object-cover"
           src={`${A}/kv1-subway-1280.jpg`}
         />
@@ -165,6 +165,7 @@ function KeyVisual1280() {
 function Crops1280() {
   const rootRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const t = C4[useLang()];
 
   useGSAP(
     () => {
@@ -208,28 +209,27 @@ function Crops1280() {
       {/* Кроп 1 (2739:18009 → 40/72, 291×410). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Крупный план: телефон Stablegate с завершённой покупкой"
+        alt={t.kvCrop1Alt}
         className="absolute left-[40px] top-[72px] h-[410px] w-[291px] max-w-none bg-[#212121] object-cover"
         src={`${A}/crops-1-1280.jpg`}
       />
       {/* Кроп 2 (2739:18010 → 343/212, 291×270). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Крупный план: женщина держит ключи от дома"
+        alt={t.kvCrop2Alt}
         className="absolute left-[343px] top-[212px] h-[270px] w-[291px] max-w-none bg-[#212121] object-cover"
         src={`${A}/crops-2-1280.jpg`}
       />
       {/* Кроп 3 — общий план (2739:18011 → 646/494, 594×410). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Пара перед новым домом с телефоном Stablegate"
+        alt={t.kvCrop3Alt}
         className="absolute left-[646px] top-[494px] h-[410px] w-[594px] max-w-none bg-[#212121] object-cover"
         src={`${A}/crops-3-1280.jpg`}
       />
 
       <p className="absolute left-[646px] top-[212px] w-[291px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        В одном кадре соединяются crypto-актив, Stablegate и результат покупки. Зритель считывает
-        простую последовательность: телефон → покупка → новая жизнь.
+        {t.kvSlide2Intro}
       </p>
 
       {/* Рукописные обводки-круги — анимируются по очереди (см. useGSAP).
@@ -250,10 +250,8 @@ function Crops1280() {
       {/* Крупная мысль (2739:18013 → 40/756, w520) + подчёркивание
           (2835:53369, 135/904, 329.56×29.64) под последней строкой. */}
       <div className="absolute left-[40px] top-[756px] w-[520px]">
-        <p className="whitespace-pre-wrap font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          Crypto становится понятным, когда превращается{" "}
-          <br />
-          во что-то реальное
+        <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
+          {t.kvQuote}
         </p>
         <div className="pointer-events-none absolute left-[95px] top-[calc(100%+8px)] h-[29.64px] w-[329.56px]">
           <DrawIn src={`${A}/crops-underline-1280.svg`} className="absolute inset-[0_-0.91%]" />
@@ -267,24 +265,23 @@ function Crops1280() {
 // На 834 у «05 Кропы» колец-обводок НЕТ (в макете только эллипс вокруг
 // цитаты) — статичный блок.
 function KeyVisual834() {
+  const t = C4[useLang()];
   return (
     <div className="relative flex h-[759px] w-[834px] flex-col items-start gap-[64px] overflow-clip bg-[#121212] px-[26px] py-[72px]">
       <div className="flex w-[778px] flex-col items-start gap-[12px]">
         <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <span className="text-[#008cff]">03</span>
-          <span className="text-white">KEY VISUAL</span>
+          <span className="text-white">{t.kvHeading}</span>
         </div>
-        <p className="w-[778px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Первым сценарием стал дом, как один из самых сильных и понятных образов крупной покупки.{" "}
-          <br />
-          Молодая пара стоит перед новым домом: мужчина показывает телефон, женщина держит ключи.
+        <p className="w-[778px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+          {t.kvSlide1Intro}
         </p>
       </div>
       {/* Метро-билборд (2818:29395, bg #212121, 778×470). */}
       <div className="relative h-[470px] w-[778px] shrink-0 overflow-clip bg-[#212121]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="KEY VISUAL Stablegate на билбордах в метро"
+          alt={t.kvSubwayAlt}
           className="absolute inset-0 size-full max-w-none object-cover"
           src={`${A}/subway-834.jpg`}
         />
@@ -298,30 +295,30 @@ function KeyVisual834() {
 }
 
 function Crops834() {
+  const t = C4[useLang()];
   return (
     <div className="relative h-[1215px] w-[834px] overflow-clip bg-[#121212]">
       {/* Кроп 1 (2750:4717 → 28/72, 383×383). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Крупный план: телефон Stablegate с завершённой покупкой"
+        alt={t.kvCrop1Alt}
         className="absolute left-[28px] top-[72px] size-[383px] max-w-none bg-[#212121] object-cover"
         src={`${A}/crops-1-834.jpg`}
       />
       {/* Кроп 2 (2750:4719 → 423/205, 383×250). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Крупный план: женщина держит ключи от дома"
+        alt={t.kvCrop2Alt}
         className="absolute left-[423px] top-[205px] h-[250px] w-[383px] max-w-none bg-[#212121] object-cover"
         src={`${A}/crops-2-834.jpg`}
       />
       <p className="absolute left-[424px] top-[72px] w-[380px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        В одном кадре соединяются crypto-актив, Stablegate и результат покупки. Зритель считывает
-        простую последовательность: телефон → покупка → новая жизнь.
+        {t.kvSlide2Intro}
       </p>
       {/* Кроп 3 — общий план (2750:4721 → 28/467, 778×360). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Пара перед новым домом с телефоном Stablegate"
+        alt={t.kvCrop3Alt}
         className="absolute left-[28px] top-[467px] h-[360px] w-[778px] max-w-none bg-[#212121] object-cover"
         src={`${A}/crops-3-834.jpg`}
       />
@@ -332,10 +329,8 @@ function Crops834() {
           текста (159.9%/89.7%) — масштабируется вместе с текстом при другом
           числе строк (перевод на английский). */}
       <div className="absolute left-1/2 top-[1017px] w-[506px] -translate-x-1/2 -translate-y-1/2">
-        <p className="whitespace-pre-wrap text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-          Crypto становится понятным, когда превращается{" "}
-          <br />
-          во что-то реальное
+        <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
+          {t.kvQuote}
         </p>
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[159.9%] w-[89.7%] -translate-x-1/2 -translate-y-1/2">
           <DrawIn src={`${A}/crops-ellipse-834.svg`} className="absolute inset-[-1.52%_-0.66%]" />
@@ -349,24 +344,24 @@ function Crops834() {
 // Как и на 834 — колец-обводок у «05 Кропы» нет, только тонкое
 // подчёркивание под цитатой. Поток flex-col.
 function KeyVisual375() {
+  const t = C4[useLang()];
   return (
     <div className="relative flex h-[582px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#121212] py-[64px]">
       {/* Заголовок + абзац (px-20, gap 12). */}
       <div className="flex flex-col items-start gap-[12px] px-[20px]">
         <div className="flex w-[335px] flex-col items-start font-heading text-[26px] font-bold uppercase">
           <span className="leading-none text-[#008cff]">03</span>
-          <span className="leading-[1.1] tracking-[0.78px] text-white">KEY VISUAL</span>
+          <span className="leading-[1.1] tracking-[0.78px] text-white">{t.kvHeading}</span>
         </div>
         <p className="w-[335px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-          Первым сценарием стал дом, как один из самых сильных и понятных образов крупной покупки.
-          Молодая пара стоит перед новым домом: мужчина показывает телефон, женщина держит ключи.
+          {t.kvSlide1Intro}
         </p>
       </div>
       {/* Метро-билборд (2760:4702, bg #212121, border #383838, 375×270). */}
       <div className="relative h-[270px] w-full shrink-0 overflow-clip border border-solid border-[#383838] bg-[#212121]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="KEY VISUAL Stablegate на билбордах в метро"
+          alt={t.kvSubwayAlt}
           className="absolute inset-0 size-full max-w-none object-cover"
           src={`${A}/subway-375.jpg`}
         />
@@ -376,29 +371,30 @@ function KeyVisual375() {
 }
 
 function Crops375() {
+  const lang = useLang();
+  const t = C4[lang];
   return (
     <div className="relative flex h-[1292px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#121212] px-[20px] py-[64px]">
       <p className="w-[335px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        В одном кадре соединяются crypto-актив, Stablegate и результат покупки. Зритель считывает
-        простую последовательность: телефон → покупка → новая жизнь.
+        {t.kvSlide2Intro}
       </p>
       {/* 3 кропа стопкой (2820:36199, w-335, gap 12). */}
       <div className="flex w-[335px] shrink-0 flex-col items-start gap-[12px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Крупный план: телефон Stablegate с завершённой покупкой"
+          alt={t.kvCrop1Alt}
           className="block h-[280px] w-full max-w-none bg-[#212121] object-cover"
           src={`${A}/crop-1-375.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Крупный план: женщина держит ключи от дома"
+          alt={t.kvCrop2Alt}
           className="block h-[220px] w-full max-w-none bg-[#212121] object-cover"
           src={`${A}/crop-2-375.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Пара перед новым домом с телефоном Stablegate"
+          alt={t.kvCrop3Alt}
           className="block h-[280px] w-full max-w-none bg-[#212121] object-cover"
           src={`${A}/crop-3-375.jpg`}
         />
@@ -410,11 +406,17 @@ function Crops375() {
       <div className="relative flex w-full shrink-0 flex-col items-center justify-center py-[64px]">
         <div className="relative w-[335px]">
           <p className="whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white opacity-70">
-            Crypto становится понятным,{" "}
-            <br />
-            когда превращается{" "}
-            <br />
-            во что-то реальное
+            {lang === "ru" ? (
+              <>
+                Crypto становится понятным,{" "}
+                <br />
+                когда превращается{" "}
+                <br />
+                во что-то реальное
+              </>
+            ) : (
+              t.kvQuote
+            )}
           </p>
           <div className="absolute left-0 top-[calc(100%+6px)] h-[12.036px] w-[329.443px]">
             <DrawIn src={`${A}/crops-underline-375.svg`} className="absolute inset-[-24.92%_-0.91%]" />

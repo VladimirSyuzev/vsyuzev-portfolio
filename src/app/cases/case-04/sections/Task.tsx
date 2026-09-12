@@ -1,10 +1,17 @@
+"use client";
+
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C4 } from "../i18n";
 
 // 01 Задача — 1:1 из актуальной Figma (node 2034:15705, высота 900).
 // Заголовок «01 Задача» (32px). Два абзаца сверху. Ниже — цельная
 // растровая композиция (фото дома/машины + телефон-мокап) с наложенной
 // крупной мыслью «Сложный crypto-продукт…» (Wix Madefor Display Regular).
+// На xl/1280/834 мысль запечена в саму композицию — на EN подставляется
+// отдельно экспортированный WebP с английским текстом (task-composite*-en.webp,
+// см. Figma EXPORT/c4_task.png), RU остаётся на исходных JPG.
 //
 // 1024–1439 — reflow «case-04 · 1280» (node 2736:17992, 1280×786).
 //  640–1023 — reflow «case-04 · 834» (node 2748:4698, 834×622.198).
@@ -13,23 +20,22 @@ import FullBleedScale from "@/components/FullBleedScale";
 const A = "/cases/case-04/sections";
 
 export default function Task() {
+  const lang = useLang();
+  const t = C4[lang];
   return (
     <>
       {/* ≥1440 — нативный холст 1440. */}
       <div className="relative hidden h-[900px] w-[1440px] overflow-clip bg-[#fafafa] xl:block">
         <div className="absolute left-[46px] top-[134px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
           <p className="text-[#008cff]">01</p>
-          <p className="text-[#121212]">Задача</p>
+          <p className="text-[#121212]">{t.taskHeading}</p>
         </div>
 
         <p className="absolute left-[46px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          Ценность crypto проявляется не только внутри цифровой среды, но и в возможности использовать
-          активы в реальной жизни. Кампания должна была показать, как Stablegate превращает crypto в
-          средство для повседневных и крупных покупок.
+          {t.taskIntro1}
         </p>
         <p className="absolute left-[556px] top-[181px] w-[498px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-          При этом коммуникация должна была передавать надёжность, безопасность, скорость и
-          премиальный характер бренда, оставаясь понятной с первого взгляда.
+          {t.taskIntro2}
         </p>
 
         {/* Композиция (Figma frame 2034:15720 → x0 / y318, 1394×602). Мысль
@@ -37,11 +43,11 @@ export default function Task() {
             поверх приглушённого фото — как слоганы в мокапах кейсов 2/3. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Приложение Stablegate: обмен 125 000 USDT на 109 320,57 EUR на фоне дома и автомобиля, с мыслью «Сложный crypto-продукт нужно было объяснить за несколько секунд»"
+          alt={t.taskCompositeAlt}
           className="absolute left-0 top-[318px] w-[1394px]"
-          src={`${A}/task-composite.jpg`}
+          src={lang === "en" ? `${A}/task-composite-en.webp` : `${A}/task-composite.jpg`}
         />
-        <p className="sr-only">Сложный crypto-продукт нужно было объяснить за несколько секунд</p>
+        <p className="sr-only">{t.taskQuote}</p>
       </div>
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
@@ -52,21 +58,16 @@ export default function Task() {
             {/* Заголовок (40, 72) — «01» #008cff + «Задача» #121212, gap 20. */}
             <div className="absolute left-[40px] top-[72px] flex items-baseline gap-[20px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
               <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">Задача</span>
+              <span className="text-[#121212]">{t.taskHeading}</span>
             </div>
 
             {/* Два абзаца (40, 119), Aeonik Regular 14 opacity-70. В 1-м —
                 ручные <br> после «цифровой среды, » и «повседневных ». */}
-            <p className="absolute left-[40px] top-[119px] w-[580px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              Ценность crypto проявляется не только внутри цифровой среды,{" "}
-              <br />
-              но и в возможности использовать активы в реальной жизни. Кампания должна была показать,
-              как Stablegate превращает crypto в средство для повседневных{" "}
-              <br />и крупных покупок.
+            <p className="absolute left-[40px] top-[119px] w-[580px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+              {t.taskIntro1}
             </p>
             <p className="absolute left-[646px] top-[119px] w-[592px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              При этом коммуникация должна была передавать надёжность, безопасность, скорость и
-              премиальный характер бренда, оставаясь понятной с первого взгляда.
+              {t.taskIntro2}
             </p>
 
             {/* Композиция (Frame 2147231700, 0/251, 1240×535.5) — телефон-мокап
@@ -74,11 +75,11 @@ export default function Task() {
                 (Wix Madefor Display Regular 31, center, opacity-80) запечены. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Приложение Stablegate: обмен 125 000 USDT на 109 320,57 EUR на фоне дома и автомобиля, с мыслью «Сложный crypto-продукт нужно было объяснить за несколько секунд»"
+              alt={t.taskCompositeAlt}
               className="absolute left-0 top-[251px] block h-[535.495px] w-[1240px] max-w-none object-cover"
-              src={`${A}/task-composite-1280.jpg`}
+              src={lang === "en" ? `${A}/task-composite-1280-en.webp` : `${A}/task-composite-1280.jpg`}
             />
-            <p className="sr-only">Сложный crypto-продукт нужно было объяснить за несколько секунд</p>
+            <p className="sr-only">{t.taskQuote}</p>
           </div>
         </FullBleedScale>
       </div>
@@ -92,19 +93,11 @@ export default function Task() {
             <div className="flex w-[778px] flex-col items-start gap-[12px] px-[28px]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">01</span>
-                <span className="text-[#121212]">Задача</span>
+                <span className="text-[#121212]">{t.taskHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="whitespace-pre-wrap opacity-70">
-                  Ценность crypto проявляется не только внутри цифровой среды, но и в возможности
-                  использовать активы в реальной жизни. Кампания должна была показать, как Stablegate
-                  превращает crypto{" "}
-                  <br />в средство для повседневных и крупных покупок.
-                </p>
-                <p className="opacity-70">
-                  При этом коммуникация должна была передавать надёжность, безопасность, скорость и
-                  премиальный характер бренда, оставаясь понятной с первого взгляда.
-                </p>
+                <p className="opacity-70">{t.taskIntro1}</p>
+                <p className="opacity-70">{t.taskIntro2}</p>
               </div>
             </div>
 
@@ -113,11 +106,11 @@ export default function Task() {
                 Regular 28, center, opacity-80) запечены. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Приложение Stablegate: обмен 125 000 USDT на 109 320,57 EUR на фоне дома и автомобиля, с мыслью «Сложный crypto-продукт нужно было объяснить за несколько секунд»"
+              alt={t.taskCompositeAlt}
               className="block h-[348.198px] w-[834px] shrink-0 max-w-none object-cover"
-              src={`${A}/task-composite-834.jpg`}
+              src={lang === "en" ? `${A}/task-composite-834-en.webp` : `${A}/task-composite-834.jpg`}
             />
-            <p className="sr-only">Сложный crypto-продукт нужно было объяснить за несколько секунд</p>
+            <p className="sr-only">{t.taskQuote}</p>
           </div>
         </FullBleedScale>
       </div>
@@ -132,18 +125,11 @@ export default function Task() {
             <div className="flex w-full flex-col items-start gap-[12px] px-[20px]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
                 <span className="text-[#008cff]">01</span>
-                <span className="text-[#121212]">Задача</span>
+                <span className="text-[#121212]">{t.taskHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="w-[335px] opacity-70">
-                  Ценность crypto проявляется не только внутри цифровой среды, но и в возможности
-                  использовать активы в реальной жизни. Кампания должна была показать, как Stablegate
-                  превращает crypto в средство для повседневных и крупных покупок.
-                </p>
-                <p className="w-[335px] opacity-70">
-                  При этом коммуникация должна была передавать надёжность, безопасность, скорость и
-                  премиальный характер бренда, оставаясь понятной с первого взгляда.
-                </p>
+                <p className="w-[335px] opacity-70">{t.taskIntro1}</p>
+                <p className="w-[335px] opacity-70">{t.taskIntro2}</p>
               </div>
             </div>
 
@@ -151,7 +137,7 @@ export default function Task() {
                 + AI-фото + свечение. Без запечённого текста. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Приложение Stablegate на фоне дома и автомобиля"
+              alt={t.taskComposite375Alt}
               className="block h-[348.198px] w-[375px] shrink-0 max-w-none object-cover"
               src={`${A}/task-composite-375.jpg`}
             />
@@ -164,11 +150,17 @@ export default function Task() {
             <div className="relative flex w-full shrink-0 items-center justify-center py-[64px]">
               <div className="relative w-[294px]">
                 <p className="whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-80">
-                  Сложный crypto-продукт нужно{" "}
-                  <br />
-                  было объяснить{" "}
-                  <br />
-                  за несколько секунд
+                  {lang === "ru" ? (
+                    <>
+                      Сложный crypto-продукт нужно{" "}
+                      <br />
+                      было объяснить{" "}
+                      <br />
+                      за несколько секунд
+                    </>
+                  ) : (
+                    t.taskQuote
+                  )}
                 </p>
                 <div className="pointer-events-none absolute left-1/2 top-1/2 h-[168.1%] w-[117.5%] -translate-x-1/2 -translate-y-1/2">
                   <DrawIn src={`${A}/task-ellipse-375.svg`} className="absolute inset-[-1.84%_-0.87%]" />

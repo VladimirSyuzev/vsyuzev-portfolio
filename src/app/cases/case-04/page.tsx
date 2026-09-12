@@ -1,8 +1,12 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
 import DrawIn from "@/components/DrawIn";
+import { useLang } from "@/lib/lang";
+import { C4 } from "./i18n";
 import Task from "./sections/Task";
 import Concept from "./sections/Concept";
 import KeyVisualSlides from "./sections/KeyVisualSlides";
@@ -20,6 +24,8 @@ import Final from "./sections/Final";
 const CASE = "/cases/case-04/sections";
 
 export default function Case04Page() {
+  const lang = useLang();
+  const t = C4[lang];
   return (
     <div className="flex w-full flex-col items-center overflow-x-clip">
       <Header />
@@ -42,7 +48,7 @@ export default function Case04Page() {
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» на фоне неба"
+                alt={t.coverAlt}
                 className="absolute inset-0 size-full object-cover object-[78%_18%]"
                 src={`${CASE}/cover-billboard.jpg`}
               />
@@ -53,8 +59,8 @@ export default function Case04Page() {
 
           <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
             <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-              KEY VISUALS <br />
-              ДЛЯ OUTDOOR-КАМПАНИИ
+              {t.coverLine1} <br />
+              {t.coverLine2}
             </p>
             <p className="absolute left-[40px] top-[-2px] whitespace-nowrap font-heading text-[175px] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60">
               004
@@ -64,19 +70,19 @@ export default function Case04Page() {
 
         <div className="relative mx-auto w-[1440px]" style={{ height: 320 }}>
           <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
-            О ПРОЕКТЕ
+            {t.aboutHeading}
           </p>
           <p className="absolute left-[46px] top-[149px] w-[668px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
+                      {t.aboutIntro}
                     </p>
 
           <div className="absolute left-[1066px] top-[149px] flex w-[102px] flex-col items-start gap-[4px]">
-            <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Позиция</p>
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Дизайнер</p>
+            <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
           </div>
           <div className="absolute left-[1236px] top-[149px] flex w-[98px] flex-col items-start gap-[4px]">
-            <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">Клиент</p>
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">Stablegate</p>
+            <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
           </div>
 
           <DrawIn
@@ -96,7 +102,7 @@ export default function Case04Page() {
             <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» на фоне неба"
+                alt={t.coverAlt}
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-billboard-1280.jpg`}
               />
@@ -108,8 +114,8 @@ export default function Case04Page() {
                 004
               </p>
               <p className="absolute left-[40px] top-[631px] w-[1200px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                KEY VISUALS <br />
-                ДЛЯ OUTDOOR-КАМПАНИИ
+                {t.coverLine1} <br />
+                {t.coverLine2}
               </p>
             </div>
           </FullBleedScale>
@@ -120,22 +126,22 @@ export default function Case04Page() {
             <div className="relative flex h-[283px] w-[1280px] flex-col items-start gap-[24px] bg-[#fafafa] px-[40px] py-[64px]">
               <div className="flex w-[1199px] flex-col items-start gap-[12px] text-[#121212]">
                 <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                  О ПРОЕКТЕ
+                  {t.aboutHeading}
                 </p>
                 <div className="flex w-full items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[593px] flex-col items-start gap-[6px]">
                     <p className="opacity-70">
-                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
+                      {t.aboutIntro}
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap">
                     <div className="flex w-[69px] flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Позиция</p>
-                      <p className="opacity-70">Дизайнер</p>
+                      <p className="font-medium uppercase">{t.metaRole}</p>
+                      <p className="opacity-70">{t.metaRoleValue}</p>
                     </div>
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Клиент</p>
-                      <p className="opacity-70">Stablegate</p>
+                      <p className="font-medium uppercase">{t.metaClient}</p>
+                      <p className="opacity-70">{t.metaClientValue}</p>
                     </div>
                   </div>
                 </div>
@@ -156,7 +162,7 @@ export default function Case04Page() {
             <div className="relative size-[834px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» на фоне неба"
+                alt={t.coverAlt}
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-billboard-834.jpg`}
               />
@@ -170,8 +176,8 @@ export default function Case04Page() {
                 004
               </p>
               <p className="absolute left-[40px] top-[582px] w-[760px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
-                KEY VISUALS <br />
-                ДЛЯ OUTDOOR-КАМПАНИИ
+                {t.coverLine1} <br />
+                {t.coverLine2}
               </p>
             </div>
           </FullBleedScale>
@@ -182,22 +188,22 @@ export default function Case04Page() {
             <div className="relative flex h-[350px] w-[834px] flex-col items-start bg-[#fafafa] px-[28px] py-[72px]">
               <div className="flex w-[777px] flex-col items-start gap-[12px] text-[#121212]">
                 <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                  О ПРОЕКТЕ
+                  {t.aboutHeading}
                 </p>
                 <div className="relative flex w-[777px] items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
                   <div className="flex w-[384px] flex-col items-start gap-[6px]">
                     <p className="whitespace-pre-wrap opacity-70">
-                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
+                      {t.aboutIntro}
                     </p>
                   </div>
                   <div className="flex items-center gap-[40px] whitespace-nowrap">
                     <div className="flex w-[69px] flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Позиция</p>
-                      <p className="opacity-70">Дизайнер</p>
+                      <p className="font-medium uppercase">{t.metaRole}</p>
+                      <p className="opacity-70">{t.metaRoleValue}</p>
                     </div>
                     <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">Клиент</p>
-                      <p className="opacity-70">Stablegate</p>
+                      <p className="font-medium uppercase">{t.metaClient}</p>
+                      <p className="opacity-70">{t.metaClientValue}</p>
                     </div>
                   </div>
                   {/* Подчёркивание-доодл (Vector 234257363, 602/45 внутри строки,
@@ -219,7 +225,7 @@ export default function Case04Page() {
             <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                alt="Билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» на фоне неба"
+                alt={t.coverAlt}
                 className="absolute inset-0 size-full object-cover"
                 src={`${CASE}/hero-375.jpg`}
               />
@@ -232,9 +238,9 @@ export default function Case04Page() {
                   lh 115% / tracking 0.156px. Ручной <br> после «KEY VISUALS  »;
                   «ДЛЯ OUTDOOR-КАМПАНИИ» переносится сама → 3 строки. */}
               <p className="absolute left-[20px] top-[250px] w-[335px] whitespace-pre-wrap font-heading text-[26px] font-bold uppercase leading-[1.15] tracking-[0.156px] text-white">
-                KEY VISUALS{" "}
+                {t.coverLine1}{" "}
                 <br />
-                ДЛЯ OUTDOOR-КАМПАНИИ
+                {t.coverLine2}
               </p>
             </div>
           </FullBleedScale>
@@ -245,22 +251,22 @@ export default function Case04Page() {
             <div className="relative flex h-[432px] w-[375px] flex-col items-start gap-[32px] bg-[#fafafa] px-[20px] py-[64px] text-[#121212]">
               <div className="flex w-[335px] flex-col items-start gap-[12px]">
                 <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-                  О ПРОЕКТЕ
+                  {t.aboutHeading}
                 </p>
                 <div className="flex flex-col items-start gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px]">
                   <p className="w-[335px] opacity-70">
-                      Для Stablegate разработана outdoor-кампания, которая объясняет crypto через реальные жизненные сценарии: покупку дома, автомобиля, яхты. Идею тестировали в соцсетях, и наибольший отклик получили именно реалистичные сценарии вроде покупки квартиры. После запуска число новых пользователей выросло в полтора раза.
+                      {t.aboutIntro}
                     </p>
                 </div>
               </div>
               <div className="flex w-[164px] items-center gap-[24px] text-[14px] leading-[1.2] tracking-[0.28px]">
                 <div className="flex h-[38px] w-[69px] flex-col items-start gap-[4px]">
-                  <p className="font-medium uppercase">Позиция</p>
-                  <p className="opacity-70">Дизайнер</p>
+                  <p className="font-medium uppercase">{t.metaRole}</p>
+                  <p className="opacity-70">{t.metaRoleValue}</p>
                 </div>
                 <div className="flex h-[38px] w-[71px] flex-col items-start gap-[4px]">
-                  <p className="font-medium uppercase">Клиент</p>
-                  <p className="opacity-70">Stablegate</p>
+                  <p className="font-medium uppercase">{t.metaClient}</p>
+                  <p className="opacity-70">{t.metaClientValue}</p>
                 </div>
               </div>
             </div>
@@ -287,25 +293,25 @@ export default function Case04Page() {
       <div className="w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="LED-билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» в интерьере"
+          alt={t.mockup1Alt}
           className="hidden w-full xl:block"
           src={`${CASE}/mockup-1.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="LED-билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» в интерьере"
+          alt={t.mockup1Alt}
           className="hidden w-full lg:block xl:hidden"
           src={`${CASE}/mockup-1-1280.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="LED-билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» в интерьере"
+          alt={t.mockup1Alt}
           className="hidden w-full sm:block lg:hidden"
           src={`${CASE}/mockup-1-834.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="LED-билборд Stablegate «CRYPTO. PAYMENTS. SETTLED.» в интерьере"
+          alt={t.mockup1Alt}
           className="block w-full sm:hidden"
           src={`${CASE}/mockup-1-375.jpg`}
         />
@@ -320,25 +326,25 @@ export default function Case04Page() {
       <div className="w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Ситилайт Stablegate на автобусной остановке"
+          alt={t.mockup2Alt}
           className="hidden w-full xl:block"
           src={`${CASE}/mockup-2.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Ситилайт Stablegate на автобусной остановке"
+          alt={t.mockup2Alt}
           className="hidden w-full lg:block xl:hidden"
           src={`${CASE}/mockup-2-1280.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Ситилайт Stablegate на автобусной остановке"
+          alt={t.mockup2Alt}
           className="hidden w-full sm:block lg:hidden"
           src={`${CASE}/mockup-2-834.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Ситилайт Stablegate на автобусной остановке"
+          alt={t.mockup2Alt}
           className="block w-full sm:hidden"
           src={`${CASE}/mockup-2-375.jpg`}
         />
@@ -355,25 +361,25 @@ export default function Case04Page() {
       <div className="w-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Два постера Stablegate: сценарии с яхтой и с домом"
+          alt={t.mockup3Alt}
           className="hidden w-full xl:block"
           src={`${CASE}/mockup-3.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Два постера Stablegate: сценарии с яхтой и с домом"
+          alt={t.mockup3Alt}
           className="hidden w-full lg:block xl:hidden"
           src={`${CASE}/mockup-3-1280.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Два постера Stablegate: сценарии с яхтой и с домом"
+          alt={t.mockup3Alt}
           className="hidden w-full sm:block lg:hidden"
           src={`${CASE}/mockup-3-834.jpg`}
         />
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Два постера Stablegate: сценарии с яхтой и с домом"
+          alt={t.mockup3Alt}
           className="block w-full sm:hidden"
           src={`${CASE}/mockup-3-375.jpg`}
         />

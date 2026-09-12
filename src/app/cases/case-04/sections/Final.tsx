@@ -1,5 +1,9 @@
+"use client";
+
 import DrawIn from "@/components/DrawIn";
 import FullBleedScale from "@/components/FullBleedScale";
+import { useLang } from "@/lib/lang";
+import { C4 } from "../i18n";
 
 // 06 Финальный результат — 1:1 из Figma (node 2034:15810, высота 1265).
 // Заголовок «06 ФИНАЛЬНЫЙ РЕЗУЛЬТАТ» (32px), два абзаца, доодл-стрелка,
@@ -9,22 +13,20 @@ import FullBleedScale from "@/components/FullBleedScale";
 const A = "/cases/case-04/sections";
 
 export default function Final() {
+  const t = C4[useLang()];
   return (
     <>
       <div className="relative hidden h-[1265px] w-[1440px] overflow-clip bg-[#fafafa] xl:block">
       <div className="absolute left-[46px] top-[134px] flex items-center gap-[16px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
         <p className="text-[#008cff]">06</p>
-        <p className="text-[#121212]">Финальный результат</p>
+        <p className="text-[#121212]">{t.finalHeading}</p>
       </div>
 
       <p className="absolute left-[46px] top-[181px] w-[496px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        В результате появилась единая outdoor-система, которая объединяет разные жизненные сценарии
-        в узнаваемую коммуникацию Stablegate.
+        {t.finalIntro1}
       </p>
       <p className="absolute left-[46px] top-[224px] w-[496px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-        Система уже охватывает недвижимость, автомобиль и яхту и может масштабироваться на новые
-        сюжеты вместе с развитием продукта. Каждый новый KV сохраняет общий визуальный характер, но
-        получает собственный контекст и историю.
+        {t.finalIntro2}
       </p>
 
       {/* Доодл-стрелка (Figma node 2284:40011 → x906 / y169, 167×137). */}
@@ -37,7 +39,7 @@ export default function Final() {
       {/* Финальный билборд (Figma frame 2206:44755 → x48 / y319, 1346×535). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        alt="Финальный билборд Stablegate на фасаде здания"
+        alt={t.finalBillboardAlt}
         className="absolute left-[48px] top-[319px] h-[535px] w-[1346px] object-cover"
         src={`${A}/final-billboard.jpg`}
       />
@@ -55,7 +57,7 @@ export default function Final() {
           отрицательный (линия слегка налезает на текст) — так и в Figma. */}
       <div className="absolute left-[726px] top-[1003px] w-[633px]">
         <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-          Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
+          {t.finalQuote}
         </p>
         <DrawIn
           src={`${A}/final-underline.svg`}
@@ -75,17 +77,14 @@ export default function Final() {
             <div className="flex w-[594px] flex-col gap-[12px]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">06</span>
-                <span className="text-[#121212]">Финальный результат</span>
+                <span className="text-[#121212]">{t.finalHeading}</span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                 <p>
-                  В результате появилась единая outdoor-система, которая объединяет разные жизненные
-                  сценарии в узнаваемую коммуникацию Stablegate.
+                  {t.finalIntro1}
                 </p>
                 <p>
-                  Система уже охватывает недвижимость, автомобиль и яхту и может масштабироваться на
-                  новые сюжеты вместе с развитием продукта. Каждый новый KV сохраняет общий визуальный
-                  характер, но получает собственный контекст и историю.
+                  {t.finalIntro2}
                 </p>
               </div>
             </div>
@@ -93,7 +92,7 @@ export default function Final() {
             {/* Финальный билборд-мокап (Frame 2742:18023, bg #ececec, 1200×470). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Финальный билборд Stablegate на фасаде здания"
+              alt={t.finalBillboardAlt}
               className="block h-[470px] w-[1200px] shrink-0 max-w-none bg-[#ececec] object-cover"
               src={`${A}/final-billboard-1280.jpg`}
             />
@@ -110,7 +109,7 @@ export default function Final() {
                   (перевод на английский). */}
               <div className="relative w-[591px]">
                 <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-                  Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
+                  {t.finalQuote}
                 </p>
                 <div className="pointer-events-none absolute left-0 top-[calc(100%+4px)] z-10 h-[28.047px] w-[478.434px]">
                   <DrawIn src={`${A}/final-underline-1280.svg`} className="absolute inset-[-10.7%_-0.63%]" />
@@ -136,18 +135,14 @@ export default function Final() {
             <div className="flex w-[776px] flex-col gap-[12px] [word-break:break-word]">
               <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
                 <span className="text-[#008cff]">06</span>
-                <span className="text-[#121212]">Финальный результат</span>
+                <span className="text-[#121212]">{t.finalHeading}</span>
               </div>
               <div className="flex w-[776px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                 <p className="whitespace-pre-wrap">
-                  В результате появилась единая outdoor-система, которая объединяет разные жизненные
-                  сценарии{" "}
-                  <br />в узнаваемую коммуникацию Stablegate.
+                  {t.finalIntro1}
                 </p>
                 <p>
-                  Система уже охватывает недвижимость, автомобиль и яхту и может масштабироваться на
-                  новые сюжеты вместе с развитием продукта. Каждый новый KV сохраняет общий визуальный
-                  характер, но получает собственный контекст и историю.
+                  {t.finalIntro2}
                 </p>
               </div>
             </div>
@@ -155,7 +150,7 @@ export default function Final() {
             {/* Финальный билборд-мокап (Frame 2818:36023, bg #ececec, 777×470). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Финальный билборд Stablegate на фасаде здания"
+              alt={t.finalBillboardAlt}
               className="block h-[470px] w-[777px] shrink-0 max-w-none bg-[#ececec] object-cover"
               src={`${A}/final-billboard-834.jpg`}
             />
@@ -167,7 +162,7 @@ export default function Final() {
             <div className="relative flex w-[777px] shrink-0 items-center justify-center py-[64px]">
               <div className="relative w-[461px]">
                 <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
-                  Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
+                  {t.finalQuote}
                 </p>
                 <div className="pointer-events-none absolute left-1/2 top-1/2 h-[148.6%] w-[111.28%] -translate-x-1/2 -translate-y-1/2">
                   <DrawIn src={`${A}/final-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
@@ -189,18 +184,15 @@ export default function Final() {
               <div className="flex flex-col font-heading text-[26px] font-bold uppercase">
                 <span className="leading-none text-[#008cff]">06</span>
                 <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">
-                  Финальный результат
+                  {t.finalHeading}
                 </span>
               </div>
               <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                 <p>
-                  В результате появилась единая outdoor-система, которая объединяет разные жизненные
-                  сценарии в узнаваемую коммуникацию Stablegate.
+                  {t.finalIntro1}
                 </p>
                 <p>
-                  Система уже охватывает недвижимость, автомобиль и яхту и может масштабироваться на
-                  новые сюжеты вместе с развитием продукта. Каждый новый KV сохраняет общий визуальный
-                  характер, но получает собственный контекст и историю.
+                  {t.finalIntro2}
                 </p>
               </div>
             </div>
@@ -208,7 +200,7 @@ export default function Final() {
             {/* Финальный билборд-мокап (Frame 2825:40991, bg #ececec, 337×203.848). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              alt="Финальный билборд Stablegate на фасаде здания"
+              alt={t.finalBillboardAlt}
               className="block h-[203.848px] w-full shrink-0 max-w-none bg-[#ececec] object-cover"
               src={`${A}/final-billboard-375.jpg`}
             />
@@ -220,7 +212,7 @@ export default function Final() {
                 был велик). */}
             <div className="flex w-[335px] shrink-0 flex-col items-start pb-[64px]">
               <p className="w-[335px] font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70 [word-break:break-word]">
-                Кампания может расти вместе с продуктом, сохраняя единый визуальный язык
+                {t.finalQuote}
               </p>
               <div className="relative mt-[9px] h-[12.31px] w-[335.747px] self-start">
                 <DrawIn src={`${A}/final-underline-375.svg`} className="absolute inset-[-24.36%_-0.89%]" />
