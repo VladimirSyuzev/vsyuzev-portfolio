@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import DrawIn from "@/components/DrawIn";
 import { gsap, useReducedMotion } from "@/lib/gsap";
+import { useLang } from "@/lib/lang";
+import { C2 } from "../i18n";
 
 // 01 Задача — на десктопе (≥1200) абсолют 1:1 из Figma (node 2009:12098,
 // высота 1539). Ниже 1200 — поток в сетке (см. RESPONSIVE.md): заголовок
@@ -29,6 +31,7 @@ function TaskIcons() {
   const blueRef = useRef<HTMLDivElement>(null);
   const arrowRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  const t = C2[useLang()];
 
   useGSAP(
     () => {
@@ -75,7 +78,7 @@ function TaskIcons() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Иконка Identity and Access Management в старом стиле"
+          alt={t.keyOldAlt}
           className="block size-full object-contain"
           src={`${A}/task-key-old.png`}
         />
@@ -86,7 +89,7 @@ function TaskIcons() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          alt="Иконка Identity and Access Management в новом визуальном языке"
+          alt={t.keyNewAlt}
           className="block size-full object-contain"
           src={`${A}/task-key-new.svg`}
         />
@@ -103,6 +106,8 @@ function TaskIcons() {
 }
 
 export default function Task() {
+  const lang = useLang();
+  const t = C2[lang];
   return (
     <section className="w-full overflow-x-clip bg-[#fafafa] xl:relative xl:mx-auto xl:h-[1539px] xl:w-[1440px] xl:overflow-clip">
       {/* 1280 (Figma 2613:16467): gap 64, заголовок 152px (gap 24),
@@ -112,21 +117,33 @@ export default function Task() {
             834: 100 · 1280: 152 · ≥1440: 175. */}
         <div className="flex flex-nowrap items-baseline gap-x-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none sm:gap-x-[18px] sm:!text-[100px] lg:gap-x-[24px] lg:!text-[152px] xl:absolute xl:left-[46px] xl:top-[143px] xl:gap-[24px] xl:tracking-[5.25px] xl:!text-[175px]">
           <p className="text-[#008cff]">01</p>
-          <p className="text-[#121212]">Задача</p>
+          <p className="text-[#121212]">{t.taskHeading}</p>
         </div>
 
         <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:max-w-none lg:max-w-[594px] xl:absolute xl:left-[46px] xl:top-[368px] xl:w-[666px]">
           <p className="opacity-70">
-            Главной особенностью проекта стала высокая степень неопределённости.
-            {" "}<br className="hidden xl:inline" />
-            На старте у нас были существующие метафоры сервисов, несколько примеров
-            {" "}<br className="hidden xl:inline" />и общее направление, но не было полноценной системы правил для ежедневной работы.
+            {lang === "ru" ? (
+              <>
+                Главной особенностью проекта стала высокая степень неопределённости.
+                {" "}<br className="hidden xl:inline" />
+                На старте у нас были существующие метафоры сервисов, несколько примеров
+                {" "}<br className="hidden xl:inline" />и общее направление, но не было полноценной системы правил для ежедневной работы.
+              </>
+            ) : (
+              t.taskIntro1
+            )}
           </p>
           <p className="opacity-70">
-            Требования менялись по ходу проекта, поэтому часть иконок приходилось пересобирать
-            {" "}<br className="hidden xl:inline" />
-            и повторно согласовывать с командой Yandex Cloud. Процесс требовал гибкости
-            {" "}<br className="hidden xl:inline" />и постоянной синхронизации.
+            {lang === "ru" ? (
+              <>
+                Требования менялись по ходу проекта, поэтому часть иконок приходилось пересобирать
+                {" "}<br className="hidden xl:inline" />
+                и повторно согласовывать с командой Yandex Cloud. Процесс требовал гибкости
+                {" "}<br className="hidden xl:inline" />и постоянной синхронизации.
+              </>
+            ) : (
+              t.taskIntro2
+            )}
           </p>
         </div>
 
@@ -135,7 +152,7 @@ export default function Task() {
         <div className="flex flex-col items-center gap-[24px] sm:hidden">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="Иконка Identity and Access Management в старом стиле"
+            alt={t.keyOldAlt}
             className="w-full max-w-[335px]"
             src={`${A}/task-key-old.png`}
           />
@@ -153,7 +170,7 @@ export default function Task() {
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="Иконка Identity and Access Management в новом визуальном языке"
+            alt={t.keyNewAlt}
             className="w-full max-w-[335px]"
             src={`${A}/task-key-new.svg`}
           />
@@ -171,7 +188,7 @@ export default function Task() {
         <div className="pt-[64px] pb-[36px] sm:hidden">
           <div className="relative mx-auto w-[320px] max-w-full">
             <p className="text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
-              Мы создавали библиотеку одновременно с правилами, по которым она должна была работать
+              {t.taskQuote}
             </p>
             <DrawIn
               src={`${A}/reflow/task-ellipse-375.svg`}
@@ -189,7 +206,7 @@ export default function Task() {
         <div className="relative hidden justify-center py-[44px] sm:flex lg:py-[64px] xl:contents">
           <div className="xl:absolute xl:left-1/2 xl:top-[1276px] xl:w-[589px] xl:-translate-x-1/2 xl:-translate-y-1/2">
             <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 lg:max-w-[594px] lg:text-[32px] lg:tracking-[0.96px] xl:w-[589px] xl:text-[32px]">
-              Мы создавали библиотеку одновременно с правилами, по которым она должна была работать
+              {t.taskQuote}
             </p>
             <DrawIn
               src={`${A}/task-ellipse.svg`}

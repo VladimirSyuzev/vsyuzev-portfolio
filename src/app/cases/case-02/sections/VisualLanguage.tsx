@@ -1,4 +1,8 @@
+"use client";
+
 import DrawIn from "@/components/DrawIn";
+import { useLang } from "@/lib/lang";
+import { C2 } from "../i18n";
 
 // 03 Визуальный язык — тёмный full-bleed блок (#121212 на всю ширину).
 // На десктопе (≥1200) внутренний контент — абсолют 1:1 из Figma (node
@@ -7,6 +11,8 @@ import DrawIn from "@/components/DrawIn";
 const A = "/cases/case-02/sections";
 
 export default function VisualLanguage() {
+  const lang = useLang();
+  const t = C2[lang];
   return (
     <div className="w-full overflow-clip bg-[#121212]">
       <div className="mx-auto w-full max-w-[1440px] xl:relative xl:h-[1377px]">
@@ -16,25 +22,21 @@ export default function VisualLanguage() {
           <div className="flex flex-col gap-[12px] lg:w-[595px] lg:max-w-full xl:contents">
             <div className="flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:flex-row sm:items-center sm:gap-[12px] sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[44px] xl:top-[134px] xl:text-[32px]">
               <p className="text-[#008cff]">03</p>
-              <p className="text-white">Визуальный язык</p>
+              <p className="text-white">{t.visualHeading}</p>
             </div>
 
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:max-w-[560px] lg:max-w-full xl:absolute xl:left-[44px] xl:top-[181px] xl:w-[500px]">
-              Самой сложной задачей было найти простой принцип, который помогал бы всей команде понимать
-              границы нового визуального языка. Такой метафорой стала деталь, вырезанная из цельного
-              листа металла: если форму нельзя было представить вырезанной таким способом, значит, она
-              не соответствовала стилю.
+              {t.visualPara1}
             </p>
 
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:max-w-[560px] lg:max-w-full xl:absolute xl:left-[726px] xl:top-[866px] xl:w-[498px]">
-              Этот принцип изменил подход к проектированию иконок. Вместо того чтобы строить их из линий
-              и контуров, мы начинали с цельной формы и постепенно убирали всё лишнее.
+              {t.visualPara2}
             </p>
           </div>
 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="Лазерная резка детали из листа металла"
+            alt={t.visualPhotoAlt}
             className="aspect-[335/300] w-full object-cover sm:aspect-[778/480] sm:rounded-[8px] lg:aspect-[1200/536] lg:rounded-none xl:absolute xl:left-[46px] xl:top-[318px] xl:h-[536px] xl:w-[1348px]"
             src={`${A}/visual-photo.jpg`}
           />
@@ -44,7 +46,7 @@ export default function VisualLanguage() {
           <div className="py-[32px] sm:hidden">
             <div className="relative">
               <p className="max-w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
-                Новый стиль строился не из линий, а из цельной формы
+                {t.visualQuote}
               </p>
               <DrawIn
                 src={`${A}/reflow/visual-ellipse-375.svg`}
@@ -61,8 +63,17 @@ export default function VisualLanguage() {
           <div className="relative hidden justify-center py-[44px] sm:flex lg:py-[64px] xl:contents">
             <div className="xl:absolute xl:left-1/2 xl:top-[1133px] xl:w-[667px] xl:-translate-x-1/2 xl:-translate-y-1/2">
               <p className="max-w-[589px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70 lg:max-w-[672px] lg:text-[32px] lg:tracking-[0.96px] xl:w-[667px] xl:text-[32px]">
-                Новый стиль строился{" "}<br />
-                не из линий, а из цельной формы
+                {lang === "ru" ? (
+                  <>
+                    Новый стиль строился{" "}<br />
+                    не из линий, а из цельной формы
+                  </>
+                ) : (
+                  <>
+                    The new style was built{" "}<br />
+                    not from lines, but from a solid shape
+                  </>
+                )}
               </p>
               <DrawIn
                 src={`${A}/visual-ellipse.svg`}

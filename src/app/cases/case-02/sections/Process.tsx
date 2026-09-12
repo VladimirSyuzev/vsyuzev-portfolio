@@ -7,6 +7,8 @@ import EdgeFade from "@/components/EdgeFade";
 import TrackArrows from "@/components/TrackArrows";
 import { useScrollTrack } from "@/lib/useScrollTrack";
 import { useCanvasWide } from "@/lib/breakpoint";
+import { useLang } from "@/lib/lang";
+import { C2 } from "../i18n";
 
 // 04 Процесс — тёмный full-bleed блок. На десктопе (≥1200) текст — абсолют
 // 1:1 из Figma (node 2009:12647, высота 987), трек этапов — окно во всю
@@ -15,15 +17,7 @@ import { useCanvasWide } from "@/lib/breakpoint";
 // на любой ширине). Механика трека — как «Построение процесса» в кейсе 1.
 const A = "/cases/case-02/sections";
 
-const STEPS = [
-  { n: "01", title: "Анализ", desc: "Изучаем метафору сервиса и требования клиента" },
-  { n: "02", title: "Референсы", desc: "Собираем визуальные ориентиры нового стиля" },
-  { n: "03", title: "Эскизы", desc: "Проверяем несколько вариантов композиции\nи формы" },
-  { n: "04", title: "Ревью", desc: "Выбираем решение и согласовываем направление" },
-  { n: "05", title: "16×16 px", desc: "Отрабатываем силуэт, баланс и читаемость" },
-  { n: "06", title: "640×640 px", desc: "Адаптируем форму для крупного размера, добавляя детали" },
-  { n: "07", title: "Финализация", desc: "Проверяем, оформляем и передаем результат клиенту" },
-];
+const STEP_NUMBERS = ["01", "02", "03", "04", "05", "06", "07"];
 
 const PITCH = 340; // шаг между карточками (x в Figma: 0, 340, 680 … 2040)
 
@@ -31,6 +25,8 @@ export default function Process() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [left, setLeft] = useState(20);
   const [trackWidth, setTrackWidth] = useState(1440);
+  const t = C2[useLang()];
+  const STEPS = STEP_NUMBERS.map((n, i) => ({ n, ...t.steps[i] }));
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -137,18 +133,15 @@ export default function Process() {
             834: 100 · 1280: 152 · ≥1440: 175. */}
         <div className="flex flex-nowrap items-baseline gap-x-[10px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none sm:gap-x-[18px] sm:!text-[100px] lg:gap-x-[24px] lg:!text-[152px] xl:absolute xl:left-[39px] xl:top-[152px] xl:gap-[24px] xl:tracking-[5.25px] xl:!text-[175px]">
           <p className="text-[#008cff]">04</p>
-          <p className="text-white">Процесс</p>
+          <p className="text-white">{t.processHeading}</p>
         </div>
 
         <div className="flex flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 sm:max-w-none sm:gap-[6px] lg:max-w-[900px] xl:absolute xl:left-[46px] xl:top-[359px] xl:w-[498px]">
           <p className="lg:w-[897px] lg:max-w-full">
-            После того как основные принципы стали понятны, мы превратили их в рабочий процесс и
-            зафиксировали внутренние правила: работу с метафорами, последовательность этапов и
-            критерии перехода между ними.
+            {t.processIntro1}
           </p>
           <p className="lg:w-[809px] lg:max-w-full">
-            Документ стал опорой для команды и помогал сохранять единый стиль и качество иконок,
-            даже когда официальный гайдлайн продолжал развиваться.
+            {t.processIntro2}
           </p>
         </div>
 

@@ -5,6 +5,8 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger, useReducedMotion } from "@/lib/gsap";
 import { useCanvasWide } from "@/lib/breakpoint";
 import DrawIn from "@/components/DrawIn";
+import { useLang } from "@/lib/lang";
+import { C2 } from "../i18n";
 
 // 05 сначала 16px — 1:1 из актуальной Figma (node 2009:12761). Заголовок
 // 32px, два абзаца слева, итоговая мысль с подчёркиванием.
@@ -45,6 +47,8 @@ export default function First16px() {
   const reduced = useReducedMotion();
   // Пин/скраб — только на фикс-холсте ≥1440 (см. RESPONSIVE.md).
   const animate = useCanvasWide() && !reduced;
+  const lang = useLang();
+  const t = C2[lang];
 
   useGSAP(
     () => {
@@ -103,22 +107,21 @@ export default function First16px() {
         <div className="flex flex-col gap-[12px] xl:contents">
           <div className="flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:flex-row sm:items-center sm:gap-[12px] sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[134px] xl:text-[32px]">
             <p className="text-[#008cff]">05</p>
-            <p className="text-[#121212]">сначала 16px</p>
+            <p className="text-[#121212]">{t.first16Heading}</p>
           </div>
 
           {/* 1280 (Figma 2622:4702): абзацы по 594; п.1 — перенос после «px.»;
               п.2 без хвоста «Большая версия…» (он есть на 375/834/1440). */}
           <div className="flex flex-col gap-[6px] sm:max-w-[381px] lg:w-[594px] lg:max-w-full xl:contents">
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 xl:absolute xl:left-[46px] xl:top-[181px] xl:w-[496px]">
-              Каждая иконка создавалась в двух размерах: 16 × 16 px и 640 × 640 px.{" "}
+              {t.first16Para1Lead}{" "}
               <br className="hidden lg:inline xl:hidden" />
-              Работу всегда начинали с маленькой версии.
+              {t.first16Para1Tail}
             </p>
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 xl:absolute xl:left-[46px] xl:top-[221px] xl:w-[505px]">
-              После её утверждения создавали большую. Это было не простое масштабирование: менялись
-              пропорции, толщина линий и радиусы скруглений, появлялись дополнительные детали.
+              {t.first16Para2}
               <span className="lg:hidden xl:inline">
-                {" "}Большая версия становилась самостоятельной иллюстрацией, сохраняя характер маленькой.
+                {" "}{t.first16Para2Extra}
               </span>
             </p>
           </div>
@@ -149,7 +152,7 @@ export default function First16px() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               ref={blueRef}
-              alt="Иконка Key Management Service в размере 16×16, увеличенная до 640×640"
+              alt={t.iconGrownAlt}
               className="absolute left-0 top-0 hidden w-full max-w-none will-change-transform xl:block xl:size-[640px]"
               src={`${A}/icon16-blue.svg`}
               draggable={false}
@@ -174,8 +177,17 @@ export default function First16px() {
               size640) — xl:bottom-[242px] (1200−958) вместо фикс xl:top, иначе
               при другом числе строк (перевод) текст оторвался бы от иконки. */}
           <p className="mt-[32px] font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 sm:w-[449px] sm:max-w-full sm:text-[32px] sm:tracking-[0.96px] lg:absolute lg:left-0 lg:top-[500px] lg:mt-0 lg:w-[440px] lg:text-[32px] xl:left-[46px] xl:top-auto xl:bottom-[242px] xl:w-[589px] xl:text-[32px]">
-            Маленький размер{" "}<br className="hidden xl:inline" />
-            проверял главное: силуэт, композицию и читаемость.
+            {lang === "ru" ? (
+              <>
+                Маленький размер{" "}<br className="hidden xl:inline" />
+                проверял главное: силуэт, композицию и читаемость.
+              </>
+            ) : (
+              <>
+                The small size tested{" "}<br className="hidden xl:inline" />
+                the essentials: silhouette, composition and legibility.
+              </>
+            )}
           </p>
 
           {/* Подчёркивание (Vector 234257394) — 375: w312; 834/1280: w427.
