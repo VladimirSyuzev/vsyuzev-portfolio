@@ -144,7 +144,7 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px] xl:contents">
             {full ? (
               <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[382px] sm:shrink-0 lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
-                {t.aboutIntro}
+                {aboutIntro}
               </p>
             ) : (
               <div className="flex flex-col gap-[32px] sm:w-[382px] sm:shrink-0 sm:gap-[64px] lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:flex xl:w-[498px] xl:flex-col xl:gap-[64px]">

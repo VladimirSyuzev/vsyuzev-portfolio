@@ -199,7 +199,7 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px]">
               {full ? (
                 <p className="w-[335px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[384px] lg:w-[498px]">
-                  {t.aboutIntro}
+                  {aboutIntro}
                 </p>
               ) : (
                 <div className="flex w-[335px] max-w-full flex-col gap-[32px] sm:w-[384px] sm:gap-[64px] lg:w-[498px]">
@@ -258,7 +258,7 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
           </p>
           {full ? (
             <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
-              {t.aboutIntro}
+              {aboutIntro}
             </p>
           ) : (
             <div className="xl:absolute xl:left-[46px] xl:top-[149px] xl:flex xl:w-[498px] xl:flex-col xl:gap-[64px]">
