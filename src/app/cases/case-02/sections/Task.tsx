@@ -136,7 +136,7 @@ export default function Task() {
           <p className="opacity-70">
             {lang === "ru" ? (
               <>
-                Требования менялись по ходу проекта, поэтому часть иконок приходилось пересобирать
+                <span className="xl:whitespace-nowrap">Требования менялись по ходу проекта, поэтому часть иконок приходилось пересобирать</span>
                 {" "}<br className="hidden xl:inline" />
                 и повторно согласовывать с командой Yandex Cloud. Процесс требовал гибкости
                 {" "}<br className="hidden xl:inline" />и постоянной синхронизации.

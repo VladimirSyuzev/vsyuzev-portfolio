@@ -8,6 +8,7 @@ import HeroScrim from "@/components/HeroScrim";
 import DrawIn from "@/components/DrawIn";
 import { useLang } from "@/lib/lang";
 import { C2 } from "../i18n";
+import { CASES } from "@/lib/cases-data";
 import Task from "./Task";
 import Research from "./Research";
 import VisualLanguage from "./VisualLanguage";
@@ -20,9 +21,24 @@ import First16px from "./First16px";
 // summarySlot — Client Component не может импортировать/рендерить async
 // Server Component напрямую, только принять как children/prop от сервера
 // (см. page.tsx).
-export default function CaseBody({ summarySlot }: { summarySlot: ReactNode }) {
+//
+// Кейс под NDA — два входа на один и тот же компонент (по образцу case-01,
+// см. CaseOnePage.tsx):
+// - /cases/case-02 (full=false, по умолчанию) — публичная короткая версия:
+//   заголовок без имени клиента, обложка затемнена и заблюрена, «О проекте»
+//   — тизер с главной + NDA-пояснение + список INDEX, дальше сразу Footer.
+// - секретный незалинкованный URL (full=true) — полная версия: заголовок и
+//   обложка как в исходном макете, «О проекте» — полный текст, ниже все
+//   разделы и Footer. См. src/app/cases/case-02-23da49fa68/page.tsx.
+export default function CaseBody({ summarySlot, full = false }: { summarySlot: ReactNode; full?: boolean }) {
   const lang = useLang();
   const t = C2[lang];
+  const teaser = CASES.find((c) => c.slug === "case-02")!;
+  const aboutIntro = lang === "en" ? teaser.descriptionEn : teaser.description;
+  // Заголовок обложки — короткая версия без имени клиента (тот же текст,
+  // что в тизере «Кейсы» на главной), полная версия — исходные coverLine1/2.
+  const heroLine1 = full ? t.coverLine1 : lang === "en" ? "ICONS FOR A" : "ИКОНКИ ДЛЯ";
+  const heroLine2 = full ? t.coverLine2 : lang === "en" ? "CLOUD PLATFORM" : "ОБЛАЧНОЙ ПЛАТФОРМЫ";
   return (
     <div className="flex w-full flex-col items-center">
       <Header />
@@ -51,10 +67,18 @@ export default function CaseBody({ summarySlot }: { summarySlot: ReactNode }) {
 
             <HeroScrim color="#1b1b21" />
 
+            {!full && (
+              // Кейс под NDA: затемнение + блюр на всю площадь блока Hero.
+              // z-[1] — строго под текстовым слоем (z-[2] выше), поэтому
+              // заголовок остаётся читаемым — прямоугольник визуально под
+              // текстом, а не поверх него (см. case-01).
+              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[10px]" />
+            )}
+
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-full max-w-[1440px] px-[var(--grid-margin)] xl:px-0">
               <p className="absolute bottom-[16%] left-[var(--grid-margin)] w-[80%] max-w-[1180px] whitespace-pre-wrap font-heading text-[clamp(1.9rem,6vw,52px)] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white xl:bottom-[138px] xl:left-[46px] xl:!text-[52px]">
-                {t.coverLine1} <br />
-                {t.coverLine2}
+                {heroLine1} <br />
+                {heroLine2}
               </p>
               <p className="absolute left-[var(--grid-margin)] top-[-2px] whitespace-nowrap font-heading text-[clamp(4rem,14vw,175px)] font-bold leading-[1.2] tracking-[5.25px] text-white opacity-60 xl:left-[40px] xl:!text-[175px]">
                 002
@@ -85,13 +109,19 @@ export default function CaseBody({ summarySlot }: { summarySlot: ReactNode }) {
               className="pointer-events-none absolute inset-x-0 top-[82px] h-[274px] mix-blend-multiply sm:top-[241px] sm:h-[593px] lg:left-[3px] lg:right-auto lg:top-[244px] lg:w-[1277px]"
               style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
             />
+            {!full && (
+              // Кейс под NDA: затемнение + блюр поверх мокапа. Идёт ДО
+              // текстового слоя в DOM (см. ниже, z-[2]), поэтому «002»/
+              // заголовок остаются поверх и читаются как обычно.
+              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[10px]" />
+            )}
             {/* Текст-блок: число вверху / название внизу (space-between). */}
             <div className="absolute inset-0 z-[2] flex flex-col justify-between px-[20px] pb-[36px] pt-[20px] font-heading font-bold uppercase text-white sm:inset-auto sm:left-[40px] sm:top-[66px] sm:h-[696px] sm:w-[573px] sm:p-0 lg:left-[40px] lg:top-[72px] lg:h-[683px] lg:w-[1000px]">
               <p className="text-[44px] leading-none opacity-60 sm:text-[100px] sm:leading-[1.2] sm:tracking-[3px] lg:text-[152px] lg:tracking-[4.56px]">
                 002
               </p>
               <p className="whitespace-pre-line text-[26px] leading-[1.15] tracking-[0.6px] sm:text-[52px] sm:leading-[1.2] sm:tracking-[1.04px]">
-                {t.coverLine1}{"\n"}{t.coverLine2}
+                {heroLine1}{"\n"}{heroLine2}
               </p>
             </div>
           </div>
@@ -101,14 +131,32 @@ export default function CaseBody({ summarySlot }: { summarySlot: ReactNode }) {
             поток. 1280 (Figma 2613:16466): один ряд — абзац 593 слева,
             мета-колонки справа (justify-between), паддинг 40 / 56. */}
         <div className="w-full max-w-[1440px] xl:relative xl:mx-auto">
-          <div className="flex flex-col gap-[12px] px-[var(--grid-margin)] py-[64px] sm:py-[72px] lg:py-[56px] xl:contents">
+          <div
+            className={
+              full
+                ? "flex flex-col gap-[12px] px-[var(--grid-margin)] py-[64px] sm:py-[72px] lg:py-[56px] xl:contents"
+                : "flex flex-col gap-[12px] px-[var(--grid-margin)] pt-[64px] pb-[32px] sm:pt-[72px] sm:pb-[64px] lg:pt-[56px] xl:contents"
+            }
+          >
             <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px] text-[#121212] sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[102px] xl:whitespace-nowrap xl:text-[32px]">
               {t.aboutHeading}
             </p>
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px] xl:contents">
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[382px] sm:shrink-0 lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
-              {t.aboutIntro}
-            </p>
+            {full ? (
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[382px] sm:shrink-0 lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
+                {t.aboutIntro}
+              </p>
+            ) : (
+              <div className="flex flex-col gap-[32px] sm:w-[382px] sm:shrink-0 sm:gap-[64px] lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:flex xl:w-[498px] xl:flex-col xl:gap-[64px]">
+                <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                  {aboutIntro}
+                </p>
+                {/* Кейс под NDA: пояснение вместо полного разбора. */}
+                <p className="text-[14px] uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+                  {t.ndaNotice}
+                </p>
+              </div>
+            )}
 
             <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] sm:flex-nowrap sm:gap-x-[40px] xl:contents">
               <div className="flex flex-col items-start gap-[4px] sm:w-[102px] xl:absolute xl:left-[896px] xl:top-[149px]">
@@ -139,47 +187,71 @@ export default function CaseBody({ summarySlot }: { summarySlot: ReactNode }) {
               play="mount"
               className="hidden xl:absolute xl:left-[917.94px] xl:top-[200.02px] xl:block xl:h-[22.356px] xl:w-[414.405px]"
             />
+
+            {!full && (
+              // INDEX — список всех разделов кейса, доступен вместо полного
+              // контента под NDA (не в Figma, добавлено под задачу NDA, см. case-01).
+              <div className="flex flex-col gap-[12px] pt-[12px] text-left xl:absolute xl:left-[896px] xl:top-[255px] xl:flex xl:flex-col xl:pt-0">
+                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+                  INDEX
+                </p>
+                <ol className="flex flex-col gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                  {t.indexItems.map((item, i) => (
+                    <li key={item}>
+                      {String(i + 1).padStart(2, "0")} {item}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
           </div>
-          <div className="hidden xl:block xl:h-[318px]" aria-hidden />
+          {/* Распорка держит высоту белого блока под hero на xl. Короткая
+              версия ниже из-за INDEX — 124px отступ от его низа (замер
+              через getBoundingClientRect, см. case-01). */}
+          <div className={full ? "hidden xl:block xl:h-[318px]" : "hidden xl:block xl:h-[549px]"} aria-hidden />
         </div>
       </div>
 
-      <Task />
-      <Research />
+      {full && (
+        <>
+          <Task />
+          <Research />
 
-      {/* Визуальный язык — тёмный full-bleed фон. */}
-      <VisualLanguage />
+          {/* Визуальный язык — тёмный full-bleed фон. */}
+          <VisualLanguage />
 
-      {/* Процесс — окно трека во всю ширину экрана (горизонтальный скролл
-          по колесу, как «Построение процесса» в кейсе 1), поэтому прямой
-          ребёнок full-width root, не внутри 1440-обёртки. */}
-      <Process />
+          {/* Процесс — окно трека во всю ширину экрана (горизонтальный скролл
+              по колесу, как «Построение процесса» в кейсе 1), поэтому прямой
+              ребёнок full-width root, не внутри 1440-обёртки. */}
+          <Process />
 
-      {/* Сначала 16px — блок пинится и проигрывает scroll-анимацию иконки
-          (см. First16px.tsx), поэтому прямой ребёнок full-width root. */}
-      <First16px />
+          {/* Сначала 16px — блок пинится и проигрывает scroll-анимацию иконки
+              (см. First16px.tsx), поэтому прямой ребёнок full-width root. */}
+          <First16px />
 
-      {/* Мокап 1 — изображение на всю ширину экрана. */}
-      <div className="w-full">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt={t.mockup1Alt}
-          className="block w-full"
-          src="/cases/case-02/sections/mockup-1.png"
-        />
-      </div>
+          {/* Мокап 1 — изображение на всю ширину экрана. */}
+          <div className="w-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt={t.mockup1Alt}
+              className="block w-full"
+              src="/cases/case-02/sections/mockup-1.png"
+            />
+          </div>
 
-      {summarySlot}
+          {summarySlot}
 
-      {/* Мокап 2 — изображение на всю ширину экрана. */}
-      <div className="w-full">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          alt={t.mockup2Alt}
-          className="block w-full"
-          src="/cases/case-02/sections/mockup-2.png"
-        />
-      </div>
+          {/* Мокап 2 — изображение на всю ширину экрана. */}
+          <div className="w-full">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt={t.mockup2Alt}
+              className="block w-full"
+              src="/cases/case-02/sections/mockup-2.png"
+            />
+          </div>
+        </>
+      )}
 
       <Footer />
     </div>

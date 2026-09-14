@@ -102,6 +102,11 @@ function CasesListDesktop() {
                     }}
                   />
                 )}
+                {item.nda && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-[#121212]/40 backdrop-blur-[10px]">
+                    <p className="font-heading text-[175px] font-bold text-white">NDA</p>
+                  </div>
+                )}
               </div>
             </div>
           </Link>
@@ -150,29 +155,36 @@ function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: b
             href={`/cases/${item.slug}`}
             className="case-card group relative block border-b border-[rgba(18,18,18,0.7)] pb-[96px]"
           >
-            {item.slug === "case-01" ? (
-              // фикс-композиция 668×536 — масштабируем целиком под ширину
-              // карточки (иначе на широкой карточке снизу вылезала серая
-              // подложка: чёрная панель не дотягивалась до низа бокса)
-              <ResponsiveScale width={668} height={536} className="w-full overflow-hidden">
-                <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
-              </ResponsiveScale>
-            ) : (
-              <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.cover}
-                  alt=""
-                  className="absolute max-w-none"
-                  style={{
-                    left: `${(item.coverOffset.left / 668) * 100}%`,
-                    top: `${(item.coverOffset.top / 536) * 100}%`,
-                    width: `${(item.coverSize.width / 668) * 100}%`,
-                    height: `${(item.coverSize.height / 536) * 100}%`,
-                  }}
-                />
-              </div>
-            )}
+            <div className="relative">
+              {item.slug === "case-01" ? (
+                // фикс-композиция 668×536 — масштабируем целиком под ширину
+                // карточки (иначе на широкой карточке снизу вылезала серая
+                // подложка: чёрная панель не дотягивалась до низа бокса)
+                <ResponsiveScale width={668} height={536} className="w-full overflow-hidden">
+                  <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
+                </ResponsiveScale>
+              ) : (
+                <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.cover}
+                    alt=""
+                    className="absolute max-w-none"
+                    style={{
+                      left: `${(item.coverOffset.left / 668) * 100}%`,
+                      top: `${(item.coverOffset.top / 536) * 100}%`,
+                      width: `${(item.coverSize.width / 668) * 100}%`,
+                      height: `${(item.coverSize.height / 536) * 100}%`,
+                    }}
+                  />
+                </div>
+              )}
+              {item.nda && (
+                <div className="absolute inset-0 flex items-center justify-center bg-[#121212]/40 backdrop-blur-[10px]">
+                  <p className="font-heading text-[16vw] font-bold text-white sm:text-[70px]">NDA</p>
+                </div>
+              )}
+            </div>
             <p className="mt-[16px] font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.96px] text-[#008cff]">
               {item.index}
             </p>

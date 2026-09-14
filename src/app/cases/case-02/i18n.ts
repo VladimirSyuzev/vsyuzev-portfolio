@@ -19,6 +19,11 @@ type Dict = {
   coverAlt: string;
   mockup1Alt: string;
   mockup2Alt: string;
+  /** Список разделов кейса — короткая NDA-версия вместо полного контента
+      (см. case-01/i18n.ts). */
+  indexItems: string[];
+  /** Пояснение про NDA под блоком «О проекте» — короткая версия. */
+  ndaNotice: string;
 
   // 01 Задача
   taskHeading: string;
@@ -82,6 +87,9 @@ const ru: Dict = {
   coverAlt: "Сайт Yandex Cloud на экране ноутбука",
   mockup1Alt: "Сайт Yandex Cloud Stackland на экране ноутбука",
   mockup2Alt: "Архитектура Yandex Cloud Stackland на экранах двух ноутбуков",
+  indexItems: ["Задача", "Исследование", "Визуальный язык", "Процесс", "Сначала 16px", "Итог"],
+  ndaNotice:
+    "Проект защищён соглашением о конфиденциальности, поэтому детали здесь не показаны. Готов показать кейс целиком на видеозвонке, без записи экрана.",
 
   taskHeading: "Задача",
   taskIntro1:
@@ -161,6 +169,9 @@ const en: Dict = {
   coverAlt: "Yandex Cloud website on a laptop screen",
   mockup1Alt: "Yandex Cloud Stackland website on a laptop screen",
   mockup2Alt: "Yandex Cloud Stackland architecture on two laptop screens",
+  indexItems: ["Task", "Research", "Visual language", "Process", "16px first", "Outcome"],
+  ndaNotice:
+    "This project is covered by a non-disclosure agreement, so the details aren't shown here. Happy to walk through the full case on a video call, without screen recording.",
 
   taskHeading: "Task",
   taskIntro1:

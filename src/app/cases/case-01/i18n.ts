@@ -14,6 +14,14 @@ type Dict = {
   metaTeamValue: string;
   metaClient: string;
   metaClientValue: string;
+  /** Кейс под NDA (см. CASES[].nda в cases-data.ts): текстовый индекс
+      разделов под мета-блоком (Позиция/Команда/Клиент) — короткие
+      наборные названия без цифр/шапок в верхнем регистре, нумерация
+      добавляется в JSX. */
+  indexItems: string[];
+  /** Кейс под NDA: короткая заметка под «О проекте» — проект нельзя
+      показать публично, но можно вживую на созвоне. */
+  ndaNotice: string;
 
   // Stats
   stats: [string, string][]; // [строка 1, строка 2]
@@ -83,6 +91,17 @@ const ru: Dict = {
   metaTeamValue: "2 дизайнера",
   metaClient: "Клиент",
   metaClientValue: "Яндекс",
+  indexItems: [
+    "Проблема",
+    "Задача",
+    "Аудит библиотеки",
+    "Построение процесса",
+    "Руководство для команды",
+    "Контроль консистентности",
+    "Итог",
+  ],
+  ndaNotice:
+    "Проект защищён соглашением о конфиденциальности, поэтому детали здесь не показаны. Готов показать кейс целиком на видеозвонке, без записи экрана.",
 
   stats: [
     ["недели на аудит", "библиотеки"],
@@ -190,7 +209,7 @@ const ru: Dict = {
 
   summaryHeading: "ИТОГ",
   summaryPara1:
-    "После завершения аудита клиент получил структурированную библиотеку без дублей, понимание недостающих элементов и прозрачный процесс дальнейшего производства. По итогам проекта было создано и обновлено более 100 иконок для разных продуктовых направлений, включая финансы, медицину, социальные сервисы и голосового AI-ассистента.",
+    "После завершения аудита клиент получил структурированную библиотеку без дублей, понимание недостающих элементов и прозрачный процесс дальнейшего производства. По итогам проекта было создано и обновлено более 150 иконок для разных продуктовых направлений, включая финансы, медицину, социальные сервисы и голосового AI-ассистента.",
   summaryPara2:
     "Как лид-дизайнер, я выстроил и контролировал процесс работы над проектом: проверял каждую иконку на промежуточных этапах и следил за консистентностью всей библиотеки. Также я разработал производственный гайд — от поиска метафоры до сборки компонентов. Он стал основой дальнейшей работы команды и помог поддерживать единое качество на протяжении всего проекта.",
   summaryPhonesAlt:
@@ -207,6 +226,17 @@ const en: Dict = {
   metaTeamValue: "2 designers",
   metaClient: "Client",
   metaClientValue: "Yandex",
+  indexItems: [
+    "Problem",
+    "Task",
+    "Library audit",
+    "Building the process",
+    "Team guide",
+    "Consistency control",
+    "Outcome",
+  ],
+  ndaNotice:
+    "This project is covered by a non-disclosure agreement, so the details aren't shown here. Happy to walk through the full case on a video call, without screen recording.",
 
   stats: [
     ["weeks to audit", "the library"],
@@ -314,7 +344,7 @@ const en: Dict = {
 
   summaryHeading: "OUTCOME",
   summaryPara1:
-    "After the audit, the client had a structured library with no duplicates, a clear picture of what was missing and a transparent process for further production. Over the project, more than 100 icons were created and updated across different product areas — finance, healthcare, social services and the voice AI assistant.",
+    "After the audit, the client had a structured library with no duplicates, a clear picture of what was missing and a transparent process for further production. Over the project, more than 150 icons were created and updated across different product areas — finance, healthcare, social services and the voice AI assistant.",
   summaryPara2:
     "As the lead designer, I built and ran the project process: I reviewed every icon at the interim stages and kept the whole library consistent. I also created a production guide — from finding a metaphor to assembling components. It became the basis for the team's further work and helped hold a single level of quality throughout the project.",
   summaryPhonesAlt:

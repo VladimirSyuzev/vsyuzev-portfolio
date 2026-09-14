@@ -23,6 +23,10 @@ export type CaseItem = {
   cover: string;
   coverOffset: { left: number; top: number };
   coverSize: { width: number; height: number };
+  /** Кейс под NDA: обложка в блоке «Кейсы» закрывается плашкой NDA
+      (см. CasesList.tsx), имя клиента и точные цифры в description не
+      указываются. */
+  nda?: boolean;
 };
 
 export const CASES: CaseItem[] = [
@@ -32,22 +36,24 @@ export const CASES: CaseItem[] = [
     title: "От аудита к единому стилю",
     titleEn: "From audit to a unified style",
     description:
-      "Аудит библиотеки из 226 иконок Яндекса: расхождение между Icons Regular и Icons Symbols мешало единому стилю интерфейса. По итогам собрали план устранения технического долга и внутренний гайд, который помог команде работать быстро и консистентно.",
+      "В продукте одновременно жили две библиотеки иконок: старая и новая, которая постепенно росла вместе с продуктами. В части интерфейсов иконки из обеих библиотек встречались рядом и ломали единый стиль. Мы с командой провели полную ревизию обеих библиотек и составили план производства недостающих иконок. Дальше я закрепил процесс их отрисовки по шагам и написал руководство для команды, чтобы два дизайнера стабильно попадали в один стиль.",
     descriptionEn:
-      "An audit of Yandex's 226-icon library: the gap between Icons Regular and Icons Symbols was breaking the interface's visual consistency. The audit produced a plan for paying down the technical debt and an internal guide that helped the team work fast and consistently.",
+      "The product had two icon libraries running in parallel: an older one and a newer one that kept growing alongside the products. In some interfaces, icons from both libraries ended up side by side and broke the visual consistency. My team and I audited both libraries in full and mapped out a production plan for the missing icons. From there I locked down a step-by-step drawing process and wrote a team guide, so two designers could stay in one style.",
     cover: "/cases/case-01/cover.png",
     coverOffset: { left: -84, top: 0 },
     coverSize: { width: 962, height: 536 },
+    nda: true,
   },
   {
     slug: "case-02",
     index: "002",
-    title: "ИКОНКИ YANDEX CLOUD",
-    titleEn: "YANDEX CLOUD ICONS",
+    title: "ИКОНКИ ДЛЯ ОБЛАЧНОЙ ПЛАТФОРМЫ",
+    titleEn: "ICONS FOR A CLOUD PLATFORM",
     description:
-      "В начале 2026 года Yandex Cloud обновлял визуальный язык продукта. За три недели команда разработала 34 иконки в двух размерах: 16×16 px для интерфейса, 640×640 px для иллюстраций на сайте — при этом стиль ещё не был зафиксирован и уточнялся по ходу работы вместе с арт-директором клиента: толщина линий, радиусы скруглений, форма. Успели точно в срок, это было ключевым условием клиента.",
+      "Продукт переходил на новый визуальный язык, а чёткой системы правил для иконок ещё не было: только прежние метафоры сервисов и общее направление. Знакомые символы нужно было переосмыслить в новом стиле, сохранив узнаваемость. Рабочим принципом стала деталь, как будто вырезанная из цельного листа металла: если форму нельзя было представить так, она не подходила под стиль. Библиотеку и правила её создания выстраивали одновременно, и в дедлайн уложились точно.",
     descriptionEn:
-      "In early 2026 Yandex Cloud was updating the product's visual language. In three weeks the team designed 34 icons in two sizes — 16×16 px for the interface, 640×640 px for illustrations on the site — while the style itself was still being defined together with the client's art director: line weight, corner radii, shape. We hit the deadline exactly, which was the client's key requirement.",
+      "The product was moving to a new visual language, and there was no clear rulebook for the icons yet: just the existing service metaphors and a general direction. Familiar symbols had to be reimagined in the new style without losing recognizability. The working principle became a detail as if cut from a single sheet of metal: if a shape couldn't be imagined that way, it didn't fit the style. The library and the rules for building it took shape at the same time, and the deadline was hit exactly.",
+    nda: true,
     cover: "/cases-teaser/case-02-macbook.png",
     coverOffset: { left: -113, top: -29 },
     coverSize: { width: 893, height: 595 },
