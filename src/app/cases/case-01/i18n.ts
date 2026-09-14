@@ -137,11 +137,11 @@ const ru: Dict = {
 
   taskHeading: "ЗАДАЧА",
   taskIntro:
-    "Главной задачей было превратить две разрозненные библиотеки в единую масштабируемую систему",
+    "Главной задачей было провести аудит библиотек, понять, каких иконок не хватает, и выстроить порядок их производства, чтобы библиотека Regular стала основной.",
 
   auditHeading: ["АУДИТ", "БИБЛИОТЕКИ"],
   auditIntro:
-    "Работу начали с полной ревизии. Мы объединили обе библиотеки, распределили иконки по категориям и проанализировали каждую позицию.",
+    "Работу начали с полной ревизии: сопоставили обе библиотеки бок о бок, распределили иконки по категориям и проанализировали каждую позицию.",
   auditResultLabel: "В РЕЗУЛЬТАТЕ АУДИТА была собрана таблица:",
   auditBullets: [
     "определили существующие иконки",
@@ -272,11 +272,11 @@ const en: Dict = {
 
   taskHeading: "TASK",
   taskIntro:
-    "The main goal was to turn two disjointed libraries into a single scalable system",
+    "The main goal was to audit the libraries, work out which icons were missing, and set a build order so Regular could become the primary library.",
 
   auditHeading: ["LIBRARY", "AUDIT"],
   auditIntro:
-    "We started with a full review. We merged both libraries, sorted the icons into categories and analysed every entry.",
+    "We started with a full review: we compared both libraries side by side, sorted the icons into categories and analysed every entry.",
   auditResultLabel: "THE AUDIT PRODUCED A TABLE:",
   auditBullets: [
     "mapped the existing icons",

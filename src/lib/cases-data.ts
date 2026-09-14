@@ -36,9 +36,9 @@ export const CASES: CaseItem[] = [
     title: "От аудита к единому стилю",
     titleEn: "From audit to a unified style",
     description:
-      "В продукте одновременно жили две библиотеки иконок: старая и новая, которая постепенно росла вместе с продуктами. В части интерфейсов иконки из обеих библиотек встречались рядом и ломали единый стиль. Мы с командой провели полную ревизию обеих библиотек и составили план производства недостающих иконок. Дальше я закрепил процесс их отрисовки по шагам и написал руководство для команды, чтобы два дизайнера стабильно попадали в один стиль.",
+      "В экосистеме одновременно жили две библиотеки иконок: старая и новая, которая постепенно росла вместе с продуктами. В части интерфейсов иконки из обеих библиотек встречались рядом и ломали единый стиль. Мы с командой провели полную ревизию обеих библиотек и составили план производства недостающих иконок. Дальше я закрепил процесс их отрисовки по шагам и написал руководство для команды, чтобы два дизайнера стабильно попадали в один стиль.",
     descriptionEn:
-      "The product had two icon libraries running in parallel: an older one and a newer one that kept growing alongside the products. In some interfaces, icons from both libraries ended up side by side and broke the visual consistency. My team and I audited both libraries in full and mapped out a production plan for the missing icons. From there I locked down a step-by-step drawing process and wrote a team guide, so two designers could stay in one style.",
+      "The ecosystem had two icon libraries running in parallel: an older one and a newer one that kept growing alongside the products. In some interfaces, icons from both libraries ended up side by side and broke the visual consistency. My team and I audited both libraries in full and mapped out a production plan for the missing icons. From there I locked down a step-by-step drawing process and wrote a team guide, so two designers could stay in one style.",
     cover: "/cases/case-01/cover.png",
     coverOffset: { left: -84, top: 0 },
     coverSize: { width: 962, height: 536 },

@@ -42,22 +42,10 @@ function AuditFlow() {
             <span className="text-[#121212]">{t.auditHeading[1]}</span>
           </div>
           {/* интро — Aeonik Pro Medium 14 / 120% / ls 0.28, opacity 100.
-              375: 3 жёстких строки w335 (RU) · 834: w383 · 1280: w593
-              (Figma 2533:8978). EN — natural wrap, без ручных переносов. */}
+              375: w335 · 834: w383 · 1280: w593 (Figma 2533:8978).
+              Natural wrap, без ручных переносов (текст длиннее исходного макета). */}
           <p className="w-[335px] max-w-full font-body text-[14px] font-medium leading-[1.2] tracking-[0.28px] text-[#121212] sm:w-[383px] lg:w-[593px]">
-            {lang === "ru" ? (
-              <>
-                Работу начали с полной ревизии.
-                <br className="sm:hidden" /> Мы объединили обе библиотеки, распределили иконки по категориям
-                <br className="sm:hidden" /> и проанализировали каждую позицию.
-              </>
-            ) : (
-              <>
-                We started with a full review.
-                <br className="sm:hidden" /> We merged both libraries, sorted the icons into categories
-                <br className="sm:hidden" /> and analysed every entry.
-              </>
-            )}
+            {t.auditIntro}
           </p>
         </div>
 
@@ -273,14 +261,7 @@ export default function AuditLibrary() {
         </div>
 
         <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] sm:max-w-[629px] xl:absolute xl:left-[46px] xl:top-[612px] xl:w-[629px]">
-          {lang === "ru" ? (
-            t.auditIntro
-          ) : (
-            <>
-              We started with a full review. We merged both libraries,
-              <br className="hidden xl:inline" /> sorted the icons into categories and analysed every entry.
-            </>
-          )}
+          {t.auditIntro}
         </p>
 
         <p className="audit-intro whitespace-pre-line text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[866px] xl:w-[200px]">
