@@ -20,25 +20,6 @@ import Guide from "./sections/Guide";
 import Consistency from "./sections/Consistency";
 import Summary from "./sections/Summary";
 
-const ICONS = [
-  "icon-alisa-page.svg",
-  "icon-gas-page.svg",
-  "icon-cosmetics-page.svg",
-  "icon-taxi-page.svg",
-  "icon-credits-page.svg",
-  "icon-moto-page.svg",
-  "icon-cinema-page.svg",
-  "icon-wallet-page.svg",
-  "icon-fastfood-page.svg",
-  "icon-thumbsup-page.svg",
-  "icon-medical-page.svg",
-  "icon-deposit-page.svg",
-  "icon-restaurants-page.svg",
-  "icon-newbuilding-page.svg",
-  "icon-books-page.svg",
-  "icon-kids-page.svg",
-];
-
 // Кейс 001 — 1:1 из Figma. Обложка/«О проекте»/все разделы 01–08 собраны
 // кодом с реальным текстом; несколько плотных декоративных композиций
 // (стена иконок-примеров, коллаж гайда, Balance Board, финальная сетка-
@@ -79,33 +60,13 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
         <div className="relative hidden w-full xl:block">
           <FullBleedScale width={1440} height={580} mode="grow" className="w-full">
             <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
-              <div className="absolute left-[571px] top-0 h-[580px] w-[1040px]">
-                <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/cover-page.png" />
-              </div>
-              <div
-                className="absolute left-[492px] top-[-14px] h-[607px] w-[97px] blur-[2px]"
-                style={{ background: "linear-gradient(to bottom, #111, #141414 50%, #3e3e3e)" }}
-              />
-              <div className="absolute left-0 top-[-19.52px] h-[612.525px] w-[1440px] overflow-clip bg-black">
-                <div className="absolute left-[-637.85px] top-[-741.53px] size-[1370.111px]">
-                  <div className="absolute inset-[-27.93%]">
-                    <img alt="" className="block size-full max-w-none" src="/cases/case-01/ellipse-page.svg" />
-                  </div>
-                </div>
-                <div className="absolute left-[866px] top-[36.62px] size-[539.287px]">
-                  <div className="absolute left-[144.57px] top-[288.87px] size-[106.283px] rounded-[14.293px] bg-[#fc3f1d]" />
-                  <div
-                    className="absolute left-[8.27px] top-[8.27px] grid grid-cols-4 grid-rows-4"
-                    style={{ gap: "54.24589157104492px" }}
-                  >
-                    {ICONS.map((icon) => (
-                      <div key={icon} className="relative size-[90.126px] shrink-0">
-                        <img alt="" className="absolute inset-0 block size-full max-w-none" src={`/cases/case-01/${icon}`} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+              {/* Обложка запечена в WebP (раньше — живая сетка из 16 SVG-
+                  иконок + blur-эллипс, масштабируемая через FullBleedScale;
+                  при росте на широких экранах давала визуальные артефакты
+                  растяжения). Один растровый файл на брейкпоинт, ровно тот
+                  же паттерн, что у обложек остальных кейсов (object-cover
+                  внутри канваса FullBleedScale). */}
+              <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-1440.webp" />
             </div>
           </FullBleedScale>
           <HeroScrim color="#212121" />
@@ -113,8 +74,10 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
             // Кейс под NDA: затемнение + блюр на всю площадь блока Hero.
             // z-[1] — строго под текстовым слоем (z-[2] выше), поэтому
             // заголовок остаётся читаемым — прямоугольник визуально под
-            // текстом, а не поверх него.
-            <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[10px]" />
+            // текстом, а не поверх него. Сила блюра растёт вместе с экраном:
+            // 7px на 375 → 8.3px на 834 → 9.5px на 1280 → 10px на 1440 —
+            // разница между крайними размерами ровно 30% (7px vs 10px).
+            <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
           )}
           <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
             <p className="absolute bottom-[137px] left-[46px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
@@ -136,27 +99,13 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
               «001» вверху / заголовок внизу (space-between, блок 573×696),
               градиента нет. */}
           <div className="relative h-[356px] w-full overflow-clip bg-[#121212] sm:h-[834px] lg:h-[828px]">
-            {/* Сетка иконок. 375 (2559:11235): 248.76 в (180,20), pitch 66.6 /
-                иконка 41.57 → gap 10.06%, иконка 96%.
-                834 (2547:13830): 563×563, left calc(50%−6px), top 66. gap 10.06%,
-                иконка 98%. 1280 (2532:5453): 714×714 @ (717,44), gap 7.14% (51/714),
-                иконка 84.4% (119/141). 4-я колонка уходит за правый край.
-                Оранжевая плитка под Thumbs Up (index 9). */}
-            <div className="absolute left-[48%] top-[20px] aspect-square w-[66.34%] sm:left-[calc(50%-6px)] sm:top-[66px] sm:w-[563px] lg:left-[717px] lg:top-[44px] lg:w-[714px]">
-              <div className="grid h-full grid-cols-4 grid-rows-4 gap-[10.06%] sm:gap-[10.06%] lg:gap-[7.14%]">
-                {ICONS.map((icon, i) => (
-                  <div
-                    key={icon}
-                    className={`relative flex items-center justify-center ${i === 9 ? "rounded-[6px] bg-[#fc3f1d] sm:rounded-none sm:bg-transparent" : ""}`}
-                  >
-                    {i === 9 && (
-                      <span className="pointer-events-none absolute inset-[-9%] hidden rounded-[15px] bg-[#fc3f1d] sm:block lg:inset-0 lg:rounded-[19px]" />
-                    )}
-                    <img alt="" className="relative block w-[96%] max-w-none sm:w-[98%] lg:w-[84.4%]" src={`/cases/case-01/${icon}`} />
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Обложка запечена в WebP по брейкпоинту (раньше — живая сетка
+                из SVG-иконок, масштабируемая CSS — давала артефакты
+                растяжения при изменении ширины). Три файла — 375/834/1280,
+                переключаются по ширине, как и остальная reflow-раскладка. */}
+            <img alt="" className="absolute inset-0 size-full object-cover sm:hidden" src="/cases/case-01/hero/hero-375.webp" />
+            <img alt="" className="absolute inset-0 hidden size-full object-cover sm:block lg:hidden" src="/cases/case-01/hero/hero-834.webp" />
+            <img alt="" className="absolute inset-0 hidden size-full object-cover lg:block" src="/cases/case-01/hero/hero-1280.webp" />
             {/* Градиент transparent→#121212 сверху-вниз, mix-blend-multiply.
                 375: rect (0,82 · 375×274) → top 23.03%. 834: rect (0,241 ·
                 834×593) → top 28.9%. Затемняет низ блока под заголовком. */}
@@ -168,7 +117,7 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
               // Кейс под NDA: затемнение + блюр поверх сетки иконок. Идёт ДО
               // текстового слоя в DOM (см. ниже), поэтому «001»/заголовок
               // остаются поверх и читаются как обычно.
-              <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[10px]" />
+              <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
             )}
             <div className="absolute inset-0 flex flex-col justify-between px-[20px] pb-[44px] pt-[20px] sm:inset-auto sm:left-[40px] sm:top-[66px] sm:h-[696px] sm:w-[573px] sm:justify-between sm:gap-0 sm:p-0 lg:h-[683px]">
               <p className="font-heading text-[44px] font-bold uppercase leading-none text-white opacity-60 sm:text-[100px] sm:tracking-[5.25px] sm:opacity-30 lg:text-[152px] lg:opacity-60">

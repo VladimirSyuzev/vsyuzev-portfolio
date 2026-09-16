@@ -37,8 +37,8 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
   const aboutIntro = lang === "en" ? teaser.descriptionEn : teaser.description;
   // Заголовок обложки — короткая версия без имени клиента (тот же текст,
   // что в тизере «Кейсы» на главной), полная версия — исходные coverLine1/2.
-  const heroLine1 = full ? t.coverLine1 : lang === "en" ? "ICONS FOR A" : "ИКОНКИ ДЛЯ";
-  const heroLine2 = full ? t.coverLine2 : lang === "en" ? "CLOUD PLATFORM" : "ОБЛАЧНОЙ ПЛАТФОРМЫ";
+  const heroLine1 = full ? t.coverLine1 : lang === "en" ? "ICONS" : "ИКОНКИ";
+  const heroLine2 = full ? t.coverLine2 : lang === "en" ? "FOR A CLOUD PLATFORM" : "ДЛЯ ОБЛАЧНОЙ ПЛАТФОРМЫ";
   return (
     <div className="flex w-full flex-col items-center">
       <Header />
@@ -72,7 +72,7 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
               // z-[1] — строго под текстовым слоем (z-[2] выше), поэтому
               // заголовок остаётся читаемым — прямоугольник визуально под
               // текстом, а не поверх него (см. case-01).
-              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[10px]" />
+              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
             )}
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-full max-w-[1440px] px-[var(--grid-margin)] xl:px-0">
@@ -113,7 +113,7 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
               // Кейс под NDA: затемнение + блюр поверх мокапа. Идёт ДО
               // текстового слоя в DOM (см. ниже, z-[2]), поэтому «002»/
               // заголовок остаются поверх и читаются как обычно.
-              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[10px]" />
+              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
             )}
             {/* Текст-блок: число вверху / название внизу (space-between). */}
             <div className="absolute inset-0 z-[2] flex flex-col justify-between px-[20px] pb-[36px] pt-[20px] font-heading font-bold uppercase text-white sm:inset-auto sm:left-[40px] sm:top-[66px] sm:h-[696px] sm:w-[573px] sm:p-0 lg:left-[40px] lg:top-[72px] lg:h-[683px] lg:w-[1000px]">
