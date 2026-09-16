@@ -90,9 +90,10 @@ export const CASES: CaseItem[] = [
     title: "Карты для пэтролхэдов",
     titleEn: "CARDS FOR PETROLHEADS",
     description:
-      "Для коллаборации Авто.ру и Т-Банка над лимитированными картами позвали четырёх иллюстраторов: каждый переосмыслил культовый автомобиль в своём стиле, чтобы объединить аудитории обоих брендов. Мне достался DeLorean, и команда клиента сразу выбрала постапокалиптическую версию вместо привычного образа машины времени.",
+      "Для лимитированной коллекции банковских карт культовые автомобили переосмыслили четыре иллюстратора, каждый в своём стиле. Мне достался DeLorean: вместо привычного образа машины времени я показал его постапокалиптическую версию, выжившую в пустоши. Разобрал автомобиль на узнаваемые признаки, проработал три концепции и довёл силуэт до предела читаемости в размере карты.",
     descriptionEn:
-      "For a limited-edition card collaboration between Avto.ru and T-Bank, four illustrators were invited to reinterpret an iconic car each in their own style, bringing together both brands' audiences. I got the DeLorean, and the client's team went straight for a post-apocalyptic take instead of the familiar time-machine look.",
+      "For a limited-edition bank card collection, four illustrators each reimagined an iconic car in their own style. I got the DeLorean: instead of the usual time-machine image, I gave it a post-apocalyptic take, weathered by life in the wasteland. I broke the car down into its recognizable features, worked through three concepts, and pushed the silhouette to stay legible at card size.",
+    nda: true,
     cover: "/cases-teaser/case-05-cards.png",
     coverOffset: { left: -545, top: -6 },
     coverSize: { width: 1289, height: 547 },

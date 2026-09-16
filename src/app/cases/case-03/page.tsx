@@ -196,7 +196,7 @@ export default function Case03Page() {
             против min-h-screen, обёртка должна заполнить первый экран). На
             reflow-ветках flex-1 растягивал бы блок «О проекте» на пол-экрана
             пустоты (особенно 375, где обложка всего 356). */}
-        <div className="relative mx-auto w-full max-w-[1200px] xl:w-[1440px] xl:max-w-none xl:flex-1" style={{ minHeight: 318 }}>
+        <div className="relative w-full xl:w-[1440px] xl:flex-1" style={{ minHeight: 318 }}>
           {/* ≥1440 */}
           <div className="hidden xl:contents">
             <p className="absolute left-[46px] top-[102px] whitespace-nowrap font-heading text-[32px] font-bold leading-[1.1] tracking-[0.96px] text-[#121212]">
@@ -253,7 +253,7 @@ export default function Case03Page() {
               {t.aboutHeading}
             </p>
             <div className="flex items-start justify-between">
-              <p className="w-[382px] max-w-[62%] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+              <p className="w-[calc(50%-6px)] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               {t.aboutIntro}
             </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">
@@ -287,7 +287,7 @@ export default function Case03Page() {
               {t.aboutHeading}
             </p>
             <div className="flex items-start justify-between gap-[40px]">
-              <p className="w-[594px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+              <p className="w-[calc(50%-6px)] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
               {t.aboutIntro}
             </p>
               <div className="relative flex shrink-0 gap-[40px] whitespace-nowrap">

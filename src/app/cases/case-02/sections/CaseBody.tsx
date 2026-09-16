@@ -86,44 +86,97 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
             </div>
           </div>
 
-          {/* <1440 — reflow: 375 (база) / 834 (sm) / 1280 (lg).
-              375 (Figma 2637:30543): блок 375×356; мокап 534×356 центрирован
-              со сдвигом +34.5px (`left: calc(50%+34.5px)`); скрим 375×274 @
-              (0,82); текст-блок на весь блок, паддинг pt20/px20/pb36 —
-              «002» 44px вверху, «ИКОНКИ YANDEX CLOUD» 26px/ls 0.6 внизу.
-              834 (Figma 2637:30523): блок 834×834; мокап 1512×1008 @ (−282,−90);
+          {/* <1440 — reflow: три отдельных масштабируемых холста
+              (FullBleedScale) вместо одного «резинового» блока с фикс-
+              высотой и свободной шириной — тот подход ломал пропорции и
+              обрезал мокап на любой ширине между брейкпоинтами (см.
+              аналогичный фикс в case-01/CaseOnePage.tsx). */}
+          {/* 375 (Figma 2637:30543): блок 375×356; мокап 534×356 центрирован
+              (`left: calc(50%-232.5px)` = -45px на канвасе 375); скрим 375×274
+              @ (0,82); текст-блок на весь блок, паддинг pt20/px20/pb36 —
+              «002» 44px вверху, заголовок 26px/ls 0.6 внизу. */}
+          <div className="w-full sm:hidden">
+            <FullBleedScale width={375} height={356} mode="grow" className="w-full">
+              <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={t.coverAlt}
+                  className="absolute left-[-45px] top-0 h-[356px] w-[534px] max-w-none object-cover"
+                  src="/cases/case-02/sections/cover-mockup.png"
+                />
+                <div
+                  className="pointer-events-none absolute inset-x-0 top-[82px] h-[274px] mix-blend-multiply"
+                  style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
+                />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px]" />
+                )}
+                <div className="absolute inset-0 z-[2] flex flex-col justify-between px-[20px] pb-[36px] pt-[20px] font-heading font-bold uppercase text-white">
+                  <p className="text-[44px] leading-none opacity-60">002</p>
+                  <p className="whitespace-pre-line text-[26px] leading-[1.15] tracking-[0.6px]">
+                    {heroLine1}{"\n"}{heroLine2}
+                  </p>
+                </div>
+              </div>
+            </FullBleedScale>
+          </div>
+
+          {/* 834 (Figma 2637:30523): блок 834×834; мокап 1512×1008 @ (−282,−90);
               скрим 834×593 @ (0,241) mix-blend-multiply; текст-блок 573×696 @
-              (40,66) — «002» 100px/ls 3 вверху, «ИКОНКИ YANDEX CLOUD» 52px/ls 1.04
-              внизу (space-between).
-              1280 (Figma 2613:16465): 1280×828; мокап 1643×1095 @ (−50,−134);
+              (40,66) — «002» 100px/ls 3 вверху, заголовок 52px/ls 1.04 внизу
+              (space-between). */}
+          <div className="hidden w-full sm:block lg:hidden">
+            <FullBleedScale width={834} height={834} mode="grow" className="w-full">
+              <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={t.coverAlt}
+                  className="absolute left-[-282px] top-[-90px] h-[1008px] w-[1512px] max-w-none object-cover"
+                  src="/cases/case-02/sections/cover-mockup.png"
+                />
+                <div
+                  className="pointer-events-none absolute inset-x-0 top-[241px] h-[593px] mix-blend-multiply"
+                  style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
+                />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[8.3px]" />
+                )}
+                <div className="absolute left-[40px] top-[66px] z-[2] flex h-[696px] w-[573px] flex-col justify-between font-heading font-bold uppercase text-white">
+                  <p className="text-[100px] leading-[1.2] tracking-[3px] opacity-60">002</p>
+                  <p className="whitespace-pre-line text-[52px] leading-[1.2] tracking-[1.04px]">
+                    {heroLine1}{"\n"}{heroLine2}
+                  </p>
+                </div>
+              </div>
+            </FullBleedScale>
+          </div>
+
+          {/* 1280 (Figma 2613:16465): 1280×828; мокап 1643×1095 @ (−50,−134);
               скрим 1277×593 @ (3,244); текст 1000×683 @ (40,72); «002» 152px. */}
-          <div className="relative h-[356px] w-full overflow-clip bg-[#121212] sm:h-[834px] lg:h-[828px] xl:hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.coverAlt}
-              className="absolute left-[calc(50%-232.5px)] top-0 h-full w-[534px] max-w-none object-cover sm:left-[-282px] sm:top-[-90px] sm:h-[1008px] sm:w-[1512px] lg:left-[-50px] lg:top-[-134px] lg:h-[1095px] lg:w-[1643px]"
-              src="/cases/case-02/sections/cover-mockup.png"
-            />
-            {/* Градиент-скрим, mix-blend-multiply. */}
-            <div
-              className="pointer-events-none absolute inset-x-0 top-[82px] h-[274px] mix-blend-multiply sm:top-[241px] sm:h-[593px] lg:left-[3px] lg:right-auto lg:top-[244px] lg:w-[1277px]"
-              style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
-            />
-            {!full && (
-              // Кейс под NDA: затемнение + блюр поверх мокапа. Идёт ДО
-              // текстового слоя в DOM (см. ниже, z-[2]), поэтому «002»/
-              // заголовок остаются поверх и читаются как обычно.
-              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
-            )}
-            {/* Текст-блок: число вверху / название внизу (space-between). */}
-            <div className="absolute inset-0 z-[2] flex flex-col justify-between px-[20px] pb-[36px] pt-[20px] font-heading font-bold uppercase text-white sm:inset-auto sm:left-[40px] sm:top-[66px] sm:h-[696px] sm:w-[573px] sm:p-0 lg:left-[40px] lg:top-[72px] lg:h-[683px] lg:w-[1000px]">
-              <p className="text-[44px] leading-none opacity-60 sm:text-[100px] sm:leading-[1.2] sm:tracking-[3px] lg:text-[152px] lg:tracking-[4.56px]">
-                002
-              </p>
-              <p className="whitespace-pre-line text-[26px] leading-[1.15] tracking-[0.6px] sm:text-[52px] sm:leading-[1.2] sm:tracking-[1.04px]">
-                {heroLine1}{"\n"}{heroLine2}
-              </p>
-            </div>
+          <div className="hidden w-full lg:block xl:hidden">
+            <FullBleedScale width={1280} height={828} mode="grow" className="w-full">
+              <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={t.coverAlt}
+                  className="absolute left-[-50px] top-[-134px] h-[1095px] w-[1643px] max-w-none object-cover"
+                  src="/cases/case-02/sections/cover-mockup.png"
+                />
+                <div
+                  className="pointer-events-none absolute left-[3px] top-[244px] h-[593px] w-[1277px] mix-blend-multiply"
+                  style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
+                />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[9.5px]" />
+                )}
+                <div className="absolute left-[40px] top-[72px] z-[2] flex h-[683px] w-[1000px] flex-col justify-between font-heading font-bold uppercase text-white">
+                  <p className="text-[152px] leading-[1.2] tracking-[4.56px] opacity-60">002</p>
+                  <p className="whitespace-pre-line text-[52px] leading-[1.2] tracking-[1.04px]">
+                    {heroLine1}{"\n"}{heroLine2}
+                  </p>
+                </div>
+              </div>
+            </FullBleedScale>
           </div>
         </div>
 
@@ -134,8 +187,8 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
           <div
             className={
               full
-                ? "flex flex-col gap-[12px] px-[var(--grid-margin)] py-[64px] sm:py-[72px] lg:py-[56px] xl:contents"
-                : "flex flex-col gap-[12px] px-[var(--grid-margin)] pt-[64px] pb-[32px] sm:pt-[72px] sm:pb-[64px] lg:pt-[56px] xl:contents"
+                ? "flex flex-col gap-[12px] px-[20px] py-[64px] sm:px-[40px] sm:py-[72px] lg:py-[56px] xl:contents"
+                : "flex flex-col gap-[12px] px-[20px] pt-[64px] pb-[32px] sm:px-[40px] sm:pt-[72px] sm:pb-[64px] lg:pt-[56px] xl:contents"
             }
           >
             <p className="font-heading text-[26px] font-bold leading-[1.1] tracking-[0.78px] text-[#121212] sm:text-[32px] sm:tracking-[0.96px] xl:absolute xl:left-[46px] xl:top-[102px] xl:whitespace-nowrap xl:text-[32px]">
@@ -143,11 +196,11 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
             </p>
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px] xl:contents">
             {full ? (
-              <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[382px] sm:shrink-0 lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
+              <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[calc(50%-6px)] xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[668px]">
                 {aboutIntro}
               </p>
             ) : (
-              <div className="flex flex-col gap-[32px] sm:w-[382px] sm:shrink-0 sm:gap-[64px] lg:w-[593px] xl:absolute xl:left-[46px] xl:top-[149px] xl:flex xl:w-[498px] xl:flex-col xl:gap-[64px]">
+              <div className="flex flex-col gap-[32px] sm:w-[calc(50%-6px)] sm:gap-[64px] xl:absolute xl:left-[46px] xl:top-[149px] xl:flex xl:w-[668px] xl:flex-col xl:gap-[64px]">
                 <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                   {aboutIntro}
                 </p>
@@ -158,26 +211,44 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
               </div>
             )}
 
-            <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] sm:flex-nowrap sm:gap-x-[40px] xl:contents">
-              <div className="flex flex-col items-start gap-[4px] sm:w-[102px] xl:absolute xl:left-[896px] xl:top-[149px]">
-                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
-                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
-              </div>
-              <div className="flex flex-col items-start gap-[4px] sm:w-[98px] xl:absolute xl:left-[1066px] xl:top-[149px]">
-                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaTeam}</p>
-                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaTeamValue}</p>
-              </div>
-              <div className="flex flex-col items-start gap-[4px] sm:w-[98px] xl:absolute xl:left-[1236px] xl:top-[149px]">
-                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
-                <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
-              </div>
+            <div className="flex flex-col sm:gap-[64px] xl:contents">
+              <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] sm:flex-nowrap sm:gap-x-[40px] xl:contents">
+                <div className="flex flex-col items-start gap-[4px] sm:w-[102px] xl:absolute xl:left-[896px] xl:top-[149px]">
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaRole}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaRoleValue}</p>
+                </div>
+                <div className="flex flex-col items-start gap-[4px] sm:w-[98px] xl:absolute xl:left-[1066px] xl:top-[149px]">
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaTeam}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaTeamValue}</p>
+                </div>
+                <div className="flex flex-col items-start gap-[4px] sm:w-[98px] xl:absolute xl:left-[1236px] xl:top-[149px]">
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px]">{t.metaClient}</p>
+                  <p className="text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">{t.metaClientValue}</p>
+                </div>
 
-              {/* Декор-подчёркивание под метой — reflow 834/1280 (в макете
-                  Figma есть, на 375 нет, на xl — своя абсолютная копия ниже). */}
-              <DrawIn
-                src="/cases/case-02/sections/cover-underline.svg"
-                className="pointer-events-none absolute right-0 top-[calc(100%+8px)] hidden h-[16px] w-[340px] max-w-full sm:block xl:hidden"
-              />
+                {/* Декор-подчёркивание под метой — reflow 834/1280 (в макете
+                    Figma есть, на 375 нет, на xl — своя абсолютная копия ниже). */}
+                <DrawIn
+                  src="/cases/case-02/sections/cover-underline.svg"
+                  className="pointer-events-none absolute right-0 top-[calc(100%+8px)] hidden h-[16px] w-[340px] max-w-full sm:block xl:hidden"
+                />
+              </div>
+              {!full && (
+                // INDEX на 834/1280 — под блоком меты (Позиция/Команда/
+                // Клиент), gap 64px (xl использует отдельную копию ниже).
+                <div className="hidden flex-col gap-[12px] text-left sm:flex xl:hidden">
+                  <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+                    INDEX
+                  </p>
+                  <ol className="flex flex-col gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                    {t.indexItems.map((item, i) => (
+                      <li key={item}>
+                        {String(i + 1).padStart(2, "0")} {item}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
             </div>
             </div>
 
@@ -189,9 +260,9 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
             />
 
             {!full && (
-              // INDEX — список всех разделов кейса, доступен вместо полного
-              // контента под NDA (не в Figma, добавлено под задачу NDA, см. case-01).
-              <div className="flex flex-col gap-[12px] pt-[12px] text-left xl:absolute xl:left-[896px] xl:top-[255px] xl:flex xl:flex-col xl:pt-0">
+              // INDEX на 375 и xl — отдельными блоками (375: под всей
+              // строкой; xl: абсолютно под линией-подчёркиванием, см. выше).
+              <div className="flex flex-col gap-[12px] pt-[12px] text-left sm:hidden xl:absolute xl:left-[896px] xl:top-[255px] xl:flex xl:flex-col xl:pt-0">
                 <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
                   INDEX
                 </p>

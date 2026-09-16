@@ -89,44 +89,84 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
           </div>
         </div>
 
-        {/* <1440 — обложка по макету адаптива. ЗАХОД 1: точные значения 375
-            (2559:10992). 834/1280 — заходы 2/3. */}
+        {/* <1440 — обложка по макету адаптива. Три отдельных масштабируемых
+            холста (FullBleedScale), как в кейсах 3/4/5 — вместо одного
+            «резинового» блока с фикс-высотой и свободной шириной: тот старый
+            подход (h-[Npx] w-full) ломал пропорции и обрезал картинку на
+            любой ширине ПОМЕЖДУ брейкпоинтами (например 583px — блок
+            оставался 356px высотой, но 583px шириной, и object-cover
+            обрезал/смещал сетку иконок). FullBleedScale скейлит canvas
+            целиком (обе стороны одинаково), поэтому пропорции верны на
+            любой ширине, не только на 375/834/1280 ровно. */}
         <div className="w-full overflow-clip bg-[#fafafa] xl:hidden">
-          {/* Тёмный hero-блок. 375 (2559:11304): h 356, сетка 248.76 в (180,20)
-              — 4-я колонка за правым краем, градиент mix-blend-multiply,
-              «001» вверху-слева / заголовок внизу-слева.
-              ≥640 (макет 834, 2539:8972): h 834, сетка 563 по центру в top 66,
-              «001» вверху / заголовок внизу (space-between, блок 573×696),
-              градиента нет. */}
-          <div className="relative h-[356px] w-full overflow-clip bg-[#121212] sm:h-[834px] lg:h-[828px]">
-            {/* Обложка запечена в WebP по брейкпоинту (раньше — живая сетка
-                из SVG-иконок, масштабируемая CSS — давала артефакты
-                растяжения при изменении ширины). Три файла — 375/834/1280,
-                переключаются по ширине, как и остальная reflow-раскладка. */}
-            <img alt="" className="absolute inset-0 size-full object-cover sm:hidden" src="/cases/case-01/hero/hero-375.webp" />
-            <img alt="" className="absolute inset-0 hidden size-full object-cover sm:block lg:hidden" src="/cases/case-01/hero/hero-834.webp" />
-            <img alt="" className="absolute inset-0 hidden size-full object-cover lg:block" src="/cases/case-01/hero/hero-1280.webp" />
-            {/* Градиент transparent→#121212 сверху-вниз, mix-blend-multiply.
-                375: rect (0,82 · 375×274) → top 23.03%. 834: rect (0,241 ·
-                834×593) → top 28.9%. Затемняет низ блока под заголовком. */}
-            <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 top-[23.03%] mix-blend-multiply sm:top-[28.9%] lg:top-[29.5%]"
-              style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
-            />
-            {!full && (
-              // Кейс под NDA: затемнение + блюр поверх сетки иконок. Идёт ДО
-              // текстового слоя в DOM (см. ниже), поэтому «001»/заголовок
-              // остаются поверх и читаются как обычно.
-              <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
-            )}
-            <div className="absolute inset-0 flex flex-col justify-between px-[20px] pb-[44px] pt-[20px] sm:inset-auto sm:left-[40px] sm:top-[66px] sm:h-[696px] sm:w-[573px] sm:justify-between sm:gap-0 sm:p-0 lg:h-[683px]">
-              <p className="font-heading text-[44px] font-bold uppercase leading-none text-white opacity-60 sm:text-[100px] sm:tracking-[5.25px] sm:opacity-30 lg:text-[152px] lg:opacity-60">
-                001
-              </p>
-              <p className="w-[335px] whitespace-pre-wrap font-heading text-[26px] font-bold uppercase leading-[1.15] tracking-[0.6px] text-white sm:w-max sm:text-[52px] sm:tracking-[1.04px]">
-                {lang === "en" ? <>FROM AUDIT <br />TO A UNIFIED STYLE</> : <>ОТ АУДИТА <br />К ЕДИНОМУ СТИЛЮ</>}
-              </p>
-            </div>
+          {/* 375 (2559:11304, база — 2559:10992): h 356, сетка 248.76 в
+              (180,20) — 4-я колонка за правым краем, градиент
+              mix-blend-multiply top 23.03%, «001» 44px вверху-слева /
+              заголовок 26px внизу-слева. */}
+          <div className="w-full sm:hidden">
+            <FullBleedScale width={375} height={356} mode="grow" className="w-full">
+              <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
+                <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-375.webp" />
+                <div
+                  className="pointer-events-none absolute inset-x-0 bottom-0 top-[23.03%] mix-blend-multiply"
+                  style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
+                />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[7px]" />
+                )}
+                <div className="absolute inset-0 flex flex-col justify-between px-[20px] pb-[44px] pt-[20px]">
+                  <p className="font-heading text-[44px] font-bold uppercase leading-none text-white opacity-60">
+                    001
+                  </p>
+                  <p className="w-[335px] whitespace-pre-wrap font-heading text-[26px] font-bold uppercase leading-[1.15] tracking-[0.6px] text-white">
+                    {lang === "en" ? <>FROM AUDIT <br />TO A UNIFIED STYLE</> : <>ОТ АУДИТА <br />К ЕДИНОМУ СТИЛЮ</>}
+                  </p>
+                </div>
+              </div>
+            </FullBleedScale>
+          </div>
+
+          {/* 834 (макет 834, 2539:8972): h 834, сетка 563 по центру в top 66,
+              «001» 100px вверху / заголовок 52px внизу (space-between, блок
+              573×696), градиента нет (эффект уже запечён в hero-834.webp). */}
+          <div className="hidden w-full sm:block lg:hidden">
+            <FullBleedScale width={834} height={834} mode="grow" className="w-full">
+              <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
+                <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-834.webp" />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[8.3px]" />
+                )}
+                <div className="absolute left-[40px] top-[66px] flex h-[696px] w-[573px] flex-col justify-between">
+                  <p className="font-heading text-[100px] font-bold uppercase leading-none tracking-[5.25px] text-white opacity-30">
+                    001
+                  </p>
+                  <p className="w-max whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.15] tracking-[1.04px] text-white">
+                    {lang === "en" ? <>FROM AUDIT <br />TO A UNIFIED STYLE</> : <>ОТ АУДИТА <br />К ЕДИНОМУ СТИЛЮ</>}
+                  </p>
+                </div>
+              </div>
+            </FullBleedScale>
+          </div>
+
+          {/* 1280 (2532:5453): h 828, сетка 714 @ (717,44), «001» 152px
+              opacity-60, заголовок 52px, текстовый блок 573×683 @ (40,66). */}
+          <div className="hidden w-full lg:block xl:hidden">
+            <FullBleedScale width={1280} height={828} mode="grow" className="w-full">
+              <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
+                <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-1280.webp" />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[9.5px]" />
+                )}
+                <div className="absolute left-[40px] top-[66px] flex h-[683px] w-[573px] flex-col justify-between">
+                  <p className="font-heading text-[152px] font-bold uppercase leading-none tracking-[5.25px] text-white opacity-60">
+                    001
+                  </p>
+                  <p className="w-max whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.15] tracking-[1.04px] text-white">
+                    {lang === "en" ? <>FROM AUDIT <br />TO A UNIFIED STYLE</> : <>ОТ АУДИТА <br />К ЕДИНОМУ СТИЛЮ</>}
+                  </p>
+                </div>
+              </div>
+            </FullBleedScale>
           </div>
 
           {/* «О проекте» (Figma 2559:10998). Блок «заголовок + абзац» —
@@ -147,11 +187,11 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
             </p>
             <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px]">
               {full ? (
-                <p className="w-[335px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[384px] lg:w-[498px]">
+                <p className="w-[335px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[calc(50%-6px)]">
                   {aboutIntro}
                 </p>
               ) : (
-                <div className="flex w-[335px] max-w-full flex-col gap-[32px] sm:w-[384px] sm:gap-[64px] lg:w-[498px]">
+                <div className="flex w-[335px] max-w-full flex-col gap-[32px] sm:w-[calc(50%-6px)] sm:gap-[64px]">
                   <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                     {aboutIntro}
                   </p>
@@ -161,30 +201,48 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
                   </p>
                 </div>
               )}
-              <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:flex-nowrap sm:gap-x-[40px]">
-                {[
-                  [t.metaRole, t.metaRoleValue],
-                  [t.metaTeam, t.metaTeamValue],
-                  [t.metaClient, t.metaClientValue],
-                ].map(([k, v]) => (
-                  <div key={k} className="flex flex-col gap-[4px]">
-                    <p className="font-medium uppercase">{k}</p>
-                    <p className="opacity-70">{v}</p>
+              <div className="flex flex-col sm:gap-[64px]">
+                <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:flex-nowrap sm:gap-x-[40px]">
+                  {[
+                    [t.metaRole, t.metaRoleValue],
+                    [t.metaTeam, t.metaTeamValue],
+                    [t.metaClient, t.metaClientValue],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex flex-col gap-[4px]">
+                      <p className="font-medium uppercase">{k}</p>
+                      <p className="opacity-70">{v}</p>
+                    </div>
+                  ))}
+                  {/* ДУДЛ — подчёркивание под метой (только ≥640). В макете
+                      Vector 234257354 стоит ровно от левого края меты (x490 =
+                      начало меты при justify-between) до ~4px за правым краем. */}
+                  <DrawIn
+                    src="/cases/case-01/sections/reflow/cover-underline-834.svg"
+                    className="pointer-events-none hidden sm:absolute sm:left-0 sm:top-[44px] sm:block sm:h-[11px] sm:w-[326px] lg:w-[320px]"
+                  />
+                </div>
+                {!full && (
+                  // INDEX на 834/1280 — под блоком меты (Позиция/Команда/
+                  // Клиент), gap 64px (не в Figma, добавлено под задачу NDA).
+                  <div className="hidden flex-col gap-[12px] text-left sm:flex">
+                    <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+                      INDEX
+                    </p>
+                    <ol className="flex flex-col gap-[8px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                      {t.indexItems.map((item, i) => (
+                        <li key={item}>
+                          {String(i + 1).padStart(2, "0")} {item}
+                        </li>
+                      ))}
+                    </ol>
                   </div>
-                ))}
-                {/* ДУДЛ — подчёркивание под метой (только ≥640). В макете
-                    Vector 234257354 стоит ровно от левого края меты (x490 =
-                    начало меты при justify-between) до ~4px за правым краем. */}
-                <DrawIn
-                  src="/cases/case-01/sections/reflow/cover-underline-834.svg"
-                  className="pointer-events-none hidden sm:absolute sm:left-0 sm:top-[44px] sm:block sm:h-[11px] sm:w-[326px] lg:w-[320px]"
-                />
+                )}
               </div>
             </div>
             {!full && (
-              // INDEX — список всех разделов кейса, доступен вместо полного
-              // контента под NDA (не в Figma, добавлено под задачу NDA).
-              <div className="flex flex-col gap-[12px] pt-[12px] text-left">
+              // INDEX на 375 — отдельным блоком под всей строкой (см. sm+
+              // версию выше, вложенную в колонку меты).
+              <div className="flex flex-col gap-[12px] pt-[12px] text-left sm:hidden">
                 <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
                   INDEX
                 </p>
@@ -206,11 +264,11 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
             {t.aboutHeading}
           </p>
           {full ? (
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[498px]">
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 xl:absolute xl:left-[46px] xl:top-[149px] xl:w-[668px]">
               {aboutIntro}
             </p>
           ) : (
-            <div className="xl:absolute xl:left-[46px] xl:top-[149px] xl:flex xl:w-[498px] xl:flex-col xl:gap-[64px]">
+            <div className="xl:absolute xl:left-[46px] xl:top-[149px] xl:flex xl:w-[668px] xl:flex-col xl:gap-[64px]">
               <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
                 {aboutIntro}
               </p>

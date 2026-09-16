@@ -22,6 +22,11 @@ type Dict = {
   metaClient: string;
   metaClientValue: string;
   mockupAlt: string;
+  /** Список разделов кейса — короткая NDA-версия вместо полного контента
+      (см. case-01/i18n.ts). */
+  indexItems: string[];
+  /** Пояснение про NDA под блоком «О проекте» — короткая версия. */
+  ndaNotice: string;
 
   // 01 Исследование
   researchHeading: string;
@@ -88,6 +93,9 @@ const ru: Dict = {
   metaClient: "Клиент",
   metaClientValue: "Авто.ру и Т-Банк",
   mockupAlt: "Карта Mad Max DeLorean в руке на красном фоне",
+  indexItems: ["Исследование", "Поиск идеи", "Концепция", "Работа с деталями", "Цвет", "Финальный результат"],
+  ndaNotice:
+    "Проект защищён соглашением о конфиденциальности, поэтому детали здесь не показаны. Готов показать кейс целиком на видеозвонке, без записи экрана.",
 
   researchHeading: "Исследование",
   researchIntro1:
@@ -171,6 +179,9 @@ const en: Dict = {
   metaClient: "Client",
   metaClientValue: "Avto.ru and T-Bank",
   mockupAlt: "Mad Max DeLorean card held in hand against a red background",
+  indexItems: ["Research", "Idea Search", "Concept", "Working with Details", "Color", "Final Result"],
+  ndaNotice:
+    "This project is covered by a non-disclosure agreement, so the details aren't shown here. Happy to walk through the full case on a video call, without screen recording.",
 
   researchHeading: "Research",
   researchIntro1:
