@@ -94,10 +94,13 @@ export default function Case04Page() {
         </div>
         </div>
 
-        {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node 2730:17992). */}
+        {/* 1024–1439 — HERO 1:1 из Figma reflow-фрейма «case-04 · 1280»
+            (node 2730:17992). «О проекте» ниже вынесен из холста в общий
+            резиновый блок (см. конец секции) — как в кейсах 1/2/5: шрифт
+            не скачет на границе брейкпоинтов (было — холст 834 давал
+            scale~1.2, холст 1280 сразу за ним ~0.8, шрифт «прыгал» вдвое
+            на 1023→1024px). */}
         <div className="hidden w-full lg:block xl:hidden">
-          {/* HERO (node 2768:18578, 1280×828) — тёмная панель #121212,
-              баннер-мокап Stablegate на всю ширину, скрим снизу. */}
           <FullBleedScale width={1280} height={828} mode="grow" className="w-full">
             <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -119,45 +122,11 @@ export default function Case04Page() {
               </p>
             </div>
           </FullBleedScale>
-
-          {/* 01 · Обложка (О проекте) (node 2734:17996, 1280×283) — #fafafa,
-              flex-col gap-24 px-40 py-64. */}
-          <FullBleedScale width={1280} height={283} mode="grow" className="w-full">
-            <div className="relative flex h-[283px] w-[1280px] flex-col items-start gap-[24px] bg-[#fafafa] px-[40px] py-[64px]">
-              <div className="flex w-[1199px] flex-col items-start gap-[12px] text-[#121212]">
-                <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                  {t.aboutHeading}
-                </p>
-                <div className="flex w-full items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
-                  <div className="flex w-[593px] flex-col items-start gap-[6px]">
-                    <p className="opacity-70">
-                      {t.aboutIntro}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-[40px] whitespace-nowrap">
-                    <div className="flex w-[69px] flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">{t.metaRole}</p>
-                      <p className="opacity-70">{t.metaRoleValue}</p>
-                    </div>
-                    <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">{t.metaClient}</p>
-                      <p className="opacity-70">{t.metaClientValue}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* Подчёркивание-доодл (Vector 234257363, 1066/158, 180×6.7). */}
-              <div className="absolute left-[1066px] top-[158px] h-[6.699px] w-[180px]">
-                <DrawIn src={`${CASE}/underline-1280.svg`} className="absolute inset-[-44.78%_-1.67%]" />
-              </div>
-            </div>
-          </FullBleedScale>
         </div>
 
-        {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-04 · 834» (node 2747:18016). */}
+        {/* 640–1023 — HERO 1:1 из Figma reflow-фрейма «case-04 · 834»
+            (node 2747:18016). */}
         <div className="hidden w-full sm:block lg:hidden">
-          {/* HERO (node 2747:18017, 834×834) — тёмная панель #121212,
-              баннер-мокап на весь квадрат + скрим снизу. */}
           <FullBleedScale width={834} height={834} mode="grow" className="w-full">
             <div className="relative size-[834px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -181,46 +150,11 @@ export default function Case04Page() {
               </p>
             </div>
           </FullBleedScale>
-
-          {/* 01 · Обложка (О проекте) (node 2747:18022, 834×350) — #fafafa,
-              flex-col px-28 py-72, gap 12. */}
-          <FullBleedScale width={834} height={350} mode="grow" className="w-full">
-            <div className="relative flex h-[350px] w-[834px] flex-col items-start bg-[#fafafa] px-[28px] py-[72px]">
-              <div className="flex w-[777px] flex-col items-start gap-[12px] text-[#121212]">
-                <p className="font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                  {t.aboutHeading}
-                </p>
-                <div className="relative flex w-[777px] items-start justify-between text-[14px] leading-[1.2] tracking-[0.28px]">
-                  <div className="flex w-[384px] flex-col items-start gap-[6px]">
-                    <p className="whitespace-pre-wrap opacity-70">
-                      {t.aboutIntro}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-[40px] whitespace-nowrap">
-                    <div className="flex w-[69px] flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">{t.metaRole}</p>
-                      <p className="opacity-70">{t.metaRoleValue}</p>
-                    </div>
-                    <div className="flex flex-col items-start gap-[4px]">
-                      <p className="font-medium uppercase">{t.metaClient}</p>
-                      <p className="opacity-70">{t.metaClientValue}</p>
-                    </div>
-                  </div>
-                  {/* Подчёркивание-доодл (Vector 234257363, 602/45 внутри строки,
-                      180×6.7). */}
-                  <div className="absolute left-[602px] top-[45px] h-[6.699px] w-[180px]">
-                    <DrawIn src={`${CASE}/underline-1280.svg`} className="absolute inset-[-44.78%_-1.67%]" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </FullBleedScale>
         </div>
 
-        {/* <640 — 1:1 из Figma reflow-фрейма «case-04 · 375 · мобайл» (node 2759:18046). */}
+        {/* <640 — HERO 1:1 из Figma reflow-фрейма «case-04 · 375 · мобайл»
+            (node 2759:18046). */}
         <div className="w-full sm:hidden">
-          {/* HERO (node 2759:18047, 375×356) — тёмная панель #121212,
-              фото билборда на столбе + запечённый скрим/свечение. */}
           <FullBleedScale width={375} height={356} mode="grow" className="w-full">
             <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -244,33 +178,40 @@ export default function Case04Page() {
               </p>
             </div>
           </FullBleedScale>
+        </div>
 
-          {/* 01 · Обложка (О проекте) (node 2759:18052, 375×432) — #fafafa,
-              flex-col gap-32 px-20 py-64. */}
-          <FullBleedScale width={375} height={432} mode="grow" className="w-full">
-            <div className="relative flex h-[432px] w-[375px] flex-col items-start gap-[32px] bg-[#fafafa] px-[20px] py-[64px] text-[#121212]">
-              <div className="flex w-[335px] flex-col items-start gap-[12px]">
-                <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-                  {t.aboutHeading}
-                </p>
-                <div className="flex flex-col items-start gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px]">
-                  <p className="w-[335px] opacity-70">
-                      {t.aboutIntro}
-                    </p>
-                </div>
-              </div>
-              <div className="flex w-[164px] items-center gap-[24px] text-[14px] leading-[1.2] tracking-[0.28px]">
-                <div className="flex h-[38px] w-[69px] flex-col items-start gap-[4px]">
+        {/* «О проекте» — единый резиновый блок (без scale-холста) для всех
+            ширин 375–1439: обычный CSS-flow с sm:/lg: Tailwind-модификаторами,
+            как в case-01/case-02/case-05. Ширина текстовой колонки —
+            calc(50%-6px) на sm+ (1 из 2 колонок на 834, 2 из 4 на 1280 —
+            гаттер 12px, см. RESPONSIVE.md). */}
+        <div className="w-full max-w-[1440px] xl:hidden">
+          <div className="flex flex-col gap-[12px] px-[20px] py-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px] lg:py-[64px]">
+            <p className="font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] text-[#121212] sm:text-[32px] sm:tracking-[0.96px]">
+              {t.aboutHeading}
+            </p>
+            <div className="flex flex-col gap-[32px] sm:flex-row sm:items-start sm:justify-between sm:gap-[40px]">
+              <p className="w-[335px] max-w-full whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[calc(50%-6px)]">
+                {t.aboutIntro}
+              </p>
+              <div className="relative flex flex-wrap gap-x-[24px] gap-y-[16px] whitespace-nowrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:flex-nowrap sm:gap-x-[40px]">
+                <div className="flex flex-col gap-[4px]">
                   <p className="font-medium uppercase">{t.metaRole}</p>
                   <p className="opacity-70">{t.metaRoleValue}</p>
                 </div>
-                <div className="flex h-[38px] w-[71px] flex-col items-start gap-[4px]">
+                <div className="flex flex-col gap-[4px]">
                   <p className="font-medium uppercase">{t.metaClient}</p>
                   <p className="opacity-70">{t.metaClientValue}</p>
                 </div>
+                {/* ДУДЛ — подчёркивание под метой (только ≥640, в макете на
+                    375 его нет). */}
+                <DrawIn
+                  src={`${CASE}/underline-1280.svg`}
+                  className="pointer-events-none hidden sm:absolute sm:left-0 sm:top-[44px] sm:block sm:h-[11px] sm:w-[180px]"
+                />
               </div>
             </div>
-          </FullBleedScale>
+          </div>
         </div>
       </div>
 
