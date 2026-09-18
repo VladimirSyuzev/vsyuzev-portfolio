@@ -31,7 +31,7 @@ export default function Guide() {
     return (
       <section className="flex w-full justify-center bg-[#fafafa] px-[28px] py-[72px] lg:px-[40px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${R}/guide-834.svg`} alt={ALT} className="block w-[778px] max-w-full lg:w-[1008px]" />
+        <img src={`${R}/guide-834.svg`} alt={ALT} className="block w-full max-w-[1008px]" />
       </section>
     );
   }

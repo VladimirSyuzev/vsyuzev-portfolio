@@ -91,7 +91,7 @@ function AuditFlow() {
                 aria-hidden
                 alt=""
                 src={`${R}/audit-table-834.svg`}
-                className="hidden w-[778px] max-w-full sm:block lg:w-[1200px]"
+                className="hidden w-full max-w-[1200px] sm:block"
               />
             </div>
           </div>

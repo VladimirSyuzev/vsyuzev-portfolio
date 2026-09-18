@@ -35,10 +35,15 @@ export default function Summary() {
             <span className="text-[#121212]">{t.summaryHeading}</span>
           </div>
           {/* 2 абзаца — Aeonik Reg 14 / 120% / ls 0.28 / op 70.
-              834: во всю ширину стопкой gap 12 · 1280: в ряд (w425 + w500, gap 181) */}
+              834: во всю ширину стопкой gap 12 · 1280: в ряд (w425 + w500, gap 181).
+              Без shrink-0: на узких lg-ширинах (например 1130px, где
+              425+181+500=1106 не влезает в контейнер) абзацы сжимались бы
+              жёстко на 425/500 и правый абзац обрезался overflow-clip
+              секции — теперь ужимаются пропорционально, текст переносится
+              лишней строкой вместо обрезки. */}
           <div className="relative flex flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] lg:flex-row lg:gap-[181px]">
-            <p className="opacity-70 lg:w-[425px] lg:shrink-0">{PARA_1}</p>
-            <p className="opacity-70 lg:w-[500px] lg:shrink-0">{PARA_2}</p>
+            <p className="opacity-70 lg:w-[425px]">{PARA_1}</p>
+            <p className="opacity-70 lg:w-[500px]">{PARA_2}</p>
             {/* 1280: дудл-шеврон »» между абзацами (Figma doodles @ x437 y267) */}
             <DrawIn
               src={`${R}/screen-doodle-834.svg`}
@@ -50,11 +55,16 @@ export default function Summary() {
 
         {/* Frame 2147231680 — 3 iPhone (714 шириной, уже обрезана низом секции).
             834: x60 / y521 · 1280: x283 / y529. */}
+        {/* Позиция/ширина в % от секции (=viewport, section w-full) с кэпом на
+            родной px-размер — иначе при viewport < 834 (или < 1280 на lg)
+            картинка/доодлы вылезали за край и обрезались overflow-clip
+            секции (баг: клип до 149px на 640px). Кэп через w-[min(...)]
+            не даёт расти шире родного макета, когда контейнер просторнее. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={`${R}/summary-phones-834.png`}
           alt={PHONES_ALT}
-          className="absolute left-[60px] top-[521px] block w-[714px] max-w-none lg:left-[283px] lg:top-[529px]"
+          className="absolute left-[7.194%] top-[521px] block w-[min(714px,85.612%)] max-w-none lg:left-[22.109%] lg:top-[529px] lg:w-[min(714px,55.781%)]"
         />
 
         {/* Доодл-«искра» (Vector 234257349–351). 834: Figma 2559:10665 @ (666,381)
@@ -62,7 +72,7 @@ export default function Summary() {
         <DrawIn
           src={`${R}/summary-doodle-834.svg`}
           fit="contain"
-          className="pointer-events-none absolute left-[666px] top-[381px] h-[125px] w-[158px] -rotate-[18deg] lg:left-[947px] lg:top-[449px] lg:rotate-0"
+          className="pointer-events-none absolute left-[79.856%] top-[381px] h-[125px] w-[min(158px,18.945%)] -rotate-[18deg] lg:left-[73.984%] lg:top-[449px] lg:w-[min(158px,12.344%)] lg:rotate-0"
         />
 
         {/* 1280: вторая «искра» слева-внизу (Frame 2147231820 @ x97 y848,
@@ -70,7 +80,7 @@ export default function Summary() {
         <DrawIn
           src={`${R}/summary-doodle-bl.svg`}
           fit="contain"
-          className="pointer-events-none hidden lg:absolute lg:left-[97px] lg:top-[848px] lg:block lg:h-[163px] lg:w-[186px]"
+          className="pointer-events-none hidden lg:absolute lg:left-[7.578%] lg:top-[848px] lg:block lg:h-[163px] lg:w-[min(186px,14.531%)]"
         />
       </section>
     );

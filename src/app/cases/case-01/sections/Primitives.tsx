@@ -110,7 +110,7 @@ export default function Primitives() {
         <img
           src={`${R}/primitives-834.svg`}
           alt="Примитивы: mesh-сетка и контуры базовых форм для иконок"
-          className="block w-[778px] max-w-full lg:w-[1008px]"
+          className="block w-full max-w-[1008px]"
         />
       </section>
     );

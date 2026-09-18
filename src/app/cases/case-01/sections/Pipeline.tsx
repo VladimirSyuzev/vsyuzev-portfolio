@@ -157,6 +157,14 @@ export default function Pipeline() {
           даёт им ту же систему координат (относительно sectionRef), что и
           самому треку. */}
       <div className="relative w-full xl:contents">
+        {/* Высота этого div = зона наведения, на которой колесо мыши
+            перехватывается под горизонтальный скролл трека (см.
+            useScrollTrack — wheel-листенер висит прямо на trackRef).
+            pb снизу зеркалит padding.top сверху (130 на 640–1439) — зона
+            срабатывания примерно равна высоте линейки (399 карточек + по
+            ~130-137 нахлёста линейки сверху/снизу), а не раздута лишним
+            воздухом перед следующим блоком (было pb-210 — зона на 80px
+            выше линейки ловила колесо мыши в пустом месте). */}
         <div
           ref={trackRef}
           {...bind}
@@ -164,7 +172,7 @@ export default function Pipeline() {
             if (rulerRef.current)
               rulerRef.current.style.transform = `translateX(${e.currentTarget.scrollLeft}px)`;
           }}
-          className={`no-scrollbar relative w-full touch-pan-y select-none overflow-x-auto overflow-y-visible pb-[72px] sm:pb-[210px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
+          className={`no-scrollbar relative w-full touch-pan-y select-none overflow-x-auto overflow-y-visible pb-[72px] sm:pb-[130px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
             dragging ? "cursor-grabbing" : "cursor-grab"
           }`}
           style={{ paddingTop: padding.top, paddingLeft: padding.left, paddingRight: padding.left }}
