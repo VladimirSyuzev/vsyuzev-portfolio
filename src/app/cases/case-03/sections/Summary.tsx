@@ -1,5 +1,4 @@
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import { useLang } from "@/lib/lang";
 import { C3 } from "../i18n";
 
@@ -46,157 +45,83 @@ export default function Summary() {
         src={`${A}/summary-mockup.jpg`}
       />
 
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-03 · 375» (node 2695:20028,
-          375×624.2): заголовок «07 ИТОГ» 26px (20,64), одноколоночный текст
-          (20,105, w-335, 2 абзаца), мокап MacBook full-bleed (0,364,
-          375×260.2) — вплотную к низу секции. Без доодла. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={624.156} mode="grow" className="w-full">
-          <div className="relative w-[375px] overflow-clip bg-[#fafafa]" style={{ height: 624.156 }}>
-            <div className="absolute left-[20px] top-[64px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-              <span className="text-[#008cff]">07</span>
-              <span className="text-[#121212]">{t.summaryHeading}</span>
-            </div>
-
-            {/* Текст: 2 абзаца (20, 105), w-335, gap 6 (у Figma строк-фрейм
-                h227 = 119 + 6 + 102). */}
-            <div className="absolute left-[20px] top-[105px] flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              <p>{t.summaryPara1}</p>
-              <p>{t.summaryPara2}</p>
-            </div>
-
-            {/* Мокап MacBook (2695:20034, 0/364, 375×260.2) — full-bleed,
-                тот же ассет (соотношение 1.44 совпадает с 1280/834). */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.summaryMockupAlt}
-              className="absolute left-0 top-[364px] block h-[260.156px] w-[375px] max-w-none object-cover"
-              src={`${A}/summary-mockup-1280.jpg`}
-            />
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-03 · 834» (node 2695:19232,
-          834×958.6): заголовок «07 ИТОГ» 100px (28,72), доодл-шеврон (423,76),
-          двухколоночный текст (28 / 423, y214, 383 / 383), мокап MacBook
-          пропорционально во всю ширину (0, 380, 834×578.6). */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={958.6} mode="grow" className="w-full">
-          <div className="relative h-[958.6px] w-[834px] bg-[#fafafa]">
-            <div className="absolute left-[28px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-[1.1]">
-              <span className="text-[#008cff]">07</span>
-              <span className="text-[#121212]">{t.summaryHeading}</span>
-              {/* EN: «OUTCOME» длиннее «ИТОГ» — доодл не влезает в фикс-
-                  позицию (423,76) из RU-макета, заезжает на буквы. Кладём
-                  его прямо в строку заголовка, сразу после текста, с
-                  отступом 32px (вместо общего gap-12 у «07»/заголовка). */}
-              {lang === "en" && (
-                <DrawIn
-                  src={`${A}/summary-chevron-834.svg`}
-                  fit="contain"
-                  className="ml-[32px] h-[125px] w-[158px] shrink-0"
-                />
-              )}
-            </div>
-
-            {/* Доодл-«шеврон вниз» (2695:19239, 423/76 абс), 158×125. Только
-                RU — на EN он переехал в строку заголовка (см. выше). */}
-            {lang === "ru" && (
+      {/* <1440 — единый резиновый flow: раньше 3 холста (375/834/1280)
+          держали два 14px-абзаца внутри масштабируемого канваса — текст
+          «плыл» вместе с холстом на промежуточных ширинах. Мокап MacBook —
+          один и тот же файл на всех трёх тирах (соотношение сторон
+          практически идентично, 1.4414–1.4416) — просто w-full картинка,
+          холст ей не нужен. */}
+      <div className="flex w-full flex-col overflow-clip bg-[#fafafa] xl:hidden">
+        <div className="relative flex flex-col gap-[12px] px-[20px] pt-[64px] pb-[32px] sm:px-[28px] sm:pt-[72px] sm:pb-[64px] lg:px-[40px]">
+          <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:text-[100px] sm:tracking-normal lg:text-[175px] lg:tracking-[5.25px]">
+            <span className="text-[#008cff]">07</span>
+            <span className="text-[#121212]">{t.summaryHeading}</span>
+            {/* EN на 834: «OUTCOME» длиннее «ИТОГ», доодл в фикс-позиции RU
+                заезжал бы на буквы — кладём его прямо в строку заголовка. */}
+            {lang === "en" && (
               <DrawIn
                 src={`${A}/summary-chevron-834.svg`}
                 fit="contain"
-                className="absolute left-[423px] top-[76px] z-10 h-[125px] w-[158px]"
+                className="ml-[32px] hidden h-[125px] w-[158px] shrink-0 sm:block lg:hidden"
               />
             )}
-
-            {/* Текст: колонка 1 (28, 214) 383, колонка 2 (423, 214) 383.
-                В 1-й — ручной <br> после «стоковых изображений ». */}
-            <p className="absolute left-[28px] top-[214px] w-[383px] whitespace-pre-wrap text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {lang === "ru" ? (
-                <>
-                  Сегодня иллюстрации используются маркетинговой командой Stablegate в презентациях,
-                  email-рассылках, социальных сетях и других коммуникационных материалах. Собственная
-                  библиотека помогла сократить использование стоковых изображений{" "}
-                  <br />и ускорить подготовку новых материалов.
-                </>
-              ) : (
-                t.summaryPara1
-              )}
-            </p>
-            <p className="absolute left-[423px] top-[214px] w-[383px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {t.summaryPara2}
-            </p>
-
-            {/* Мокап MacBook (2695:19238, 0/380, 834×578.6) — тот же ассет, что
-                на 1280 (соотношение 1440/999 совпадает). */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.summaryMockupAlt}
-              className="absolute left-0 top-[380px] block h-[578.6px] w-[834px] max-w-none object-cover"
-              src={`${A}/summary-mockup-1280.jpg`}
-            />
           </div>
-        </FullBleedScale>
-      </div>
 
-      {/* 1024–1439 — 1:1 из Figma node 2695:18436 (1280×1317). FullBleedScale
-          масштабирует канвас: заголовок «07 ИТОГ» 175px (40,72), доодл-
-          «шеврон» (742,140), двухколоночный текст (40 / 646, y297, 594 / 585),
-          мокап MacBook — запечён во фрейм 1280×888 (0,429). */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1317} mode="grow" className="w-full">
-          <div className="relative h-[1317px] w-[1280px] bg-[#fafafa]">
-            <div className="absolute left-[40px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[175px] font-bold uppercase leading-[1.1] tracking-[5.25px]">
-              <span className="text-[#008cff]">07</span>
-              <span className="text-[#121212]">{t.summaryHeading}</span>
-            </div>
-
-            {/* Доодл-«шеврон вниз» (2711:13962, 742/139.8), 158×125. На EN
-                скрыт — заголовок «OUTCOME» длиннее «ИТОГ» и доодл ложится
-                прямо на буквы. */}
-            {lang === "ru" && (
-              <DrawIn
-                src={`${A}/summary-chevron-1280.svg`}
-                fit="contain"
-                className="absolute left-[742px] top-[140px] z-10 h-[125px] w-[158px]"
-              />
-            )}
-
-            {/* Текст: колонка 1 (40, 297) 594, колонка 2 (646, 297) 585. */}
-            <p className="absolute left-[40px] top-[297px] w-[594px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+          <div className="flex w-[335px] max-w-full flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-auto sm:flex-row sm:gap-[12px]">
+            <p className="whitespace-pre-wrap sm:w-[383px] sm:whitespace-normal lg:w-[594px]">
               {lang === "ru" ? (
                 <>
                   Сегодня иллюстрации используются маркетинговой командой Stablegate{" "}
-                  <br />в презентациях, email-рассылках, социальных сетях и других коммуникационных
+                  <br className="hidden lg:inline" />
+                  {"в презентациях, email-рассылках, социальных сетях и других коммуникационных "}
                   материалах. Собственная библиотека помогла сократить использование стоковых
-                  изображений и ускорить подготовку новых материалов.
+                  изображений{" "}
+                  <br className="sm:hidden" />и ускорить подготовку новых материалов.
                 </>
               ) : (
                 t.summaryPara1
               )}
             </p>
-            <p className="absolute left-[646px] top-[297px] w-[585px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+            <p className="sm:w-[383px] lg:w-[585px]">
               {lang === "ru" ? (
                 <>
                   Главным результатом стала масштабируемая система 3D key visuals, которая помогает
                   понятным визуальным языком объяснять сложные функции продукта{" "}
-                  <br />и поддерживать единый стиль бренда во всех точках коммуникации.
+                  <br className="hidden lg:inline" />и поддерживать единый стиль бренда во всех точках
+                  коммуникации.
                 </>
               ) : (
                 t.summaryPara2
               )}
             </p>
-
-            {/* Мокап MacBook — запечённый фрейм 1280×888 (2708:13492, y429). */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.summaryMockupAlt}
-              className="absolute left-0 top-[429px] block h-[888px] w-[1280px] max-w-none"
-              src={`${A}/summary-mockup-1280.jpg`}
-            />
           </div>
-        </FullBleedScale>
+
+          {/* Доодл-«шеврон вниз» — только RU (на EN либо переехал в строку
+              заголовка на sm, либо скрыт на lg — «OUTCOME» длиннее «ИТОГ»,
+              ложится на буквы). Правым краем от контейнера — не от фикс-px
+              холста, чтобы не вылезал на узких lg-ширинах. */}
+          {lang === "ru" && (
+            <DrawIn
+              src={`${A}/summary-chevron-834.svg`}
+              fit="contain"
+              className="pointer-events-none absolute right-[253px] top-[76px] z-10 hidden h-[125px] w-[158px] sm:block lg:hidden"
+            />
+          )}
+          {lang === "ru" && (
+            <DrawIn
+              src={`${A}/summary-chevron-1280.svg`}
+              fit="contain"
+              className="pointer-events-none absolute right-[380px] top-[140px] z-10 hidden h-[125px] w-[158px] lg:block"
+            />
+          )}
+        </div>
+
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={t.summaryMockupAlt}
+          className="block aspect-[1280/888] w-full object-cover"
+          src={`${A}/summary-mockup-1280.jpg`}
+        />
       </div>
     </section>
   );

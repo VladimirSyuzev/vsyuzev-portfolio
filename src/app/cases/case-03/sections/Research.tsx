@@ -152,215 +152,106 @@ export default function Research() {
         ))}
       </div>
 
-      {/* <640 — 1:1 из Figma «case-03 · 375» (node 2695:19794, 375×2198).
-          Мудборд — вертикальный стек ~13 окон + подписи → свой бейк
-          research-375.jpg; заголовок / текст — живые. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={2198} mode="grow" className="w-full">
-          <div className="relative w-[375px] overflow-clip bg-[#fafafa]" style={{ height: 2198 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.moodboardAlt}
-              className="absolute left-[20px] top-[330px] w-[335px] max-w-none"
-              src={`${A}/research-375.jpg`}
-            />
-            <p className="sr-only">{t.moodboardCaptionsSr}</p>
-
-            {/* Заголовок «02 ИССЛЕДОВАНИЕ» (20, 64), Wix Bold 26, gap 12. */}
-            <div className="absolute left-[20px] top-[64px] flex items-center gap-[12px] whitespace-nowrap bg-[#fafafa] font-heading text-[26px] font-bold uppercase leading-none tracking-[0.78px]">
-              <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">{t.researchHeading}</span>
-            </div>
-
-            {/* Два абзаца (20, 105), 335, gap 6, Aeonik Regular 14 opacity-70. */}
-            <div className="absolute left-[20px] top-[105px] flex w-[335px] flex-col gap-[6px] whitespace-pre-wrap bg-[#fafafa] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-              <p className="opacity-70">
-                {lang === "ru" ? (
-                  <>
-                    Работа началась с изучения продукта и поиска визуальных метафор. Вместе с
-                    маркетологом{" "}
-                    <br />
-                    мы определили ключевые функции{" "}
-                    <br />и преимущества Stablegate, а затем искали{" "}
-                    <br />
-                    для них понятные образы.
-                  </>
-                ) : (
-                  t.researchIntro1
-                )}
-              </p>
-              <p className="opacity-70">
-                {lang === "ru" ? (
-                  <>
-                    От привычной банковской символики сознательно отказались в пользу более
-                    современных и технологичных решений.{" "}
-                    <br />
-                    После этого я собрал референсы, сделал{" "}
-                    <br />
-                    серию быстрых скетчей и определил принципы будущей системы.
-                  </>
-                ) : (
-                  t.researchIntro2
-                )}
-              </p>
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-03 · 834» (node 2695:18998,
-          834×698). Мудборд перекомпонован (12+ окон, 20+ исходников) → свой
-          бейк research-834.jpg; заголовок / текст / доодл — живые. */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={698} mode="grow" className="w-full">
-          <div className="relative h-[698px] w-[834px] overflow-clip bg-[#fafafa]">
-            {/* Мудборд (Frame 2147232000, 28, 219.89), 778×420 — свой бейк 834
-                (кроп-окна + подписи MATERIAL/FORM/Composition/result запечены).
-                Рендерится ПЕРВЫМ: у бейка запечён фон #fafafa, а его пустой
-                верхний-левый угол (до y~375) перекрывал бы заголовок/текст —
-                поэтому текст поверх (DOM-порядок). Реальные кропы все ниже
-                текста, так что визуально ничего не закрыто. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.moodboardAlt}
-              className="absolute left-[28px] top-[207px] w-[778px] max-w-none"
-              src={`${A}/research-834.jpg`}
-            />
-            <p className="sr-only">{t.moodboardCaptionsSr}</p>
-
-            {/* Заголовок «02 ИССЛЕДОВАНИЕ» (28, 56), Wix Bold 32, gap 12. */}
-            <div className="absolute left-[28px] top-[56px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-              <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">{t.researchHeading}</span>
-            </div>
-
-            {/* Два абзаца (28, 115), 383, gap 6, Aeonik Regular 14 opacity-70.
-                Во 2-м — два ручных <br> (после «современных » и «скетчей »). */}
-            <div className="absolute left-[28px] top-[115px] flex w-[383px] flex-col gap-[6px] bg-[#fafafa] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-              <p className="opacity-70">{t.researchIntro1}</p>
-              <p className="whitespace-pre-wrap opacity-70">
-                {lang === "ru" ? (
-                  <>
-                    От привычной банковской символики сознательно отказались в пользу более современных{" "}
-                    <br />
-                    и технологичных решений. После этого я собрал референсы, сделал серию быстрых
-                    скетчей <br />и определил принципы будущей системы.
-                  </>
-                ) : (
-                  t.researchIntro2
-                )}
-              </p>
-            </div>
-
-            {/* Доодл-«глаз» (Group 2136141451) — Figma-нода 157×110, но реальный
-                рисунок (viewBox 150.4×93.8, замер 148×94) имеет соотношение
-                ~1.6 → контейнер строим по нему (157×98), иначе SVG
-                (preserveAspectRatio none) растягивает по вертикали. Наклон 0. */}
+      {/* <1440 — единый резиновый flow: раньше 3 холста (375/834/1280)
+          держали заголовок+интро (14px) внутри масштабируемого канваса —
+          текст «плыл» вместе с холстом на промежуточных ширинах. Мудборд —
+          картинка (375/834) или живой коллаж-канвас (1280, без текста) —
+          остаётся как есть, ей масштаб не вредит. */}
+      <div className="flex w-full flex-col overflow-clip bg-[#fafafa] xl:hidden">
+        <div className="flex flex-col gap-[12px] px-[20px] pt-[64px] sm:gap-[6px] sm:px-[28px] sm:pt-[56px] lg:px-[40px] lg:pt-[72px]">
+          <div className="relative flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none tracking-[0.78px] sm:text-[32px] sm:leading-[1.1] sm:tracking-[0.96px]">
+            <span className="text-[#008cff]">02</span>
+            <span className="text-[#121212]">{t.researchHeading}</span>
+            {/* Доодл-«глаз» — только sm+ (в макете 375 его нет); привязан к
+                ПРАВОМУ краю строки (right-N), а не left-Nпх от фикс-холста —
+                иначе на узких lg-ширинах вылезал бы за контейнер. */}
             <DrawIn
               src={`${A}/research-eye-834.svg`}
               fit="contain"
-              className="absolute left-[624px] top-[66px] h-[98px] w-[157px]"
+              className="pointer-events-none absolute right-[53px] top-[10px] hidden h-[98px] w-[157px] sm:block lg:right-[75px] lg:top-[-52px] lg:h-[110px] lg:w-[157px]"
             />
           </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 1024–1439 — 1:1 из Figma node 2695:18202 (1280×817). Коллаж собран из
-          отдельных карточек-кропов (frame 2707:41603). */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={817} mode="grow" className="w-full">
-          <div className="relative h-[817px] w-[1280px] overflow-clip bg-[#fafafa]">
-            {/* Заголовок «02 ИССЛЕДОВАНИЕ» (40, 72), 32px Bold. */}
-            <div className="absolute left-[40px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-              <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">{t.researchHeading}</span>
-            </div>
-            {/* Два абзаца (40, 119.32), 594 / 592, 14px opacity 70, gap 6. */}
-            <div className="absolute left-[40px] top-[119px] flex w-[594px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-              <p className="opacity-70">
-                {lang === "ru" ? (
-                  <>
-                    Работа началась с изучения продукта и поиска визуальных метафор.
-                    <br />
-                    Вместе с маркетологом мы определили ключевые функции и преимущества Stablegate, а
-                    затем искали для них понятные образы.
-                  </>
-                ) : (
-                  t.researchIntro1
-                )}
-              </p>
-              <p className="w-[592px] opacity-70">{t.researchIntro2}</p>
-            </div>
-
-            {/* Доодл-«глаз» (Group 2695:18237, 1047.51, 19.8), 156.94×110.48. */}
-            <DrawIn
-              src={`${A}/research-eye.svg`}
-              fit="contain"
-              className="absolute left-[1048px] top-[20px] h-[110px] w-[157px]"
-            />
-
-            {/* Мудборд-коллаж — frame 2707:41603 (40, 119.8), 1200×599.11. */}
-            <div className="absolute left-[40px] top-[120px] h-[600px] w-[1200px]">
-              {CARDS.map((c, i) => (
-                <CardWindow key={i} c={c} />
-              ))}
-
-              {/* Карточка 9 — 2707:41624 (605.34, 0), 291.99×233.23: монета
-                  Stablegate на синем свечении. */}
-              <div className="absolute overflow-clip bg-[#121212]" style={{ left: 605.34, top: 0, width: 291.99, height: 233.23 }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt=""
-                  aria-hidden
-                  className="absolute max-w-none"
-                  style={{ left: -274, top: -150, width: 840, height: 536, transform: "scaleY(-1) rotate(35.84deg)" }}
-                  src={`${R}/r-vector43.svg`}
-                />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt=""
-                  aria-hidden
-                  className="absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 object-cover"
-                  style={{ width: 269.73, height: 269.73 }}
-                  src={`${R}/r-stablegate.png`}
-                />
-              </div>
-
-              {/* Карточка 10 — 2707:41627 (756.68, 243.92), 443.32×355.19:
-                  3D-«Gate» на светлом градиенте. */}
-              <div
-                className="absolute overflow-clip"
-                style={{
-                  left: 756.68,
-                  top: 243.92,
-                  width: 443.32,
-                  height: 355.19,
-                  background: "linear-gradient(214.67deg, #CDD5FC 0%, #F4F6FA 100%)",
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt=""
-                  aria-hidden
-                  className="absolute left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 object-cover"
-                  style={{ top: "calc(50% + 6.68px)", width: 366.77, height: 366.77 }}
-                  src={`${R}/r-gate.png`}
-                />
-              </div>
-            </div>
-
-            {/* Подписи-категории (2707:41601, 40, 732), flex, gap 12. */}
-            <div className="absolute left-[40px] top-[732px] flex w-[1200px] items-end gap-[12px] text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212]">
-              <p className="w-[291px] shrink-0 opacity-70">MATERIAL</p>
-              <p className="w-[291px] shrink-0 opacity-70">FORM</p>
-              <p className="w-[140px] shrink-0 uppercase opacity-70">Composition</p>
-              <p className="min-w-px flex-1 uppercase opacity-70">result</p>
-            </div>
-
-            {/* Живой текст для доступности дублирует запечённые подписи —
-                они уже видимы выше, поэтому sr-only не нужен. */}
+          <div className="flex w-[335px] max-w-full flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:w-[383px] lg:w-[594px]">
+            <p className="opacity-70">{t.researchIntro1}</p>
+            <p className="opacity-70 lg:w-[592px]">{t.researchIntro2}</p>
           </div>
-        </FullBleedScale>
+        </div>
+        <p className="sr-only">{t.moodboardCaptionsSr}</p>
+
+        {/* Мудборд 375/834 — просто картинка на всю ширину, свой натуральный
+            аспект (1005×5412 / 1560×866) — растёт вместе с колонкой, без
+            отдельного холста. */}
+        <div className="px-[20px] pt-[32px] sm:px-[28px] sm:pt-[24px] lg:hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.moodboardAlt} className="block w-full sm:hidden" src={`${A}/research-375.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.moodboardAlt} className="hidden w-full sm:block" src={`${A}/research-834.jpg`} />
+        </div>
+
+        {/* 1024–1439 — живой коллаж-канвас (frame 2707:41603, 1200×600), без
+            текста внутри — масштабируется свободно, драйва не вызывает. */}
+        <div className="hidden w-full flex-col gap-[12px] lg:flex">
+          <div className="w-full px-[40px] pt-[32px]">
+            <FullBleedScale width={1200} height={600} mode="grow" className="w-full">
+              <div className="relative h-[600px] w-[1200px]">
+                {CARDS.map((c, i) => (
+                  <CardWindow key={i} c={c} />
+                ))}
+
+                {/* Карточка 9 — 2707:41624 (605.34, 0), 291.99×233.23: монета
+                    Stablegate на синем свечении. */}
+                <div className="absolute overflow-clip bg-[#121212]" style={{ left: 605.34, top: 0, width: 291.99, height: 233.23 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt=""
+                    aria-hidden
+                    className="absolute max-w-none"
+                    style={{ left: -274, top: -150, width: 840, height: 536, transform: "scaleY(-1) rotate(35.84deg)" }}
+                    src={`${R}/r-vector43.svg`}
+                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt=""
+                    aria-hidden
+                    className="absolute left-1/2 top-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 object-cover"
+                    style={{ width: 269.73, height: 269.73 }}
+                    src={`${R}/r-stablegate.png`}
+                  />
+                </div>
+
+                {/* Карточка 10 — 2707:41627 (756.68, 243.92), 443.32×355.19:
+                    3D-«Gate» на светлом градиенте. */}
+                <div
+                  className="absolute overflow-clip"
+                  style={{
+                    left: 756.68,
+                    top: 243.92,
+                    width: 443.32,
+                    height: 355.19,
+                    background: "linear-gradient(214.67deg, #CDD5FC 0%, #F4F6FA 100%)",
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt=""
+                    aria-hidden
+                    className="absolute left-1/2 max-w-none -translate-x-1/2 -translate-y-1/2 object-cover"
+                    style={{ top: "calc(50% + 6.68px)", width: 366.77, height: 366.77 }}
+                    src={`${R}/r-gate.png`}
+                  />
+                </div>
+              </div>
+            </FullBleedScale>
+          </div>
+
+          {/* Подписи-категории (2707:41601) — резиновый flow, честные 11px. */}
+          <div className="flex w-full items-end gap-[12px] px-[40px] pb-[32px] text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212]">
+            <p className="w-[291px] shrink-0 opacity-70">MATERIAL</p>
+            <p className="w-[291px] shrink-0 opacity-70">FORM</p>
+            <p className="w-[140px] shrink-0 uppercase opacity-70">Composition</p>
+            <p className="min-w-px flex-1 uppercase opacity-70">result</p>
+          </div>
+        </div>
       </div>
     </div>
   );

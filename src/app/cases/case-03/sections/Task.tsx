@@ -1,8 +1,10 @@
+"use client";
+
 import Reveal from "@/components/Reveal";
 import DrawIn from "@/components/DrawIn";
 import VariantsCarousel from "@/components/VariantsCarousel";
-import FullBleedScale from "@/components/FullBleedScale";
 import { C3_TEXT } from "../tokens";
+import { useBreakpoint } from "@/lib/breakpoint";
 import { useLang } from "@/lib/lang";
 import { C3 } from "../i18n";
 
@@ -47,6 +49,20 @@ export default function Task() {
     { ...CARD_META[3], alt: t.cardAlt4 },
   ];
   const REQS = t.reqs;
+  // <1440 — единый резиновый flow (см. блок ниже): структурная раскладка
+  // (доодл-молния, группировка «монета + чек-лист + цитата») различается
+  // не только размерами, но и порядком/составом элементов между тирами
+  // (на 375 монета зажата МЕЖДУ чек-листом и цитатой, на 1280 монета —
+  // отдельная колонка РЯДОМ со всем текстовым блоком) — это не выражается
+  // чистым CSS (order не разводит вложенность), поэтому структура берётся
+  // из useBreakpoint(), а не только из Tailwind-классов.
+  const bp = useBreakpoint();
+  const isLgUp = bp === "tabletL" || bp === "desktop";
+  const isMobile = bp === "mobile";
+  const carouselHSmall = isMobile ? 117 : 262;
+  const carouselHBig = isMobile ? 178 : 399;
+  const carouselH = carouselHBig + 54; // +высота бара (стрелки+точки)
+  const reqIcon = isMobile ? "task-check-375.svg" : isLgUp ? "task-check.svg" : "task-check-834.svg";
   return (
     <section className="relative w-full overflow-clip bg-[#fafafa]">
       {/* ≥1440 — 1:1 из Figma-канваса 1440. */}
@@ -110,217 +126,145 @@ export default function Task() {
         <VariantsCarousel cards={CARDS} top={595} tone="light" />
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма 2695:17969 (1280×1436).
-          FullBleedScale масштабирует фикс-канвас 1280×1436 под реальную
-          ширину — все координаты 1:1 из Figma, ничего не «плывёт» на
-          промежуточных ширинах. */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1490} mode="grow" className="w-full">
-          <div className="relative h-[1490px] w-[1280px] bg-[#fafafa]">
-            {/* Заголовок 175px — «01» + «Задача», gap 24, items-center. */}
-            <div className={`absolute left-[40px] top-[72px] flex items-center gap-[24px] whitespace-nowrap ${C3_TEXT.displayXl}`}>
-              <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">{t.taskHeading}</span>
-            </div>
-
-            {/* Молния (Vector 234257381) — (1077.04, 250.8), 92.57×120.91. */}
-            <DrawIn
-              src={`${A}/task-doodle-flash.svg`}
-              fit="contain"
-              className="absolute left-[1077px] top-[251px] z-10 h-[121px] w-[93px]"
-            />
-
-            {/* Вводный абзац (40, 297), 594×51, Aeonik Pro Medium uppercase
-                (перенос после «без текста »). */}
-            <p className={`absolute left-[40px] top-[297px] w-[594px] text-[#121212] ${C3_TEXT.bodyMediumCaps}`}>
-              {lang === "ru" ? (
-                <>
-                  Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая
-                  объясняет функциональность продукта без текста
-                  <br />и работает в разных форматах и контекстах.
-                </>
-              ) : (
-                t.taskIntro
-              )}
-            </p>
-
-            {/* Витрина «варианты» (2707:41600, 40/412) — VariantsCarousel на
-                всю ширину канваса 1280: контент 1642 в окне, лишние карточки
-                уходят за край экрана (как в Figma), а не обрезаются на 1240 с
-                мёртвой полосой справа. Ниже добавляется бар (стрелки+точки) —
-                поэтому блок «Система должна была:» сдвинут вниз на 54px
-                (высота бара) относительно Figma-координаты 875. */}
-            <VariantsCarousel cards={CARDS} top={412} tone="light" />
-
-            {/* «Система должна была:» (646, 875+54=929) — medium uppercase,
-                но С opacity-70 (Figma 2695:17976). */}
-            <p className={`absolute left-[646px] top-[929px] w-[594px] text-[#121212] opacity-70 ${C3_TEXT.bodyMediumCaps}`}>
-              {t.systemMustLabel}
-            </p>
-            {/* Сетка 4 требований (646, 904+54=958), 2 колонки 291, gap 12. */}
-            <div className="absolute left-[646px] top-[958px] flex gap-[12px]">
-              <div className="flex w-[291px] flex-col gap-[12px]">
-                <Req head={REQS[0][0]} sub={REQS[0][1]} />
-                <Req head={REQS[1][0]} sub={REQS[1][1]} />
-              </div>
-              <div className="flex w-[291px] flex-col gap-[12px]">
-                <Req head={REQS[2][0]} sub={REQS[2][1]} />
-                <Req head={REQS[3][0]} sub={REQS[3][1]} />
-              </div>
-            </div>
-
-            {/* 3D-стек монет (178, 1036+54=1090), 328×328. */}
-            <Reveal variant="fade" className="absolute left-[178px] top-[1090px] size-[328px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt={t.coinAlt} className="block size-full" src={`${A}/task-coin.jpg`} />
-            </Reveal>
-
-            {/* Цитата (646, 1112+54=1166), 594×175 (авторская оценка — реально
-                рендерится в 6 строк, не 5, см. ниже). Подчёркивание привязано
-                к НИЗУ текста (top-[calc(100%+11px)], не фикс-px 1320) — при
-                фикс-позиции оно наезжало на «...ПРОЧИТАЕТ ТЕКСТ» (браузерный
-                перенос шире, чем предполагал автор макета). */}
-            <div className="absolute left-[646px] top-[1166px] w-[594px]">
-              <p className={`text-[#121212] ${C3_TEXT.quote}`}>
-                {t.taskQuote}
-              </p>
+      {/* <1440 — единый резиновый flow (без FullBleedScale): раньше это были
+          3 отдельных холста (375/834/1280), внутри которых 14px-текст
+          (интро, «Система должна была:», пункты чек-листа) скейлился
+          вместе с холстом — на промежуточных ширинах (например 833→1023px)
+          визуально «плыл» от ~13.7 до ~16.9px. Теперь текст — обычный
+          DOM-flow, всегда честные 14px; колонки/раскладка сужаются вместе
+          с шириной экрана, автолэйаут раздвигает низ при переносе строк.
+          Карусель (VariantsCarousel) сама всегда position:absolute —
+          резервируем под неё высоту (hBig+54 бар) отдельным relative-блоком. */}
+      <div className="flex w-full flex-col gap-[32px] overflow-clip bg-[#fafafa] px-[20px] py-[64px] sm:gap-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px] xl:hidden">
+        <div className="flex flex-col gap-[12px] sm:gap-[32px]">
+          <div className="relative flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none sm:gap-[24px] sm:text-[100px] sm:leading-[1.1] lg:text-[175px] lg:tracking-[5.25px]">
+            <span className="text-[#008cff]">01</span>
+            <span className="text-[#121212]">{t.taskHeading}</span>
+            {/* Доодл-«молния» — только sm+ (в макете 375 её нет); 834 —
+                повёрнута 14°, 1280 — без поворота, оба варианта позиционируются
+                относительно этой заголовочной строки. */}
+            {!isMobile && (
               <DrawIn
-                src={`${A}/task-doodle-arrow.svg`}
-                className="absolute left-[152px] top-[calc(100%-19px)] h-[90px] w-[388px]"
-              />
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma «case-03 · 375» (node 2695:19561, 375×1262).
-          Блоки после карусели сдвинуты на +54 под её нижний бар. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={1316} mode="grow" className="w-full">
-          <div className="relative h-[1316px] w-[375px] bg-[#fafafa]">
-            {/* «01 Задача» — Wix Bold 26, gap 12, (20, 64). */}
-            <div className="absolute left-[20px] top-[64px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-none">
-              <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">{t.taskHeading}</span>
-            </div>
-            {/* Вводный абзац (20, 102), 335, Aeonik Medium 14 UPPERCASE. */}
-            <p className="absolute left-[20px] top-[102px] w-[335px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-              {t.taskIntro}
-            </p>
-
-            {/* Витрина «варианты» (2823:40971, y219) — VariantsCarousel, свои
-                размеры карточек (hSmall 117 / hBig 178). */}
-            <VariantsCarousel cards={CARDS} top={219} hSmall={117} hBig={178} tone="light" />
-
-            {/* «Система должна была:» (20, 429 + 54 = 483) — Aeonik Medium 14
-                UPPERCASE opacity-70. */}
-            <p className="absolute left-[20px] top-[483px] w-[335px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {t.systemMustLabel}
-            </p>
-            {/* Чек-лист — 1 колонка, 4 строки (20, 429 + 29 + 54 = 512), gap 12. */}
-            <div className="absolute left-[20px] top-[512px] flex w-[328px] flex-col gap-[12px]">
-              <Req head={REQS[0][0]} sub={REQS[0][1]} icon="task-check-375.svg" />
-              <Req head={REQS[1][0]} sub={REQS[1][1]} icon="task-check-375.svg" />
-              <Req head={REQS[2][0]} sub={REQS[2][1]} icon="task-check-375.svg" />
-              <Req head={REQS[3][0]} sub={REQS[3][1]} icon="task-check-375.svg" />
-            </div>
-
-            {/* 3D-стек монет (Coin, 2695:19793) — (20, 662 + 54 = 716), 328×328.
-                На 375 виден (на 834 был hidden). */}
-            <Reveal variant="fade" className="absolute left-[20px] top-[716px] size-[328px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img alt={t.coinAlt} className="block size-full" src={`${A}/task-coin.jpg`} />
-            </Reveal>
-
-            {/* Цитата (Frame 2147232030, 20, 1022 + 54 = 1076), w-329, Wix
-                Regular 22 UPPERCASE opacity-70. БЕЗ ручного переноса —
-                естественная вёрстка в 6 строк (макет обновлён). Обёртка с
-                подчёркиванием — линия привязана к НИЗУ текста
-                (top-[calc(100%+6px)], не фикс-px 1227), чтобы не отрываться
-                при другом числе строк (перевод на английский). */}
-            <div className="absolute left-[20px] top-[1076px] w-[329px]">
-              <p className="font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70">
-                {t.taskQuote}
-              </p>
-              {/* Подчёркивание-хайлайт (Vector 234257367, 2835:53360) — 339.01×23.08,
-                  viewBox SVG 345.01×29.08, картинка inset -13%/-0.88%. Выходит
-                  на ~10px за правый край текста. */}
-              <div className="absolute left-0 top-[calc(100%+6px)] h-[23.08px] w-[339px]">
-                <DrawIn src={`${A}/task-underline-375.svg`} className="absolute inset-[-13%_-0.88%]" />
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-03 · 834» (node 2695:18765,
-          834×1387). Координаты блоков ПОСЛЕ карусели сдвинуты на +54 под её
-          нижний бар (стрелки+точки) — как в 1280-раскладке. */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={1441} mode="grow" className="w-full">
-          <div className="relative h-[1441px] w-[834px] bg-[#fafafa]">
-            {/* «01 Задача» — Wix Bold 100, gap 24, items-center, (28, 72). */}
-            <div className="absolute left-[28px] top-[72px] flex items-center gap-[24px] whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-[1.1]">
-              <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">{t.taskHeading}</span>
-            </div>
-
-            {/* Вводный абзац (28, 214), w-384, Aeonik Medium 14 UPPERCASE.
-                Ручные <br> точь-в-точь как в макете: после «функциональность
-                продукта » и после «в разных форматах ». */}
-            <p className="absolute left-[28px] top-[214px] w-[384px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-              {lang === "ru" ? (
-                <>
-                  Нужно было создать не набор отдельных иллюстраций, а визуальную систему, которая
-                  объясняет функциональность продукта{" "}
-                  <br />
-                  без текста и работает в разных форматах{" "}
-                  <br />и контекстах.
-                </>
-              ) : (
-                t.taskIntro
-              )}
-            </p>
-
-            {/* Флэш-доодл (Vector 234257381) — теперь В ХЕДЕРЕ: Figma abs
-                (28+572, 72+135) = (600, 207), bbox 78.82×102.96, контент
-                58.4×91.5 повёрнут на 14.02°. */}
-            <div className="absolute left-[600px] top-[207px] z-10 flex h-[102.956px] w-[78.822px] items-center justify-center">
-              <DrawIn
-                src={`${A}/task-flash-834.svg`}
+                src={isLgUp ? `${A}/task-doodle-flash.svg` : `${A}/task-flash-834.svg`}
                 fit="contain"
-                className="h-[91.539px] w-[58.385px] rotate-[14.02deg]"
+                className={
+                  isLgUp
+                    ? "pointer-events-none absolute left-[1037px] top-[179px] z-10 h-[121px] w-[93px]"
+                    : "pointer-events-none absolute left-[572px] top-[135px] z-10 h-[103px] w-[78px] rotate-[14deg]"
+                }
               />
+            )}
+          </div>
+          <p className="w-[335px] max-w-full text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] sm:w-[384px] lg:w-[594px]">
+            {t.taskIntro}
+          </p>
+        </div>
+
+        <div className="relative w-full" style={{ height: carouselH }}>
+          <VariantsCarousel cards={CARDS} top={0} hSmall={carouselHSmall} hBig={carouselHBig} tone="light" />
+        </div>
+
+        {isLgUp ? (
+          /* 1280 — монета слева, справа колонка «Система должна была:» +
+              чек-лист + цитата (в макете именно так, не 3 равных колонки).
+              Сверено с Figma (фрейм 2707:41599, 1200 шириной): монета не
+              прижата к левому краю — отступ слева 138px, до текстовой
+              колонки 140px (было gap-40, монета флаш-лефт) — 138+328+140+594
+              = 1200, ровно ширина контента. */
+          <div className="flex items-center gap-[140px]">
+            <Reveal variant="fade" className="ml-[138px] size-[328px] shrink-0 overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt={t.coinAlt} className="block size-full" src={`${A}/task-coin.jpg`} />
+            </Reveal>
+            {/* gap 52px — сверено с Figma: фрейм лейбл+грид 161 высотой,
+                реальный контент (17 текст + 12 gap + 80 сетка = 109) —
+                оставшиеся 52px это и есть зазор до монеты/цитаты, gap
+                колонки #2707:41638 не задан (0), весь зазор — «воздух»
+                внутри первого фрейма. */}
+            <div className="flex w-[594px] max-w-full flex-col gap-[52px]">
+              <div className="flex flex-col gap-[12px]">
+                <p className="text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+                  {t.systemMustLabel}
+                </p>
+                <div className="flex gap-[12px]">
+                  <div className="flex w-[291px] flex-col gap-[12px]">
+                    <Req head={REQS[0][0]} sub={REQS[0][1]} icon={reqIcon} />
+                    <Req head={REQS[1][0]} sub={REQS[1][1]} icon={reqIcon} />
+                  </div>
+                  <div className="flex w-[291px] flex-col gap-[12px]">
+                    <Req head={REQS[2][0]} sub={REQS[2][1]} icon={reqIcon} />
+                    <Req head={REQS[3][0]} sub={REQS[3][1]} icon={reqIcon} />
+                  </div>
+                </div>
+              </div>
+              <div className="relative">
+                <p className={`text-[#121212] ${C3_TEXT.quote}`}>
+                  {lang === "ru" ? (
+                    <>
+                      Каждая иллюстрация
+                      <br />
+                      должна была объяснять
+                      <br />
+                      функцию продукта ещё
+                      <br />
+                      до того, как пользователь
+                      <br />
+                      прочитает текст
+                    </>
+                  ) : (
+                    t.taskQuote
+                  )}
+                </p>
+                {/* Сверено с Figma (node 3085:14361, фрейм 2695:17969):
+                    реальный бокс линии 387.57×28.56 (не 388×90, как было
+                    раньше) — без fit="contain" бокс 90px растягивал штрих по
+                    высоте втрое и лёгкий наклон (~4.2° в самом SVG,
+                    подтверждён в макете) визуально утраивался до ~11°.
+                    Позиция — +147px от левого края цитаты, +9px под низом
+                    текста (было -19px, наезжало на текст). */}
+                <DrawIn
+                  src={`${A}/task-doodle-arrow.svg`}
+                  fit="contain"
+                  className="pointer-events-none absolute left-[147px] top-[calc(100%+9px)] h-[28.56px] w-[387.57px]"
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          /* 375/834 — чек-лист, затем (только на 375) монета, затем цитата. */
+          <div className="flex flex-col gap-[32px] sm:gap-[64px]">
+            <div className="flex flex-col gap-[12px]">
+              <p className="w-[335px] max-w-full text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[594px]">
+                {t.systemMustLabel}
+              </p>
+              <div className="flex flex-col gap-[12px] sm:flex-row">
+                <div className="flex flex-col gap-[12px] sm:w-[228px]">
+                  <Req head={REQS[0][0]} sub={REQS[0][1]} icon={reqIcon} />
+                  <Req head={REQS[1][0]} sub={REQS[1][1]} icon={reqIcon} />
+                </div>
+                <div className="flex flex-col gap-[12px] sm:w-[291px]">
+                  <Req head={REQS[2][0]} sub={REQS[2][1]} icon={reqIcon} />
+                  <Req head={REQS[3][0]} sub={REQS[3][1]} icon={reqIcon} />
+                </div>
+              </div>
             </div>
 
-            {/* Витрина «варианты» (2695:18793, y363) — VariantsCarousel на
-                всю ширину канваса 834; те же 4 ассета, что и в 1280/1440. */}
-            <VariantsCarousel cards={CARDS} top={363} tone="light" />
+            {isMobile && (
+              <Reveal variant="fade" className="size-[328px] max-w-full overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img alt={t.coinAlt} className="block size-full" src={`${A}/task-coin.jpg`} />
+              </Reveal>
+            )}
 
-            {/* «Система должна была:» (28, 826 + 54 = 880) — Aeonik Medium 14
-                UPPERCASE opacity-70. */}
-            <p className="absolute left-[28px] top-[880px] w-[594px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {t.systemMustLabel}
-            </p>
-            {/* Сетка 4 требований (28, 826 + 28.8 + 54 ≈ 909), 2 колонки 228 / 291, gap 12. */}
-            <div className="absolute left-[28px] top-[909px] flex w-[594px] gap-[12px]">
-              <div className="flex w-[228px] flex-col gap-[12px]">
-                <Req head={REQS[0][0]} sub={REQS[0][1]} icon="task-check-834.svg" />
-                <Req head={REQS[1][0]} sub={REQS[1][1]} icon="task-check-834.svg" />
-              </div>
-              <div className="flex w-[291px] flex-col gap-[12px]">
-                <Req head={REQS[2][0]} sub={REQS[2][1]} icon="task-check-834.svg" />
-                <Req head={REQS[3][0]} sub={REQS[3][1]} icon="task-check-834.svg" />
-              </div>
-            </div>
-
-            {/* Цитата + подчёркивание (Frame 2147231997, y 826 + 161 + 54 =
-                1041; текст top 65.89 → ≈ 1107). Wix Regular 28 UPPERCASE
-                opacity-70, по центру. В макете 5 строк (w-471) — веб-шрифт
-                шире, поэтому строки жёсткие, как в макете. */}
-            <div className="absolute left-[422px] top-[1107px] w-[471px] -translate-x-1/2">
-              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
-                {lang === "ru" ? (
+            <div className={bp === "tabletP" ? "relative mx-auto w-[471px] max-w-full text-center" : "relative w-[329px] max-w-full"}>
+              <p
+                className={
+                  bp === "tabletP"
+                    ? "font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70"
+                    : "font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70"
+                }
+              >
+                {bp === "tabletP" && lang === "ru" ? (
                   <>
                     Каждая иллюстрация
                     <br />
@@ -336,17 +280,19 @@ export default function Task() {
                   t.taskQuote
                 )}
               </p>
-              {/* Подчёркивание (Vector 234257367, node 2836:53648 — перерисовано
-                  в макете: теперь плавная линия). Figma bbox 453.51×19.17,
-                  viewBox SVG 459.5×25.17 (ratio ~18.25), наклон ~2.4° в самом
-                  SVG. Сидит вплотную под последней строкой (Figma +3px). */}
-              <DrawIn
-                src={`${A}/task-underline-834.svg`}
-                className="pointer-events-none absolute left-[calc(50%+11px)] top-[calc(100%+1px)] h-[25.17px] w-[459.5px] -translate-x-1/2"
-              />
+              {bp === "tabletP" ? (
+                <DrawIn
+                  src={`${A}/task-underline-834.svg`}
+                  className="pointer-events-none absolute left-[calc(50%+11px)] top-[calc(100%+1px)] h-[25.17px] w-[459.5px] -translate-x-1/2"
+                />
+              ) : (
+                <div className="absolute left-0 top-[calc(100%+6px)] h-[23.08px] w-[339px]">
+                  <DrawIn src={`${A}/task-underline-375.svg`} className="absolute inset-[-13%_-0.88%]" />
+                </div>
+              )}
             </div>
           </div>
-        </FullBleedScale>
+        )}
       </div>
     </section>
   );

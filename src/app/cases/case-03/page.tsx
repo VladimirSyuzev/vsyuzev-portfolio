@@ -38,7 +38,7 @@ export default function Case03Page() {
       {/* min-h-screen — только ≥640: на десктопе/планшете обложка + «О проекте»
           занимают первый экран. На 375 обложка — фикс-картинка 356px, «О
           проекте» течёт сама → min-h-screen давал бы ~70px пустоты снизу. */}
-      <div className="relative flex w-full flex-col items-center overflow-clip bg-[#fafafa] sm:min-h-screen">
+      <div className="relative flex w-full flex-col items-center overflow-clip bg-[#fafafa] sm:min-h-screen lg:mb-[32px] xl:mb-0">
         <div className="relative w-full">
           {/* ≥1440 */}
           <div className="hidden xl:block">
@@ -313,29 +313,42 @@ export default function Case03Page() {
       </div>
 
       {/* Секция сайта — светлая белая карточка. */}
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start lg:mb-[32px] xl:mb-0">
         <SiteFeatures />
       </div>
 
       {/* Задача — лента «варианты» тянется на всю ширину экрана, потому
           вне центрированной 1440-сетки. */}
-      <Task />
+      <div className="w-full lg:mb-[32px] xl:mb-0">
+        <Task />
+      </div>
 
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start lg:mb-[32px] xl:mb-0">
         <Research />
       </div>
 
-      {/* Визуальная система — тёмный full-bleed. */}
-      <VisualSystem />
+      {/* Визуальная система — тёмный full-bleed. Следующий блок (Принципы)
+          тоже тёмный — отступ красим в тот же #121212 (padding, не margin),
+          иначе светлый фон страницы показывался бы швом между двумя
+          тёмными секциями. */}
+      <div className="w-full bg-[#121212] lg:pb-[32px] xl:pb-0">
+        <VisualSystem />
+      </div>
       {/* Принципы дизайна — 2 слайда, закреплённый блок с кроссфейдом по
-          скроллу (как «Проблема / Экран» в кейсе 1), тёмный full-bleed. */}
-      <PrinciplesSlides />
+          скроллу (как «Проблема / Экран» в кейсе 1), тёмный full-bleed.
+          Следующий блок (Процесс) тоже тёмный — та же покраска отступа. */}
+      <div className="w-full bg-[#121212] lg:pb-[32px] xl:pb-0">
+        <PrinciplesSlides />
+      </div>
       {/* Процесс + Дизайн-система + сет 3D-иконок — один тёмный full-bleed
           раздел (слит в актуальной Figma), трек по колесу мыши. */}
-      <Process />
+      <div className="w-full lg:mb-[32px] xl:mb-0">
+        <Process />
+      </div>
 
       {/* Итог — тёмный текст на светлом фоне, мокап-фрейм пропорционально
-          во всю ширину экрана (потому вне центрированной 1440-сетки). */}
+          во всю ширину экрана (потому вне центрированной 1440-сетки).
+          Без нижнего отступа — последний блок перед футером. */}
       <Summary />
 
       <Footer />

@@ -14,34 +14,27 @@ import { C3 } from "../i18n";
 // текст: сама иллюстрация не переводится, только описание для скринридера.
 type TileKey = "wallet" | "exchange" | "coin" | "fees";
 
-// Рендеры слайда 1 в 1280-раскладке (Figma node 2707:41640): сетка 2×2,
-// квадратные окна 595×595, gap 12. `img` — позиция/размер вложенного
-// рендера внутри окна, 1:1 из Figma (переведены в % от 595 при вёрстке).
-const TILES_1280: { src: string; alt: TileKey; left: number; top: number; size: number }[] = [
-  { src: "pr1-1280-wallet.webp", alt: "wallet", left: -653, top: -302.2, size: 1306 },
-  { src: "pr1-1280-coin.webp", alt: "coin", left: -178, top: -187.2, size: 936 },
-  { src: "pr1-1280-exchainge.webp", alt: "exchange", left: -447, top: -429.2, size: 1137 },
-  { src: "pr1-1280-fees.webp", alt: "fees", left: -131, top: -890.2, size: 1914 },
+// Рендеры слайда 1, <1440 — резиновая CSS-сетка (aspect-square окна),
+// а не фикс-px внутри FullBleedScale. Обнаружили, что положение/размер
+// вложенного рендера в 834- и 1280-раскладках — ОДНА И ТА ЖЕ обрезка,
+// просто относительно разных по размеру окон (совпадают в % от окна с
+// точностью до долей процента) — поэтому одна общая таблица в % годится
+// для обоих тиров сразу (окно 640–1439 — grid-cols-2, gap 12). 375 —
+// отдельная обрезка (другие исходники, 1 колонка) — своя таблица.
+const TILES_GRID_PCT: { src: string; alt: TileKey; left: number; top: number; size: number }[] = [
+  { src: "pr1-1280-wallet.webp", alt: "wallet", left: -109.75, top: -50.79, size: 219.5 },
+  { src: "pr1-1280-coin.webp", alt: "coin", left: -29.92, top: -31.46, size: 157.31 },
+  { src: "pr1-1280-exchainge.webp", alt: "exchange", left: -75.13, top: -72.13, size: 191.09 },
+  { src: "pr1-1280-fees.webp", alt: "fees", left: -22.02, top: -149.61, size: 321.68 },
 ];
 
-// Рендеры слайда 1 в 834-раскладке (Figma node 2695:19060): сетка 2×2,
-// окна 383×383 (Wallet-окно 381.01), gap 12. Позиция/размер вложенного
-// рендера — 1:1 из Figma. Ассеты те же, что в 1280.
-const TILES_834: { src: string; alt: TileKey; left: number; top: number; size: number }[] = [
-  { src: "pr1-1280-wallet.webp", alt: "wallet", left: -420.46, top: -194.59, size: 840.923 },
-  { src: "pr1-1280-coin.webp", alt: "coin", left: -115.21, top: -121.17, size: 605.83 },
-  { src: "pr1-1280-exchainge.webp", alt: "exchange", left: -289.32, top: -277.8, size: 735.928 },
-  { src: "pr1-1280-fees.webp", alt: "fees", left: -88, top: -576.19, size: 1238.845 },
-];
-
-// Рендеры слайда 1 в 375-раскладке (Figma node 2695:19856): 1 колонка,
-// 4 окна 335×335, gap 12. Позиция/размер вложенного рендера — 1:1 из
-// Figma. Ассеты те же, что в ≥1440 (principles1-*.png).
-const TILES_375: { src: string; alt: TileKey; left: number; top: number; size: number }[] = [
-  { src: "principles1-wallet.png", alt: "wallet", left: -516, top: -213, size: 924.094 },
-  { src: "principles1-exchainge.png", alt: "exchange", left: -347, top: -264, size: 738 },
-  { src: "principles1-coin.png", alt: "coin", left: -138, top: -109, size: 652 },
-  { src: "principles1-fees.png", alt: "fees", left: -68, top: -464, size: 1024 },
+// 375-раскладка (Figma node 2695:19856): 1 колонка, своя обрезка/исходники
+// (те же, что у ≥1440 нативного холста). % — от окна (aspect-square).
+const TILES_375_PCT: { src: string; alt: TileKey; left: number; top: number; size: number }[] = [
+  { src: "principles1-wallet.png", alt: "wallet", left: -154.03, top: -63.58, size: 275.84 },
+  { src: "principles1-exchainge.png", alt: "exchange", left: -103.58, top: -78.81, size: 220.3 },
+  { src: "principles1-coin.png", alt: "coin", left: -41.19, top: -32.54, size: 194.63 },
+  { src: "principles1-fees.png", alt: "fees", left: -20.3, top: -138.51, size: 305.67 },
 ];
 
 // 04 Принципы дизайна — в Figma ОДИН раздел из двух слайдов (node
@@ -135,171 +128,87 @@ function Slide1() {
         ))}
       </div>
 
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-03 · 375» (node 2695:19856,
-          375×1944). Тёмный full-bleed: заголовок стопкой (20,64), 2 абзаца
-          (20,134), сетка 1×4 окон 335×335 (20,308) шаг 347, послесловие
-          (20,1748) + подчёркивание-доодл. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={1944} mode="grow" className="w-full">
-          <div className="relative h-[1944px] w-[375px] overflow-clip bg-[#121212]">
-            <div className="absolute left-[20px] top-[64px] flex flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-              <span className="text-[#008cff]">04</span>
-              <span className="text-white">{t.principlesHeading}</span>
-            </div>
-            <div className="absolute left-[20px] top-[134px] flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 [word-break:break-word]">
-              <p className="whitespace-pre-wrap">
-                {lang === "ru" ? (
-                  <>
-                    В основе визуального языка лежат простые округлые формы, реалистичные материалы{" "}
-                    <br />и ограниченная фирменная палитра. Во всех сценах использовались пластик,
-                    стекло и металл, а также единая схема освещения.
-                  </>
-                ) : (
-                  t.principlesPara1
-                )}
-              </p>
-              <p>{t.principlesPara2}</p>
-            </div>
-
-            {/* Сетка 1×4 окон 335×335, gap 12, начало (20, 308). */}
-            {TILES_375.map((tile, i) => (
-              <div
-                key={tile.src}
-                className="absolute left-[20px] h-[335px] w-[335px] overflow-hidden"
-                style={{ top: 308 + i * 347 }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={tileAlt(tile.alt, t)}
-                  className="absolute max-w-none"
-                  style={{ left: tile.left, top: tile.top, width: tile.size, height: tile.size }}
-                  src={`${A}/${tile.src}`}
-                />
-              </div>
-            ))}
-
-            {/* Послесловие (20, 1748), 336, Wix Regular 22 leading-1.15 —
-                в Figma БЕЗ прозрачности и по левому краю. Подчёркивание-доодл
-                (Vector 234257382) — привязано к НИЗУ текста
-                (top-[calc(100%-5px)], не фикс-px 1844.27) — не оторвётся при
-                другом числе строк (перевод на английский). */}
-            <div className="absolute left-[20px] top-[1748px] w-[336px]">
-              <p className="font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white [word-break:break-word]">
-                {t.principlesQuote}
-              </p>
-              <div className="absolute left-[46px] top-[calc(100%-5px)] h-[16.591px] w-[283.762px]">
-                <DrawIn src={`${A}/pr1-underline-375.svg`} className="absolute inset-[-18.08%_-1.06%]" />
-              </div>
-            </div>
+      {/* <1440 — единый резиновый flow: раньше 3 холста (375/834/1280)
+          держали два 14px-абзаца внутри масштабируемого канваса — текст
+          «плыл» вместе с холстом на промежуточных ширинах. Рендер-сетка —
+          обычная CSS-сетка (aspect-square, обрезка вложенной картинки в %
+          от окна — те же числа, что 834/1280 холсты, окно просто другого
+          размера), эллипс послесловия — как и раньше, в % от блока текста
+          (не от холста). */}
+      <div className="flex w-full flex-col gap-[32px] overflow-clip bg-[#121212] sm:gap-[64px] xl:hidden">
+        <div className="flex flex-col gap-[12px] px-[20px] pt-[64px] sm:px-[28px] sm:pt-[72px] lg:px-[40px]">
+          <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:text-[32px] sm:tracking-[0.96px]">
+            <span className="text-[#008cff]">04</span>
+            <span className="text-white">{t.principlesHeading}</span>
           </div>
-        </FullBleedScale>
-      </div>
+          <div className="flex w-[335px] max-w-full flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70 [word-break:break-word] sm:w-[383px] sm:[word-break:normal] lg:w-[595px]">
+            <p className="whitespace-pre-wrap sm:whitespace-normal">
+              {lang === "ru" ? (
+                <>
+                  В основе визуального языка лежат простые округлые формы, реалистичные материалы{" "}
+                  <br className="sm:hidden" />и ограниченная фирменная палитра. Во всех сценах
+                  использовались пластик, стекло и металл, а также единая схема освещения.
+                </>
+              ) : (
+                t.principlesPara1
+              )}
+            </p>
+            <p>{t.principlesPara2}</p>
+          </div>
+        </div>
 
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-03 · 834» (node 2695:19060,
-          834×1460). Тёмный full-bleed: заголовок (28,72), 2 абзаца (28,119),
-          сетка 2×2 окон 383×383 (28,325) шаг 395, цитата + обводка (28,1231). */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={1460} mode="grow" className="w-full">
-          <div className="relative h-[1460px] w-[834px] overflow-clip bg-[#121212]">
-            <div className="absolute left-[28px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-              <span className="text-[#008cff]">04</span>
-              <span className="text-white">{t.principlesHeading}</span>
-            </div>
-            <div className="absolute left-[28px] top-[119px] flex w-[383px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              <p>{t.principlesPara1}</p>
-              <p>{t.principlesPara2}</p>
-            </div>
-
-            {/* Сетка 2×2 окон 383×383, gap 12, начало (28, 325). Wallet-окно
-                чуть ýже (381.01). */}
-            {TILES_834.map((tile, i) => (
-              <div
-                key={tile.src}
-                className="absolute overflow-hidden"
-                style={{
-                  left: 28 + (i % 2) * 395,
-                  top: 325 + Math.floor(i / 2) * 395,
-                  width: i === 0 ? 381.01 : 383,
-                  height: 383,
-                }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={tileAlt(tile.alt, t)}
-                  className="absolute max-w-none"
-                  style={{ left: tile.left, top: tile.top, width: tile.size, height: tile.size }}
-                  src={`${A}/${tile.src}`}
-                />
-              </div>
-            ))}
-
-            {/* Цитата (159, 1231), 516, WHITE opacity-70 + обводка-доодл
-                (Vector 234257386, наклон -1.37°) — общая центрированная
-                обёртка, эллипс в % от блока текста (198%/110.6%) —
-                масштабируется вместе с текстом при другом числе строк
-                (перевод на английский). */}
-            <div className="absolute left-[417px] top-[1277px] w-[516px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-white opacity-70">
-                {t.principlesQuote}
-              </p>
-              <DrawIn
-                src={`${A}/pr1-ellipse-834.svg`}
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[198%] w-[110.6%] -translate-x-1/2 -translate-y-1/2 rotate-[-1.37deg]"
+        {/* Сетка 375 — 1 колонка, свои исходники/обрезка. */}
+        <div className="flex flex-col gap-[12px] px-[20px] sm:hidden">
+          {TILES_375_PCT.map((tile) => (
+            <div key={tile.src} className="relative aspect-square w-full overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={tileAlt(tile.alt, t)}
+                className="absolute max-w-none"
+                style={{ left: `${tile.left}%`, top: `${tile.top}%`, width: `${tile.size}%`, height: `${tile.size}%` }}
+                src={`${A}/${tile.src}`}
               />
             </div>
-          </div>
-        </FullBleedScale>
-      </div>
+          ))}
+        </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма 2695:18264 (1280×1857).
-          FullBleedScale масштабирует канвас: заголовок (40,72), 2 абзаца
-          (40,119), сетка 2×2 окон 595×595 (40,286) шаг 607, цитата +
-          обводка-доодл (40,1552). */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1857} mode="grow" className="w-full">
-          <div className="relative h-[1857px] w-[1280px] overflow-clip bg-[#121212]">
-            <div className="absolute left-[40px] top-[72px] flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-              <span className="text-[#008cff]">04</span>
-              <span className="text-white">{t.principlesHeading}</span>
-            </div>
-            <div className="absolute left-[40px] top-[119px] flex w-[595px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              <p>{t.principlesPara1}</p>
-              <p>{t.principlesPara2}</p>
-            </div>
-
-            {/* Сетка 2×2 окон 595×595, gap 12, начало (40, 286). */}
-            {TILES_1280.map((tile, i) => (
-              <div
-                key={tile.src}
-                className="absolute size-[595px] overflow-hidden"
-                style={{ left: 40 + (i % 2) * 607, top: 286 + Math.floor(i / 2) * 607 }}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={tileAlt(tile.alt, t)}
-                  className="absolute max-w-none"
-                  style={{ left: tile.left, top: tile.top, width: tile.size, height: tile.size }}
-                  src={`${A}/${tile.src}`}
-                />
-              </div>
-            ))}
-
-            {/* Цитата (341, 1616), 598, WHITE opacity-70 + обводка-доодл
-                (Vector 234257386, наклон -1.37°) — общая центрированная
-                обёртка, эллипс в % от блока текста (202.4%/111.5%) —
-                масштабируется вместе с текстом при другом числе строк
-                (перевод на английский). */}
-            <div className="absolute left-[640px] top-[1669px] w-[598px] -translate-x-1/2 -translate-y-1/2">
-              <p className="text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-                {t.principlesQuote}
-              </p>
-              <DrawIn
-                src={`${A}/pr1-1280-ellipse.svg`}
-                className="pointer-events-none absolute left-1/2 top-1/2 h-[202.4%] w-[111.5%] -translate-x-1/2 -translate-y-1/2 rotate-[-1.37deg]"
+        {/* Сетка 640–1439 — 2×2, общая для 834/1280 (см. комментарий у
+            TILES_GRID_PCT). */}
+        <div className="hidden grid-cols-2 gap-[12px] px-[28px] sm:grid lg:px-[40px]">
+          {TILES_GRID_PCT.map((tile) => (
+            <div key={tile.src} className="relative aspect-square overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={tileAlt(tile.alt, t)}
+                className="absolute max-w-none"
+                style={{ left: `${tile.left}%`, top: `${tile.top}%`, width: `${tile.size}%`, height: `${tile.size}%` }}
+                src={`${A}/${tile.src}`}
               />
             </div>
+          ))}
+        </div>
+
+        {/* Послесловие. 375 — по левому краю, без прозрачности, подчёркивание
+            строкой. 834/1280 — по центру, opacity-70, обводка-эллипс (в % от
+            блока текста). */}
+        <div className="flex flex-col px-[20px] pb-[64px] sm:items-center sm:px-[28px] sm:pb-[72px] lg:px-[40px]">
+          <div className="relative w-[336px] max-w-full sm:w-[516px] lg:w-[598px]">
+            <p className="font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-white [word-break:break-word] sm:text-center sm:text-[28px] sm:leading-[1.1] sm:tracking-[0.84px] sm:opacity-70 sm:[word-break:normal] lg:text-[32px] lg:tracking-[0.96px]">
+              {t.principlesQuote}
+            </p>
+            <div className="absolute left-[46px] top-[calc(100%-5px)] h-[16.591px] w-[283.762px] sm:hidden">
+              <DrawIn src={`${A}/pr1-underline-375.svg`} className="absolute inset-[-18.08%_-1.06%]" />
+            </div>
+            <DrawIn
+              src={`${A}/pr1-ellipse-834.svg`}
+              className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[198%] w-[110.6%] -translate-x-1/2 -translate-y-1/2 rotate-[-1.37deg] sm:block lg:hidden"
+            />
+            <DrawIn
+              src={`${A}/pr1-1280-ellipse.svg`}
+              className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[202.4%] w-[111.5%] -translate-x-1/2 -translate-y-1/2 rotate-[-1.37deg] lg:block"
+            />
           </div>
-        </FullBleedScale>
+        </div>
       </div>
     </div>
   );
