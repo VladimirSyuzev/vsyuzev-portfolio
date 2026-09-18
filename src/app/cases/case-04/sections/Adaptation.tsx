@@ -86,8 +86,10 @@ export default function Adaptation() {
 
       {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
           2742:17994, 1280×1543). Тёмный full-bleed, всё в одном канвасе
-          (VariantsCarousel — внутри, top в координатах канваса). */}
-      <div className="hidden w-full lg:block xl:hidden">
+          (VariantsCarousel — внутри, top в координатах канваса). 14px-абзацы
+          вынесены отдельным overlay-слоем на % координатах (не скейлятся
+          вместе с transform холста). */}
+      <div className="relative hidden w-full lg:block xl:hidden">
         <FullBleedScale width={1280} height={1543} mode="grow" className="w-full">
           <div className="relative h-[1543px] w-[1280px] overflow-clip bg-[#121212]">
             {/* Дисплейный заголовок «05 / АДАПТАЦИЯ» стопкой (40, 72), 152px. */}
@@ -95,12 +97,6 @@ export default function Adaptation() {
               <span className="text-[#008cff]">05</span>
               <span className="text-white">{t.adaptHeading}</span>
             </div>
-
-            {/* Текст 1 — ЛЕВАЯ колонка (40, 440), w-346, Aeonik Medium 14
-                UPPERCASE (Frame 2147232078). */}
-            <p className="absolute left-[40px] top-[440px] w-[346px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              {t.adaptIntro1}
-            </p>
 
             {/* Доодл-«звёздочка» (1007, 411.477, 158×125). */}
             <DrawIn
@@ -111,12 +107,6 @@ export default function Adaptation() {
 
             {/* Снап-карусель форматов (Frame 2147232079 → y557). */}
             <VariantsCarousel cards={CARDS} top={557} tone="dark" />
-
-            {/* Текст 2 — правая колонка (649, 1020), w-581 (Frame 2147232080).
-                Ручной <br> после «читаемой ». */}
-            <p className="absolute left-[649px] top-[1020px] w-[581px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              {t.adaptIntro2}
-            </p>
 
             {/* Мысль (355, 1267, w-570, center) + обводка-эллипс (Vector
                 234257386) — общая центрированная обёртка, эллипс в % от
@@ -133,12 +123,25 @@ export default function Adaptation() {
             </div>
           </div>
         </FullBleedScale>
+        <p
+          className="absolute text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white opacity-70"
+          style={{ left: "3.125%", top: "28.516%", width: "27.031%" }}
+        >
+          {t.adaptIntro1}
+        </p>
+        <p
+          className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+          style={{ left: "50.703%", top: "66.104%", width: "45.391%" }}
+        >
+          {t.adaptIntro2}
+        </p>
       </div>
 
       {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-04 · 834» (node 2752:4705,
           834×1250). Тёмный full-bleed, абсолютная раскладка, VariantsCarousel
-          внутри канваса (top в координатах канваса). */}
-      <div className="hidden w-full sm:block lg:hidden">
+          внутри канваса (top в координатах канваса). 14px-абзацы — overlay
+          на % координатах. */}
+      <div className="relative hidden w-full sm:block lg:hidden">
         <FullBleedScale width={834} height={1250} mode="grow" className="w-full">
           <div className="relative h-[1250px] w-[834px] overflow-clip bg-[#121212]">
             {/* Дисплейный заголовок «05 / АДАПТАЦИЯ» стопкой (28, 72), 100px. */}
@@ -146,12 +149,6 @@ export default function Adaptation() {
               <span className="text-[#008cff]">05</span>
               <span className="text-white">{t.adaptHeading}</span>
             </div>
-
-            {/* Текст 1 (28, 336), w-389, Aeonik Medium 14 UPPERCASE.
-                Ручной <br> после «формата ». */}
-            <p className="absolute left-[28px] top-[336px] w-[389px] text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              {t.adaptIntro1}
-            </p>
 
             {/* Доодл-«звёздочка» (614, 298.199, 158×125). */}
             <DrawIn
@@ -162,12 +159,6 @@ export default function Adaptation() {
 
             {/* Снап-карусель форматов (Frame 2147232079 → y451), hSmall 172. */}
             <VariantsCarousel cards={CARDS} top={451} hSmall={172} hBig={262} tone="dark" />
-
-            {/* Текст 2 (28, 777), w-381 (узкая левая колонка). Ручной <br>
-                после «фотография ». */}
-            <p className="absolute left-[28px] top-[777px] w-[381px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-              {t.adaptIntro2}
-            </p>
 
             {/* Мысль (center, w-378) + обводка-эллипс (Vector 234257386) —
                 общая центрированная обёртка, эллипс в % от блока текста
@@ -185,25 +176,33 @@ export default function Adaptation() {
             </div>
           </div>
         </FullBleedScale>
+        <p
+          className="absolute text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-white opacity-70"
+          style={{ left: "3.357%", top: "26.88%", width: "46.643%" }}
+        >
+          {t.adaptIntro1}
+        </p>
+        <p
+          className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+          style={{ left: "3.357%", top: "62.16%", width: "45.683%" }}
+        >
+          {t.adaptIntro2}
+        </p>
       </div>
 
       {/* <640 — 1:1 из Figma reflow-фрейма «case-04 · 375» (node 2762:4705,
           375×900). Тёмный full-bleed, абсолютная раскладка, VariantsCarousel
           внутри канваса. Заголовок стопкой; мысль — БЕЗ обводки, тонкое
-          подчёркивание (Vector 234257394). */}
-      <div className="w-full sm:hidden">
+          подчёркивание (Vector 234257394). 14px-абзацы — overlay на %. */}
+      <div className="relative w-full sm:hidden">
         <FullBleedScale width={375} height={900} mode="grow" className="w-full">
           <div className="relative h-[900px] w-[375px] overflow-clip bg-[#121212]">
-            {/* Заголовок стопкой + 2 абзаца (0/64, px-20, gap 12). */}
-            <div className="absolute left-0 top-[64px] flex w-full flex-col gap-[12px] px-[20px]">
-              <div className="flex w-[182px] flex-col font-heading text-[26px] font-bold uppercase">
-                <span className="leading-none text-[#008cff]">05</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-white">{t.adaptHeading}</span>
-              </div>
-              <div className="flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-                <p className="opacity-70">{t.adaptIntro1}</p>
-                <p className="opacity-70">{t.adaptIntro2}</p>
-              </div>
+            {/* Заголовок (0/64, px-20). Абзацы вынесены в % overlay (ничего
+                другого в канвасе от них не зависит — карусель/мысль ниже на
+                фикс-px координатах, не в потоке этого блока). */}
+            <div className="absolute left-0 top-[64px] flex w-[182px] flex-col px-[20px] font-heading text-[26px] font-bold uppercase">
+              <span className="leading-none text-[#008cff]">05</span>
+              <span className="leading-[1.1] tracking-[0.78px] text-white">{t.adaptHeading}</span>
             </div>
 
             {/* Снап-карусель форматов (Frame 2821:37592 → y322). Ключевая
@@ -242,6 +241,18 @@ export default function Adaptation() {
             </div>
           </div>
         </FullBleedScale>
+        <p
+          className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+          style={{ left: "5.333%", top: "14.667%", width: "89.333%" }}
+        >
+          {t.adaptIntro1}
+        </p>
+        <p
+          className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+          style={{ left: "5.333%", top: "21.6%", width: "89.333%" }}
+        >
+          {t.adaptIntro2}
+        </p>
       </div>
     </>
   );

@@ -37,7 +37,7 @@ export default function Case04Page() {
           ≥1440 — нативный холст 1440. <1440 — 1:1 из reflow-фрейма
           «case-04 · 1280» (node 2730:17992): HERO 1280×828 + отдельный
           блок «О проекте» 1280×283. */}
-      <div className="relative flex w-full flex-col items-center overflow-clip bg-[#fafafa]">
+      <div className="relative flex w-full flex-col items-center overflow-clip bg-[#fafafa] lg:mb-[32px] xl:mb-0">
         <div className="hidden w-full xl:block">
         <div className="relative w-full">
           <FullBleedScale width={1440} height={580} mode="grow" className="w-full">
@@ -215,23 +215,29 @@ export default function Case04Page() {
         </div>
       </div>
 
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start lg:mb-[32px] xl:mb-0">
         <Task />
         <Concept />
       </div>
 
       {/* KEY VISUAL — один закреплённый тёмный full-bleed блок из двух
           слайдов (билборд / кропы), кроссфейд за один скролл. */}
-      <KeyVisualSlides />
+      <div className="w-full lg:mb-[32px] xl:mb-0">
+        <KeyVisualSlides />
+      </div>
 
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start lg:mb-[32px] xl:mb-0">
         <Series />
       </div>
 
       {/* Мокап 1 — билборд на всю ширину экрана. 1024–1439 — свой кроп из
           reflow-фрейма 1280 (node 2740:18004, 1280×720); 640–1023 — из 834
-          (node 2818:30125, 834×540); <640 — из 375 (node 2762:4698, 375×281). */}
-      <div className="w-full">
+          (node 2818:30125, 834×540); <640 — из 375 (node 2762:4698, 375×281).
+          Следующий блок (Адаптация) — тёмный full-bleed, да и сам мокап —
+          тёмное ночное фото: отступ красим в #121212 (padding, не margin),
+          иначе светлый фон страницы показывался бы швом между двумя тёмными
+          изображениями. */}
+      <div className="w-full bg-[#121212] lg:pb-[32px] xl:pb-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt={t.mockup1Alt}
@@ -258,13 +264,17 @@ export default function Case04Page() {
         />
       </div>
 
-      {/* Адаптация — тёмный full-bleed с треком форматов. */}
-      <Adaptation />
+      {/* Адаптация — тёмный full-bleed с треком форматов. Следующий блок
+          (Мокап 2) — тоже тёмное фото: отступ красим в #121212 по той же
+          причине, что и перед этим блоком. */}
+      <div className="w-full bg-[#121212] lg:pb-[32px] xl:pb-0">
+        <Adaptation />
+      </div>
 
       {/* Мокап 2 — ситилайт на остановке, на всю ширину экрана. 1024–1439 —
           свой кроп из reflow-фрейма «case-04 · 1280» (node 2768:22827, 1280×900);
           <1024 — из 834 (node 2818:36003, 834×625). */}
-      <div className="w-full">
+      <div className="w-full lg:mb-[32px] xl:mb-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           alt={t.mockup2Alt}
@@ -291,7 +301,7 @@ export default function Case04Page() {
         />
       </div>
 
-      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start">
+      <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start lg:mb-[32px] xl:mb-0">
         <Final />
       </div>
 

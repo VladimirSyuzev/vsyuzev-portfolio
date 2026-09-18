@@ -1,7 +1,6 @@
 "use client";
 
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import { useLang } from "@/lib/lang";
 import { C4 } from "../i18n";
 
@@ -65,184 +64,59 @@ export default function Series() {
         </div>
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
-          2740:17992, 1280×1181.5). Абсолютные координаты. */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1181.524} mode="grow" className="w-full">
-          <div className="relative w-[1280px] overflow-clip bg-[#fafafa]" style={{ height: 1181.524 }}>
-            {/* Заголовок + 2 абзаца (40, 72), w-593. */}
-            <div className="absolute left-[40px] top-[72px] flex w-[593px] flex-col gap-[12px]">
-              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                <span className="text-[#008cff]">04</span>
-                <span className="text-[#121212]">{t.seriesHeading}</span>
-              </div>
-              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                <p>
-                  {t.seriesIntro1}
-                </p>
-                <p>
-                  {t.seriesIntro2}
-                </p>
-              </div>
+      {/* <1440 — единый резиновый flow: раньше 3 холста (375/834/1280)
+          держали два 14px-абзаца внутри масштабируемого канваса — текст
+          «плыл» вместе с холстом на промежуточных ширинах. Постеры/доодл/
+          эллипс — как есть, без канваса, декор. */}
+      <div className="flex w-full flex-col gap-[32px] overflow-clip bg-[#fafafa] sm:gap-[64px] xl:hidden">
+        <div className="flex flex-col gap-[12px] px-[20px] pt-[64px] sm:px-[28px] sm:pt-[72px] lg:px-[40px] lg:pt-[72px]">
+          <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:text-[32px] sm:tracking-[0.96px]">
+            <span className="text-[#008cff]">04</span>
+            <span className="text-[#121212]">{t.seriesHeading}</span>
+          </div>
+          <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 lg:w-[593px]">
+            <p>{t.seriesIntro1}</p>
+            <p>{t.seriesIntro2}</p>
+          </div>
+        </div>
+
+        {/* Два KV-постера — рядом на 1280, стопкой на 834/375 (одинаковое
+            соотношение сторон ~1.498 на всех тирах). */}
+        <div className="flex w-full flex-col gap-[12px] px-[20px] sm:px-[28px] lg:flex-row lg:px-[40px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.seriesCarAlt} className="block aspect-[335/223.629] w-full object-cover sm:hidden" src={`${A}/series-1-375.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.seriesYachtAlt} className="block aspect-[335/223.629] w-full object-cover sm:hidden" src={`${A}/series-2-375.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.seriesCarAlt} className="hidden aspect-[778/519.353] w-full object-cover sm:block lg:aspect-[594/396.524] lg:w-[calc(50%-6px)]" src={`${A}/series-1-1280.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.seriesYachtAlt} className="hidden aspect-[778/519.353] w-full object-cover sm:block lg:aspect-[594/396.524] lg:w-[calc(50%-6px)]" src={`${A}/series-2-1280.jpg`} />
+        </div>
+
+        <DrawIn
+          src={`${A}/chevron.svg`}
+          fit="contain"
+          className="h-[125px] w-[158px] shrink-0 self-center"
+        />
+
+        {/* Мысль + обводка-эллипс — эллипс в % от блока текста (не от
+            холста), работает без изменений в резиновом flow. */}
+        <div className="flex w-full justify-center px-[20px] pb-[64px] sm:px-[28px] sm:pb-[72px] lg:px-[40px] lg:pb-[72px]">
+          <div className="relative w-[303px] max-w-full sm:w-[538px] lg:w-[626px]">
+            <p className="relative z-10 text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70 sm:text-[28px] sm:leading-[1.1] sm:tracking-[0.84px] lg:text-[32px] lg:tracking-[0.96px]">
+              {t.seriesQuote}
+            </p>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[146.9%] w-[110.44%] -translate-x-1/2 -translate-y-1/2 sm:hidden">
+              <DrawIn src={`${A}/series-ellipse-375.svg`} className="absolute inset-[-1.62%_-0.9%]" />
             </div>
-
-            {/* Два KV-постера с запечённым слоганом (Frame 2147231703 / 2147231705,
-                40 / 646, y291, 594×396.524). */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.seriesCarAlt}
-              className="absolute left-[40px] top-[291px] block h-[396.524px] w-[594px] max-w-none object-cover"
-              src={`${A}/series-1-1280.jpg`}
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.seriesYachtAlt}
-              className="absolute left-[646px] top-[291px] block h-[396.524px] w-[594px] max-w-none object-cover"
-              src={`${A}/series-2-1280.jpg`}
-            />
-
-            {/* Доодл-«шеврон вниз» (по центру фрейма 40/751.524, 158×125). */}
-            <DrawIn
-            src={`${A}/chevron.svg`}
-            fit="contain"
-            className="absolute left-[561px] top-[751.524px] z-10 h-[125px] w-[158px]"
-          />
-
-            {/* Мысль (327, 940.524, w-626, center) + обводка-эллипс (Vector
-                234257399) — общая центрированная обёртка, эллипс в % от
-                блока текста (133%/110.76%) — масштабируется вместе с
-                текстом при другом числе строк (перевод на английский). */}
-            <div className="absolute left-[640px] top-[993px] w-[626px] -translate-x-1/2 -translate-y-1/2">
-              <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-                {t.seriesQuote}
-              </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[133%] w-[110.76%] -translate-x-1/2 -translate-y-1/2">
-                <DrawIn src={`${A}/series-ellipse-1280.svg`} className="absolute inset-[-2.14%_-0.43%]" />
-              </div>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[150.4%] w-[116.8%] -translate-x-1/2 -translate-y-1/2 sm:block lg:hidden">
+              <DrawIn src={`${A}/series-ellipse-834.svg`} className="absolute inset-[-2.16%_-0.48%]" />
+            </div>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[133%] w-[110.76%] -translate-x-1/2 -translate-y-1/2 lg:block">
+              <DrawIn src={`${A}/series-ellipse-1280.svg`} className="absolute inset-[-2.14%_-0.43%]" />
             </div>
           </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-04 · 834» (node 2750:4730,
-          834×1789.706). Абсолютные координаты; 2 KV-постера СТОПКОЙ. */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={1789.706} mode="grow" className="w-full">
-          <div className="relative w-[834px] overflow-clip bg-[#fafafa]" style={{ height: 1789.706 }}>
-            {/* Заголовок + 2 абзаца (28, 72), w-778. */}
-            <div className="absolute left-[28px] top-[72px] flex w-[778px] flex-col gap-[12px]">
-              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                <span className="text-[#008cff]">04</span>
-                <span className="text-[#121212]">{t.seriesHeading}</span>
-              </div>
-              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                <p>
-                  {t.seriesIntro1}
-                </p>
-                <p>
-                  {t.seriesIntro2}
-                </p>
-              </div>
-            </div>
-
-            {/* Два KV-постера с запечённым слоганом СТОПКОЙ (28, 257 / 788.353),
-                778×519.353, gap 12. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.seriesCarAlt}
-              className="absolute left-[28px] top-[257px] block h-[519.353px] w-[778px] max-w-none object-cover"
-              src={`${A}/series-1-834.jpg`}
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.seriesYachtAlt}
-              className="absolute left-[28px] top-[788.353px] block h-[519.353px] w-[778px] max-w-none object-cover"
-              src={`${A}/series-2-834.jpg`}
-            />
-
-            {/* Доодл-«шеврон вниз» по центру (338, 1371.706), 158×125. */}
-            <DrawIn
-            src={`${A}/chevron.svg`}
-            fit="contain"
-            className="absolute left-[338px] top-[1371.706px] z-10 h-[125px] w-[158px]"
-          />
-
-            {/* Мысль (148, 1560.706, w-538, center) + обводка-эллипс (Vector
-                234257399) — общая центрированная обёртка, эллипс в % от
-                блока текста (150.4%/116.8%) — масштабируется вместе с
-                текстом при другом числе строк (перевод на английский). */}
-            <div className="absolute left-[417px] top-[1607px] w-[538px] -translate-x-1/2 -translate-y-1/2">
-              <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70">
-                {t.seriesQuote}
-              </p>
-              <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[150.4%] w-[116.8%] -translate-x-1/2 -translate-y-1/2">
-                <DrawIn src={`${A}/series-ellipse-834.svg`} className="absolute inset-[-2.16%_-0.48%]" />
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-04 · 375» (node 2760:4728,
-          375×1240.258). Поток flex-col gap-32 pt-64; 2 KV-постера СТОПКОЙ. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={1240.258} mode="grow" className="w-full">
-          <div className="relative flex h-[1240.258px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#fafafa] pt-[64px]">
-            {/* Заголовок стопкой + 2 абзаца (px-20, gap 12). */}
-            <div className="flex flex-col gap-[12px] px-[20px]">
-              <div className="flex w-[279px] flex-col font-heading text-[26px] font-bold uppercase">
-                <span className="leading-none text-[#008cff]">04</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.seriesHeading}</span>
-              </div>
-              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="opacity-70">
-                  {t.seriesIntro1}
-                </p>
-                <p className="opacity-70">
-                  {t.seriesIntro2}
-                </p>
-              </div>
-            </div>
-
-            {/* 2 KV-постера с запечённым слоганом СТОПКОЙ (w-335, gap 12). */}
-            <div className="flex w-[335px] shrink-0 flex-col gap-[12px] self-center">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={t.seriesCarAlt}
-                className="block h-[223.629px] w-full max-w-none object-cover"
-                src={`${A}/series-1-375.jpg`}
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={t.seriesYachtAlt}
-                className="block h-[223.629px] w-full max-w-none object-cover"
-                src={`${A}/series-2-375.jpg`}
-              />
-            </div>
-
-            {/* Доодл-«шеврон вниз» по центру (108.5, 830.258), 158×125. */}
-            <DrawIn
-            src={`${A}/chevron.svg`}
-            fit="contain"
-            className="h-[125px] w-[158px] shrink-0 self-center"
-          />
-
-            {/* Мысль (w-303, center, pb-64) + обводка-эллипс (Vector
-                234257399) — общая обёртка, эллипс в % от блока текста
-                (146.9%/110.44%) — масштабируется вместе с текстом при
-                другом числе строк (перевод на английский). */}
-            <div className="relative flex w-full shrink-0 flex-col items-center justify-center pb-[64px]">
-              <div className="relative w-[303px]">
-                <p className="relative z-10 text-center font-heading text-[22px] font-normal uppercase leading-[1.15] tracking-[0.66px] text-[#121212] opacity-70">
-                  {t.seriesQuote}
-                </p>
-                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[146.9%] w-[110.44%] -translate-x-1/2 -translate-y-1/2">
-                  <DrawIn src={`${A}/series-ellipse-375.svg`} className="absolute inset-[-1.62%_-0.9%]" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
+        </div>
       </div>
     </>
   );

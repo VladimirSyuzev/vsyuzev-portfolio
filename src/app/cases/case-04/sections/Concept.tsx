@@ -1,7 +1,6 @@
 "use client";
 
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import { useLang } from "@/lib/lang";
 import { C4 } from "../i18n";
 
@@ -25,20 +24,6 @@ const SLOGAN: { svg: string; w: number; left: number; capLeft: number; capW: num
   { svg: "slogan-crypto.svg", w: 224, left: 556, capLeft: 556, capW: 222 },
   { svg: "slogan-payments.svg", w: 291, left: 819, capLeft: 847, capW: 234 },
   { svg: "slogan-settled.svg", w: 245, left: 1149, capLeft: 1216, capW: 111 },
-];
-
-// 1280: те же ассеты слогана, свои left/width из reflow-фрейма 2736:17999.
-const SLOGAN_1280: { svg: string; w: number; left: number; capLeft: number }[] = [
-  { svg: "slogan-crypto.svg", w: 223.172, left: 323, capLeft: 324 },
-  { svg: "slogan-payments.svg", w: 290.621, left: 606, capLeft: 634 },
-  { svg: "slogan-settled.svg", w: 244.613, left: 947, capLeft: 1014 },
-];
-
-// 834: те же ассеты, свои left/width из reflow-фрейма 2748:4706.
-const SLOGAN_834: { svg: string; w: number; left: number; capLeft: number }[] = [
-  { svg: "slogan-crypto.svg", w: 194.65, left: 13, capLeft: 0 },
-  { svg: "slogan-payments.svg", w: 253.479, left: 260, capLeft: 270 },
-  { svg: "slogan-settled.svg", w: 213.351, left: 557, capLeft: 609 },
 ];
 
 // 375: 3 блока стопкой по центру — слоган-SVG + подпись + AI-фото под ним
@@ -156,254 +141,118 @@ export default function Concept() {
         </div>
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
-          2736:17999, 1280×1517). Поток flex-col gap-64 px-40 py-72. */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1517} mode="grow" className="w-full">
-          <div className="relative flex h-[1517px] w-[1280px] flex-col items-start gap-[64px] overflow-clip bg-[#fafafa] px-[40px] py-[72px]">
-            {/* Дисплейный заголовок «02 / КОНЦЕПЦИЯ» стопкой (h-304, 152px). */}
-            <div className="relative h-[304px] w-[1042px] shrink-0 whitespace-nowrap font-heading text-[152px] font-bold uppercase leading-none tracking-[4.56px]">
-              <span className="absolute left-0 top-0 text-[#008cff]">02</span>
-              <span className="absolute left-0 top-[152px] text-[#121212]">{t.conceptHeading}</span>
-            </div>
+      {/* <1440 — единый резиновый flow: раньше 3 холста (375/834/1280)
+          держали 14px-абзацы и 11px-подписи слогана внутри масштабируемого
+          канваса — текст «плыл» вместе с холстом на промежуточных ширинах.
+          Слоган-слова (SVG) и картинки — как есть, без канваса, декор.
+          Ряд слов слогана заменён с абсолютных px-координат под фикс-холст
+          на flex+justify-between — гаттеры чуть отличаются от Figma
+          (≈50-60px там vs равномерные здесь), но текст/подписи больше не
+          зависят от масштаба холста. */}
+      <div className="flex w-full flex-col gap-[32px] overflow-clip bg-[#fafafa] sm:gap-[64px] xl:hidden">
+        <div className="flex flex-col px-[20px] pt-[64px] font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:px-[28px] sm:pt-[72px] sm:text-[100px] sm:leading-none sm:tracking-[3px] lg:px-[40px] lg:pt-[72px] lg:text-[152px] lg:tracking-[4.56px]">
+          <span className="text-[#008cff]">02</span>
+          <span className="text-[#121212]">{t.conceptHeading}</span>
+        </div>
 
-            {/* Блок 1 — текст идеи (w-293) + билборд-бейк (304, 0, 896×262). */}
-            <div className="relative h-[262px] w-[1200px] shrink-0">
-              <div className="absolute left-0 top-0 w-[293px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="opacity-70">{t.conceptIdeaLabel}</p>
-                <p className="font-medium uppercase opacity-70">{t.conceptSlogan}</p>
-                <p className="mt-[12px] opacity-70">{t.conceptIntro}</p>
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={t.conceptBillboardAlt}
-                className="absolute left-[304px] top-0 block h-[262px] w-[896px] max-w-none object-cover"
-                src={`${A}/concept-billboard-1280.jpg`}
-              />
+        {/* Блок 1 — текст идеи + билборд. 375/834: текст сверху, картинка
+            под ним. 1280: рядом (текст 293 слева, картинка справа). */}
+        <div className="flex w-full flex-col gap-[24px] px-[20px] sm:gap-[32px] sm:px-[28px] lg:flex-row lg:items-start lg:gap-[11px] lg:px-[40px]">
+          <div className="flex w-[290px] max-w-full flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:w-[384px] lg:w-[293px] lg:shrink-0">
+            <div>
+              <p className="opacity-70">{t.conceptIdeaLabel}</p>
+              <p className="font-medium uppercase opacity-70">{t.conceptSlogan}</p>
             </div>
+            <p className="w-[335px] max-w-full opacity-70 sm:w-full">{t.conceptIntro}</p>
+          </div>
+          <div className="w-full overflow-clip bg-[#ececec] sm:hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt={t.conceptBillboardAlt} className="block aspect-[375/322] w-full object-cover" src={`${A}/concept-billboard-375.jpg`} />
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptBillboardAlt} className="hidden aspect-[778/262] w-full object-cover sm:block lg:hidden" src={`${A}/concept-billboard-834.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptBillboardAlt} className="hidden aspect-[896/262] w-full object-cover lg:block lg:min-w-0 lg:flex-1" src={`${A}/concept-billboard-1280.jpg`} />
+        </div>
 
-            {/* Блок 2 — текст слогана (w-291) + 3 SVG-слова + подписи + бейк
-                3 кропов (304, 85, 896×262). */}
-            <div className="relative h-[347px] w-[1200px] shrink-0">
-              <p className="absolute left-0 top-0 w-[291px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                {t.conceptSloganPre}
-                <span className="font-medium">{t.conceptSloganBold}</span>
-                {t.conceptSloganPost}
-              </p>
-              {SLOGAN_1280.map((s, i) => (
-                <span key={s.svg}>
+        {/* Блок 2 — текст слогана + слова CRYPTO/PAYMENTS/SETTLED. 375 —
+            стопкой по центру, у каждого слова своё фото. 834/1280 — ряд слов
+            + подписи, общая кроп-картинка ниже. */}
+        <div className="flex w-full flex-col gap-[24px] px-[20px] sm:gap-[32px] sm:px-[28px] lg:px-[40px]">
+          <p className="w-full text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70 sm:w-[383px] lg:w-[291px]">
+            {t.conceptSloganPre}
+            <span className="font-medium">{t.conceptSloganBold}</span>
+            {t.conceptSloganPost}
+          </p>
+
+          {/* Порог переключения — 800px, не 640 (sm): ряду CRYPTO/PAYMENTS/
+              SETTLED (следующий блок) не хватает места вплоть до ~798px —
+              flex-wrap ломал раскладку (SETTLED съезжал под CRYPTO). Вместо
+              кривого переноса — вся раскладка 375 (стопкой, с фото у
+              каждого слова) держится до реального появления места. */}
+          <div className="flex w-full flex-col items-center gap-[24px] min-[800px]:hidden">
+            {SLOGAN_375.map((s, i) => (
+              <div key={s.svg} className="flex flex-col items-center gap-[12px]">
+                <div className="flex flex-col items-center gap-[6px]" style={{ width: s.capW }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     alt={s.svg.replace("slogan-", "").replace(".svg", "")}
-                    className="absolute top-0 block h-[44.583px] max-w-none"
-                    style={{ left: s.left, width: s.w }}
+                    className="block h-[39.174px] max-w-none"
+                    style={{ width: s.w }}
                     src={`${A}/${s.svg}`}
                   />
-                  <p
-                    className="absolute top-[59.69px] whitespace-nowrap text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70"
-                    style={{ left: s.capLeft }}
-                  >
+                  <p className={`text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70 ${i === 0 ? "" : "text-center"}`}>
                     {CAPTIONS[i]}
                   </p>
-                </span>
+                </div>
+                <div className="overflow-clip" style={{ width: s.imgW, height: s.imgH }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img alt="" className="block size-full max-w-none object-cover" src={`${A}/${s.img}`} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="hidden w-full flex-col gap-[24px] min-[800px]:flex">
+            <div className="flex w-full flex-wrap items-start justify-between gap-x-[20px] gap-y-[16px]">
+              {SLOGAN.map((s, i) => (
+                <div key={s.svg} className="flex flex-col items-start gap-[6px]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    alt={s.svg.replace("slogan-", "").replace(".svg", "")}
+                    className="block h-[39px] w-auto max-w-none lg:h-[44.583px]"
+                    src={`${A}/${s.svg}`}
+                  />
+                  <p className="whitespace-nowrap text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70">
+                    {CAPTIONS[i]}
+                  </p>
+                </div>
               ))}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={t.conceptCropsAlt}
-                className="absolute left-[304px] top-[85px] block h-[262px] w-[896px] max-w-none object-cover"
-                src={`${A}/concept-crops-1280.jpg`}
-              />
             </div>
-
-            {/* Блок 3 — хайлайт в обводке-эллипсе (py-64, center). */}
-            <div className="relative flex w-[1200px] shrink-0 items-center justify-center py-[64px]">
-              <div className="absolute left-1/2 top-[25px] z-0 h-[218.922px] w-[504.596px] -translate-x-1/2">
-                <DrawIn src={`${A}/concept-ellipse-1280.svg`} className="absolute inset-[-1.37%_-0.59%]" />
-              </div>
-              <p className={`relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-black opacity-80 ${lang === "en" ? "w-[430px] whitespace-nowrap" : "w-[406px]"}`}>
-                {lang === "ru" ? (
-                  t.conceptQuote
-                ) : (
-                  <>
-                    Instead
-                    <br />
-                    of the technology,
-                    <br />
-                    we show the outcome
-                    <br />
-                    it gives a person
-                  </>
-                )}
-              </p>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt={t.conceptCropsAlt} className="block aspect-[778/230.21] w-full object-cover lg:hidden" src={`${A}/concept-crops-834.jpg`} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img alt={t.conceptCropsAlt} className="hidden aspect-[896/262] w-full object-cover lg:block" src={`${A}/concept-crops-1280.jpg`} />
           </div>
-        </FullBleedScale>
-      </div>
+        </div>
 
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-04 · 834» (node 2748:4706,
-          834×1560.897). Поток flex-col gap-64 px-28 py-72. */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={1560.897} mode="grow" className="w-full">
-          <div className="relative flex w-[834px] flex-col items-start gap-[64px] overflow-clip bg-[#fafafa] px-[28px] py-[72px]" style={{ height: 1560.897 }}>
-            {/* Дисплейный заголовок «02 / КОНЦЕПЦИЯ» стопкой (h-200, 100px). */}
-            <div className="relative h-[200px] w-[686px] shrink-0 whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-none tracking-[3px]">
-              <span className="absolute left-0 top-0 text-[#008cff]">02</span>
-              <span className="absolute left-0 top-[100px] text-[#121212]">{t.conceptHeading}</span>
-            </div>
-
-            {/* Блок 1 — текст w-384 + билборд-бейк (778×262). gap 32. */}
-            <div className="flex w-[778px] shrink-0 flex-col items-start gap-[32px]">
-              <div className="flex w-[384px] flex-col items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <div>
-                  <p className="opacity-70">{t.conceptIdeaLabel}</p>
-                  <p className="font-medium uppercase opacity-70">{t.conceptSlogan}</p>
-                </div>
-                <p className="opacity-70">{t.conceptIntro}</p>
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={t.conceptBillboardAlt}
-                className="block h-[262px] w-[778px] max-w-none object-cover"
-                src={`${A}/concept-billboard-834.jpg`}
-              />
-            </div>
-
-            {/* Блок 2 — текст слогана w-383 + 3 SVG-слова + подписи + бейк
-                3 кропов. gap 32. */}
-            <div className="flex w-full shrink-0 flex-col items-start gap-[32px]">
-              <p className="w-[383px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                {t.conceptSloganPre}
-                <span className="font-medium">{t.conceptSloganBold}</span>
-                {t.conceptSloganPost}
-              </p>
-              <div className="relative h-[304.897px] w-full">
-                {SLOGAN_834.map((s, i) => (
-                  <span key={s.svg}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt={s.svg.replace("slogan-", "").replace(".svg", "")}
-                      className="absolute top-0 block h-[39.174px] max-w-none"
-                      style={{ left: s.left, width: s.w }}
-                      src={`${A}/${s.svg}`}
-                    />
-                    <p
-                      className="absolute top-[52.45px] whitespace-nowrap text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70"
-                      style={{ left: s.capLeft }}
-                    >
-                      {CAPTIONS[i]}
-                    </p>
-                  </span>
-                ))}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.conceptCropsAlt}
-                  className="absolute left-1/2 top-[74.69px] block h-[230.21px] w-[781.489px] max-w-none -translate-x-1/2 object-cover"
-                  src={`${A}/concept-crops-834.jpg`}
-                />
-              </div>
-            </div>
-
-            {/* Блок 3 — хайлайт в обводке-эллипсе (py-44, center). */}
-            <div className="relative flex w-full shrink-0 items-center justify-center py-[44px]">
-              <div className="absolute left-1/2 top-[14.9px] z-0 h-[171px] w-[505px] -translate-x-1/2">
-                <DrawIn src={`${A}/concept-ellipse-834.svg`} className="absolute inset-[-1.75%_-0.59%]" />
-              </div>
-              <p className="relative z-10 w-[406px] text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-black opacity-80">
-                {t.conceptQuote}
-              </p>
-            </div>
+        {/* Блок 3 — хайлайт в обводке-эллипсе. Эллипс — фикс-px оффсет
+            внутри центрированной строки (не % от текста), не зависит от
+            ширины холста — работает без изменений в резиновом flow. */}
+        <div className="relative flex w-full items-center justify-center px-[20px] py-[64px] sm:px-[28px] sm:py-[44px] lg:px-[40px] lg:py-[64px]">
+          <div className="pointer-events-none absolute left-1/2 top-[21.91px] z-0 h-[171px] w-[319px] -translate-x-1/2 sm:hidden">
+            <DrawIn src={`${A}/concept-ellipse-375.svg`} className="absolute inset-[-1.75%_-0.94%]" />
           </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-04 · 375» (node 2759:18069,
-          375×2002.89). Поток flex-col gap-32 pt-64; слоган-блоки стопкой. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={2002.89} mode="grow" className="w-full">
-          <div className="relative flex h-[2002.89px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#fafafa] pt-[64px]">
-            {/* Опенер «02 / КОНЦЕПЦИЯ» стопкой (px-20, 26px). */}
-            <div className="flex flex-col px-[20px] font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-              <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">{t.conceptHeading}</span>
-            </div>
-
-            {/* Блок 1 — текст идеи + билборд-бейк (375×322). Внутр. gap 24. */}
-            <div className="flex w-full shrink-0 flex-col gap-[24px]">
-              <div className="flex flex-col gap-[12px] px-[20px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <div className="w-[290px]">
-                  <p className="opacity-70">{t.conceptIdeaLabel}</p>
-                  <p className="font-medium uppercase opacity-70">{t.conceptSlogan}</p>
-                </div>
-                <p className="w-[335px] opacity-70">{t.conceptIntro}</p>
-              </div>
-              <div className="relative h-[322px] w-full overflow-clip bg-[#ececec]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.conceptBillboardAlt}
-                  className="absolute inset-0 size-full max-w-none object-cover"
-                  src={`${A}/concept-billboard-375.jpg`}
-                />
-              </div>
-            </div>
-
-            {/* Блок 2 — текст слогана + 3 блока (слоган-SVG + подпись + фото)
-                стопкой по центру. Внутр. gap 24. */}
-            <div className="flex w-full shrink-0 flex-col gap-[24px]">
-              <p className="w-full px-[20px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                {t.conceptSloganPre}
-                <span className="font-medium">
-                  {t.conceptSloganBold}
-                  <br />
-                </span>
-                {t.conceptSloganPost.trimStart()}
-              </p>
-              <div className="flex w-full flex-col items-center gap-[24px]">
-                {SLOGAN_375.map((s, i) => (
-                  <div key={s.svg} className="flex flex-col items-center gap-[12px]">
-                    <div
-                      className="flex flex-col items-center gap-[6px]"
-                      style={{ width: s.capW }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        alt={s.svg.replace("slogan-", "").replace(".svg", "")}
-                        className="block h-[39.174px] max-w-none"
-                        style={{ width: s.w }}
-                        src={`${A}/${s.svg}`}
-                      />
-                      <p
-                        className={`text-[11px] leading-[1.2] tracking-[0.66px] text-[#121212] opacity-70 ${i === 0 ? "" : "text-center"}`}
-                      >
-                        {CAPTIONS[i]}
-                      </p>
-                    </div>
-                    <div
-                      className="overflow-clip"
-                      style={{ width: s.imgW, height: s.imgH }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        alt=""
-                        className="block size-full max-w-none object-cover"
-                        src={`${A}/${s.img}`}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Блок 3 — хайлайт в обводке-эллипсе (py-64, center). */}
-            <div className="relative flex w-full shrink-0 items-center justify-center py-[64px]">
-              <div className="absolute left-1/2 top-[21.91px] z-0 h-[171px] w-[319px] -translate-x-1/2">
-                <DrawIn src={`${A}/concept-ellipse-375.svg`} className="absolute inset-[-1.75%_-0.94%]" />
-              </div>
-              <p className="relative z-10 w-[311px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-black opacity-80">
-                {t.conceptQuote}
-              </p>
-            </div>
+          <div className="pointer-events-none absolute left-1/2 top-[14.9px] z-0 hidden h-[171px] w-[505px] -translate-x-1/2 sm:block lg:hidden">
+            <DrawIn src={`${A}/concept-ellipse-834.svg`} className="absolute inset-[-1.75%_-0.59%]" />
           </div>
-        </FullBleedScale>
+          <div className="pointer-events-none absolute left-1/2 top-[25px] z-0 hidden h-[218.922px] w-[504.596px] -translate-x-1/2 lg:block">
+            <DrawIn src={`${A}/concept-ellipse-1280.svg`} className="absolute inset-[-1.37%_-0.59%]" />
+          </div>
+          <p className="relative z-10 w-[311px] max-w-full text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-black opacity-80 sm:w-[406px] sm:text-[28px] sm:tracking-[0.84px] lg:text-[32px] lg:tracking-[0.96px]">
+            {t.conceptQuote}
+          </p>
+        </div>
       </div>
     </>
   );

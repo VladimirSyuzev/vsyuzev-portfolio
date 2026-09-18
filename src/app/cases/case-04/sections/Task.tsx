@@ -1,7 +1,6 @@
 "use client";
 
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import { useLang } from "@/lib/lang";
 import { C4 } from "../i18n";
 
@@ -50,125 +49,67 @@ export default function Task() {
         <p className="sr-only">{t.taskQuote}</p>
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-04 · 1280» (node
-          2736:17992, 1280×786). */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={786} mode="grow" className="w-full">
-          <div className="relative h-[786px] w-[1280px] overflow-clip bg-[#fafafa]">
-            {/* Заголовок (40, 72) — «01» #008cff + «Задача» #121212, gap 20. */}
-            <div className="absolute left-[40px] top-[72px] flex items-baseline gap-[20px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-              <span className="text-[#008cff]">01</span>
-              <span className="text-[#121212]">{t.taskHeading}</span>
-            </div>
+      {/* <1440 — единый резиновый flow: раньше 3 холста (375/834/1280)
+          держали 14px-абзацы внутри масштабируемого канваса — текст «плыл»
+          вместе с холстом на промежуточных ширинах (13.7→16.9px в тире
+          834). Композиция (фото+мокап, местами с запечённой мыслью) — как
+          есть, просто картинка на всю ширину, холст ей не нужен. */}
+      <div className="flex w-full flex-col overflow-clip bg-[#fafafa] xl:hidden">
+        <div className="flex flex-col gap-[12px] px-[20px] pt-[64px] pb-[32px] sm:px-[28px] sm:pt-[72px] sm:pb-[64px] lg:px-[40px] lg:pb-[47px]">
+          <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:text-[32px] sm:tracking-[0.96px] lg:items-baseline lg:gap-[20px]">
+            <span className="text-[#008cff]">01</span>
+            <span className="text-[#121212]">{t.taskHeading}</span>
+          </div>
+          <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] lg:flex-row lg:gap-[26px]">
+            <p className="w-[335px] max-w-full opacity-70 sm:w-full lg:w-[580px]">{t.taskIntro1}</p>
+            <p className="w-[335px] max-w-full opacity-70 sm:w-full lg:w-[592px]">{t.taskIntro2}</p>
+          </div>
+        </div>
 
-            {/* Два абзаца (40, 119), Aeonik Regular 14 opacity-70. В 1-м —
-                ручные <br> после «цифровой среды, » и «повседневных ». */}
-            <p className="absolute left-[40px] top-[119px] w-[580px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {t.taskIntro1}
+        {/* Композиция — свой файл/аспект на каждом тире (в 834/1280 мысль
+            запечена в картинку, в 375 — отдельно живым текстом ниже). */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={t.taskCompositeAlt}
+          className="hidden aspect-[1240/535.495] w-full object-cover lg:block xl:hidden"
+          src={lang === "en" ? `${A}/task-composite-1280-en.webp` : `${A}/task-composite-1280.jpg`}
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={t.taskCompositeAlt}
+          className="hidden aspect-[834/348.198] w-full object-cover sm:block lg:hidden"
+          src={lang === "en" ? `${A}/task-composite-834-en.webp` : `${A}/task-composite-834.jpg`}
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt={t.taskComposite375Alt}
+          className="block aspect-[375/348.198] w-full object-cover sm:hidden"
+          src={`${A}/task-composite-375.jpg`}
+        />
+        <p className="sr-only lg:hidden">{t.taskQuote}</p>
+
+        {/* Мысль + обводка-эллипс — только 375 (в 834/1280 запечена в
+            композицию выше). Эллипс в % от блока текста (не от холста). */}
+        <div className="relative flex w-full shrink-0 items-center justify-center py-[64px] sm:hidden">
+          <div className="relative w-[294px]">
+            <p className="relative z-10 whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-80">
+              {lang === "ru" ? (
+                <>
+                  Сложный crypto-продукт нужно{" "}
+                  <br />
+                  было объяснить{" "}
+                  <br />
+                  за несколько секунд
+                </>
+              ) : (
+                t.taskQuote
+              )}
             </p>
-            <p className="absolute left-[646px] top-[119px] w-[592px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-              {t.taskIntro2}
-            </p>
-
-            {/* Композиция (Frame 2147231700, 0/251, 1240×535.5) — телефон-мокап
-                + AI-фото дома/машины + мысль «Сложный crypto-продукт…»
-                (Wix Madefor Display Regular 31, center, opacity-80) запечены. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.taskCompositeAlt}
-              className="absolute left-0 top-[251px] block h-[535.495px] w-[1240px] max-w-none object-cover"
-              src={lang === "en" ? `${A}/task-composite-1280-en.webp` : `${A}/task-composite-1280.jpg`}
-            />
-            <p className="sr-only">{t.taskQuote}</p>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-04 · 834» (node 2748:4698,
-          834×622.198). Поток flex-col gap-64 pt-72. */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={622.198} mode="grow" className="w-full">
-          <div className="relative flex h-[622.198px] w-[834px] flex-col items-start gap-[64px] overflow-clip bg-[#fafafa] pt-[72px]">
-            {/* Заголовок + 2 абзаца (px-28), w-778, gap 12. */}
-            <div className="flex w-[778px] flex-col items-start gap-[12px] px-[28px]">
-              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                <span className="text-[#008cff]">01</span>
-                <span className="text-[#121212]">{t.taskHeading}</span>
-              </div>
-              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="opacity-70">{t.taskIntro1}</p>
-                <p className="opacity-70">{t.taskIntro2}</p>
-              </div>
-            </div>
-
-            {/* Композиция (Frame 2147231700, w-full, h 348.198) — телефон-мокап
-                + AI-фото + мысль «Сложный crypto-продукт…» (Wix Madefor Display
-                Regular 28, center, opacity-80) запечены. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.taskCompositeAlt}
-              className="block h-[348.198px] w-[834px] shrink-0 max-w-none object-cover"
-              src={lang === "en" ? `${A}/task-composite-834-en.webp` : `${A}/task-composite-834.jpg`}
-            />
-            <p className="sr-only">{t.taskQuote}</p>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-04 · 375» (node 2819:36103,
-          375×917.198). Поток flex-col gap-32 pt-64. Мысль и обводка-эллипс —
-          отдельные элементы (в 834/1280 они запечены в композицию). */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={917.198} mode="grow" className="w-full">
-          <div className="relative flex h-[917.198px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#fafafa] pt-[64px]">
-            {/* Заголовок + 2 абзаца (px-20), w-335, gap 12. */}
-            <div className="flex w-full flex-col items-start gap-[12px] px-[20px]">
-              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-                <span className="text-[#008cff]">01</span>
-                <span className="text-[#121212]">{t.taskHeading}</span>
-              </div>
-              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="w-[335px] opacity-70">{t.taskIntro1}</p>
-                <p className="w-[335px] opacity-70">{t.taskIntro2}</p>
-              </div>
-            </div>
-
-            {/* Композиция (Frame 2819:36127, w-full, h 348.198) — телефон-мокап
-                + AI-фото + свечение. Без запечённого текста. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={t.taskComposite375Alt}
-              className="block h-[348.198px] w-[375px] shrink-0 max-w-none object-cover"
-              src={`${A}/task-composite-375.jpg`}
-            />
-
-            {/* Мысль + обводка-эллипс (Frame 2819:36134, py-64). Общая
-                обёртка (раньше эллипс был независимым элементом с
-                фикс-координатами) — эллипс в % от блока текста (168.1%/
-                117.5%) — масштабируется вместе с текстом при другом числе
-                строк (перевод на английский). */}
-            <div className="relative flex w-full shrink-0 items-center justify-center py-[64px]">
-              <div className="relative w-[294px]">
-                <p className="relative z-10 whitespace-pre-wrap text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-80">
-                  {lang === "ru" ? (
-                    <>
-                      Сложный crypto-продукт нужно{" "}
-                      <br />
-                      было объяснить{" "}
-                      <br />
-                      за несколько секунд
-                    </>
-                  ) : (
-                    t.taskQuote
-                  )}
-                </p>
-                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[168.1%] w-[117.5%] -translate-x-1/2 -translate-y-1/2">
-                  <DrawIn src={`${A}/task-ellipse-375.svg`} className="absolute inset-[-1.84%_-0.87%]" />
-                </div>
-              </div>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[168.1%] w-[117.5%] -translate-x-1/2 -translate-y-1/2">
+              <DrawIn src={`${A}/task-ellipse-375.svg`} className="absolute inset-[-1.84%_-0.87%]" />
             </div>
           </div>
-        </FullBleedScale>
+        </div>
       </div>
     </>
   );

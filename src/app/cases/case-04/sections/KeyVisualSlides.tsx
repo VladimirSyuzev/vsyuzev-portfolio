@@ -64,7 +64,8 @@ function Slide1() {
 }
 
 function Slide2() {
-  const t = C4[useLang()];
+  const lang = useLang();
+  const t = C4[lang];
   return (
     <>
       {/* Кроп 1 — телефон (Figma frame 2094:18626 → x46 / y44, 328×399). */}
@@ -108,7 +109,15 @@ function Slide2() {
           другом числе строк (перевод на английский). */}
       <div className="absolute left-[46px] top-[592px] w-[485px]">
         <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          {t.kvQuote}
+          {lang === "ru" ? (
+            <>
+              Crypto становится понятным, когда превращается
+              <br />
+              во что-то реальное
+            </>
+          ) : (
+            t.kvQuote
+          )}
         </p>
         <DrawIn
           src={`${A}/crops-underline.svg`}
@@ -141,7 +150,9 @@ function KeyVisual1280() {
           <span className="text-[#008cff]">03</span>
           <span className="text-white">{t.kvHeading}</span>
         </div>
-        <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+        {/* invisible — текст вынесен в % overlay вне холста (см. основной
+            экспорт ниже); этот блок только держит место в потоке. */}
+        <p className="invisible text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           {t.kvSlide1Intro}
         </p>
       </div>
@@ -165,7 +176,8 @@ function KeyVisual1280() {
 function Crops1280() {
   const rootRef = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
-  const t = C4[useLang()];
+  const lang = useLang();
+  const t = C4[lang];
 
   useGSAP(
     () => {
@@ -228,10 +240,6 @@ function Crops1280() {
         src={`${A}/crops-3-1280.jpg`}
       />
 
-      <p className="absolute left-[646px] top-[212px] w-[291px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        {t.kvSlide2Intro}
-      </p>
-
       {/* Рукописные обводки-круги — анимируются по очереди (см. useGSAP).
           reduced-motion: остаются видимыми статично (opacity по умолчанию). */}
       {CIRCLES_1280.map(([src, left, top, w, h, insetClass]) => (
@@ -251,7 +259,15 @@ function Crops1280() {
           (2835:53369, 135/904, 329.56×29.64) под последней строкой. */}
       <div className="absolute left-[40px] top-[756px] w-[520px]">
         <p className="font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70">
-          {t.kvQuote}
+          {lang === "ru" ? (
+            <>
+              Crypto становится понятным, когда превращается
+              <br />
+              во что-то реальное
+            </>
+          ) : (
+            t.kvQuote
+          )}
         </p>
         <div className="pointer-events-none absolute left-[95px] top-[calc(100%+8px)] h-[29.64px] w-[329.56px]">
           <DrawIn src={`${A}/crops-underline-1280.svg`} className="absolute inset-[0_-0.91%]" />
@@ -273,7 +289,8 @@ function KeyVisual834() {
           <span className="text-[#008cff]">03</span>
           <span className="text-white">{t.kvHeading}</span>
         </div>
-        <p className="w-[778px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+        {/* invisible — текст вынесен в % overlay вне холста. */}
+        <p className="invisible text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           {t.kvSlide1Intro}
         </p>
       </div>
@@ -312,9 +329,6 @@ function Crops834() {
         className="absolute left-[423px] top-[205px] h-[250px] w-[383px] max-w-none bg-[#212121] object-cover"
         src={`${A}/crops-2-834.jpg`}
       />
-      <p className="absolute left-[424px] top-[72px] w-[380px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
-        {t.kvSlide2Intro}
-      </p>
       {/* Кроп 3 — общий план (2750:4721 → 28/467, 778×360). */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -349,11 +363,12 @@ function KeyVisual375() {
     <div className="relative flex h-[582px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#121212] py-[64px]">
       {/* Заголовок + абзац (px-20, gap 12). */}
       <div className="flex flex-col items-start gap-[12px] px-[20px]">
-        <div className="flex w-[335px] flex-col items-start font-heading text-[26px] font-bold uppercase">
+        <div className="flex flex-col items-start font-heading text-[26px] font-bold uppercase">
           <span className="leading-none text-[#008cff]">03</span>
           <span className="leading-[1.1] tracking-[0.78px] text-white">{t.kvHeading}</span>
         </div>
-        <p className="w-[335px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+        {/* invisible — текст вынесен в % overlay вне холста. */}
+        <p className="invisible w-[335px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
           {t.kvSlide1Intro}
         </p>
       </div>
@@ -375,7 +390,10 @@ function Crops375() {
   const t = C4[lang];
   return (
     <div className="relative flex h-[1292px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#121212] px-[20px] py-[64px]">
-      <p className="w-[335px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
+      {/* invisible — текст вынесен в живой % overlay (см. секцию ниже, вне
+          холста): занимает то же место в потоке (высота/gap не «плывут»
+          дальше по крапам), но сам не рисуется — рисуется overlay. */}
+      <p className="invisible w-[335px] text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70">
         {t.kvSlide2Intro}
       </p>
       {/* 3 кропа стопкой (2820:36199, w-335, gap 12). */}
@@ -428,6 +446,7 @@ function Crops375() {
 }
 
 export default function KeyVisualSlides() {
+  const t = C4[useLang()];
   const wrapRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const slide1Ref = useRef<HTMLDivElement>(null);
@@ -435,10 +454,14 @@ export default function KeyVisualSlides() {
   const [slide, setSlide] = useState(1);
   const reduced = useReducedMotion();
   // Пин + кроссфейд — только ≥1440. <1440 (и reduced-motion) — два
-  // статичных full-bleed блока подряд (RESPONSIVE.md). useCanvasWide стартует
-  // false (и на сервере, и на первом клиентском кадре) → пин никогда не
-  // монтируется «на мгновение» на узких экранах (иначе GSAP-пин мутирует DOM
-  // и React падает с removeChild при обратном свопе).
+  // статичных full-bleed блока подряд (RESPONSIVE.md). ВАЖНО: обе ветки
+  // ниже монтируются ВСЕГДА, переключение только через CSS (hidden/
+  // contents) — не условный return. Пин создаёт pin-spacer прямо в DOM
+  // (в обход React), меняя родителя pinRef; если бы ветки монтировались/
+  // размонтировались условно, React при живом ресайзе вниз падал бы
+  // с NotFoundError на removeChild (узел уже переставлен GSAP'ом к
+  // другому родителю к моменту commit) — воспроизводится при resize
+  // 1440→1280 на реально запинившемся блоке.
   const wide = useCanvasWide();
   const flow = reduced || !wide;
 
@@ -489,10 +512,12 @@ export default function KeyVisualSlides() {
     { scope: wrapRef, dependencies: [flow] },
   );
 
-  // <1440 (и reduced-motion на десктопе) — два статичных full-bleed блока.
-  if (flow) {
-    return (
-      <>
+  return (
+    <>
+      {/* <1440 (и reduced-motion на десктопе) — два статичных full-bleed
+          блока. Смонтировано всегда; hidden вместо unmount (см. коммент
+          выше про removeChild). */}
+      <div className={flow ? "contents" : "hidden"}>
         {/* ≥1440 reduced-motion — статичные 1440-слайды. */}
         <div className="hidden xl:block">
           <section className="w-full overflow-clip bg-[#121212]">
@@ -510,66 +535,107 @@ export default function KeyVisualSlides() {
         </div>
 
         {/* 1024–1439 — 1:1 из reflow-фреймов «case-04 · 1280» (04 node
-            2739:17992 / 05 node 2739:18008). */}
+            2739:17992 / 05 node 2739:18008). 14px-интро вынесен из холста
+            отдельным overlay-слоем на % координатах (left/top/width — доля
+            от нативного канваса) — текст честные 14px, не скейлится вместе
+            с transform холста, но визуально стоит на своём месте. */}
         <div className="hidden w-full lg:block xl:hidden">
-          <section className="w-full bg-[#121212]">
+          <section className="relative w-full bg-[#121212]">
             <FullBleedScale width={1280} height={776} mode="grow" className="w-full">
               <KeyVisual1280 />
             </FullBleedScale>
+            <p
+              className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+              style={{ left: "3.125%", top: "15.335%", width: "46.406%" }}
+            >
+              {t.kvSlide1Intro}
+            </p>
           </section>
-          <section className="w-full bg-[#121212]">
+          <section className="relative w-full bg-[#121212]">
             <FullBleedScale width={1280} height={976} mode="grow" className="w-full">
               <Crops1280 />
             </FullBleedScale>
+            <p
+              className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+              style={{ left: "50.469%", top: "21.721%", width: "22.734%" }}
+            >
+              {t.kvSlide2Intro}
+            </p>
           </section>
         </div>
 
         {/* 640–1023 — 1:1 из reflow-фреймов «case-04 · 834» (04 node 2750:4698
             / 05 node 2750:4715). */}
         <div className="hidden w-full sm:block lg:hidden">
-          <section className="w-full bg-[#121212]">
+          <section className="relative w-full bg-[#121212]">
             <FullBleedScale width={834} height={759} mode="grow" className="w-full">
               <KeyVisual834 />
             </FullBleedScale>
+            <p
+              className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+              style={{ left: "3.117%", top: "15.678%", width: "93.285%" }}
+            >
+              {t.kvSlide1Intro}
+            </p>
           </section>
-          <section className="w-full bg-[#121212]">
+          <section className="relative w-full bg-[#121212]">
             <FullBleedScale width={834} height={1215} mode="grow" className="w-full">
               <Crops834 />
             </FullBleedScale>
+            <p
+              className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+              style={{ left: "50.84%", top: "5.926%", width: "45.564%" }}
+            >
+              {t.kvSlide2Intro}
+            </p>
           </section>
         </div>
 
         {/* <640 — 1:1 из reflow-фреймов «case-04 · 375» (04 node 2760:4698
             / 05 node 2760:4715). */}
         <div className="w-full sm:hidden">
-          <section className="w-full bg-[#121212]">
+          <section className="relative w-full bg-[#121212]">
             <FullBleedScale width={375} height={582} mode="grow" className="w-full">
               <KeyVisual375 />
             </FullBleedScale>
+            <p
+              className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+              style={{ left: "5.333%", top: "22.852%", width: "89.333%" }}
+            >
+              {t.kvSlide1Intro}
+            </p>
           </section>
-          <section className="w-full bg-[#121212]">
+          <section className="relative w-full bg-[#121212]">
             <FullBleedScale width={375} height={1292} mode="grow" className="w-full">
               <Crops375 />
             </FullBleedScale>
+            <p
+              className="absolute text-[14px] leading-[1.2] tracking-[0.28px] text-white opacity-70"
+              style={{ left: "5.333%", top: "4.953%", width: "89.333%" }}
+            >
+              {t.kvSlide2Intro}
+            </p>
           </section>
         </div>
-      </>
-    );
-  }
+      </div>
 
-  return (
-    <div ref={wrapRef} className="relative w-full" style={{ height: "200vh" }}>
-      <div ref={pinRef} className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-[#121212]">
-        <div className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
-          <div ref={slide1Ref} className="absolute inset-0">
-            <Slide1 />
+      {/* ≥1440, движение разрешено — пин + кроссфейд. Смонтировано всегда;
+          hidden вместо unmount. */}
+      <div className={flow ? "hidden" : "contents"}>
+        <div ref={wrapRef} className="relative w-full" style={{ height: "200vh" }}>
+          <div ref={pinRef} className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-[#121212]">
+            <div className="relative h-[900px] w-[1440px] shrink-0 overflow-clip">
+              <div ref={slide1Ref} className="absolute inset-0">
+                <Slide1 />
+              </div>
+              <div ref={slide2Ref} className="absolute inset-0" style={{ opacity: 0 }}>
+                <Slide2 />
+              </div>
+              <SlideProgress active={slide - 1} className="absolute left-[46px] top-[852px] z-20" />
+            </div>
           </div>
-          <div ref={slide2Ref} className="absolute inset-0" style={{ opacity: 0 }}>
-            <Slide2 />
-          </div>
-          <SlideProgress active={slide - 1} className="absolute left-[46px] top-[852px] z-20" />
         </div>
       </div>
-    </div>
+    </>
   );
 }
