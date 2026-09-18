@@ -149,7 +149,15 @@ export default function First16px() {
         <div className="relative w-full lg:h-[640px] xl:contents">
           {/* Иконка: чёрный контур (статичен) + голубая версия (на десктопе
               растёт по скроллу, ниже 1440 — сразу в финальном размере). */}
-          <div className="relative aspect-square w-full lg:absolute lg:left-[calc(50%+280px)] lg:top-0 lg:size-[640px] lg:-translate-x-1/2 xl:absolute xl:left-[726px] xl:top-[318px] xl:size-[640px] xl:translate-x-0 xl:bg-transparent">
+          {/* lg: раньше left-[calc(50%+280px)] + -translate-x-1/2 — при
+              1200-контейнере (нативный 1280) правый край иконки как раз
+              совпадает с правым краем контента, но на более узких lg-
+              ширинах (1024–~1170px, контейнер уже ~944-1090) формула не
+              учитывала нехватку места и иконка вылезала за экран
+              (горизонтальный скролл). right-0 — тот же результат на 1280,
+              но иконка всегда прижата к правому краю контейнера, без
+              переполнения на любой lg-ширине. */}
+          <div className="relative aspect-square w-full lg:absolute lg:right-0 lg:top-0 lg:size-[640px] xl:absolute xl:left-[726px] xl:top-[318px] xl:size-[640px] xl:translate-x-0 xl:bg-transparent">
             {/* <1440 — цельная композиция иконки (белый фон + конструкция +
                 синий 0.8), экспорт из Figma (2609:28796). */}
             {/* eslint-disable-next-line @next/next/no-img-element */}

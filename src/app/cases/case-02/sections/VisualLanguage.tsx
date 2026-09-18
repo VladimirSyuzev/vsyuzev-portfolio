@@ -44,12 +44,21 @@ export default function VisualLanguage() {
           {/* 375: цитата без ручного переноса (авто-wrap), обводка тянется в %
               от фактической высоты (см. Task.tsx — тот же приём). */}
           <div className="py-[32px] sm:hidden">
+            {/* relative-обёртка — во всю ширину строки; без mx-auto у <p>
+                (303px, без него левый край, не центр) её бокс не совпадал
+                с центром обёртки, на который центрируется овал (left-1/2) —
+                овал уезжал вправо от текста. fit="contain" (было — дефолт
+                "stretch", т.е. preserveAspectRatio=none) — овал сужается
+                равномерно по обеим осям вместе с текстом, без искажения
+                формы и без утоньшения обводки (nonScalingStroke держит её
+                фиксированной в экранных px). */}
             <div className="relative">
-              <p className="max-w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
+              <p className="mx-auto max-w-[303px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-white opacity-70">
                 {t.visualQuote}
               </p>
               <DrawIn
                 src={`${A}/reflow/visual-ellipse-375.svg`}
+                fit="contain"
                 className="pointer-events-none absolute left-1/2 top-1/2 h-[214%] w-[111%] max-w-none -translate-x-1/2 -translate-y-1/2 -rotate-[1.37deg]"
               />
             </div>

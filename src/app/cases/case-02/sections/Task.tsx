@@ -181,15 +181,28 @@ export default function Task() {
             голубой, потом стрелка. */}
         <TaskIcons />
 
-        {/* 375: без рукописной обводки вокруг цитаты (убрано по просьбе —
-            на маленькой ширине круг перекрывал/теснил текст). Держим
+        {/* 375: обводка вокруг цитаты (изначально убрана — «круг перекрывал/
+            теснил текст»; причиной была та же связка багов, что в
+            VisualLanguage.tsx: DrawIn без fit="contain" растягивал овал
+            непропорционально (preserveAspectRatio=none). Возвращаем с
+            fit="contain" — равномерный масштаб, без искажения. Держим
             большой верхний отступ (pt-64), чтобы блок не наезжал на голубой
             ключ выше. */}
         <div className="pt-[64px] pb-[36px] sm:hidden">
           <div className="relative mx-auto w-[320px] max-w-full">
-            <p className="text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
+            <p className="relative z-10 text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.6px] text-[#121212] opacity-70">
               {t.taskQuote}
             </p>
+            {/* Фикс-px, не % — процент от высоты этого блока (auto/по
+                контенту, зависит от числа строк цитаты) на абсолютно
+                спозиционированном потомке в браузере не резолвится
+                предсказуемо (circular auto-height); тут ширина родителя и
+                так фиксирована (w-[320px]), поэтому берём фикс-размер. */}
+            <DrawIn
+              src={`${A}/reflow/task-ellipse-375.svg`}
+              fit="contain"
+              className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[216px] w-[320px] max-w-none -translate-x-1/2 -translate-y-1/2"
+            />
           </div>
         </div>
 
@@ -210,10 +223,15 @@ export default function Task() {
               className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 xl:block xl:h-[222%] xl:w-[136%]"
             />
           </div>
+          {/* Ширина/высота — линейная интерполяция по vw между нативными
+              значениями (834: 560×280, 1280: 649×324.7), вместо жёсткого
+              скачка на границе 1024px: w=20vw+393px, h=10vw+196.6px (та же
+              прямая, ratio h/w=0.5 сохраняется). */}
           <DrawIn
             src={`${A}/reflow/task-ellipse-1280.svg`}
             fit="contain"
-            className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[280px] w-[560px] -translate-x-1/2 -translate-y-1/2 rotate-[16.63deg] sm:block lg:h-[324.7px] lg:w-[649px] xl:hidden"
+            className="pointer-events-none absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 rotate-[16.63deg] sm:block xl:hidden"
+            style={{ width: "calc(20vw + 393px)", height: "calc(10vw + 196.6px)" }}
           />
         </div>
       </div>

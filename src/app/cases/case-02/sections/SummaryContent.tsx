@@ -33,7 +33,13 @@ export default function SummaryContent({
         {/* 375 (Figma 2633:4713): один столбец, gap 24 — абзац, затем блок из
             двух абзацев (gap 6). 834: два столбца — левый абзац 383, правый
             блок 366 (gap 12 между ними). 1280 — три абзаца в ряд. */}
-        <div className="relative flex flex-col gap-[24px] sm:flex-row sm:justify-between sm:gap-[12px] lg:flex-nowrap lg:justify-start lg:gap-x-[12px] xl:contents">
+        {/* Без shrink-0/mr-[317px]: на узких sm (640–~790) и lg (1024–~1250)
+            колонки были на жёстких несжимаемых ширинах, рассчитанных ровно
+            под холст 834/1280, и вылезали за экран (горизонтальный скролл,
+            третий абзац обрезан). lg:justify-between вместо fixed-margin
+            трюка — три колонки распределяются по ширине контейнера сами,
+            при нехватке места ужимаются (перенос строк) вместо обрезки. */}
+        <div className="relative flex flex-col gap-[24px] sm:flex-row sm:justify-between sm:gap-[12px] lg:flex-nowrap lg:justify-between lg:gap-x-[12px] xl:contents">
           {/* Доодл «»» (2637:30758) — 834: бокс 158×125 @ (−43, +34) от верха
               текст-ряда (Figma y166 vs текст y132); чернила стрелок с отступом
               ~40/30 → визуально под левым абзацем, уходят в левое поле.
@@ -43,14 +49,14 @@ export default function SummaryContent({
             fit="contain"
             className="pointer-events-none absolute hidden sm:left-[-43px] sm:top-[34px] sm:block sm:h-[125px] sm:w-[158px] lg:left-[264px] lg:top-[-38px] xl:hidden"
           />
-          <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 sm:w-[383px] sm:shrink-0 lg:mr-[317px] lg:w-[289px] lg:shrink-0 xl:absolute xl:left-[46px] xl:top-[592px] xl:w-[326px]">
+          <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 sm:w-[383px] lg:w-[289px] xl:absolute xl:left-[46px] xl:top-[592px] xl:w-[326px]">
             {t.summaryPara1}
           </p>
-          <div className="flex flex-col gap-[6px] sm:w-[366px] sm:shrink-0 lg:contents">
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 lg:w-[291px] lg:shrink-0 xl:absolute xl:left-[726px] xl:top-[592px] xl:w-[314px]">
+          <div className="flex flex-col gap-[6px] sm:w-[366px] lg:contents">
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 lg:w-[291px] xl:absolute xl:left-[726px] xl:top-[592px] xl:w-[314px]">
               {t.summaryPara2}
             </p>
-            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 lg:w-[291px] lg:shrink-0 xl:absolute xl:left-[1066px] xl:top-[592px] xl:w-[328px]">
+            <p className="text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-80 lg:w-[291px] xl:absolute xl:left-[1066px] xl:top-[592px] xl:w-[328px]">
               {t.summaryPara3}
             </p>
           </div>
