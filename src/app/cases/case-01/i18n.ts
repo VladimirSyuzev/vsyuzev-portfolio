@@ -106,10 +106,8 @@ const ru: Dict = {
   stats: [
     ["недели на аудит", "библиотеки"],
     ["иконок", "проверено"],
-    ["готовых", "иконок"],
-    ["иконок нужно", "было создать"],
-    ["варианта", "размера иконок"],
     ["иконок создано", "и обновлено"],
+    ["ресайза", "иконок"],
   ],
 
   problemHeading: "ПРОБЛЕМА",
@@ -241,10 +239,8 @@ const en: Dict = {
   stats: [
     ["weeks to audit", "the library"],
     ["icons", "reviewed"],
-    ["existing", "icons"],
-    ["icons had to", "be created"],
-    ["size", "variants"],
     ["icons created", "and updated"],
+    ["icon", "resizes"],
   ],
 
   problemHeading: "PROBLEM",

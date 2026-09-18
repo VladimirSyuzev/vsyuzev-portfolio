@@ -11,16 +11,20 @@ import StatsIcons from "./StatsIcons";
 // С1-02 Stats — фон #fc3f1d + текстура иконок. Цифры по центру блока.
 // Появление — стаггер-ревил колонок снизу вверх.
 //
-// Фон — построчная панорама (StatsIcons) на ВСЕХ брейкпоинтах:
-//  ≥1440 — stats-icons.svg (3001×1270).
-//  <1440 (375/834/1280) — иконки_1280.svg (2227×877), variant="reflow".
+// Фон — построчная панорама (StatsIcons) на ВСЕХ брейкпоинтах, своя
+// текстура под каждый размер, без инсета — иконки всегда до края блока.
+// Разрыв под цифры внутри текстуры центрируется по offY (см. StatsIcons.tsx),
+// сами цифры — отдельным слоем поверх, всегда строго по центру блока.
 //
-// Цифры (Figma 2559:11013 / 2539:8992):
-//  375: «2×3», контейнер 252, кол-во 120, gap 12/12, число Wix Bold 26, подпись 14, w159.
-//  834: «3×2», контейнер 528, колонка 160, row-gap 32 / col-gap 24, число Wix Bold 52,
-//       подпись Aeonik Reg 14 / lh 120% / ls 0.28, w160, gap 8. Секция 834×900, pad 180/28.
-//  Подписи — жёсткие переносы (в Figma это не автоперенос).
-const VALUES = ["1.5", "226", "65", "161", "194", "150+"];
+// Цифры — 4 ячейки (Figma nodes 3101:14803 / 16140 / 15002 / 16168 — 1440 /
+// 1280 / 834 / 375). Ряд ВСЕГДА просто центрирован по горизонтали (offset в
+// метаданных Figma точно равен (ширина_фрейма-824)/2 на 1440/1280/834 и
+// (375-272)/2 на 375 — без асимметричных сдвигов, в отличие от старой
+// 6-ячеечной раскладки). 1440/1280 — идентичны: ряд, gap 64, ячейка 158×120,
+// число 52px. 834 — ряд, gap 32, та же ячейка/число (контейнер шире ряда —
+// нужен justify-center). 375 — сетка 2×2, gap 32/32, ячейка 120×72, число 26px.
+// Подписи — жёсткие переносы (в Figma это не автоперенос).
+const VALUES = ["1.5", "300+", "150+", "200+"];
 
 export default function Stats() {
   const scope = useRef<HTMLDivElement>(null);
@@ -67,19 +71,22 @@ export default function Stats() {
           изображение под каждый размер (иконки_375/834/1280.svg). */}
       <StatsIcons variant={texVariant} />
 
-      {/* цифры — по центру блока (Figma «цифры 3×2», align CENTER).
-          375 «2×3» (252) · 834 «3×2» (528) · 1280 ряд из 6 (1080) · ≥1440 ряд из 6 */}
-      <div className="relative z-10 flex justify-center xl:block xl:w-full xl:max-w-[1440px] xl:pl-[216px]">
-        <div className="flex w-[252px] flex-wrap content-start items-start gap-[12px] text-white sm:w-[528px] sm:gap-x-[24px] sm:gap-y-[32px] lg:w-[1080px] lg:max-w-full lg:flex-nowrap lg:gap-y-0 xl:w-[1008px] xl:gap-0">
+      {/* цифры — ряд/сетка всегда просто центрированы по горизонтали
+          (см. коммент выше). 375 — сетка 2×2; sm..lg (834, 640-1023) — ряд,
+          gap плавно сужается с 32px (1023) до 12px (640) вместе с экраном,
+          дальше блок перестраивается в сетку 375; lg+ — фиксированный gap
+          64 (1280, 1440). */}
+      <div className="relative z-10 flex w-full justify-center">
+        <div className="grid grid-cols-2 gap-x-[32px] gap-y-[32px] text-white sm:flex sm:flex-nowrap sm:gap-[clamp(12px,5.222vw_-_21.42px,32px)] lg:gap-[64px]">
           {STATS.map((stat) => (
             <div
               key={stat.value}
-              className="stat-col flex w-[120px] shrink-0 flex-col gap-[6px] overflow-hidden sm:w-[160px] sm:gap-[8px] xl:w-[170px]"
+              className="stat-col flex w-[120px] shrink-0 flex-col gap-[6px] overflow-hidden sm:w-[158px]"
             >
               <p className="whitespace-nowrap font-heading text-[26px] font-bold leading-none sm:text-[52px]">
                 {stat.value}
               </p>
-              <div className="w-[159px] text-[14px] leading-[1.2] tracking-[0.28px] sm:w-[160px] xl:w-[170px]">
+              <div className="text-[14px] leading-[1.2] tracking-[0.28px]">
                 <p>{stat.label[0]}</p>
                 <p>{stat.label[1]}</p>
               </div>
