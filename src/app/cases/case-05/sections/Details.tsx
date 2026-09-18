@@ -1,7 +1,6 @@
 "use client";
 
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import { useLang } from "@/lib/lang";
 import { C5 } from "../i18n";
 
@@ -10,10 +9,14 @@ import { C5 } from "../i18n";
 // с подчёркиванием, коллаж из пяти кропов иллюстрации и крупная мысль в
 // обводке-эллипсе.
 //
-// <1440 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41096,
-// 1280×1368): поток flex-col gap-64 px-40 py-72. Заголовок + 2 абзаца
-// w-588 + двойной штрих; коллаж из 5 кропов (1206×673); мысль w-668 по
-// центру в обводке-эллипсе.
+// <1440 — единый резиновый flow (без FullBleedScale): раньше 3 холста
+// (375/834/1280) держали 14px-текст внутри масштабируемого канваса — «плыл»
+// вместе с холстом на промежуточных ширинах. Коллаж 1280 (5 кропов, кастомная
+// мозаика, а не сетка) — % от relative-контейнера (aspect-[1206/673]),
+// коллаж 834/375 — общая раскладка 4 ряда [2,1,2,1] (аспекты кропов совпадают
+// между тирами, разные только файлы-исходники). Двойной штрих под интро —
+// только на 1280 (в 834/375-макете его нет). Мысль в обводке — только на
+// 1280 (в 834/375-макете финальной цитаты нет).
 const A = "/cases/case-05/sections";
 
 // [файл, left, top, ширина, высота] — координаты кроп-окон (Figma frames
@@ -115,161 +118,98 @@ export default function Details() {
       </div>
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41096,
-          1280×1368). Поток flex-col gap-64 px-40 py-72. */}
-      <div className="hidden w-full bg-[#121212] lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1368} mode="grow" className="w-full">
-          <div className="relative flex h-[1368px] w-[1280px] flex-col items-start gap-[64px] overflow-clip bg-[#121212] px-[40px] py-[72px]">
-            {/* Блок 1 — заголовок + 2 абзаца w-588 + двойной штрих
-                (Frame 2827:45392, 588×155). */}
-            <div className="relative h-[155px] w-[1206px] shrink-0">
-              <div className="absolute left-0 top-0 flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                <span className="text-[#008cff]">04</span>
-                <span className="text-white">{t.detailsHeading}</span>
-              </div>
-              <div className="absolute left-0 top-[47px] flex w-[588px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-                <p className="opacity-70">
-                  {t.detailsPara1}
-                </p>
-                <p className="opacity-70">
-                  {t.detailsPara2}
-                </p>
-              </div>
-              {/* Двойной штрих (Vector 2835:53394) — секция (529, 223.414) →
-                  блок (489, 151.414), 161.08×27.56. */}
-              <div className="absolute left-[489px] top-[151.414px] h-[27.56px] w-[161.08px]">
-                <DrawIn src={`${A}/details-underline-1280.svg`} className="absolute inset-[-10.885%_-1.862%]" />
-              </div>
-            </div>
-
-            {/* Блок 2 — коллаж из 5 кропов (Frame 2827:45400, 1206×673). */}
-            <div className="relative h-[673px] w-[1206px] shrink-0">
-              {CROPS_1280.map(([src, left, top, w, h]) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  key={src}
-                  alt={t.detailsCropAlt}
-                  className="absolute block max-w-none object-cover"
-                  style={{ left, top, width: w, height: h }}
-                  src={`${A}/${src}`}
-                />
-              ))}
-            </div>
-
-            {/* Блок 3 — мысль w-668 по центру в обводке-эллипсе (Frame
-                2828:45401, 1200×268). Эллипс — общая обёртка с текстом
-                (раньше был независимым элементом с фикс-координатами внутри
-                блока), размер в % от блока текста (159.18%/104.89%) —
-                масштабируется вместе с текстом при другом числе строк
-                (перевод на английский). */}
-            <div className="relative flex h-[268px] w-[1200px] shrink-0 flex-col items-center justify-center gap-[10px] px-[266px] py-[64px]">
-              <div className="relative w-full">
-                <p className="relative z-10 min-w-full text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 [word-break:break-word]">
-                  {t.detailsQuote}
-                </p>
-                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[159.18%] w-[104.89%] -translate-x-1/2 -translate-y-1/2">
-                  <DrawIn src={`${A}/details-ellipse-1280.svg`} className="absolute inset-[-1.34%_-0.43%]" />
-                </div>
-              </div>
+      <div className="flex w-full flex-col gap-[32px] bg-[#121212] px-[20px] py-[64px] sm:gap-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px] lg:py-[72px] xl:hidden">
+        {/* Блок 1 — заголовок + 2 абзаца + (только lg) двойной штрих
+            привязанный к НИЗУ абзацев (top-[calc(100%+4px)], не фикс-px) —
+            не оторвётся при другом числе строк (перевод на английский). */}
+        <div className="flex flex-col gap-[12px] [word-break:break-word]">
+          <div className="flex flex-col font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:flex-row sm:items-center sm:gap-[12px] sm:text-[32px] sm:tracking-[0.96px]">
+            <span className="text-[#008cff]">04</span>
+            <span className="whitespace-pre-wrap text-white sm:hidden">
+              {lang === "ru" ? (
+                <>
+                  Работа <br />с деталями
+                </>
+              ) : (
+                t.detailsHeading
+              )}
+            </span>
+            <span className="hidden whitespace-nowrap text-white sm:inline">{t.detailsHeading}</span>
+          </div>
+          <div className="relative flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white sm:w-[778px] lg:w-[588px]">
+            <p className="opacity-70">{t.detailsPara1}</p>
+            <p className="opacity-70">{t.detailsPara2}</p>
+            {/* Двойной штрих (Vector 2835:53394) — только 1280 (в 834/375
+                макете его нет). */}
+            <div className="pointer-events-none absolute left-[489px] top-[calc(100%+4px)] z-10 hidden h-[27.56px] w-[161.08px] lg:block">
+              <DrawIn src={`${A}/details-underline-1280.svg`} className="absolute inset-[-10.885%_-1.862%]" />
             </div>
           </div>
-        </FullBleedScale>
-      </div>
+        </div>
 
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-05 · 834» (node 2828:45605,
-          834×1741). Тёмный #121212, flex-col gap-64 px-28 py-72. Финальной
-          цитаты в обводке в 834-макете нет. */}
-      <div className="hidden w-full bg-[#121212] sm:block lg:hidden">
-        <FullBleedScale width={834} height={1741} mode="grow" className="w-full">
-          <div className="relative flex h-[1741px] w-[834px] flex-col items-start gap-[64px] overflow-clip bg-[#121212] px-[28px] py-[72px]">
-            {/* Блок 1 — заголовок + 2 абзаца w-778 (Frame 2833:52955, gap 12). */}
-            <div className="flex shrink-0 flex-col items-start gap-[12px] [word-break:break-word]">
-              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                <span className="text-[#008cff]">04</span>
-                <span className="text-white">{t.detailsHeading}</span>
-              </div>
-              <div className="flex w-[778px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-                <p className="opacity-70">
-                  {t.detailsPara1}
-                </p>
-                <p className="opacity-70">
-                  {t.detailsPara2}
-                </p>
-              </div>
-            </div>
+        {/* Блок 2а — коллаж 1280: кастомная мозаика из 5 кропов (не сетка),
+            позиции в % от relative-контейнера (aspect-[1206/673]) — честная
+            резиновая раскладка без канваса. */}
+        <div className="relative hidden w-full lg:block" style={{ aspectRatio: "1206 / 673" }}>
+          {CROPS_1280.map(([src, left, top, w, h]) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={src}
+              alt={t.detailsCropAlt}
+              className="absolute block object-cover"
+              style={{
+                left: `${(left / 1206) * 100}%`,
+                top: `${(top / 673) * 100}%`,
+                width: `${(w / 1206) * 100}%`,
+                height: `${(h / 673) * 100}%`,
+              }}
+              src={`${A}/${src}`}
+            />
+          ))}
+        </div>
 
-            {/* Блок 2 — коллаж из 6 кропов (Frame 2833:52963, 778×1412,
-                4 ряда по 344, gap 12). */}
-            <div className="flex w-[778px] shrink-0 flex-col gap-[12px]">
-              {DETAIL_ROWS_834.map((row, ri) => (
-                <div key={ri} className="flex gap-[12px]">
-                  {row.map((src) => (
-                    // eslint-disable-next-line @next/next/no-img-element
+        {/* Блок 2б — коллаж 834/375: общая раскладка 4 ряда [2,1,2,1] —
+            аспекты кропов совпадают между тирами (разные только файлы). */}
+        <div className="flex w-full flex-col gap-[5.167px] sm:gap-[12px] lg:hidden">
+          {DETAIL_ROWS_375.map((row375, ri) => {
+            const row834 = DETAIL_ROWS_834[ri];
+            const pair = row375.length === 2;
+            return (
+              <div key={ri} className="flex gap-[5.167px] sm:gap-[12px]">
+                {row375.map((src375, ci) => (
+                  <div key={src375} className={pair ? "min-w-0 flex-1" : "w-full"}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      key={src}
                       alt={t.detailsCropAlt}
-                      className="block h-[344px] shrink-0 max-w-none object-cover"
-                      style={{ width: row.length === 1 ? 778 : 383 }}
-                      src={`${A}/${src}`}
+                      className={`block w-full object-cover sm:hidden ${pair ? "aspect-[164.916/148.123]" : "aspect-[335/148.123]"}`}
+                      src={`${A}/${src375}`}
                     />
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-05 · 375» (node 2828:49221,
-          375×1042.995). Тёмный #121212, flex-col gap-32 px-20 py-64. Без
-          финальной цитаты (как и на 834). */}
-      <div className="w-full bg-[#121212] sm:hidden">
-        <FullBleedScale width={375} height={1042.995} mode="grow" className="w-full">
-          <div className="relative flex h-[1042.995px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#121212] px-[20px] py-[64px]">
-            {/* Блок 1 — заголовок стопкой + 2 абзаца w-335 (Frame 2836:53712, gap 12). */}
-            <div className="flex shrink-0 flex-col items-start gap-[12px] [word-break:break-word]">
-              <div className="flex flex-col font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px]">
-                <span className="text-[#008cff]">04</span>
-                <span className="whitespace-pre-wrap text-white">
-                  {lang === "ru" ? (
-                    <>
-                      Работа <br />с деталями
-                    </>
-                  ) : (
-                    t.detailsHeading
-                  )}
-                </span>
-              </div>
-              <div className="flex w-[335px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-                <p className="opacity-70">
-                  {t.detailsPara1}
-                </p>
-                <p className="opacity-70">
-                  {t.detailsPara2}
-                </p>
-              </div>
-            </div>
-
-            {/* Блок 2 — коллаж из 6 кропов (Frame 2836:53735, 335×607.995,
-                4 ряда по 148.123, gap 5.167). */}
-            <div className="flex w-[335px] shrink-0 flex-col gap-[5.167px]">
-              {DETAIL_ROWS_375.map((row, ri) => (
-                <div key={ri} className="flex gap-[5.167px]">
-                  {row.map((src) => (
-                    // eslint-disable-next-line @next/next/no-img-element
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      key={src}
                       alt={t.detailsCropAlt}
-                      className="block h-[148.123px] shrink-0 max-w-none object-cover"
-                      style={{ width: row.length === 1 ? 335 : 164.916 }}
-                      src={`${A}/${src}`}
+                      className={`hidden w-full object-cover sm:block ${pair ? "aspect-[383/344]" : "aspect-[778/344]"}`}
+                      src={`${A}/${row834[ci]}`}
                     />
-                  ))}
-                </div>
-              ))}
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Блок 3 — мысль по центру в обводке-эллипсе — только 1280 (в
+            834/375-макете финальной цитаты нет). Эллипс в % от блока текста
+            — масштабируется вместе с текстом при другом числе строк. */}
+        <div className="hidden w-full flex-col items-center justify-center gap-[10px] py-[64px] lg:flex">
+          <div className="relative w-[668px] max-w-full">
+            <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-white opacity-70 [word-break:break-word]">
+              {t.detailsQuote}
+            </p>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[159.18%] w-[104.89%] -translate-x-1/2 -translate-y-1/2">
+              <DrawIn src={`${A}/details-ellipse-1280.svg`} className="absolute inset-[-1.34%_-0.43%]" />
             </div>
           </div>
-        </FullBleedScale>
+        </div>
       </div>
     </>
   );

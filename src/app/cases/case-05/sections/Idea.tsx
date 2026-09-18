@@ -19,15 +19,16 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import { useLang } from "@/lib/lang";
 import { C5 } from "../i18n";
 
-// <1440 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41047,
-// 1280×1929.546): поток flex-col gap-64 px-40 py-72, дисплейный опенер
-// 152px стопкой, 3 концепции (текст слева w-440 + карточка справа
-// 594×374.849) с маркер-подчёркиванием под описанием, снизу — выбор
-// команды с подчёркиванием. Овалов/GSAP-цикла на 1280 нет — только Reveal.
+// <1440 — единый резиновый flow (без FullBleedScale): раньше 3 холста
+// (375/834/1280) держали 14px-текст внутри масштабируемого канваса — «плыл»
+// вместе с холстом на промежуточных ширинах. Текст+карточка концепции —
+// стопкой на 375, рядом (justify-between) на sm+ — аспект карточки одинаков
+// на всех тирах, поэтому это чистый CSS без JS-веток. Маркер-подчёркивание
+// под описанием — только sm+ (в 375-макете его нет). Овалов/GSAP-цикла
+// на <1440 нет — только Reveal (в макете статично).
 const A = "/cases/case-05/sections";
 
 const IDEA_UL_1280 = [
@@ -221,205 +222,84 @@ export default function Idea() {
       </div>
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41047,
-          1280×1929.546). Поток flex-col gap-64 px-40 py-72. */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1929.546} mode="grow" className="w-full">
-          <div className="relative flex h-[1929.546px] w-[1280px] flex-col items-start gap-[64px] overflow-clip bg-[#fafafa] px-[40px] py-[72px]">
-            {/* Дисплейный опенер «02 / ПОИСК ИДЕИ» стопкой, 152px. */}
-            <div className="flex w-[1042px] shrink-0 flex-col whitespace-nowrap font-heading text-[152px] font-bold uppercase leading-none tracking-[4.56px]">
-              <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">{t.ideaHeading}</span>
-            </div>
+      <div className="flex w-full flex-col gap-[32px] bg-[#fafafa] px-[20px] py-[64px] sm:gap-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px] lg:py-[72px] xl:hidden">
+        {/* Дисплейный опенер «02 / ПОИСК ИДЕИ» стопкой. */}
+        <div className="flex shrink-0 flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase tracking-[0.78px] sm:text-[100px] sm:tracking-[3px] lg:text-[152px] lg:tracking-[4.56px]">
+          <span className="leading-[1.1] text-[#008cff] sm:leading-none">02</span>
+          <span className="leading-[1.1] text-[#121212] sm:leading-none">{t.ideaHeading}</span>
+        </div>
 
-            {/* Контент (Frame 2833:52933, w-1200). */}
-            <div className="relative w-[1200px] shrink-0" style={{ height: 1246.546 }}>
-              <p className="absolute left-0 top-0 w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-                {t.ideaIntro}
-              </p>
+        <p className="w-[328px] max-w-full shrink-0 whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
+          {t.ideaIntro}
+        </p>
 
-              <div className="absolute left-0 top-[58px] flex w-[1200px] flex-col gap-[12px]">
-                {CONCEPTS.map((c, i) => (
-                  <div key={c.n} className="relative flex w-full items-start justify-between">
-                    <div className="flex w-[440px] flex-col items-start gap-[6px] text-[#121212] [word-break:break-word]">
-                      <div className="flex flex-col items-start uppercase">
-                        <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px]">{c.n} </p>
-                        <p className="font-heading text-[32px] font-normal leading-[1.1] tracking-[0.96px]">
-                          {c.title}
-                        </p>
-                      </div>
-                      <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
-                        {c.text}
-                      </p>
-                    </div>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt={`${t.ideaCardLabel} ${c.title}`}
-                      className="block h-[374.849px] w-[594px] shrink-0 max-w-none rounded-[21.9px] object-cover"
-                      src={`${A}/idea-card-${i + 1}-1280.jpg`}
-                    />
-                    {/* Маркер-подчёркивание под описанием. */}
-                    <div
-                      className="absolute left-[24px] z-10"
-                      style={{ top: IDEA_UL_1280[i].top, width: IDEA_UL_1280[i].w, height: IDEA_UL_1280[i].h }}
-                    >
-                      <DrawIn
-                        src={`${A}/${IDEA_UL_1280[i].src}`}
-                        className="absolute"
-                        style={{ inset: IDEA_UL_1280[i].inset }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Выбор команды (text 2827:44714, 40/1750.546, w-593) +
-                подчёркивание (Vector 234257367, 64.04/1805.543, 531.92×16.62).
-                Привязано к НИЗУ текста (top-[calc(100%+Npx)], не фикс-px) —
-                не оторвётся при другом числе строк (перевод на английский). */}
-            <div className="relative w-[593px] shrink-0">
-              <p className="relative z-10 text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                {t.teamChoicePara}
-              </p>
-              <div className="absolute left-[24.04px] top-[calc(100%+3px)] z-0 h-[16.62px] w-[531.92px]">
-                <DrawIn src={`${A}/idea-underline-4-1280.svg`} delay={0.1} className="absolute inset-[-18.04%_-0.56%]" />
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-05 · 834» (node 2828:45554,
-          834×1347.238). Поток flex-col gap-64 px-28 py-72. Овалов/GSAP нет. */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={1347.238} mode="grow" className="w-full">
-          <div className="relative flex h-[1347.238px] w-[834px] flex-col items-start gap-[64px] overflow-clip bg-[#fafafa] px-[28px] py-[72px]">
-            {/* Дисплейный опенер «02 / Поиск идеи» стопкой, 100px. */}
-            <div className="flex w-[686px] shrink-0 flex-col whitespace-nowrap font-heading text-[100px] font-bold uppercase leading-none tracking-[3px]">
-              <span className="text-[#008cff]">02</span>
-              <span className="text-[#121212]">{t.ideaHeading}</span>
-            </div>
-
-            {/* Контент (Frame 2833:52934, w-full, gap 24). */}
-            <div className="flex w-[778px] shrink-0 flex-col items-start gap-[24px]">
-              <p className="w-[328px] whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-                {t.ideaIntro}
-              </p>
-
-              <div className="flex w-full flex-col gap-[12px]">
-                {CONCEPTS.map((c, i) => (
-                  <div key={c.n} className="relative flex w-full items-start gap-[12px]">
-                    <div className="flex w-[383px] shrink-0 flex-col items-start gap-[6px] [word-break:break-word]">
-                      <div className="flex flex-col items-start uppercase text-[#333]">
-                        <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px]">{c.n} </p>
-                        <p className="font-heading text-[28px] font-normal leading-[1.1] tracking-[0.84px]">
-                          {c.title}
-                        </p>
-                      </div>
-                      <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                        {c.text}
-                      </p>
-                    </div>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt={`${t.ideaCardLabel} ${c.title}`}
-                      className="block h-[241.774px] w-[383px] shrink-0 max-w-none object-cover"
-                      src={`${A}/idea-card-${i + 1}-834.png`}
-                    />
-                    {/* Маркер-подчёркивание под описанием (Vector 2835:53403/02/01). */}
-                    <div
-                      className="absolute z-10"
-                      style={{
-                        left: IDEA_UL_834[i].left,
-                        top: IDEA_UL_834[i].top,
-                        width: IDEA_UL_834[i].w,
-                        height: IDEA_UL_834[i].h,
-                      }}
-                    >
-                      <DrawIn
-                        src={`${A}/${IDEA_UL_834[i].src}`}
-                        className="absolute"
-                        style={{ inset: IDEA_UL_834[i].inset }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Выбор команды (text 2833:52935, 28/1207.238, w-383) +
-                подчёркивание (Vector 2835:53400, 53.07/1276.184, 366.171×15.803).
-                Привязано к НИЗУ текста (top-[calc(100%+Npx)], не фикс-px) —
-                не оторвётся при другом числе строк (перевод на английский). */}
-            <div className="relative w-[383px] shrink-0">
-              <p className="relative z-10 text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                {t.teamChoicePara}
-              </p>
-              <div className="absolute left-[25.07px] top-[calc(100%+3px)] z-0 h-[15.803px] w-[366.171px]">
-                <DrawIn src={`${A}/idea-underline-4-834.svg`} delay={0.1} className="absolute inset-[-18.98%_-0.819%]" />
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-05 · 375» (node 2828:49171,
-          375×1532.346). Поток flex-col gap-32 px-20 py-64. Текст концепции
-          над картой стопкой, маркеров под описаниями нет. Концовку блока в
-          макете занимает остаток кейса 4 — ставим правильный текст кейса 5. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={1424} mode="grow" className="w-full">
-          <div className="relative flex h-[1424px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#fafafa] px-[20px] py-[64px]">
-            {/* Дисплейный опенер «02 / Поиск идеи» стопкой, 26px. */}
-            <div className="flex shrink-0 flex-col whitespace-nowrap font-heading text-[26px] font-bold uppercase">
-              <span className="leading-none text-[#008cff]">02</span>
-              <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.ideaHeading}</span>
-            </div>
-
-            <p className="w-[328px] shrink-0 whitespace-pre-wrap text-[14px] font-medium uppercase leading-[1.2] tracking-[0.28px] text-[#121212]">
-              {t.ideaIntro}
-            </p>
-
-            <div className="flex w-[335px] shrink-0 flex-col items-start gap-[32px]">
-              {CONCEPTS.map((c, i) => (
-                <div key={c.n} className="flex w-full flex-col items-start gap-[12px]">
-                  <div className="flex w-full flex-col items-start gap-[6px] text-[#121212] [word-break:break-word]">
-                    <div className="flex flex-col items-start uppercase">
-                      <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px]">{c.n} </p>
-                      <p className="font-heading text-[22px] font-normal leading-[1.1] tracking-[0.66px]">
-                        {c.title}
-                      </p>
-                    </div>
-                    <p className="w-[328px] text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
-                      {c.text}
-                    </p>
-                  </div>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    alt={`${t.ideaCardLabel} ${c.title}`}
-                    className="block h-[211.4px] w-[335px] shrink-0 max-w-none rounded-[12px] object-cover"
-                    src={`${A}/idea-card-${i + 1}-375.jpg`}
-                  />
+        <div className="flex w-[335px] max-w-full shrink-0 flex-col items-start gap-[32px] sm:w-full sm:gap-[12px]">
+          {CONCEPTS.map((c, i) => (
+            <div key={c.n} className="relative flex w-full flex-col items-start gap-[12px] sm:flex-row sm:items-start sm:justify-between">
+              <div className="flex w-full flex-col items-start gap-[6px] text-[#121212] [word-break:break-word] sm:w-[383px] sm:shrink-0 lg:w-[440px]">
+                <div className="flex flex-col items-start uppercase">
+                  <p className="text-[14px] font-medium leading-[1.2] tracking-[0.28px]">{c.n} </p>
+                  <p className="font-heading text-[22px] font-normal leading-[1.1] tracking-[0.66px] sm:text-[28px] sm:tracking-[0.84px] lg:text-[32px] lg:tracking-[0.96px]">
+                    {c.title}
+                  </p>
                 </div>
-              ))}
-            </div>
-
-            {/* Выбор команды — правильный текст кейса 5 (в 375-макете здесь
-                остаток кейса 4). Раскладка по образцу 834: абзац w-335 +
-                маркер-подчёркивание (ассет idea-underline-4-834.svg),
-                привязано к НИЗУ текста (top-[calc(100%+Npx)], не фикс-px) —
-                не оторвётся при другом числе строк (перевод на английский). */}
-            <div className="relative w-[335px] shrink-0">
-              <p className="relative z-10 text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
-                {t.teamChoicePara}
-              </p>
-              <div className="absolute left-[16px] top-[calc(100%+3px)] z-0 h-[14px] w-[300px]">
-                <DrawIn src={`${A}/idea-underline-4-834.svg`} delay={0.1} className="absolute inset-[-18.98%_-0.819%]" />
+                <p className="w-[328px] max-w-full text-[14px] leading-[1.2] tracking-[0.28px] opacity-70">
+                  {c.text}
+                </p>
+              </div>
+              {/* Карточка — аспект одинаков на всех тирах (~1.5847), файлы разные. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={`${t.ideaCardLabel} ${c.title}`}
+                className="block aspect-[335/211.4] w-full rounded-[12px] object-cover sm:hidden"
+                src={`${A}/idea-card-${i + 1}-375.jpg`}
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={`${t.ideaCardLabel} ${c.title}`}
+                className="hidden aspect-[383/241.774] w-[383px] shrink-0 object-cover sm:block lg:hidden"
+                src={`${A}/idea-card-${i + 1}-834.png`}
+              />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={`${t.ideaCardLabel} ${c.title}`}
+                className="hidden aspect-[594/374.849] w-[594px] shrink-0 rounded-[21.9px] object-cover lg:block"
+                src={`${A}/idea-card-${i + 1}-1280.jpg`}
+              />
+              {/* Маркер-подчёркивание под описанием — только sm+ (в 375 нет). */}
+              <div
+                className="pointer-events-none absolute left-[25.07px] z-10 hidden sm:block lg:hidden"
+                style={{ top: IDEA_UL_834[i].top, width: IDEA_UL_834[i].w, height: IDEA_UL_834[i].h }}
+              >
+                <DrawIn src={`${A}/${IDEA_UL_834[i].src}`} className="absolute" style={{ inset: IDEA_UL_834[i].inset }} />
+              </div>
+              <div
+                className="pointer-events-none absolute left-[24px] z-10 hidden lg:block"
+                style={{ top: IDEA_UL_1280[i].top, width: IDEA_UL_1280[i].w, height: IDEA_UL_1280[i].h }}
+              >
+                <DrawIn src={`${A}/${IDEA_UL_1280[i].src}`} className="absolute" style={{ inset: IDEA_UL_1280[i].inset }} />
               </div>
             </div>
+          ))}
+        </div>
+
+        {/* Выбор команды + подчёркивание — привязано к НИЗУ текста
+            (top-[calc(100%+3px)], не фикс-px) — не оторвётся при другом
+            числе строк (перевод на английский). */}
+        <div className="relative w-[335px] max-w-full shrink-0 sm:w-[383px] lg:w-[593px]">
+          <p className="relative z-10 text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] opacity-70">
+            {t.teamChoicePara}
+          </p>
+          <div className="pointer-events-none absolute left-[16px] top-[calc(100%+3px)] z-0 h-[14px] w-[300px] sm:hidden">
+            <DrawIn src={`${A}/idea-underline-4-834.svg`} delay={0.1} className="absolute inset-[-18.98%_-0.819%]" />
           </div>
-        </FullBleedScale>
+          <div className="pointer-events-none absolute left-[25.07px] top-[calc(100%+3px)] z-0 hidden h-[15.803px] w-[366.171px] sm:block lg:hidden">
+            <DrawIn src={`${A}/idea-underline-4-834.svg`} delay={0.1} className="absolute inset-[-18.98%_-0.819%]" />
+          </div>
+          <div className="pointer-events-none absolute left-[24.04px] top-[calc(100%+3px)] z-0 hidden h-[16.62px] w-[531.92px] lg:block">
+            <DrawIn src={`${A}/idea-underline-4-1280.svg`} delay={0.1} className="absolute inset-[-18.04%_-0.56%]" />
+          </div>
+        </div>
       </div>
     </>
   );

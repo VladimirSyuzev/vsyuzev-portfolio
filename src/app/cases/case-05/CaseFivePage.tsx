@@ -51,7 +51,7 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
       {/* Обложка + «О проекте» — высота 1:1 из Figma (hero 580 + белая
           часть 320), без min-h-screen: иначе на высоких экранах белая
           часть растягивается и «Исследование» уезжает далеко вниз. */}
-      <div className="relative flex w-full flex-col items-center overflow-clip bg-[#fafafa]">
+      <div className="relative flex w-full flex-col items-center overflow-clip bg-[#fafafa] lg:mb-[32px] xl:mb-0">
         {/* ≥1440 — нативный холст 1440. */}
         <div className="hidden w-full flex-col items-center xl:flex">
           <div className="relative w-full">
@@ -323,29 +323,40 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
 
       {full && (
         <>
-          <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start">
+          <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start lg:mb-[32px] xl:mb-0">
             <Research />
             <Idea />
           </div>
 
-          {/* Концепция — тёмный full-bleed. */}
-          <Concept />
-          {/* Работа с деталями — тёмный full-bleed. */}
-          <Details />
+          {/* Концепция — тёмный full-bleed. Следующий блок (Работа с
+              деталями) тоже тёмный — отступ красим в тот же #121212
+              (padding, не margin), иначе светлый фон страницы показывался
+              бы швом между двумя тёмными секциями (как в case-03). */}
+          <div className="w-full bg-[#121212] lg:pb-[32px] xl:pb-0">
+            <Concept />
+          </div>
+          {/* Работа с деталями — тёмный full-bleed. Следующий блок (Цвет)
+              светлый — обычный margin. */}
+          <div className="w-full lg:mb-[32px] xl:mb-0">
+            <Details />
+          </div>
 
-          <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start">
+          <div className="mx-auto flex w-full max-w-[1440px] flex-col items-start lg:mb-[32px] xl:mb-0">
             <Color />
           </div>
 
           {/* Финальный результат — карусель «варианты» тянется на всю ширину
               экрана, потому вне центрированной 1440-сетки (контент блока внутри
               сам центрируется на 1440). */}
-          <Result />
+          <div className="w-full lg:mb-[32px] xl:mb-0">
+            <Result />
+          </div>
 
           {/* Мокап — карта в руке на всю ширину экрана. ≥1440 — mockup.jpg
               (аспект 1.791); 1024–1439 — mockup-1280.jpg (1280×804, аспект 1.592);
               640–1023 — mockup-834.jpg (node 2835:53405, 834×659, аспект 1.266);
-              <640 — mockup-375.jpg (node 2828:52709, 375×296, аспект 1.267). */}
+              <640 — mockup-375.jpg (node 2828:52709, 375×296, аспект 1.267).
+              Без нижнего отступа — последний блок перед футером. */}
           <div className="w-full">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

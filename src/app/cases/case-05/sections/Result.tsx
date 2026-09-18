@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import VariantsCarousel from "@/components/VariantsCarousel";
+import { useBreakpoint } from "@/lib/breakpoint";
 import { useLang } from "@/lib/lang";
 import { C5 } from "../i18n";
 
@@ -16,11 +16,11 @@ import { C5 } from "../i18n";
 // снап-карусель во всю ширину, перетаскивание вбок, бар снизу.
 // Звёздочка «пульсирует» на каждом переключении карточки.
 //
-// <1440 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:44577,
-// 1280×1062): абсолютный холст (карусель full-bleed). Заголовок + 2 абзаца
-// w-593 (у 2-го — 2 ручных переноса), звёздочка (обводка 8px), тот же
-// VariantsCarousel с теми же CARDS (карточки 1268×798, трек «варианты»
-// 1949.87), мысль w-668 в обводке (блок цитаты — доп. отступ сверху 20).
+// <1440 — единый резиновый flow (без FullBleedScale): раньше 3 холста
+// (375/834/1280) держали 14px-текст внутри масштабируемого канваса — «плыл»
+// вместе с холстом на промежуточных ширинах. VariantsCarousel сам всегда
+// position:absolute (уже адаптивен, как в case-03 Task.tsx) — резервируем
+// под него высоту (hBig+бар) отдельным relative-блоком, без канваса.
 const A = "/cases/case-05/sections";
 
 const CARDS_META = [
@@ -38,6 +38,7 @@ export default function Result() {
   const [, setIdx] = useState(0);
   const lang = useLang();
   const t = C5[lang];
+  const isMobile = useBreakpoint() === "mobile";
   const CARDS = CARDS_META.map((c, i) => ({ ...c, alt: t.cardAlt[i] }));
 
   // Пульс звёздочки при каждом переключении карточки (обе ветки —
@@ -65,6 +66,62 @@ export default function Result() {
       },
     );
   };
+
+  // Доодл-«звёздочка» на <1440 держит постоянный офсет от верхнего правого
+  // угла КЛЮЧЕВОЙ карточки на ЛЮБОЙ ширине экрана. Офсет -37.07/-109.93 —
+  // из точных метаданных Figma «case-05 · 1280» (node 2827:44577): карточка
+  // (frame «card» внутри «варианты») правый край x=955.07/y=274 (абсолютные
+  // координаты 323+632.07 / 274), доодл (frame 2877:14347) x=918/y=164.074
+  // → 918-955.07=-37.07, 164.074-274=-109.93 (НЕ -27/-116 — те были на глаз
+  // со скриншота, неточно). Карточка центрируется в резиновом треке, её
+  // позиция зависит от
+  // ширины вьюпорта нелинейно, поэтому нужен живой замер активной карточки
+  // (data-active), а не фикс-px/%. Только по ширине экрана (mount + resize),
+  // НЕ по смене карточки — иначе доодл «прыгает» при драге/клике по
+  // стрелкам, чего быть не должно. КРИТИЧНО: при ресайзе окна трек сам
+  // доезжает активную карточку до нового центра CSS-transition'ом (550ms,
+  // см. VariantsCarousel), поэтому замер сразу по событию resize ловит
+  // карточку НА ЛЕТУ (в процессе анимации) — доодл «скакал» именно из-за
+  // этого. Меряем с задержкой (debounce 600мс от последнего resize) —
+  // после того как карточка уже доехала до места.
+  const carouselWrapRef = useRef<HTMLDivElement>(null);
+  const [starPos, setStarPos] = useState<{ left: number; top: number } | null>(null);
+
+  useEffect(() => {
+    const wrap = carouselWrapRef.current;
+    if (!wrap) return;
+    const measure = () => {
+      const card = wrap.querySelector<HTMLElement>("[data-active]");
+      if (!card) return;
+      const wr = wrap.getBoundingClientRect();
+      const cr = card.getBoundingClientRect();
+      setStarPos({ left: cr.right - wr.left - 37.07, top: cr.top - wr.top - 109.93 });
+    };
+    let debounce: number;
+    const onResize = () => {
+      window.clearTimeout(debounce);
+      debounce = window.setTimeout(measure, 600);
+    };
+    // Начальный замер: НЕ один кадр — если в момент rAF ещё не догрузился
+    // шрифт (font-heading влияет на высоту абзацев выше по потоку, а значит
+    // и на positon карусели) или изображение карточки, макет ещё не
+    // устаканился и первый замер ловит неверную геометрию (доодл «зависает»
+    // не на месте до первого ресайза). Перемеряем повторно после
+    // document.fonts.ready и на 300/1000мс подстраховкой (тот же приём, что
+    // и «clear» в самом VariantsCarousel — двойной замер после кадра).
+    const raf = requestAnimationFrame(measure);
+    const t1 = window.setTimeout(measure, 300);
+    const t2 = window.setTimeout(measure, 1000);
+    document.fonts?.ready?.then(measure);
+    window.addEventListener("resize", onResize);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+      window.clearTimeout(debounce);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [isMobile]);
 
   return (
     <>
@@ -120,171 +177,76 @@ export default function Result() {
       <VariantsCarousel cards={CARDS} top={386} tone="light" onIndexChange={onIndexChange} />
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:44577,
-          1280×1062). Абсолютный холст (карусель тянется на всю ширину). */}
-      <div className="hidden w-full lg:block xl:hidden">
-        <FullBleedScale width={1280} height={1062} mode="grow" className="w-full">
-          <div className="relative h-[1062px] w-[1280px] overflow-x-clip bg-[#fafafa]">
-            <div
-              className="absolute flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]"
-              style={{ left: 40, top: 72 }}
-            >
-              <span className="text-[#008cff]">06</span>
-              <span className="text-[#121212]">{t.resultHeading}</span>
-            </div>
+      <div className="relative flex w-full flex-col gap-[32px] bg-[#fafafa] px-[20px] pt-[64px] sm:gap-[64px] sm:px-[28px] sm:pt-[72px] lg:px-[40px] lg:pt-[72px] xl:hidden">
+        <div className="relative flex w-full flex-col gap-[16px] sm:gap-[12px]">
+          <div className="flex flex-col font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:flex-row sm:items-center sm:gap-[12px] sm:whitespace-nowrap sm:text-[32px] sm:tracking-[0.96px]">
+            <span className="leading-none text-[#008cff] sm:leading-[1.1]">06</span>
+            <span className="text-[#121212]">{t.resultHeading}</span>
+          </div>
+          <div className="flex w-[335px] max-w-full flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212] sm:w-[777px] lg:w-[593px]">
+            <p className="opacity-70">{t.resultPara1}</p>
+            <p className="opacity-70">{t.resultPara2}</p>
+          </div>
+        </div>
 
+        {/* Карусель «варианты» — сама всегда position:absolute, резервируем
+            высоту (hBig + бар) отдельным relative-блоком. */}
+        <div ref={carouselWrapRef} className="relative w-full" style={{ height: (isMobile ? 204 : 399) + 54 }}>
+          <VariantsCarousel
+            cards={CARDS}
+            top={0}
+            hSmall={isMobile ? 150 : 262}
+            hBig={isMobile ? 204 : 399}
+            maxActiveWidth={isMobile ? 324 : undefined}
+            tone="light"
+            onIndexChange={onIndexChange}
+          />
+          {/* Доодл-«звёздочка» — только 1280 (в 834/375 её нет), офсет
+              (-27/-116px) от верхнего правого угла активной карточки — тот
+              же, что в нативной раскладке ≥1440 (там звезда фикс-px, но тот
+              же track-алгоритм центрирования). До первого замера не
+              показываем (нет прыжка из угла). */}
+          {starPos && (
             <div
-              className="absolute flex w-[593px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]"
-              style={{ left: 40, top: 119 }}
-            >
-              <p className="opacity-70">{t.resultPara1}</p>
-              <p className="opacity-70">{t.resultPara2}</p>
-            </div>
-
-            {/* Доодл-«звёздочка» (node 2877:14347, 918/164.074, 158×125,
-                обводка 8px). Позиция инлайн-стилем — см. [[feedback-stale-dev-css-hmr]]. */}
-            <div
-              className="z-10"
-              style={{ position: "absolute", left: 918, top: 164.074, width: 158, height: 125 }}
+              className="pointer-events-none absolute z-10 hidden h-[125px] w-[158px] lg:block"
+              style={{ left: starPos.left, top: starPos.top }}
             >
               <div ref={star1280Ref} className="size-full">
                 <DrawIn src={`${A}/result-star-1280.svg`} fit="contain" className="size-full" />
               </div>
             </div>
+          )}
+        </div>
 
-            {/* Снап-карусель «варианты» (Figma frame 2828:45420, 1949.867
-                шир., y274) — те же CARDS. */}
-            <VariantsCarousel cards={CARDS} top={274} tone="light" onIndexChange={onIndexChange} />
-
-            {/* Мысль (text 2828:45509) + обводка-эллипс (Vector 234257391,
-                node 2835:53397) — общая центрированная обёртка (раньше были
-                независимыми элементами с фикс-координатами), эллипс в % от
-                блока текста (198.64%/98.17%) — масштабируется вместе с
-                текстом при другом числе строк (перевод на английский). */}
-            <div
-              className="absolute left-1/2 w-[668px]"
-              style={{ top: 874, transform: "translate(-50%, -50%)" }}
-            >
-              <p className="relative z-10 text-center font-heading text-[32px] font-normal uppercase leading-[1.1] tracking-[0.96px] text-[#121212] opacity-70">
-                {lang === "en" ? (
-                  <>
-                    A recognizable car gained
-                    <br />
-                    a story that had never been
-                    <br />
-                    tied to it before
-                  </>
-                ) : (
-                  t.resultQuote
-                )}
-              </p>
-              <div
-                className="pointer-events-none absolute left-1/2 top-1/2 z-0"
-                style={{ width: "98.17%", height: "198.64%", transform: "translate(-50%, -50%)" }}
-              >
-                <DrawIn src={`${A}/result-ellipse-1280.svg`} className="absolute" style={{ inset: "-1.43% -0.457%" }} />
-              </div>
+        {/* Мысль + обводка-эллипс — общая центрированная обёртка, эллипс в %
+            от блока текста — масштабируется вместе с текстом при другом
+            числе строк (перевод на английский). */}
+        <div className="flex w-full flex-col items-center justify-center gap-[10px] pb-[64px] sm:pb-[72px] lg:pb-[72px]">
+          <div className="relative w-[287px] max-w-full sm:w-[461px] lg:w-[668px]">
+            <p className="relative z-10 text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 [word-break:break-word] sm:text-[28px] sm:tracking-[0.84px] lg:text-[32px] lg:tracking-[0.96px]">
+              {lang === "en" ? (
+                <>
+                  A recognizable car gained
+                  <br />
+                  a story that had never been
+                  <br />
+                  tied to it before
+                </>
+              ) : (
+                t.resultQuote
+              )}
+            </p>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[174.067px] w-[313.598px] -translate-x-1/2 -translate-y-1/2 sm:hidden">
+              <DrawIn src={`${A}/result-ellipse-375.svg`} className="absolute inset-[-1.72%_-0.96%]" />
+            </div>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[148.59%] w-[111.28%] -translate-x-1/2 -translate-y-1/2 sm:block lg:hidden">
+              <DrawIn src={`${A}/result-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
+            </div>
+            <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 hidden h-[198.64%] w-[98.17%] -translate-x-1/2 -translate-y-1/2 lg:block">
+              <DrawIn src={`${A}/result-ellipse-1280.svg`} className="absolute inset-[-1.43%_-0.457%]" />
             </div>
           </div>
-        </FullBleedScale>
-      </div>
-
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-05 · 834» (node 2828:49083,
-          834×1027). Абсолютный холст (карусель full-bleed). Звёздочки в 834 нет. */}
-      <div className="hidden w-full sm:block lg:hidden">
-        <FullBleedScale width={834} height={1027} mode="grow" className="w-full">
-          <div className="relative h-[1027px] w-[834px] overflow-x-clip bg-[#fafafa]">
-            <div
-              className="absolute flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]"
-              style={{ left: 28, top: 72 }}
-            >
-              <span className="text-[#008cff]">06</span>
-              <span className="text-[#121212]">{t.resultHeading}</span>
-            </div>
-
-            <div
-              className="absolute flex w-[777px] flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]"
-              style={{ left: 28, top: 119 }}
-            >
-              <p className="opacity-70">{t.resultPara1}</p>
-              <p className="opacity-70">{t.resultPara2}</p>
-            </div>
-
-            {/* Снап-карусель «варианты» (Figma frame 2835:53272, 1949.868
-                шир., y240) — те же CARDS. */}
-            <VariantsCarousel cards={CARDS} top={240} tone="light" onIndexChange={onIndexChange} />
-
-            {/* Блок цитаты (Frame 2828:49093, 28/703, 777×252, flex center
-                py-64) + обводка-эллипс (Vector 234257391, node 2835:53398) —
-                общая обёртка, эллипс в % от блока текста (148.59%/111.28%)
-                — масштабируется вместе с текстом при другом числе строк
-                (перевод на английский). */}
-            <div
-              className="absolute flex w-[777px] items-center justify-center gap-[10px] py-[64px]"
-              style={{ left: 28, top: 703 }}
-            >
-              <div className="relative w-[461px]">
-                <p className="relative z-10 text-center font-heading text-[28px] font-normal uppercase leading-[1.1] tracking-[0.84px] text-[#121212] opacity-70 [word-break:break-word]">
-                  {t.resultQuote}
-                </p>
-                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[148.59%] w-[111.28%] -translate-x-1/2 -translate-y-1/2">
-                  <DrawIn src={`${A}/result-ellipse-834.svg`} className="absolute inset-[-1.64%_-0.58%]" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-05 · 375» (node 2828:52696,
-          375×838). Абсолютный холст. Звёздочки нет; обводка-эллипс есть.
-          Блок цитаты сдвинут ниже макетных 574 на высоту бара карусели
-          (~53px): в 375-макете бара «‹ •— ›» нет, у нас он остаётся. Зазор
-          карусель→цитата = 32 (как в макете), считается от низа бара. */}
-      <div className="w-full sm:hidden">
-        <FullBleedScale width={375} height={838} mode="grow" className="w-full">
-          <div className="relative h-[838px] w-[375px] overflow-x-clip bg-[#fafafa]">
-            <div className="absolute left-[20px] top-[64px] flex w-[335px] flex-col items-start gap-[16px] [word-break:break-word]">
-              <div className="flex flex-col font-heading text-[26px] font-bold uppercase">
-                <span className="leading-none text-[#008cff]">06</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-[#121212]">{t.resultHeading}</span>
-              </div>
-              <div className="flex flex-col gap-[6px] text-[14px] leading-[1.2] tracking-[0.28px] text-[#121212]">
-                <p className="opacity-70">{t.resultPara1}</p>
-                <p className="opacity-70">{t.resultPara2}</p>
-              </div>
-            </div>
-
-            {/* Снап-карусель «варианты» (Figma frame 2836:53986, y338 — зазор
-                32 от низа заголовка) — те же CARDS (в 375-макете первый
-                элемент — карта, остальные три — обрезанные фото; проект
-                сохраняет единую карусель из 4 карт). */}
-            <VariantsCarousel
-              cards={CARDS}
-              top={338}
-              hSmall={150}
-              hBig={204}
-              maxActiveWidth={324}
-              tone="light"
-              onIndexChange={onIndexChange}
-            />
-
-            {/* Блок цитаты (Frame 2836:54216, 44/574, 287×200, pt-48/pb-32).
-                top-627 = низ бара карусели (338 + 204 трек + ~53 бар) + зазор 32. */}
-            <div className="absolute left-1/2 top-[627px] -translate-x-1/2 pb-[32px] pt-[48px]">
-              <div className="relative flex items-center justify-center">
-                <p className="relative z-10 w-[287px] text-center font-heading text-[22px] font-normal uppercase leading-[1.1] tracking-[0.66px] text-[#121212] opacity-70 [word-break:break-word]">
-                  {t.resultQuote}
-                </p>
-                {/* Обводка-эллипс (Vector 234257399, node 2836:54217) —
-                    центрируется ровно по тексту (translate -50/-50). */}
-                <div className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[174.067px] w-[313.598px] -translate-x-1/2 -translate-y-1/2">
-                  <DrawIn src={`${A}/result-ellipse-375.svg`} className="absolute inset-[-1.72%_-0.96%]" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
+        </div>
       </div>
     </>
   );

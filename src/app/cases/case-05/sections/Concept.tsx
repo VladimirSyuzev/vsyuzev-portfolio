@@ -1,7 +1,6 @@
 "use client";
 
 import DrawIn from "@/components/DrawIn";
-import FullBleedScale from "@/components/FullBleedScale";
 import { useLang } from "@/lib/lang";
 import { C5 } from "../i18n";
 
@@ -10,9 +9,10 @@ import { C5 } from "../i18n";
 // изображения (реальное фото DeLorean и постапокалиптический скетч) и
 // доодл-стрелка.
 //
-// <1440 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41079,
-// 1280×713.237): поток flex-col gap-64 px-40 py-72, заголовок + 2 колонки
-// текста (w-594), 2 изображения 594×384 рядом. Доодл-стрелки на 1280 нет.
+// <1440 — единый резиновый flow (без FullBleedScale): раньше 3 холста
+// (375/834/1280) держали 14px-текст внутри масштабируемого канваса — «плыл»
+// вместе с холстом на промежуточных ширинах. Фото — как есть, без канваса,
+// декор. Доодл-стрелки на <1440 нет (не было её и на 1280-канвасе).
 const A = "/cases/case-05/sections";
 
 export default function Concept() {
@@ -63,134 +63,36 @@ export default function Concept() {
       </div>
       </div>
 
-      {/* 1024–1439 — 1:1 из Figma reflow-фрейма «case-05 · 1280» (node 2827:41079,
-          1280×713.237). Поток flex-col gap-64 px-40 py-72. */}
-      <div className="hidden w-full bg-[#121212] lg:block xl:hidden">
-        <FullBleedScale width={1280} height={713.237} mode="grow" className="w-full">
-          <div className="relative flex h-[713.237px] w-[1280px] flex-col items-start gap-[64px] overflow-clip bg-[#121212] px-[40px] py-[72px]">
-            {/* Заголовок + 2 колонки текста (Frame 2827:45370, w-full, gap 12). */}
-            <div className="flex w-full shrink-0 flex-col gap-[12px] [word-break:break-word]">
-              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                <span className="text-[#008cff]">03</span>
-                <span className="text-white">{t.conceptHeading}</span>
-              </div>
-              <div className="flex w-full items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-                <p className="w-[594px] opacity-70">
-                  {t.conceptPara1}
-                </p>
-                <div className="flex w-[594px] flex-col gap-[6px]">
-                  <p className="opacity-70">{t.conceptPara2}</p>
-                  <p className="opacity-70">{t.conceptPara3}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* 2 изображения 594×384 рядом (Frame 2827:45381). */}
-            <div className="relative w-full shrink-0" style={{ height: 384.237 }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={t.conceptPhotoAlt}
-                className="absolute left-0 top-[0.31px] block h-[384px] w-[594px] max-w-none object-cover"
-                src={`${A}/concept-img-1-1280.jpg`}
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt={t.conceptSketchAlt}
-                className="absolute left-[606px] top-[0.31px] block h-[384px] w-[594px] max-w-none object-cover"
-                src={`${A}/concept-img-2-1280.jpg`}
-              />
+      <div className="flex w-full flex-col gap-[32px] bg-[#121212] px-[20px] py-[64px] sm:gap-[64px] sm:px-[28px] sm:py-[72px] lg:px-[40px] lg:py-[72px] xl:hidden">
+        <div className="flex flex-col gap-[12px]">
+          <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase leading-[1.1] tracking-[0.78px] sm:text-[32px] sm:tracking-[0.96px]">
+            <span className="text-[#008cff]">03</span>
+            <span className="text-white">{t.conceptHeading}</span>
+          </div>
+          <div className="flex flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white sm:flex-row">
+            <p className="opacity-70 sm:w-[calc(50%-6px)]">{t.conceptPara1}</p>
+            <div className="flex flex-col gap-[6px] sm:w-[calc(50%-6px)]">
+              <p className="opacity-70">{t.conceptPara2}</p>
+              <p className="opacity-70">{t.conceptPara3}</p>
             </div>
           </div>
-        </FullBleedScale>
-      </div>
+        </div>
 
-      {/* 640–1023 — 1:1 из Figma reflow-фрейма «case-05 · 834» (node 2833:52938,
-          834×612). Поток flex-col gap-64 px-28 py-72, тёмный #121212. */}
-      <div className="hidden w-full bg-[#121212] sm:block lg:hidden">
-        <FullBleedScale width={834} height={612} mode="grow" className="w-full">
-          <div className="relative flex h-[612px] w-[834px] flex-col items-start gap-[64px] overflow-clip bg-[#121212] px-[28px] py-[72px]">
-            {/* Заголовок + 2 колонки текста w-383 (Frame 2833:52939, gap 12). */}
-            <div className="flex w-full shrink-0 flex-col gap-[12px] [word-break:break-word]">
-              <div className="flex items-center gap-[12px] whitespace-nowrap font-heading text-[32px] font-bold uppercase leading-[1.1] tracking-[0.96px]">
-                <span className="text-[#008cff]">03</span>
-                <span className="text-white">{t.conceptHeading}</span>
-              </div>
-              <div className="flex w-full items-start gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-                <p className="w-[383px] opacity-70">
-                  {t.conceptPara1}
-                </p>
-                <div className="flex w-[383px] flex-col gap-[6px]">
-                  <p className="opacity-70">{t.conceptPara2}</p>
-                  <p className="opacity-70">{t.conceptPara3}</p>
-                </div>
-              </div>
-            </div>
+        <div className="flex flex-col gap-[10.496px] sm:flex-row sm:gap-[12px]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptPhotoAlt} className="block aspect-[335/216.566] w-full object-cover sm:hidden" src={`${A}/concept-img-1-375.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptPhotoAlt} className="hidden aspect-[383/247.596] w-full object-cover sm:block sm:w-[calc(50%-6px)] lg:hidden" src={`${A}/concept-img-1-834.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptPhotoAlt} className="hidden aspect-[594/384] w-full object-cover lg:block lg:w-[calc(50%-6px)]" src={`${A}/concept-img-1-1280.jpg`} />
 
-            {/* 2 изображения 383×~248 рядом (Frame 2833:52948, gap 12). */}
-            <div className="flex w-full shrink-0 items-start gap-[12px]">
-              <div className="h-[247.596px] w-[383px] shrink-0 overflow-clip">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.conceptPhotoAlt}
-                  className="block size-full object-cover"
-                  src={`${A}/concept-img-1-834.jpg`}
-                />
-              </div>
-              <div className="h-[249px] w-[383px] shrink-0 overflow-clip">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.conceptSketchAlt}
-                  className="block size-full object-cover"
-                  src={`${A}/concept-img-2-834.jpg`}
-                />
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
-      </div>
-
-      {/* <640 — 1:1 из Figma reflow-фрейма «case-05 · 375» (node 2828:49212,
-          375×884.856). Тёмный #121212, flex-col gap-32 py-64, дети px-20.
-          Текст 2 колонок → стопкой, 2 изображения → стопкой во всю ширину. */}
-      <div className="w-full bg-[#121212] sm:hidden">
-        <FullBleedScale width={375} height={884.856} mode="grow" className="w-full">
-          <div className="relative flex h-[884.856px] w-[375px] flex-col items-start gap-[32px] overflow-clip bg-[#121212] py-[64px]">
-            {/* Заголовок + текст w-335 стопкой (Frame 2828:49213, px-20, gap 12). */}
-            <div className="flex shrink-0 flex-col items-start gap-[12px] px-[20px] [word-break:break-word]">
-              <div className="flex items-start gap-[12px] whitespace-nowrap font-heading text-[26px] font-bold uppercase">
-                <span className="leading-none text-[#008cff]">03</span>
-                <span className="leading-[1.1] tracking-[0.78px] text-white">{t.conceptHeading}</span>
-              </div>
-              <div className="flex w-[335px] flex-col gap-[12px] text-[14px] leading-[1.2] tracking-[0.28px] text-white">
-                <p className="opacity-70">{t.conceptPara1}</p>
-                <div className="flex flex-col gap-[6px]">
-                  <p className="opacity-70">{t.conceptPara2}</p>
-                  <p className="opacity-70">{t.conceptPara3}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* 2 изображения 335×~217 стопкой (Frame 2836:53698, px-20, gap 10.496). */}
-            <div className="flex shrink-0 flex-col items-start gap-[10.496px] px-[20px]">
-              <div className="h-[216.566px] w-[335px] overflow-clip">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.conceptPhotoAlt}
-                  className="block size-full object-cover"
-                  src={`${A}/concept-img-1-375.jpg`}
-                />
-              </div>
-              <div className="h-[217.794px] w-[335px] overflow-clip">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.conceptSketchAlt}
-                  className="block size-full object-cover"
-                  src={`${A}/concept-img-2-375.jpg`}
-                />
-              </div>
-            </div>
-          </div>
-        </FullBleedScale>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptSketchAlt} className="block aspect-[335/217.794] w-full object-cover sm:hidden" src={`${A}/concept-img-2-375.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptSketchAlt} className="hidden aspect-[383/249] w-full object-cover sm:block sm:w-[calc(50%-6px)] lg:hidden" src={`${A}/concept-img-2-834.jpg`} />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img alt={t.conceptSketchAlt} className="hidden aspect-[594/384] w-full object-cover lg:block lg:w-[calc(50%-6px)]" src={`${A}/concept-img-2-1280.jpg`} />
+        </div>
       </div>
     </>
   );
