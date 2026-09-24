@@ -62,22 +62,19 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
                   style={{ background: "radial-gradient(130% 120% at 78% 45%, #b81412 0%, #7c0704 42%, #40060a 100%)" }}
                 />
                 {/* eslint-disable-next-line @next/next/no-img-element */}
+                {/* Кейс под NDA: на публичной версии (!full) отдаём заранее
+                    заблюренный файл вместо оригинала + CSS blur — оригинал
+                    иначе долетает до браузера нетронутым и легко достаётся
+                    из devtools/сети. */}
                 <img
                   alt={t.coverAlt}
                   className="absolute inset-0 size-full object-cover"
-                  src={`${CASE}/cover-cards.jpg`}
+                  src={full ? `${CASE}/cover-cards.jpg` : `${CASE}/cover-cards-blur.webp`}
                 />
               </div>
             </FullBleedScale>
 
             <HeroScrim color="#4d0000" />
-
-            {!full && (
-              // Кейс под NDA: затемнение + блюр на всю площадь блока Hero.
-              // z-[1] — строго под текстовым слоем (z-[2] выше), поэтому
-              // заголовок остаётся читаемым (см. case-01/case-02).
-              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[10px]" />
-            )}
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
               <p className="absolute bottom-[138px] left-[46px] w-[1278px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
@@ -156,16 +153,10 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
               <img
                 alt={t.heroAlt1280}
                 className="absolute inset-0 size-full object-cover"
-                src={`${CASE}/hero-1280.jpg`}
+                src={full ? `${CASE}/hero-1280.jpg` : `${CASE}/hero-1280-blur.webp`}
               />
               {/* Скрим (Rectangle 2087332625, 0/396, 1280×441, multiply). */}
               <div className="absolute inset-x-0 top-[396px] h-[441px] bg-gradient-to-b from-transparent to-[#121212] mix-blend-multiply" />
-              {!full && (
-                // Кейс под NDA: затемнение + блюр поверх фото. Идёт ДО
-                // текстового слоя в DOM, поэтому «005»/заголовок остаются
-                // поверх и читаются как обычно.
-                <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[9.5px]" />
-              )}
               {/* Текст (Frame 2147231976, 40/72, w-1000 h-683, justify-between):
                   «005» сверху, заголовок снизу. */}
               <p className="absolute left-[40px] top-[72px] whitespace-nowrap font-heading text-[152px] font-bold leading-[1.2] tracking-[4.56px] text-white opacity-60">
@@ -188,12 +179,8 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
               <img
                 alt={t.heroAlt834}
                 className="absolute inset-0 size-full object-cover"
-                src={`${CASE}/hero-834.jpg`}
+                src={full ? `${CASE}/hero-834.jpg` : `${CASE}/hero-834-blur.webp`}
               />
-              {!full && (
-                // Кейс под NDA: затемнение + блюр поверх фото.
-                <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[9.5px]" />
-              )}
               {/* Текст (Frame 2828:45522, 40/66, w-760, flex-col gap-457):
                   «005» 100px сверху, заголовок 52px снизу. */}
               <div className="absolute left-[40px] top-[66px] flex w-[760px] flex-col gap-[457px] font-heading font-bold leading-[1.2] text-white">
@@ -217,12 +204,8 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
               <img
                 alt={t.heroAlt375}
                 className="absolute inset-0 size-full object-cover"
-                src={`${CASE}/hero-375.jpg`}
+                src={full ? `${CASE}/hero-375.jpg` : `${CASE}/hero-375-blur.webp`}
               />
-              {!full && (
-                // Кейс под NDA: затемнение + блюр поверх фото.
-                <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[7px]" />
-              )}
               <p className="absolute left-[20px] top-[20px] whitespace-nowrap font-heading text-[44px] font-bold leading-none text-white opacity-60">
                 005
               </p>

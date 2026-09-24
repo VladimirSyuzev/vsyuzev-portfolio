@@ -89,9 +89,13 @@ function CasesListDesktop() {
                 {item.slug === "case-01" ? (
                   <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
                 ) : (
+                  // Кейс под NDA: на публичной главной оригинал вообще не
+                  // грузим (только заранее заблюренный файл) — иначе он
+                  // долетает до браузера нетронутым и легко достаётся из
+                  // devtools/сети, несмотря на плашку NDA/CSS-блюр поверх.
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={item.cover}
+                    src={item.nda && item.coverBlur ? item.coverBlur : item.cover}
                     alt=""
                     className="absolute max-w-none"
                     style={{
@@ -165,9 +169,10 @@ function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: b
                 </ResponsiveScale>
               ) : (
                 <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
+                  {/* Кейс под NDA: оригинал не грузим, см. CasesListDesktop. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={item.cover}
+                    src={item.nda && item.coverBlur ? item.coverBlur : item.cover}
                     alt=""
                     className="absolute max-w-none"
                     style={{
