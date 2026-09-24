@@ -22,14 +22,14 @@ const A = "/cases/case-04/sections";
 // Позиционирование карточек трека — общее для языков, alt приходит из i18n
 // (t.cardAlt) внутри компонента.
 const CARDS_META = [
-  { src: `${A}/adapt-1.jpg`, w: 533, h: 798 },
-  { src: `${A}/adapt-2.jpg`, w: 1153, h: 798 },
-  { src: `${A}/adapt-3.jpg`, w: 1089, h: 798 },
-  { src: `${A}/adapt-4.jpg`, w: 1196, h: 798 },
-  { src: `${A}/adapt-5.jpg`, w: 1411, h: 798 },
-  { src: `${A}/adapt-6.jpg`, w: 1620, h: 798 },
-  { src: `${A}/adapt-7.jpg`, w: 1800, h: 675 },
-  { src: `${A}/adapt-8.jpg`, w: 1800, h: 615 },
+  { src: `${A}/adapt-1.webp`, w: 533, h: 798 },
+  { src: `${A}/adapt-2.webp`, w: 1153, h: 798 },
+  { src: `${A}/adapt-3.webp`, w: 1089, h: 798 },
+  { src: `${A}/adapt-4.webp`, w: 1196, h: 798 },
+  { src: `${A}/adapt-5.webp`, w: 1411, h: 798 },
+  { src: `${A}/adapt-6.webp`, w: 1620, h: 798 },
+  { src: `${A}/adapt-7.webp`, w: 1800, h: 675 },
+  { src: `${A}/adapt-8.webp`, w: 1800, h: 615 },
 ];
 
 export default function Adaptation() {
