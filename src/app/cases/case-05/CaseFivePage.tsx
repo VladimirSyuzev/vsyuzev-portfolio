@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
-import NdaBackdrop from "@/components/NdaBackdrop";
 import DrawIn from "@/components/DrawIn";
 import { useLang } from "@/lib/lang";
 import { C5 } from "./i18n";
@@ -58,24 +57,20 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
           <div className="relative w-full">
             <FullBleedScale width={1440} height={580} mode="grow" className="w-full">
               <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#5a0402]">
-                {full ? (
-                  <>
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: "radial-gradient(130% 120% at 78% 45%, #b81412 0%, #7c0704 42%, #40060a 100%)" }}
-                    />
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      alt={t.coverAlt}
-                      className="absolute inset-0 size-full object-cover"
-                      src={`${CASE}/cover-cards.jpg`}
-                    />
-                  </>
-                ) : (
-                  // Кейс под NDA: реальный файл не рендерится — синтетическая
-                  // подложка вместо него (см. NdaBackdrop).
-                  <NdaBackdrop base="#5a0402" glow="#b81412" edge="#2a0303" />
+                {full && (
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: "radial-gradient(130% 120% at 78% 45%, #b81412 0%, #7c0704 42%, #40060a 100%)" }}
+                  />
                 )}
+                {/* Кейс под NDA: на публичной версии (!full) отдаём
+                    необратимый дериватив фото (34px → блюр → апскейл). */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  alt={t.coverAlt}
+                  className="absolute inset-0 size-full object-cover"
+                  src={full ? `${CASE}/cover-cards.jpg` : `${CASE}/cover-cards-nda.webp`}
+                />
               </div>
             </FullBleedScale>
 
@@ -154,16 +149,12 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
         <div className="hidden w-full lg:block xl:hidden">
           <FullBleedScale width={1280} height={828} mode="grow" className="w-full">
             <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
-              {full ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  alt={t.heroAlt1280}
-                  className="absolute inset-0 size-full object-cover"
-                  src={`${CASE}/hero-1280.jpg`}
-                />
-              ) : (
-                <NdaBackdrop base="#5a0402" glow="#b81412" edge="#2a0303" />
-              )}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={t.heroAlt1280}
+                className="absolute inset-0 size-full object-cover"
+                src={full ? `${CASE}/hero-1280.jpg` : `${CASE}/hero-1280-nda.webp`}
+              />
               {/* Скрим (Rectangle 2087332625, 0/396, 1280×441, multiply). */}
               <div className="absolute inset-x-0 top-[396px] h-[441px] bg-gradient-to-b from-transparent to-[#121212] mix-blend-multiply" />
               {/* Текст (Frame 2147231976, 40/72, w-1000 h-683, justify-between):
@@ -184,16 +175,12 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
         <div className="hidden w-full sm:block lg:hidden">
           <FullBleedScale width={834} height={834} mode="grow" className="w-full">
             <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
-              {full ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  alt={t.heroAlt834}
-                  className="absolute inset-0 size-full object-cover"
-                  src={`${CASE}/hero-834.jpg`}
-                />
-              ) : (
-                <NdaBackdrop base="#5a0402" glow="#b81412" edge="#2a0303" />
-              )}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={t.heroAlt834}
+                className="absolute inset-0 size-full object-cover"
+                src={full ? `${CASE}/hero-834.jpg` : `${CASE}/hero-834-nda.webp`}
+              />
               {/* Текст (Frame 2828:45522, 40/66, w-760, flex-col gap-457):
                   «005» 100px сверху, заголовок 52px снизу. */}
               <div className="absolute left-[40px] top-[66px] flex w-[760px] flex-col gap-[457px] font-heading font-bold leading-[1.2] text-white">
@@ -213,16 +200,12 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
         <div className="w-full sm:hidden">
           <FullBleedScale width={375} height={356} mode="grow" className="w-full">
             <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
-              {full ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  alt={t.heroAlt375}
-                  className="absolute inset-0 size-full object-cover"
-                  src={`${CASE}/hero-375.jpg`}
-                />
-              ) : (
-                <NdaBackdrop base="#5a0402" glow="#b81412" edge="#2a0303" />
-              )}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                alt={t.heroAlt375}
+                className="absolute inset-0 size-full object-cover"
+                src={full ? `${CASE}/hero-375.jpg` : `${CASE}/hero-375-nda.webp`}
+              />
               <p className="absolute left-[20px] top-[20px] whitespace-nowrap font-heading text-[44px] font-bold leading-none text-white opacity-60">
                 005
               </p>
