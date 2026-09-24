@@ -89,11 +89,9 @@ function CasesListDesktop() {
                 {item.slug === "case-01" ? (
                   <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
                 ) : (
-                  // Кейс под NDA: на публичной главной вместо оригинала —
-                  // его необратимый дериватив (coverNda), не сам файл.
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={item.nda && item.coverNda ? item.coverNda : item.cover}
+                    src={item.cover}
                     alt=""
                     className="absolute max-w-none"
                     style={{
@@ -167,11 +165,9 @@ function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: b
                 </ResponsiveScale>
               ) : (
                 <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
-                  {/* Кейс под NDA: вместо оригинала — необратимый дериватив
-                      (coverNda), см. CasesListDesktop. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={item.nda && item.coverNda ? item.coverNda : item.cover}
+                    src={item.cover}
                     alt=""
                     className="absolute max-w-none"
                     style={{

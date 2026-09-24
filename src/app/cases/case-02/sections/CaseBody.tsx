@@ -55,20 +55,25 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
             <FullBleedScale width={1440} height={580} mode="grow" className="w-full">
               <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
                 <div className="absolute left-0 top-[-221px] h-[1095.464px] w-[1642.995px]">
-                  {/* Кейс под NDA: на публичной версии (!full) отдаём
-                      необратимый дериватив мокапа (34px → блюр → апскейл),
-                      не оригинал. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     alt={t.coverAlt}
                     className="absolute inset-0 size-full object-cover"
-                    src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-nda.webp"}
+                    src="/cases/case-02/sections/cover-mockup.png"
                   />
                 </div>
               </div>
             </FullBleedScale>
 
             <HeroScrim color="#1b1b21" />
+
+            {!full && (
+              // Кейс под NDA: затемнение + блюр на всю площадь блока Hero.
+              // z-[1] — строго под текстовым слоем (z-[2] выше), поэтому
+              // заголовок остаётся читаемым — прямоугольник визуально под
+              // текстом, а не поверх него (см. case-01).
+              <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
+            )}
 
             <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-full max-w-[1440px] px-[var(--grid-margin)] xl:px-0">
               <p className="absolute bottom-[16%] left-[var(--grid-margin)] w-[80%] max-w-[1180px] whitespace-pre-wrap font-heading text-[clamp(1.9rem,6vw,52px)] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white xl:bottom-[138px] xl:left-[46px] xl:!text-[52px]">
@@ -97,12 +102,15 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
                 <img
                   alt={t.coverAlt}
                   className="absolute left-[-45px] top-0 h-[356px] w-[534px] max-w-none object-cover"
-                  src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-nda.webp"}
+                  src="/cases/case-02/sections/cover-mockup.png"
                 />
                 <div
                   className="pointer-events-none absolute inset-x-0 top-[82px] h-[274px] mix-blend-multiply"
                   style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
                 />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px]" />
+                )}
                 <div className="absolute inset-0 z-[2] flex flex-col justify-between px-[20px] pb-[36px] pt-[20px] font-heading font-bold uppercase text-white">
                   <p className="text-[44px] leading-none opacity-60">002</p>
                   <p className="whitespace-pre-line text-[26px] leading-[1.15] tracking-[0.6px]">
@@ -124,12 +132,15 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
                 <img
                   alt={t.coverAlt}
                   className="absolute left-[-282px] top-[-90px] h-[1008px] w-[1512px] max-w-none object-cover"
-                  src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-nda.webp"}
+                  src="/cases/case-02/sections/cover-mockup.png"
                 />
                 <div
                   className="pointer-events-none absolute inset-x-0 top-[241px] h-[593px] mix-blend-multiply"
                   style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
                 />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[8.3px]" />
+                )}
                 <div className="absolute left-[40px] top-[66px] z-[2] flex h-[696px] w-[573px] flex-col justify-between font-heading font-bold uppercase text-white">
                   <p className="text-[100px] leading-[1.2] tracking-[3px] opacity-60">002</p>
                   <p className="whitespace-pre-line text-[52px] leading-[1.2] tracking-[1.04px]">
@@ -149,12 +160,15 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
                 <img
                   alt={t.coverAlt}
                   className="absolute left-[-50px] top-[-134px] h-[1095px] w-[1643px] max-w-none object-cover"
-                  src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-nda.webp"}
+                  src="/cases/case-02/sections/cover-mockup.png"
                 />
                 <div
                   className="pointer-events-none absolute left-[3px] top-[244px] h-[593px] w-[1277px] mix-blend-multiply"
                   style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
                 />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[9.5px]" />
+                )}
                 <div className="absolute left-[40px] top-[72px] z-[2] flex h-[683px] w-[1000px] flex-col justify-between font-heading font-bold uppercase text-white">
                   <p className="text-[152px] leading-[1.2] tracking-[4.56px] opacity-60">002</p>
                   <p className="whitespace-pre-line text-[52px] leading-[1.2] tracking-[1.04px]">

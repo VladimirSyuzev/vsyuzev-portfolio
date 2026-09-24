@@ -66,18 +66,19 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
                   растяжения). Один растровый файл на брейкпоинт, ровно тот
                   же паттерн, что у обложек остальных кейсов (object-cover
                   внутри канваса FullBleedScale). */}
-              {/* Кейс под NDA: на публичной версии (!full) отдаём не
-                  оригинал, а его необратимый дериватив (сжат до 34px и
-                  расширен обратно с блюром — детали физически уничтожены,
-                  но кадр/тон те же, что у настоящего фото). */}
-              <img
-                alt=""
-                className="absolute inset-0 size-full object-cover"
-                src={full ? "/cases/case-01/hero/hero-1440.webp" : "/cases/case-01/hero/hero-1440-nda.webp"}
-              />
+              <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-1440.webp" />
             </div>
           </FullBleedScale>
           <HeroScrim color="#212121" />
+          {!full && (
+            // Кейс под NDA: затемнение + блюр на всю площадь блока Hero.
+            // z-[1] — строго под текстовым слоем (z-[2] выше), поэтому
+            // заголовок остаётся читаемым — прямоугольник визуально под
+            // текстом, а не поверх него. Сила блюра растёт вместе с экраном:
+            // 7px на 375 → 8.3px на 834 → 9.5px на 1280 → 10px на 1440 —
+            // разница между крайними размерами ровно 30% (7px vs 10px).
+            <div className="pointer-events-none absolute inset-0 z-[1] bg-[#121212]/40 backdrop-blur-[7px] sm:backdrop-blur-[8.3px] lg:backdrop-blur-[9.5px] xl:backdrop-blur-[10px]" />
+          )}
           <div className="pointer-events-none absolute inset-0 z-[2] mx-auto w-[1440px]">
             <p className="absolute bottom-[137px] left-[46px] w-[1180px] whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.2] tracking-[1.04px] text-white">
               {lang === "en" ? <>From audit <br />to a unified style</> : <>От аудита <br />к единому стилю</>}
@@ -105,15 +106,14 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
           <div className="w-full sm:hidden">
             <FullBleedScale width={375} height={356} mode="grow" className="w-full">
               <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
-                <img
-                  alt=""
-                  className="absolute inset-0 size-full object-cover"
-                  src={full ? "/cases/case-01/hero/hero-375.webp" : "/cases/case-01/hero/hero-375-nda.webp"}
-                />
+                <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-375.webp" />
                 <div
                   className="pointer-events-none absolute inset-x-0 bottom-0 top-[23.03%] mix-blend-multiply"
                   style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
                 />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[7px]" />
+                )}
                 <div className="absolute inset-0 flex flex-col justify-between px-[20px] pb-[44px] pt-[20px]">
                   <p className="font-heading text-[44px] font-bold uppercase leading-none text-white opacity-60">
                     001
@@ -132,11 +132,10 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
           <div className="hidden w-full sm:block lg:hidden">
             <FullBleedScale width={834} height={834} mode="grow" className="w-full">
               <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
-                <img
-                  alt=""
-                  className="absolute inset-0 size-full object-cover"
-                  src={full ? "/cases/case-01/hero/hero-834.webp" : "/cases/case-01/hero/hero-834-nda.webp"}
-                />
+                <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-834.webp" />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[8.3px]" />
+                )}
                 <div className="absolute left-[40px] top-[66px] flex h-[696px] w-[573px] flex-col justify-between">
                   <p className="font-heading text-[100px] font-bold uppercase leading-none tracking-[5.25px] text-white opacity-30">
                     001
@@ -154,11 +153,10 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
           <div className="hidden w-full lg:block xl:hidden">
             <FullBleedScale width={1280} height={828} mode="grow" className="w-full">
               <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
-                <img
-                  alt=""
-                  className="absolute inset-0 size-full object-cover"
-                  src={full ? "/cases/case-01/hero/hero-1280.webp" : "/cases/case-01/hero/hero-1280-nda.webp"}
-                />
+                <img alt="" className="absolute inset-0 size-full object-cover" src="/cases/case-01/hero/hero-1280.webp" />
+                {!full && (
+                  <div className="pointer-events-none absolute inset-0 bg-[#121212]/40 backdrop-blur-[9.5px]" />
+                )}
                 <div className="absolute left-[40px] top-[66px] flex h-[683px] w-[573px] flex-col justify-between">
                   <p className="font-heading text-[152px] font-bold uppercase leading-none tracking-[5.25px] text-white opacity-60">
                     001
