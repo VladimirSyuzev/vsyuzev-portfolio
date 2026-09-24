@@ -9,6 +9,12 @@ import { CASES } from "@/lib/cases-data";
 import Case01IconGrid from "./Case01IconGrid";
 import ResponsiveScale from "@/components/ResponsiveScale";
 import DrawIn from "@/components/DrawIn";
+import NdaBackdrop from "@/components/NdaBackdrop";
+
+const NDA_TONE: Record<string, { base: string; glow: string; edge: string }> = {
+  "case-02": { base: "#1b1b21", glow: "#35354a", edge: "#0a0a0d" },
+  "case-05": { base: "#5a0402", glow: "#b81412", edge: "#2a0303" },
+};
 import { useLang } from "@/lib/lang";
 import { T } from "@/lib/i18n";
 
@@ -88,14 +94,15 @@ function CasesListDesktop() {
               <div className="relative h-[536px] w-[668px] shrink-0 overflow-hidden opacity-0 transition-opacity delay-150 duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
                 {item.slug === "case-01" ? (
                   <Case01IconGrid className="relative h-[536px] w-[668px] overflow-clip bg-[rgba(18,18,18,0.7)]" />
+                ) : item.nda && NDA_TONE[item.slug] ? (
+                  // Кейс под NDA: на публичной главной реальный файл не
+                  // рендерится вообще — синтетическая подложка вместо него
+                  // (см. NdaBackdrop), чтобы доставать было нечего.
+                  <NdaBackdrop {...NDA_TONE[item.slug]} />
                 ) : (
-                  // Кейс под NDA: на публичной главной оригинал вообще не
-                  // грузим (только заранее заблюренный файл) — иначе он
-                  // долетает до браузера нетронутым и легко достаётся из
-                  // devtools/сети, несмотря на плашку NDA/CSS-блюр поверх.
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={item.nda && item.coverBlur ? item.coverBlur : item.cover}
+                    src={item.cover}
                     alt=""
                     className="absolute max-w-none"
                     style={{
@@ -169,19 +176,23 @@ function CasesListStacked({ landscape, mobile }: { landscape: boolean; mobile: b
                 </ResponsiveScale>
               ) : (
                 <div className="relative aspect-[668/536] w-full overflow-hidden bg-[rgba(18,18,18,0.06)]">
-                  {/* Кейс под NDA: оригинал не грузим, см. CasesListDesktop. */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item.nda && item.coverBlur ? item.coverBlur : item.cover}
-                    alt=""
-                    className="absolute max-w-none"
-                    style={{
-                      left: `${(item.coverOffset.left / 668) * 100}%`,
-                      top: `${(item.coverOffset.top / 536) * 100}%`,
-                      width: `${(item.coverSize.width / 668) * 100}%`,
-                      height: `${(item.coverSize.height / 536) * 100}%`,
-                    }}
-                  />
+                  {/* Кейс под NDA: реальный файл не рендерится, см. CasesListDesktop. */}
+                  {item.nda && NDA_TONE[item.slug] ? (
+                    <NdaBackdrop {...NDA_TONE[item.slug]} />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={item.cover}
+                      alt=""
+                      className="absolute max-w-none"
+                      style={{
+                        left: `${(item.coverOffset.left / 668) * 100}%`,
+                        top: `${(item.coverOffset.top / 536) * 100}%`,
+                        width: `${(item.coverSize.width / 668) * 100}%`,
+                        height: `${(item.coverSize.height / 536) * 100}%`,
+                      }}
+                    />
+                  )}
                 </div>
               )}
               {item.nda && (

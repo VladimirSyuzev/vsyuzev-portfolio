@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FullBleedScale from "@/components/FullBleedScale";
 import HeroScrim from "@/components/HeroScrim";
+import NdaBackdrop from "@/components/NdaBackdrop";
 import DrawIn from "@/components/DrawIn";
 import { useLang } from "@/lib/lang";
 import { C2 } from "../i18n";
@@ -55,17 +56,19 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
             <FullBleedScale width={1440} height={580} mode="grow" className="w-full">
               <div className="relative h-[580px] w-[1440px] overflow-clip bg-[#121212]">
                 <div className="absolute left-0 top-[-221px] h-[1095.464px] w-[1642.995px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {/* Кейс под NDA: на публичной версии (!full) отдаём заранее
-                      заблюренный файл вместо оригинала + CSS blur — оригинал
-                      иначе долетает до браузера нетронутым и легко достаётся
-                      из devtools/сети. */}
-                  <img
-                    alt={t.coverAlt}
-                    className="absolute inset-0 size-full object-cover"
-                    src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-blur.webp"}
-                  />
+                  {/* Кейс под NDA: на публичной версии (!full) реальный файл
+                      не рендерится вообще — синтетическая подложка вместо
+                      него (см. NdaBackdrop). */}
+                  {full && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      alt={t.coverAlt}
+                      className="absolute inset-0 size-full object-cover"
+                      src="/cases/case-02/sections/cover-mockup.png"
+                    />
+                  )}
                 </div>
+                {!full && <NdaBackdrop base="#1b1b21" glow="#35354a" edge="#0a0a0d" />}
               </div>
             </FullBleedScale>
 
@@ -94,12 +97,16 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
           <div className="w-full sm:hidden">
             <FullBleedScale width={375} height={356} mode="grow" className="w-full">
               <div className="relative h-[356px] w-[375px] overflow-clip bg-[#121212]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.coverAlt}
-                  className="absolute left-[-45px] top-0 h-[356px] w-[534px] max-w-none object-cover"
-                  src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-blur.webp"}
-                />
+                {full ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={t.coverAlt}
+                    className="absolute left-[-45px] top-0 h-[356px] w-[534px] max-w-none object-cover"
+                    src="/cases/case-02/sections/cover-mockup.png"
+                  />
+                ) : (
+                  <NdaBackdrop base="#1b1b21" glow="#35354a" edge="#0a0a0d" />
+                )}
                 <div
                   className="pointer-events-none absolute inset-x-0 top-[82px] h-[274px] mix-blend-multiply"
                   style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
@@ -121,12 +128,16 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
           <div className="hidden w-full sm:block lg:hidden">
             <FullBleedScale width={834} height={834} mode="grow" className="w-full">
               <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.coverAlt}
-                  className="absolute left-[-282px] top-[-90px] h-[1008px] w-[1512px] max-w-none object-cover"
-                  src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-blur.webp"}
-                />
+                {full ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={t.coverAlt}
+                    className="absolute left-[-282px] top-[-90px] h-[1008px] w-[1512px] max-w-none object-cover"
+                    src="/cases/case-02/sections/cover-mockup.png"
+                  />
+                ) : (
+                  <NdaBackdrop base="#1b1b21" glow="#35354a" edge="#0a0a0d" />
+                )}
                 <div
                   className="pointer-events-none absolute inset-x-0 top-[241px] h-[593px] mix-blend-multiply"
                   style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}
@@ -146,12 +157,16 @@ export default function CaseBody({ summarySlot, full = false }: { summarySlot: R
           <div className="hidden w-full lg:block xl:hidden">
             <FullBleedScale width={1280} height={828} mode="grow" className="w-full">
               <div className="relative h-[828px] w-[1280px] overflow-clip bg-[#121212]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt={t.coverAlt}
-                  className="absolute left-[-50px] top-[-134px] h-[1095px] w-[1643px] max-w-none object-cover"
-                  src={full ? "/cases/case-02/sections/cover-mockup.png" : "/cases/case-02/sections/cover-mockup-blur.webp"}
-                />
+                {full ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={t.coverAlt}
+                    className="absolute left-[-50px] top-[-134px] h-[1095px] w-[1643px] max-w-none object-cover"
+                    src="/cases/case-02/sections/cover-mockup.png"
+                  />
+                ) : (
+                  <NdaBackdrop base="#1b1b21" glow="#35354a" edge="#0a0a0d" />
+                )}
                 <div
                   className="pointer-events-none absolute left-[3px] top-[244px] h-[593px] w-[1277px] mix-blend-multiply"
                   style={{ background: "linear-gradient(to bottom, rgba(18,18,18,0), #121212)" }}

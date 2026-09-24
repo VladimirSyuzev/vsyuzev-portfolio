@@ -21,11 +21,6 @@ export type CaseItem = {
   description: string;
   descriptionEn: string;
   cover: string;
-  /** Заранее заблюренная версия cover (см. CasesList.tsx) — на публичной
-      главной странице для NDA-кейсов показывается ТОЛЬКО она, оригинал
-      сюда вообще не грузится (иначе его легко достать из devtools/сети,
-      несмотря на плашку NDA/CSS-блюр поверх). Обязателен при nda: true. */
-  coverBlur?: string;
   coverOffset: { left: number; top: number };
   coverSize: { width: number; height: number };
   /** Кейс под NDA: обложка в блоке «Кейсы» закрывается плашкой NDA
@@ -60,7 +55,6 @@ export const CASES: CaseItem[] = [
       "The product was moving to a new visual language, and there was no clear rulebook for the icons yet: just the existing service metaphors and a general direction. Familiar symbols had to be reimagined in the new style without losing recognizability. The working principle became a detail as if cut from a single sheet of metal: if a shape couldn't be imagined that way, it didn't fit the style. The library and the rules for building it took shape at the same time, and the deadline was hit exactly.",
     nda: true,
     cover: "/cases-teaser/case-02-macbook.png",
-    coverBlur: "/cases-teaser/case-02-macbook-blur.webp",
     coverOffset: { left: -113, top: -29 },
     coverSize: { width: 893, height: 595 },
   },
@@ -101,7 +95,6 @@ export const CASES: CaseItem[] = [
       "For a limited-edition bank card collection, four illustrators each reimagined an iconic car in their own style. I got the DeLorean: instead of the usual time-machine image, I gave it a post-apocalyptic take, weathered by life in the wasteland. I broke the car down into its recognizable features, worked through three concepts, and pushed the silhouette to stay legible at card size.",
     nda: true,
     cover: "/cases-teaser/case-05-cards.png",
-    coverBlur: "/cases-teaser/case-05-cards-blur.webp",
     coverOffset: { left: -545, top: -6 },
     coverSize: { width: 1289, height: 547 },
   },
