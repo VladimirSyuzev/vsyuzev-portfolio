@@ -19,10 +19,10 @@ const A = "/cases/case-03/sections";
 // Размеры/пути карточек — язык-независимые (сами слайды не переводятся,
 // баковый ассет), alt-текст берётся из словаря C3[lang].cardAlt1..4.
 const CARD_META = [
-  { src: `${A}/variant1.webp`, w: 1419, h: 798 },
-  { src: `${A}/variant2.webp`, w: 639, h: 798 },
-  { src: `${A}/variant3.webp`, w: 798, h: 798 },
-  { src: `${A}/variant4.webp`, w: 1197, h: 798 },
+  { src: `${A}/variant1.webp`, w: 624, h: 798 },
+  { src: `${A}/variant2.webp`, w: 1419, h: 798 },
+  { src: `${A}/variant3.webp`, w: 639, h: 798 },
+  { src: `${A}/variant4.webp`, w: 798, h: 798 },
 ];
 
 function Req({ head, sub, icon = "task-check.svg" }: { head: string; sub: string; icon?: string }) {
