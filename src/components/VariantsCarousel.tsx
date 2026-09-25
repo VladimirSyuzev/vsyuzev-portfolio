@@ -103,6 +103,43 @@ export default function VariantsCarousel({
 
   const offset = offsetFor(index) + (dragging ? dragDX : 0);
 
+  // Скролл каруселя колесом мыши (вверх-вниз, без Shift) и горизонтальным
+  // жестом трекпада: один жест = одна карточка. Вниз/вправо — дальше, вверх/
+  // влево — назад. На крайних карточках жест отдаём браузеру, чтобы страница
+  // прокручивалась дальше (без «ловушки» на карусели).
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el || reduced) return;
+    let acc = 0;
+    let lockedUntil = 0;
+    let idle = 0;
+    const onWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) return; // pinch-zoom
+      const dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (!dx) return;
+      const cur = idxRef.current;
+      const dir = dx > 0 ? 1 : -1;
+      if ((dir < 0 && cur === 0) || (dir > 0 && cur === cards.length - 1)) return;
+      e.preventDefault();
+      const now = performance.now();
+      if (now < lockedUntil) return;
+      acc += dx;
+      window.clearTimeout(idle);
+      idle = window.setTimeout(() => (acc = 0), 140);
+      if (Math.abs(acc) >= 40) {
+        step(acc > 0 ? 1 : -1);
+        acc = 0;
+        lockedUntil = now + 350;
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      window.clearTimeout(idle);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduced, cards.length]);
+
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
