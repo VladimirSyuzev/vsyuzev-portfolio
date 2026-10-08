@@ -74,7 +74,7 @@ export default function Pipeline() {
   // Дефолт до первого замера ResizeObserver — как если бы секция была
   // ровно 1440px (канонический размер макета), чтобы не было заметного
   // скачка при монтировании на самой частой ширине экрана.
-  const [padding, setPadding] = useState({ left: 46, top: 40, width: 1440 });
+  const [padding, setPadding] = useState({ left: 46, right: 1440 / 2 - 164, top: 40, width: 1440 });
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -90,6 +90,8 @@ export default function Pipeline() {
       const mid = w >= 640 && w < 1440;
       setPadding({
         left: w >= 1440 ? 46 + gutter : w >= 1024 ? 40 : w >= 640 ? 28 : 20,
+        // правый отступ: последняя карточка (328) докручивается до центра экрана
+        right: Math.max(20, w / 2 - 164),
         top: mid ? 130 : 40,
         width: w,
       });
@@ -172,10 +174,10 @@ export default function Pipeline() {
             if (rulerRef.current)
               rulerRef.current.style.transform = `translateX(${e.currentTarget.scrollLeft}px)`;
           }}
-          className={`no-scrollbar relative w-full touch-pan-y select-none overflow-x-auto overflow-y-visible pb-[72px] sm:pb-[130px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
+          className={`no-scrollbar relative w-full touch-pan-y select-none overflow-x-auto overflow-y-hidden pb-[72px] sm:pb-[130px] xl:absolute xl:left-0 xl:top-[278px] xl:h-[479px] xl:pb-[40px] ${
             dragging ? "cursor-grabbing" : "cursor-grab"
           }`}
-          style={{ paddingTop: padding.top, paddingLeft: padding.left, paddingRight: padding.left }}
+          style={{ paddingTop: padding.top, paddingLeft: padding.left, paddingRight: padding.right }}
         >
           <div className="relative h-[399px] w-[4068px]">
           {/* Линейка-риска (Group 2136141446/47) — первый ребёнок трека, но
@@ -188,7 +190,8 @@ export default function Pipeline() {
               scrollLeft — через onScroll ниже, а не transform от index. */}
           <div
             ref={rulerRef}
-            className="pointer-events-none absolute inset-0 will-change-transform"
+            className="pointer-events-none absolute left-0 top-0 h-full overflow-x-clip will-change-transform"
+            style={{ width: `${Math.max(0, padding.width - padding.left)}px` }}
           >
             {/* top из макета: линейка торчит над и под «змейкой» карточек.
                 375 — Frame 2147232047: трек на y10.8 внутри 420-фрейма → -11.

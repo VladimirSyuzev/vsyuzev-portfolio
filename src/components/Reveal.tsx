@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, useReducedMotion } from "@/lib/gsap";
+import { wipeFrom } from "@/lib/revealWipe";
 
 // Reveal — обёртка появления по скроллу (once). Единый «почерк» для
 // декоративных элементов сайта (см. философию Emil Kowalski: ease-out,
@@ -13,7 +14,7 @@ import { gsap, useReducedMotion } from "@/lib/gsap";
 //               подчёркиваний и рукописных обводок (визуально «рисуется»)
 //  - "doodle" : fade + scale 0.86→1 + доводка поворота (−5°→0) — для
 //               рукописных значков-каракулей (звезда, стрелка, глаз и т.п.)
-//  - "fade"   : fade + сдвиг снизу (по умолчанию)
+//  - "fade"   : вытягивание сверху вниз clip-path (по умолчанию, revealWipe)
 //  - "fade-left": fade + сдвиг слева
 export type RevealVariant = "line" | "doodle" | "fade" | "fade-left";
 
@@ -54,7 +55,12 @@ export default function Reveal({
       } else if (variant === "fade-left") {
         Object.assign(from, { opacity: 0, xPercent: -10 });
       } else {
-        Object.assign(from, { opacity: 0, y: 14 });
+        // "fade" = вытягивание сверху вниз (общий почерк картинок, revealWipe)
+        const w = wipeFrom(reduced);
+        const { duration: d, ease: e, ...vars } = w;
+        Object.assign(from, vars);
+        duration = d as number;
+        ease = e as string;
       }
 
       // immediateRender:false — элемент рендерится в НАТУРАЛЬНОМ (видимом)

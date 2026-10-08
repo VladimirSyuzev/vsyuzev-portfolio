@@ -11,6 +11,7 @@ export default function TrackArrows({
   canNext,
   className,
   style,
+  onDark = false,
 }: {
   onPrev: () => void;
   onNext: () => void;
@@ -18,7 +19,10 @@ export default function TrackArrows({
   canNext: boolean;
   className?: string;
   style?: React.CSSProperties;
+  /** кнопки на тёмном фоне — светлая полупрозрачная подложка вместо тёмной */
+  onDark?: boolean;
 }) {
+  const bg = onDark ? "bg-white/20" : "bg-[#121212]/55";
   return (
     <div
       aria-hidden={!canPrev && !canNext}
@@ -30,7 +34,7 @@ export default function TrackArrows({
         aria-label="Назад"
         onClick={onPrev}
         disabled={!canPrev}
-        className="pointer-events-auto grid size-[36px] shrink-0 place-items-center rounded-full bg-[#121212]/55 text-white opacity-70 backdrop-blur-sm transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-0 sm:size-[44px]"
+        className={`pointer-events-auto grid size-[36px] shrink-0 place-items-center rounded-full ${bg} text-white opacity-70 backdrop-blur-sm transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-0 sm:size-[44px]`}
       >
         <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
           <path d="M8 1 1.5 8 8 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
@@ -41,7 +45,7 @@ export default function TrackArrows({
         aria-label="Вперёд"
         onClick={onNext}
         disabled={!canNext}
-        className="pointer-events-auto grid size-[36px] shrink-0 place-items-center rounded-full bg-[#121212]/55 text-white opacity-70 backdrop-blur-sm transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-0 sm:size-[44px]"
+        className={`pointer-events-auto grid size-[36px] shrink-0 place-items-center rounded-full ${bg} text-white opacity-70 backdrop-blur-sm transition-opacity duration-200 hover:opacity-100 disabled:pointer-events-none disabled:opacity-0 sm:size-[44px]`}
       >
         <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
           <path d="M1 1 7.5 8 1 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />

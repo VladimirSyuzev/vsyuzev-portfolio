@@ -159,19 +159,19 @@ export default function Process() {
       if (!w) return;
       if (w < 640) {
         // reflow 375: трек на всю ширину канваса 375, карточки с x=20.
-        setPadding({ left: 20, right: 20, width: w });
+        setPadding({ left: 20, right: Math.max(20, w / 2 - 164), width: w });
         return;
       }
       if (w < 1024) {
         // reflow 834: трек на всю ширину канваса 834, карточки с x=28.
-        setPadding({ left: 28, right: 28, width: w });
+        setPadding({ left: 28, right: Math.max(28, w / 2 - 164), width: w });
         return;
       }
       if (w < 1440) {
         // reflow 1280: трек на всю ширину канваса 1280, карточки с x=40
         // (как в Figma), лишние уходят за край экрана — не обрезаются на
         // 1240 с мёртвой полосой справа.
-        setPadding({ left: 40, right: 40, width: w });
+        setPadding({ left: 40, right: Math.max(40, w / 2 - 164), width: w });
         return;
       }
       const gutter = Math.max(0, (w - 1440) / 2);
@@ -214,7 +214,7 @@ export default function Process() {
             шириной с экран). Тот же контекст, что и карточки → их frost её
             размывает. Точный экспорт из Figma: path opacity 0.2, БЕЗ доп.
             CSS-прозрачности. 20 линий: w-1200 (reflow) / w-1348 (десктоп). */}
-        <div ref={rulerRef} className="pointer-events-none absolute inset-0 will-change-transform">
+        <div ref={rulerRef} className="pointer-events-none absolute left-0 top-0 h-full overflow-x-clip will-change-transform" style={{ width: `${Math.max(0, padding.width - padding.left)}px` }}>
           {/* Линейка: 375 (8 линий, w-375) / 834 (w-778) / 1280 (w-1200) /
               десктоп (w-1348). Границы sm (640) / lg (1024) совпадают с
               переключением холста. */}

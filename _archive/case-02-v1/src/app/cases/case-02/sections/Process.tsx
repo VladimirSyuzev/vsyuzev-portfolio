@@ -24,6 +24,8 @@ const PITCH = 340; // шаг между карточками (x в Figma: 0, 340
 export default function Process() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [left, setLeft] = useState(20);
+  // правый отступ: последняя карточка (328) докручивается до центра экрана
+  const [right, setRight] = useState(1440 / 2 - 164);
   const [trackWidth, setTrackWidth] = useState(1440);
   const t = C2[useLang()];
   const STEPS = STEP_NUMBERS.map((n, i) => ({ n, ...t.steps[i] }));
@@ -41,6 +43,7 @@ export default function Process() {
         parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--grid-margin")) || 20;
       const gutter = Math.max(0, (w - 1440) / 2);
       setLeft(margin + gutter);
+      setRight(Math.max(margin, w / 2 - 164));
       setTrackWidth(w);
     });
     ro.observe(el);
@@ -70,7 +73,7 @@ export default function Process() {
       className={`no-scrollbar relative w-full touch-pan-y select-none overflow-x-auto ${
         dragging ? "cursor-grabbing" : "cursor-grab"
       } lg:relative lg:z-[1] xl:absolute xl:left-0 xl:top-[580px] xl:h-[286px]`}
-      style={{ paddingLeft: left, paddingRight: left, paddingTop: 80, paddingBottom: 81 }}
+      style={{ paddingLeft: left, paddingRight: right, paddingTop: 80, paddingBottom: 81 }}
     >
       <div className="relative h-[125px] w-[2368px]">
         {/* Линейка-риска (Group 2136141446/48). В макете это ОТДЕЛЬНЫЙ слой
@@ -80,13 +83,14 @@ export default function Process() {
             этом в том же backdrop-контексте, что и карточки, поэтому их
             frost её размывает, а карточки поверх. Ширина/шаг из макета:
             375 → 8 линий (в край экрана), 834 → 14 (от поля 28), ≥1024 → 20. */}
-        <div ref={rulerRef} className="pointer-events-none absolute inset-0 will-change-transform">
+        <div ref={rulerRef} className="pointer-events-none absolute left-0 top-0 h-full overflow-x-clip will-change-transform max-sm:-left-[20px] max-sm:!w-[var(--rw)]"
+            style={{ width: `${Math.max(0, trackWidth - left)}px`, "--rw": `${trackWidth}px` } as React.CSSProperties}>
           {/* Точные экспорты из Figma (Group 2136141446/47/48): path
               opacity 0.2, вертикальный градиент white 0→50%→0, БЕЗ доп.
               CSS-прозрачности (было opacity-60 → 0.12, поэтому линий почти
               не видно). 375 → 8 линий, 834 → 14, 1280 → 20, ≥1440 → 20. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img alt="" aria-hidden className="absolute left-[-20px] top-[-80px] h-[286px] w-[375px] max-w-none sm:hidden" src={`${A}/process-stripes-375.svg`} />
+          <img alt="" aria-hidden className="absolute left-0 top-[-80px] h-[286px] w-[375px] max-w-none sm:hidden" src={`${A}/process-stripes-375.svg`} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" aria-hidden className="absolute left-0 top-[-80px] hidden h-[286px] w-[778px] max-w-none sm:block lg:hidden" src={`${A}/process-stripes-834.svg`} />
           {/* eslint-disable-next-line @next/next/no-img-element */}

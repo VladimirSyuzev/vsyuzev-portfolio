@@ -48,19 +48,19 @@ export const CASES: CaseItem[] = [
     coverNda: "/cases-teaser/case-01-grid-nda.webp",
   },
   {
+    // Кейс 002 (Figma 2285:45966). Прежняя версия «Иконки для облачной
+    // платформы» — в _archive/case-02-v1.
     slug: "case-02",
     index: "002",
-    title: "ИКОНКИ ДЛЯ ОБЛАЧНОЙ ПЛАТФОРМЫ",
-    titleEn: "ICONS FOR A CLOUD PLATFORM",
+    title: "AI-пайплайн для соцсетей",
+    titleEn: "AI pipeline for social media",
     description:
-      "Продукт переходил на новый визуальный язык, а чёткой системы правил для иконок ещё не было: только прежние метафоры сервисов и общее направление. Знакомые символы нужно было переосмыслить в новом стиле, сохранив узнаваемость. Рабочим принципом стала деталь, как будто вырезанная из цельного листа металла: если форму нельзя было представить так, она не подходила под стиль. Библиотеку и правила её создания выстраивали одновременно, и в дедлайн уложились точно.",
+      "Self-initiated проект. Я взял реальный продукт с реальной задачей и построил пайплайн производства постов для соцсетей. Stablegate — швейцарская финтех-платформа для трансграничных расчётов между криптой и банками. Контент выходит регулярно, задача типичная: держать темп публикаций и не терять качество визуала.",
     descriptionEn:
-      "The product was moving to a new visual language, and there was no clear rulebook for the icons yet: just the existing service metaphors and a general direction. Familiar symbols had to be reimagined in the new style without losing recognizability. The working principle became a detail as if cut from a single sheet of metal: if a shape couldn't be imagined that way, it didn't fit the style. The library and the rules for building it took shape at the same time, and the deadline was hit exactly.",
-    nda: true,
-    coverNda: "/cases-teaser/case-02-macbook-nda.webp",
-    cover: "/cases-teaser/case-02-macbook.png",
-    coverOffset: { left: -113, top: -29 },
-    coverSize: { width: 893, height: 595 },
+      "A self-initiated project. I took a real product with a real task and built a production pipeline for social media posts. Stablegate is a Swiss fintech platform for cross-border settlements between crypto and banks. Content goes out regularly, and the task is a typical one: keep up the publishing pace without losing visual quality.",
+    cover: "/cases-teaser/case-02-pipeline.webp",
+    coverOffset: { left: -146.67, top: 0 },
+    coverSize: { width: 960.33, height: 536 },
   },
   {
     slug: "case-03",

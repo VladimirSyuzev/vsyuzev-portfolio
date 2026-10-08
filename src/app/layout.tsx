@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Wix_Madefor_Display, Inter } from "next/font/google";
 import localFont from "next/font/local";
+import AutoReveal from "@/components/AutoReveal";
 import ScrollTriggerRefresh from "@/components/ScrollTriggerRefresh";
 import Typographer from "@/components/Typographer";
 import "./globals.css";
@@ -52,6 +53,7 @@ export default function RootLayout({
         {children}
         <Typographer />
         <ScrollTriggerRefresh />
+        <AutoReveal />
       </body>
     </html>
   );

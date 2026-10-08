@@ -1,0 +1,15 @@
+  {
+    slug: "case-02",
+    index: "002",
+    title: "ИКОНКИ ДЛЯ ОБЛАЧНОЙ ПЛАТФОРМЫ",
+    titleEn: "ICONS FOR A CLOUD PLATFORM",
+    description:
+      "Продукт переходил на новый визуальный язык, а чёткой системы правил для иконок ещё не было: только прежние метафоры сервисов и общее направление. Знакомые символы нужно было переосмыслить в новом стиле, сохранив узнаваемость. Рабочим принципом стала деталь, как будто вырезанная из цельного листа металла: если форму нельзя было представить так, она не подходила под стиль. Библиотеку и правила её создания выстраивали одновременно, и в дедлайн уложились точно.",
+    descriptionEn:
+      "The product was moving to a new visual language, and there was no clear rulebook for the icons yet: just the existing service metaphors and a general direction. Familiar symbols had to be reimagined in the new style without losing recognizability. The working principle became a detail as if cut from a single sheet of metal: if a shape couldn't be imagined that way, it didn't fit the style. The library and the rules for building it took shape at the same time, and the deadline was hit exactly.",
+    nda: true,
+    coverNda: "/cases-teaser/case-02-macbook-nda.webp",
+    cover: "/cases-teaser/case-02-macbook.png",
+    coverOffset: { left: -113, top: -29 },
+    coverSize: { width: 893, height: 595 },
+  },

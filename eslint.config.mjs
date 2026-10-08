@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // архив снятых кейсов — не линтуем
+    "_archive/**",
   ]),
 ]);
 

@@ -191,7 +191,7 @@ export default function Result() {
 
         {/* Карусель «варианты» — сама всегда position:absolute, резервируем
             высоту (hBig + бар) отдельным relative-блоком. */}
-        <div ref={carouselWrapRef} className="relative w-full" style={{ height: (isMobile ? 204 : 399) + 54 }}>
+        <div ref={carouselWrapRef} className="relative -mx-[20px] sm:-mx-[28px] lg:-mx-[40px]" style={{ height: (isMobile ? 204 : 399) + 54 }}>
           <VariantsCarousel
             cards={CARDS}
             top={0}

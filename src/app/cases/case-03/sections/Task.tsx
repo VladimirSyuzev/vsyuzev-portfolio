@@ -160,7 +160,7 @@ export default function Task() {
           </p>
         </div>
 
-        <div className="relative w-full" style={{ height: carouselH }}>
+        <div className="relative -mx-[20px] sm:-mx-[28px] lg:-mx-[40px]" style={{ height: carouselH }}>
           <VariantsCarousel cards={CARDS} top={0} hSmall={carouselHSmall} hBig={carouselHBig} tone="light" />
         </div>
 

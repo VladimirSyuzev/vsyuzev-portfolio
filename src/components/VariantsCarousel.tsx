@@ -1,14 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import TrackArrows from "@/components/TrackArrows";
 import { edgeFadeMaskStyle } from "@/lib/edgeFadeMask";
-import { useReducedMotion } from "@/lib/gsap";
-import { useDrag } from "@/lib/useDrag";
+import { useStepCarousel } from "@/lib/useStepCarousel";
 
 // VariantsCarousel — общий трек «варианты» для кейсов 3/4/5. Снап-карусель
 // во всю ширину экрана: активная карточка по центру и вырастает
-// (hSmall → hBig), перетаскивание вбок (курсор-рука). Снизу — бар из
-// сегментов (количество + активный) и стрелки ‹ ›.
+// (hSmall → hBig), перетаскивание вбок (курсор-рука), колесо/жест трекпада
+// (один жест = одна карточка), боковые стрелки ‹ › (TrackArrows) по краям
+// трека. Бара из сегментов снизу НЕТ (по просьбе пользователя — как у ленты
+// «Шаблоны» в кейсе «AI-пайплайн»). Механика жестов — общий useStepCarousel.
 //
 // По просьбе пользователя: без параллакса, без «переливания» и без
 // скруглений. Изображение показывается ЦЕЛИКОМ и в состоянии ключевой
@@ -23,6 +25,8 @@ export default function VariantsCarousel({
   top,
   hSmall = 262,
   hBig = 399,
+  gap = GAP,
+  activeGap = 0,
   maxActiveWidth,
   tone = "light",
   onIndexChange,
@@ -32,6 +36,11 @@ export default function VariantsCarousel({
   top: number;
   hSmall?: number;
   hBig?: number;
+  // Зазор между карточками (по умолчанию 16) и ДОПОЛНИТЕЛЬНЫЙ отступ по бокам
+  // активной карточки (по умолчанию 0) — для макетов, где рядом с крупной
+  // карточкой зазор больше (Figma «Итог» кейса 2: 12 между мелкими, 28 у крупной).
+  gap?: number;
+  activeGap?: number;
   // Ограничитель ширины ключевой (активной) карточки. Если по hBig карточка
   // шире maxActiveWidth — она ужимается по ширине до maxActiveWidth, высота
   // уменьшается пропорционально (нужно на узких экранах: панорамные билборды
@@ -41,20 +50,15 @@ export default function VariantsCarousel({
   onIndexChange?: (i: number) => void;
   className?: string;
 }) {
-  const trackRef = useRef<HTMLDivElement>(null);
   const activeCardRef = useRef<HTMLDivElement>(null);
-  const [index, setIndex] = useState(0);
   const [center, setCenter] = useState(720);
-  const [dragDX, setDragDX] = useState(0);
   // Фактический зазор (px) от краёв трека до краёв активной карточки —
   // измеряется по реальному рендеру, чтобы край-маска гарантированно не
   // наезжала на ключевое изображение, даже если карточка не по центру.
   const [clear, setClear] = useState<{ l: number; r: number } | null>(null);
-  const idxRef = useRef(0);
-  const reduced = useReducedMotion();
+  const { trackRef, index, setIndex, step, dragging, bind, dragDX, reduced, last } = useStepCarousel(cards.length);
 
   useEffect(() => {
-    idxRef.current = index;
     onIndexChange?.(index);
   }, [index, onIndexChange]);
 
@@ -66,7 +70,7 @@ export default function VariantsCarousel({
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [trackRef]);
 
   // Высота активной карточки: hBig, либо меньше — если по hBig ширина
   // превысила бы maxActiveWidth (тогда ужимаемся по ширине, сохраняя AR).
@@ -79,66 +83,11 @@ export default function VariantsCarousel({
 
   const offsetFor = (active: number) => {
     let left = 0;
-    for (let i = 0; i < active; i++) left += widthOf(cards[i], false) + GAP;
-    return center - (left + widthOf(cards[active], true) / 2);
+    for (let i = 0; i < active; i++) left += widthOf(cards[i], false) + gap;
+    return center - (left + activeGap + widthOf(cards[active], true) / 2);
   };
 
-  const step = (dir: number) =>
-    setIndex((cur) => Math.max(0, Math.min(cards.length - 1, cur + dir)));
-
-  const { dragging, bind } = useDrag({
-    onMove: (dx) => {
-      const cur = idxRef.current;
-      const atEdge = (dx > 0 && cur === 0) || (dx < 0 && cur === cards.length - 1);
-      setDragDX(atEdge ? dx * 0.32 : dx);
-    },
-    onEnd: (dx, vx) => {
-      setDragDX(0);
-      let d = 0;
-      if (dx <= -70 || vx <= -0.4) d = 1;
-      else if (dx >= 70 || vx >= 0.4) d = -1;
-      step(d);
-    },
-  });
-
   const offset = offsetFor(index) + (dragging ? dragDX : 0);
-
-  // Скролл каруселя колесом мыши (вверх-вниз, без Shift) и горизонтальным
-  // жестом трекпада: один жест = одна карточка. Вниз/вправо — дальше, вверх/
-  // влево — назад. На крайних карточках жест отдаём браузеру, чтобы страница
-  // прокручивалась дальше (без «ловушки» на карусели).
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el || reduced) return;
-    let acc = 0;
-    let lockedUntil = 0;
-    let idle = 0;
-    const onWheel = (e: WheelEvent) => {
-      if (e.ctrlKey) return; // pinch-zoom
-      const dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-      if (!dx) return;
-      const cur = idxRef.current;
-      const dir = dx > 0 ? 1 : -1;
-      if ((dir < 0 && cur === 0) || (dir > 0 && cur === cards.length - 1)) return;
-      e.preventDefault();
-      const now = performance.now();
-      if (now < lockedUntil) return;
-      acc += dx;
-      window.clearTimeout(idle);
-      idle = window.setTimeout(() => (acc = 0), 140);
-      if (Math.abs(acc) >= 40) {
-        step(acc > 0 ? 1 : -1);
-        acc = 0;
-        lockedUntil = now + 350;
-      }
-    };
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => {
-      el.removeEventListener("wheel", onWheel);
-      window.clearTimeout(idle);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reduced, cards.length]);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -164,10 +113,7 @@ export default function VariantsCarousel({
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [index, center, dragging]);
-
-  const ctrl = tone === "dark" ? "text-white" : "text-[#121212]";
-  const seg = tone === "dark" ? "bg-white" : "bg-[#121212]";
+  }, [index, center, dragging, trackRef]);
 
   return (
     <div className={`absolute inset-x-0 ${className ?? ""}`} style={{ top }}>
@@ -201,8 +147,9 @@ export default function VariantsCarousel({
           </div>
         ) : (
           <div
-            className="flex h-full items-center gap-[16px] will-change-transform"
+            className="flex h-full items-center will-change-transform"
             style={{
+              gap,
               transform: `translateX(${offset}px)`,
               transition: dragging ? "none" : "transform 550ms cubic-bezier(0.33,1,0.68,1)",
             }}
@@ -212,8 +159,13 @@ export default function VariantsCarousel({
                 key={c.src}
                 ref={i === index ? activeCardRef : undefined}
                 data-active={i === index || undefined}
-                className="relative shrink-0 transition-[height] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)]"
-                style={{ height: i === index ? bigHeightOf(c) : hSmall, aspectRatio: `${c.w} / ${c.h}` }}
+                onClick={() => setIndex(i)}
+                className={`relative shrink-0 transition-[height,margin] duration-[450ms] ease-[cubic-bezier(0.33,1,0.68,1)] ${i === index ? "" : "cursor-pointer"}`}
+                style={{
+                  height: i === index ? bigHeightOf(c) : hSmall,
+                  aspectRatio: `${c.w} / ${c.h}`,
+                  marginInline: i === index ? activeGap : 0,
+                }}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -228,45 +180,17 @@ export default function VariantsCarousel({
         )}
       </div>
 
-      {/* Бар состояния */}
-      <div className={`mt-[26px] flex items-center justify-center gap-[18px] ${ctrl}`}>
-        <button
-          type="button"
-          aria-label="Предыдущий вариант"
-          onClick={() => step(-1)}
-          disabled={index === 0}
-          className="grid size-[28px] place-items-center opacity-60 transition-opacity hover:opacity-100 disabled:opacity-20"
-        >
-          <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
-            <path d="M8 1 1.5 8 8 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-        <div className="flex items-center gap-[6px]">
-          {cards.map((c, i) => (
-            <button
-              key={c.src}
-              type="button"
-              aria-label={`Вариант ${i + 1}`}
-              aria-current={i === index || undefined}
-              onClick={() => setIndex(i)}
-              className={`h-[2px] rounded-full transition-all duration-300 ${seg} ${
-                i === index ? "w-[26px] opacity-100" : "w-[16px] opacity-30"
-              }`}
-            />
-          ))}
-        </div>
-        <button
-          type="button"
-          aria-label="Следующий вариант"
-          onClick={() => step(1)}
-          disabled={index === cards.length - 1}
-          className="grid size-[28px] place-items-center opacity-60 transition-opacity hover:opacity-100 disabled:opacity-20"
-        >
-          <svg width="9" height="16" viewBox="0 0 9 16" fill="none">
-            <path d="M1 1 7.5 8 1 15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      </div>
+      {/* Боковые кнопки ‹ › — снаружи трека (на нём mask, она отключила бы
+          backdrop-blur кнопок), по центру ряда карточек. Бара снизу нет. */}
+      <TrackArrows
+        className="absolute inset-x-0 top-0"
+        style={{ height: hBig }}
+        onDark={tone === "dark"}
+        onPrev={() => step(-1)}
+        onNext={() => step(1)}
+        canPrev={index > 0}
+        canNext={index < last}
+      />
     </div>
   );
 }
