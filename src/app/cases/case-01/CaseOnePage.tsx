@@ -125,7 +125,7 @@ export default function CaseOnePage({ full = false }: { full?: boolean }) {
               <div className="relative h-[834px] w-[834px] overflow-clip bg-[#121212]">
                 <img alt="" className="absolute inset-0 size-full object-cover" src={full ? "/cases/case-01/hero/hero-834-v2.webp" : "/cases/case-01/hero/hero-834-v5-nda.webp"} />
                 <div className="absolute left-[40px] top-[66px] flex h-[696px] w-[573px] flex-col justify-between">
-                  <p className="font-heading text-[100px] font-bold uppercase leading-none tracking-[5.25px] text-white opacity-30">
+                  <p className="font-heading text-[100px] font-bold uppercase leading-none tracking-[5.25px] text-white opacity-60">
                     001
                   </p>
                   <p className="w-max whitespace-pre-wrap font-heading text-[52px] font-bold uppercase leading-[1.15] tracking-[1.04px] text-white">
