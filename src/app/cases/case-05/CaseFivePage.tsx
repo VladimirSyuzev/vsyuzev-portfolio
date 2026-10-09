@@ -65,7 +65,7 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
                 <img
                   alt={t.coverAlt}
                   className="absolute inset-0 size-full object-cover"
-                  src={full ? `${CASE}/cover-cards.jpg` : `${CASE}/cover-cards-nda.webp`}
+                  src={full ? `${CASE}/cover-cards-v2.jpg` : `${CASE}/cover-cards-v2-nda.webp`}
                 />
               </div>
             </FullBleedScale>
@@ -149,7 +149,7 @@ export default function CaseFivePage({ full = false }: { full?: boolean }) {
               <img
                 alt={t.heroAlt1280}
                 className="absolute inset-0 size-full object-cover"
-                src={full ? `${CASE}/hero-1280.jpg` : `${CASE}/hero-1280-nda.webp`}
+                src={full ? `${CASE}/hero-1280-v2.jpg` : `${CASE}/hero-1280-v2-nda.webp`}
               />
               {/* Скрим (Rectangle 2087332625, 0/396, 1280×441, multiply). */}
               <div className="absolute inset-x-0 top-[396px] h-[441px] bg-gradient-to-b from-transparent to-[#121212] mix-blend-multiply" />
